@@ -141,7 +141,7 @@ describe("ThotisBookingService Integration Tests", () => {
       },
     });
 
-    await service.markSessionComplete(pastBooking.id);
+    await service.markSessionComplete(pastBooking.id, { id: mentorUser.id });
 
     const completedBooking = await prismock.booking.findUnique({
       where: { id: pastBooking.id },
@@ -173,7 +173,9 @@ describe("ThotisBookingService Integration Tests", () => {
     });
 
     // Cancel it
-    await service.cancelSession(bookingResult.bookingId, "Change of plans", "student");
+    await service.cancelSession(bookingResult.bookingId, "Change of plans", "student", {
+      email: "prospective@example.com",
+    });
 
     const cancelledBooking = await prismock.booking.findUnique({
       where: { id: bookingResult.bookingId },

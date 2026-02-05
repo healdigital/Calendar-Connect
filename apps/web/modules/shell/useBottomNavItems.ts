@@ -80,6 +80,13 @@ export function useBottomNavItems({
           icon: "lock",
         }
       : null,
+    isAdmin
+      ? {
+          name: "Ambassadeurs Thotis",
+          href: "/admin/thotis/ambassadors",
+          icon: "users",
+        }
+      : null,
     {
       name: "settings",
       href: user?.org ? `/settings/organizations/profile` : "/settings/my-account/profile",

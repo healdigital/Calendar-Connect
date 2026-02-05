@@ -3278,11 +3278,13 @@ model StudentProfile {
   currentYear Int
 
   // Profile Information
-  bio             String  @db.Text
+  bio             String   @db.Text
   profilePhotoUrl String?
   linkedInUrl     String?
+  expertise       String[] @default([])
 
   // Status
+
   isActive Boolean @default(true)
 
   // Statistics
@@ -3315,8 +3317,64 @@ model SessionRating {
   feedback         String? @db.Text
   prospectiveEmail String // Email of the prospective student who rated
 
-  createdAt DateTime @default(now())
+  bookingId Int?     @unique
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
 
-  @@index([studentProfileId])
-  @@index([bookingId])
+model ThotisOrientationIntent {
+  id                  Int      @id @default(autoincrement())
+  userId              Int
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetFields        String[] // Array of AcademicField strings
+  academicLevel       String   // e.g., "Terminale", "Bachelor 1"
+  scheduleConstraints Json?    // Structured JSON for availability constraints
+  zone                String?  // Geographic or time zone preference
+  goals               String[] // Specific goals e.g., "Parcoursup help", "Career advice"
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ThotisGuestIdentity {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  normalizedEmail String  @unique // Lowercase for easier matching
+  lastRequestAt  DateTime @default(now()) // For rate limiting requestLink
+  blocked        Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  magicLinks     ThotisMagicLinkToken[]
+  auditLogs      ThotisGuestAccessLog[]
+}
+
+model ThotisMagicLinkToken {
+  id             String   @id @default(cuid())
+  tokenHash      String   @unique // Store hashed token, verification requires input to be hashed
+  guestId        String
+  guest          ThotisGuestIdentity @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  expiresAt      DateTime
+  usedAt         DateTime?
+  invalidated    Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([guestId])
+  @@index([tokenHash])
+}
+
+model ThotisGuestAccessLog {
+  id             String   @id @default(cuid())
+  guestId        String?
+  guest          ThotisGuestIdentity? @relation(fields: [guestId], references: [id], onDelete: SetNull)
+  ipAddress      String?
+  userAgent      String?
+  endpoint       String   // e.g., "getSessions", "cancel"
+  action         String   // e.g., "VIEW", "CANCEL"
+  resourceId     String?  // e.g., bookingId
+  success        Boolean  @default(true)
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  @@index([guestId])
 }

@@ -4,7 +4,7 @@ import { ErrorWithCode } from "@calcom/lib/errors";
 import type { AcademicField } from "@calcom/prisma/enums";
 import sharp from "sharp";
 import { RedisService } from "../../redis/RedisService";
-import { ProfileRepository } from "../repositories/ProfileRepository";
+import { ProfileRepository, type StudentProfileWithUser } from "../repositories/ProfileRepository";
 import { AnalyticsService } from "./AnalyticsService";
 
 export interface CreateProfileInput {
@@ -15,6 +15,7 @@ export interface CreateProfileInput {
   university: string;
   degree: string;
   profilePhotoUrl?: string;
+  expertise?: string[];
 }
 
 export interface UpdateProfileInput {
@@ -25,15 +26,19 @@ export interface UpdateProfileInput {
   degree?: string;
   profilePhotoUrl?: string;
   isActive?: boolean;
+  expertise?: string[];
 }
 
 export interface ProfileSearchFilters {
+  query?: string;
   fieldOfStudy?: string;
   university?: string;
   minRating?: number;
   isActive?: boolean;
   page?: number;
   pageSize?: number;
+  expertise?: string[];
+  sort?: "rating" | "popularity" | "newest";
 }
 
 export class ProfileService {
@@ -60,6 +65,26 @@ export class ProfileService {
         console.warn("Failed to initialize RedisService", e);
       }
     }
+  }
+
+  /**
+   * Maps the profiles array to a singular profile object for frontend compatibility
+   * Cal.com v2 uses a 'profiles' array on the User model, but many components
+   * expect a singular 'profile' object.
+   */
+  private mapProfile<T extends { user: { profiles: unknown } }>(profile: T): T {
+    if (!profile || !profile.user) return profile;
+
+    const userProfiles = profile.user.profiles as {
+      organization: { id: number; slug: string | null } | null;
+    }[];
+    return {
+      ...profile,
+      user: {
+        ...profile.user,
+        profile: userProfiles && userProfiles.length > 0 ? userProfiles[0] : null,
+      },
+    };
   }
 
   private normalizeUrl(url: string): string {
@@ -144,7 +169,7 @@ export class ProfileService {
         })
         .jpeg({ quality: 85 })
         .toBuffer();
-    } catch (error) {
+    } catch (_error) {
       throw new ErrorWithCode(ErrorCode.InternalServerError, "Failed to process profile photo");
     }
   }
@@ -159,6 +184,7 @@ export class ProfileService {
         university: input.university.trim(),
         degree: input.degree.trim(),
         field: input.fieldOfStudy as AcademicField,
+        expertise: input.expertise,
         currentYear: input.yearOfStudy,
         bio: input.bio.trim(),
         profilePhotoUrl,
@@ -175,7 +201,7 @@ export class ProfileService {
         degree: profile.degree,
       });
 
-      return profile;
+      return this.mapProfile(profile);
     } catch (error) {
       if (error instanceof Error && error.message.includes("Unique constraint")) {
         throw new ErrorWithCode(ErrorCode.BadRequest, "Profile already exists for this user");
@@ -195,6 +221,7 @@ export class ProfileService {
 
     const updateData: {
       field?: AcademicField;
+      expertise?: string[];
       currentYear?: number;
       bio?: string;
       university?: string;
@@ -204,6 +231,7 @@ export class ProfileService {
     } = {};
 
     if (input.fieldOfStudy !== undefined) updateData.field = input.fieldOfStudy as AcademicField;
+    if (input.expertise !== undefined) updateData.expertise = input.expertise;
     if (input.yearOfStudy !== undefined) updateData.currentYear = input.yearOfStudy;
     if (input.bio !== undefined) updateData.bio = input.bio.trim();
     if (input.university !== undefined) updateData.university = input.university.trim();
@@ -218,13 +246,13 @@ export class ProfileService {
       await this.redis.set(`profile:${userId}`, profile, { ttl: this.PROFILE_CACHE_TTL });
     }
 
-    return profile;
+    return this.mapProfile(profile);
   }
 
   async getProfile(userId: number) {
     if (this.redis) {
       const cached = await this.redis.get(`profile:${userId}`);
-      if (cached) return cached;
+      if (cached) return this.mapProfile(cached);
     }
 
     const profile = await this.repository.getProfileByUserId(userId);
@@ -233,48 +261,80 @@ export class ProfileService {
       await this.redis.set(`profile:${userId}`, profile, { ttl: this.PROFILE_CACHE_TTL });
     }
 
-    return profile;
+    return this.mapProfile(profile);
   }
 
-  async getProfilesByField(fieldOfStudy: string) {
-    const cacheKey = `field:${fieldOfStudy}`;
+  async getProfileByUsername(username: string) {
+    const cacheKey = `profile:username:${username}`;
     if (this.redis) {
       const cached = await this.redis.get(cacheKey);
-      if (cached) return cached as any[];
+      if (cached) return this.mapProfile(cached);
     }
 
-    const result = await this.repository.getProfilesByField(fieldOfStudy as AcademicField, { pageSize: 100 });
-    const profiles = result.profiles;
+    const profile = await this.repository.getProfileByUsername(username);
 
-    if (this.redis) {
-      await this.redis.set(cacheKey, profiles, { ttl: this.LIST_CACHE_TTL });
+    if (profile && this.redis) {
+      await this.redis.set(cacheKey, profile, { ttl: this.PROFILE_CACHE_TTL });
     }
 
-    return profiles;
+    return this.mapProfile(profile);
   }
 
   async searchProfiles(filters: ProfileSearchFilters) {
     const cacheKey = `search:${JSON.stringify(filters)}`;
     if (this.redis) {
       const cached = await this.redis.get(cacheKey);
-      if (cached) return cached as any[];
+      if (cached) return (cached as StudentProfileWithUser[]).map((p) => this.mapProfile(p));
     }
 
     const result = await this.repository.searchProfiles({
+      query: filters.query,
       field: filters.fieldOfStudy as AcademicField,
+      expertise: filters.expertise,
       university: filters.university,
       minRating: filters.minRating,
       page: filters.page,
       pageSize: filters.pageSize,
+      sort: filters.sort,
     });
 
-    const profiles = result.profiles;
-
     if (this.redis) {
-      await this.redis.set(cacheKey, profiles, { ttl: this.LIST_CACHE_TTL });
+      await this.redis.set(cacheKey, result, { ttl: this.LIST_CACHE_TTL });
     }
 
-    return profiles;
+    return {
+      ...result,
+      profiles: result.profiles.map((p) => this.mapProfile(p)),
+    };
+  }
+
+  async getRecommendedProfiles(field?: string) {
+    const profiles = await this.repository.getRecommendedProfiles(field as AcademicField);
+    return profiles.map((p) => this.mapProfile(p));
+  }
+
+  /**
+   * Get recommended profiles based on student intent
+   */
+  async getRecommendedProfilesByIntent(intent: import("./MentorMatchingService").ThotisOrientationIntent) {
+    // 1. Fetch candidates (filtering by field match + high performers)
+    const candidates = await this.repository.getRecommendedProfilesByIntent(intent);
+
+    // 2. Score and sort using MentorMatchingService
+    const matchingService = new (await import("./MentorMatchingService")).MentorMatchingService();
+    const scored = matchingService.sortMentors(candidates as StudentProfileWithUser[], intent);
+
+    // 3. Return top results (e.g., top 5)
+    return scored.slice(0, 5).map((p) => ({
+      ...this.mapProfile(p),
+      matchScore: p.matchScore,
+      matchReasons: p.matchReasons,
+    }));
+  }
+
+  async getTopRatedProfiles() {
+    const profiles = await this.repository.getTopRatedProfiles();
+    return profiles.map((p) => this.mapProfile(p));
   }
 
   async activateProfile(userId: number) {
@@ -285,7 +345,7 @@ export class ProfileService {
     return this.updateProfile(userId, { isActive: false });
   }
 
-  isProfileComplete(profile: any): boolean {
+  isProfileComplete(profile: StudentProfileWithUser): boolean {
     return (
       profile.bio !== null &&
       profile.field !== null &&

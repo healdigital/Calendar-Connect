@@ -3,6 +3,7 @@ import { router } from "../../../trpc";
 import { ZDeleteMeInputSchema } from "./deleteMe.schema";
 import { get } from "./procedures/get";
 import { ZUpdateProfileInputSchema } from "./updateProfile.schema";
+import { ZUpdateStudentProfileInputSchema } from "./updateStudentProfile.schema";
 
 export const meRouter = router({
   bookingUnconfirmedCount: authedProcedure.query(async ({ ctx }) => {
@@ -38,4 +39,10 @@ export const meRouter = router({
     const handler = (await import("./updateProfile.handler")).updateProfileHandler;
     return handler({ ctx, input });
   }),
+  updateStudentProfile: authedProcedure
+    .input(ZUpdateStudentProfileInputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const handler = (await import("./updateStudentProfile.handler")).updateStudentProfileHandler;
+      return handler({ ctx, input });
+    }),
 });

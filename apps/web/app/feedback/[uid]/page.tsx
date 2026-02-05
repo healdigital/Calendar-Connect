@@ -1,0 +1,66 @@
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import prisma from "@calcom/prisma";
+import { notFound } from "next/navigation";
+import { FeedbackForm } from "./FeedbackForm";
+
+export default async function FeedbackPage({ params }: { params: { uid: string } }) {
+  const { uid } = params;
+
+  const booking = await prisma.booking.findUnique({
+    where: { uid },
+    select: {
+      id: true,
+      status: true,
+      startTime: true,
+      metadata: true,
+      responses: true,
+      sessionRating: {
+        select: {
+          rating: true,
+          feedback: true,
+        },
+      },
+      eventType: {
+        select: {
+          title: true,
+          userId: true, // Mentor userId
+        },
+      },
+    },
+  });
+
+  if (!booking || booking.status !== "ACCEPTED") {
+    return notFound();
+  }
+
+  // If already rated, show thank you / summary
+  if (booking.sessionRating) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <h1 className="text-2xl font-bold text-gray-900">Merci pour votre retour !</h1>
+        <p className="mt-2 text-gray-600">Nous avons bien reçu votre évaluation.</p>
+      </div>
+    );
+  }
+
+  const responses = booking.responses as { email?: string; name?: string } | null;
+  const studentEmail = responses?.email;
+
+  // Verify it's a Thotis session? Metadata check is good practice.
+  const metadata = booking.metadata as { isThotisSession?: boolean };
+  if (!metadata?.isThotisSession) {
+    // Optional: stricter check
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+        <h1 className="mb-4 text-center text-xl font-bold">Votre avis compte</h1>
+        <p className="mb-6 text-center text-sm text-gray-600">
+          Comment s'est passée votre session de mentorat ?
+        </p>
+        <FeedbackForm bookingId={booking.id} email={studentEmail || ""} />
+      </div>
+    </div>
+  );
+}

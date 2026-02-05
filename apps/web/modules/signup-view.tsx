@@ -472,6 +472,28 @@ export default function Signup({
                     }
                     await signUp(updatedValues);
                   }}>
+                  {/* User Type Selection */}
+                  <SelectField
+                    label="Je suis un..."
+                    options={[
+                      { label: "Lycéen (Je cherche des conseils)", value: "STUDENT" },
+                      { label: "Étudiant (Je donne des conseils)", value: "MENTOR" },
+                    ]}
+                    value={
+                      watch("userType")
+                        ? {
+                            label:
+                              watch("userType") === "STUDENT"
+                                ? "Lycéen (Je cherche des conseils)"
+                                : "Étudiant (Je donne des conseils)",
+                            value: watch("userType") as string,
+                          }
+                        : undefined
+                    }
+                    onChange={(option) => {
+                      if (option) formMethods.setValue("userType", option.value as "STUDENT" | "MENTOR");
+                    }}
+                  />
                   {/* Username */}
                   {!isOrgInviteByLink ? (
                     <UsernameField

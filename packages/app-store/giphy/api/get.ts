@@ -2,7 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError, z } from "zod";
 import { GiphyManager } from "../lib";
 
-const giphyUrlRegexp = /^https?:\\/\\/(?:[\w.-]+\.)?giphy\.com\\/media\\/(?:[^/]+\\/)*([a-zA-Z0-9_-]+)\\/giphy\.gif(?:\?.*)?$/;
+const giphyUrlRegexp =
+  /^https?:\/\/(?:[\w.-]+\.)?giphy\.com\/media\/(?:[^/]+\/)*([a-zA-Z0-9_-]+)\/giphy\.gif(?:\?.*)?$/;
 
 const getSchema = z.object({
   url: z.string().regex(giphyUrlRegexp, "Giphy URL is invalid"),
@@ -14,7 +15,7 @@ const getSchema = z.object({
  * @param res
  */
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const userId = req.session?.user?.id;
+  const userId = (req as any).session?.user?.id;
   if (!userId) {
     return res.status(401).json({ message: "You must be logged in to do this" });
   }

@@ -11,7 +11,7 @@ import prisma from "@calcom/prisma";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const CRON_SECRET = process.env.CRON_SECRET || "secret";
+const CRON_SECRET = process.env.CRON_SECRET;
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 
   // 1. Get all active mentors
   const activeMentors = await prisma.studentProfile.findMany({
-    where: { active: true },
+    where: { isActive: true },
     select: { userId: true },
   });
 

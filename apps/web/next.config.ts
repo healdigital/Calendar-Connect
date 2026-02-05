@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 import type { RouteHas } from "next/dist/lib/load-custom-routes";
 import { withAxiom } from "next-axiom";
 import i18nConfig from "./next-i18next.config";
-import packageJson from "./package.json";
+import packageJson from "./package.json" with { type: "json" };
 import {
   nextJsOrgRewriteConfig,
   orgUserRoutePath,

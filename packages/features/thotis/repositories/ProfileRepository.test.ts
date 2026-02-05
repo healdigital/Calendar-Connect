@@ -1,4 +1,5 @@
-import type { AcademicField, PrismaClient } from "@prisma/client";
+import type { AcademicField } from "@calcom/prisma/enums";
+import type { PrismaClient } from "@prisma/client";
 import { beforeEach, describe, expect, it } from "vitest";
 import { mockDeep, mockReset } from "vitest-mock-extended";
 import { ProfileRepository } from "./ProfileRepository";
@@ -50,6 +51,7 @@ describe("ProfileRepository", () => {
         data: {
           userId,
           ...profileData,
+          expertise: [],
         },
         select: expect.any(Object),
       });
@@ -416,6 +418,48 @@ describe("ProfileRepository", () => {
         take: 20,
         orderBy: expect.any(Array),
       });
+    });
+  });
+
+  describe("getRecommendedProfiles", () => {
+    it("should return generic recommendations when no field is provided", async () => {
+      const mockProfiles = [
+        { id: "p1", averageRating: 5.0, totalSessions: 10, field: "LAW" as AcademicField },
+        { id: "p2", averageRating: 4.5, totalSessions: 5, field: "MEDICINE" as AcademicField },
+      ];
+
+      prismaMock.studentProfile.findMany.mockResolvedValue(mockProfiles);
+
+      const result = await repository.getRecommendedProfiles();
+
+      expect(result).toHaveLength(2);
+      expect(prismaMock.studentProfile.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { isActive: true },
+          orderBy: [{ averageRating: "desc" }, { totalSessions: "desc" }],
+        })
+      );
+    });
+
+    it("should prioritize profiles matching the requested field", async () => {
+      const field = "LAW" as AcademicField;
+      const mockProfiles = [
+        { id: "p1", field: "MEDICINE" as AcademicField, averageRating: 5.0, totalSessions: 100 },
+        { id: "p2", field: "LAW" as AcademicField, averageRating: 4.0, totalSessions: 10 },
+        { id: "p3", field: "LAW" as AcademicField, averageRating: 4.5, totalSessions: 15 },
+      ];
+
+      prismaMock.studentProfile.findMany.mockResolvedValue(mockProfiles);
+
+      const result = await repository.getRecommendedProfiles(field, 3);
+
+      expect(result).toHaveLength(3);
+      // P3 and P2 should come first because they match the field
+      // Between P3 and P2, P3 should be first (higher rating)
+      // P1 should be last despite high rating because it's a different field
+      expect(result[0].id).toBe("p3");
+      expect(result[1].id).toBe("p2");
+      expect(result[2].id).toBe("p1");
     });
   });
 

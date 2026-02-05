@@ -31,6 +31,7 @@ export interface PlatformStats {
     weekly: { date: string; count: number }[];
     monthly: { date: string; count: number }[];
   };
+  fieldDistribution: { field: string; _count: { id: number } }[];
 }
 
 export class StatisticsService {
@@ -127,7 +128,8 @@ export class StatisticsService {
     bookingId: number,
     studentId: number,
     rating: number,
-    feedback?: string | null
+    feedback?: string | null,
+    prospectiveEmail?: string
   ): Promise<void> {
     if (rating < 1 || rating > 5) {
       throw new ErrorWithCode(ErrorCode.BadRequest, "Rating must be between 1 and 5");
@@ -150,9 +152,10 @@ export class StatisticsService {
     // but Prisma uses string CUIDs.
     await this.ratingRepository.createRating({
       bookingId,
-      studentProfileId: profile.id as any,
+      studentProfileId: profile.id,
       rating,
       feedback: feedback || null,
+      prospectiveEmail,
     });
 
     await this.recalculateAverageRating(studentId);
@@ -168,7 +171,7 @@ export class StatisticsService {
       throw new ErrorWithCode(ErrorCode.NotFound, "Student profile not found");
     }
 
-    const avg = await this.ratingRepository.getAverageRating(profile.id as any);
+    const avg = await this.ratingRepository.getAverageRating(profile.id);
 
     // Round to 1 decimal
     const roundedAvg = avg ? Math.round(avg * 10) / 10 : null;
@@ -194,6 +197,8 @@ export class StatisticsService {
   async getPlatformStats(): Promise<PlatformStats> {
     const aggregates = await this.profileRepository.getPlatformAggregates();
     const trends = await this.profileRepository.getBookingTrends();
+    const fieldDistribution = await this.profileRepository.getFieldDistribution();
+
     return {
       _sum: {
         totalSessions: aggregates._sum.totalSessions,
@@ -206,6 +211,7 @@ export class StatisticsService {
       },
       _count: aggregates._count,
       trends,
+      fieldDistribution: fieldDistribution as { field: string; _count: { id: number } }[],
     };
   }
 }

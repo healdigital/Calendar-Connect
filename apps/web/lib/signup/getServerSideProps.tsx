@@ -20,6 +20,7 @@ const querySchema = z.object({
     .optional()
     .transform((val) => val || ""),
   email: emailSchema.optional(),
+  userType: z.enum(["STUDENT", "MENTOR"]).optional(),
 });
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -47,6 +48,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   });
 
   if (session?.user?.id) {
+    const queryData = querySchema.safeParse(ctx.query);
+    const userType = queryData.success ? queryData.data.userType : null;
+
+    if (userType === "MENTOR") {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/onboarding/student-profile",
+        },
+      } as const;
+    }
+
     return {
       redirect: {
         permanent: false,
@@ -84,6 +97,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           prepopulateFormValues: {
             username: queryData.success ? queryData.data.username : null,
             email: queryData.success ? queryData.data.email : null,
+            userType: queryData.success ? queryData.data.userType : null,
           },
         })
       ),

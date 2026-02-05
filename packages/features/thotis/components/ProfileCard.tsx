@@ -1,9 +1,9 @@
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { StudentProfile, User } from "@calcom/prisma/client";
 import classNames from "@calcom/ui/classNames";
-import { UserAvatar } from "@calcom/ui/components/avatar/UserAvatar";
-import { Button } from "@calcom/ui/components/button/Button";
-import { Icon } from "@calcom/ui/components/icon/Icon";
+import { UserAvatar } from "@calcom/ui/components/avatar";
+import { Button } from "@calcom/ui/components/button";
+import { Icon } from "@calcom/ui/components/icon";
 
 export type StudentProfileWithUser = StudentProfile & {
   user: Pick<User, "name" | "username" | "avatarUrl"> & {
@@ -33,9 +33,9 @@ export const ProfileCard = ({
 }: ProfileCardProps) => {
   const { t } = useLocale();
   const { user } = student;
-  const statistics = student.statistics as { averageRating?: number; totalRatings?: number } | null;
-  const rating = statistics?.averageRating ?? 0;
-  const totalRatings = statistics?.totalRatings ?? 0;
+  // const statistics = student.statistics as { averageRating?: number; totalRatings?: number } | null;
+  const rating = Number(student.averageRating) ?? 0;
+  const totalRatings = student.totalRatings ?? 0;
 
   // Format ratings to 1 decimal place if it has decimals
   const formattedRating = Number(rating).toFixed(1).replace(/\.0$/, "");
@@ -57,7 +57,9 @@ export const ProfileCard = ({
       </div>
 
       <div className="mb-1">
-        <h3 className="text-emphasis text-lg font-semibold leading-tight">{user.name || "Mentor"}</h3>
+        <h3 className="text-emphasis text-lg font-semibold leading-tight">
+          {user.name || t("thotis_mentor")}
+        </h3>
       </div>
 
       <div className="mb-3 flex flex-wrap gap-2 text-sm text-subtle">

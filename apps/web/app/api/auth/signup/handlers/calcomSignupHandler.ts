@@ -37,11 +37,13 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
     email: _email,
     password,
     token,
+    userType,
   } = signupSchema
     .pick({
       email: true,
       password: true,
       token: true,
+      userType: true,
     })
     .parse(body);
 
@@ -207,6 +209,7 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
               },
             },
             organizationId,
+            metadata: userType ? { userType } : undefined,
           },
           create: {
             username,
@@ -215,6 +218,7 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
             identityProvider: IdentityProvider.CAL,
             password: { create: { hash: hashedPassword } },
             organizationId,
+            metadata: userType ? { userType } : undefined,
           },
           select: { id: true },
         });
@@ -228,63 +232,66 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
         throw error;
       }
 
-      await createOrUpdateMemberships({
-        user,
-        team,
-      });
-
-      // Accept any child team invites for orgs.
-      if (team.parent) {
-        await joinAnyChildTeamOnOrgInvite({
-          userId: user.id,
-          org: team.parent,
+      if (team && user) {
+        await createOrUpdateMemberships({
+          user,
+          team,
         });
-      }
-    }
 
-    // Cleanup token after use
-    await prisma.verificationToken.delete({
-      where: {
-        id: foundToken.id,
-      },
-    });
-  } else {
-    // Create the user
-    try {
-      await prisma.user.create({
-        data: {
-          username,
-          email,
-          locked: shouldLockByDefault,
-          password: { create: { hash: hashedPassword } },
-          metadata: {
-            stripeCustomerId: customer.stripeCustomerId,
-            checkoutSessionId,
-          },
-          creationSource: CreationSource.WEBAPP,
-        },
-      });
-    } catch (error) {
-      // Fallback for race conditions where user was created between our check and create
-      if (isPrismaError(error) && error.code === "P2002") {
-        const target = String(error.meta?.target ?? "");
-        if (target.includes("email") || target.includes("username")) {
-          return NextResponse.json({ message: SIGNUP_ERROR_CODES.USER_ALREADY_EXISTS }, { status: 409 });
+        // Accept any child team invites for orgs.
+        if (team.parent) {
+          await joinAnyChildTeamOnOrgInvite({
+            userId: user.id,
+            org: team.parent,
+          });
         }
       }
-      throw error;
-    }
-    if (process.env.AVATARAPI_USERNAME && process.env.AVATARAPI_PASSWORD) {
-      await prefillAvatar({ email });
-    }
-    // Only send verification email for non-premium usernames
-    // Premium usernames will get a magic link after payment in paymentCallback
-    if (!checkoutSessionId) {
-      sendEmailVerification({
-        email,
-        language: await getLocaleFromRequest(buildLegacyRequest(await headers(), await cookies())),
-        username: username || "",
+
+      // Cleanup token after use
+      await prisma.verificationToken.delete({
+        where: {
+          id: foundToken.id,
+        },
       });
+    } else {
+      // Create the user
+      try {
+        await prisma.user.create({
+          data: {
+            username,
+            email,
+            locked: shouldLockByDefault,
+            password: { create: { hash: hashedPassword } },
+            metadata: {
+              stripeCustomerId: customer.stripeCustomerId,
+              checkoutSessionId,
+              ...(userType ? { userType } : {}),
+            },
+            creationSource: CreationSource.WEBAPP,
+          },
+        });
+      } catch (error) {
+        // Fallback for race conditions where user was created between our check and create
+        if (isPrismaError(error) && error.code === "P2002") {
+          const target = String(error.meta?.target ?? "");
+          if (target.includes("email") || target.includes("username")) {
+            return NextResponse.json({ message: SIGNUP_ERROR_CODES.USER_ALREADY_EXISTS }, { status: 409 });
+          }
+        }
+        throw error;
+      }
+      if (process.env.AVATARAPI_USERNAME && process.env.AVATARAPI_PASSWORD) {
+        await prefillAvatar({ email });
+      }
+      // Only send verification email for non-premium usernames
+      // Premium usernames will get a magic link after payment in paymentCallback
+      if (!checkoutSessionId) {
+        sendEmailVerification({
+          email,
+          language: await getLocaleFromRequest(buildLegacyRequest(await headers(), await cookies())),
+          username: username || "",
+        });
+      }
     }
   }
 

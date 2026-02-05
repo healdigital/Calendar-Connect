@@ -23,7 +23,7 @@ import { signupSchema } from "@calcom/prisma/zod-utils";
 import { NextResponse } from "next/server";
 
 export default async function handler(body: Record<string, string>) {
-  const { email, password, language, token } = signupSchema.parse(body);
+  const { email, password, language, token, userType } = signupSchema.parse(body);
 
   const username = slugify(body.username);
   const userEmail = email.toLowerCase();
@@ -40,7 +40,7 @@ export default async function handler(body: Record<string, string>) {
     correctedUsername = await validateAndGetCorrectedUsernameForTeam({
       username,
       email: userEmail,
-      teamId: foundToken?.teamId,
+      teamId: foundToken?.teamId || null,
       isSignup: true,
     });
 
@@ -128,6 +128,7 @@ export default async function handler(body: Record<string, string>) {
               },
             },
             organizationId,
+            metadata: userType ? { userType } : undefined,
           },
           create: {
             username: correctedUsername,
@@ -136,6 +137,7 @@ export default async function handler(body: Record<string, string>) {
             identityProvider: IdentityProvider.CAL,
             password: { create: { hash: hashedPassword } },
             organizationId,
+            metadata: userType ? { userType } : undefined,
           },
           select: { id: true },
         });
@@ -149,26 +151,28 @@ export default async function handler(body: Record<string, string>) {
         throw error;
       }
 
-      await createOrUpdateMemberships({
-        user,
-        team,
-      });
-
-      // Accept any child team invites for orgs.
-      if (team.parent) {
-        await joinAnyChildTeamOnOrgInvite({
-          userId: user.id,
-          org: team.parent,
+      if (team && user) {
+        await createOrUpdateMemberships({
+          user,
+          team,
         });
-      }
-    }
 
-    // Cleanup token after use
-    await prisma.verificationToken.delete({
-      where: {
-        id: foundToken.id,
-      },
-    });
+        // Accept any child team invites for orgs.
+        if (team.parent) {
+          await joinAnyChildTeamOnOrgInvite({
+            userId: user.id,
+            org: team.parent,
+          });
+        }
+      }
+
+      // Cleanup token after use
+      await prisma.verificationToken.delete({
+        where: {
+          id: foundToken.id,
+        },
+      });
+    }
   } else {
     const isUsernameAvailable = !(await isUsernameReservedDueToMigration(correctedUsername));
     if (!isUsernameAvailable) {
@@ -191,6 +195,7 @@ export default async function handler(body: Record<string, string>) {
           email: userEmail,
           password: { create: { hash: hashedPassword } },
           identityProvider: IdentityProvider.CAL,
+          metadata: userType ? { userType } : undefined,
         },
         select: { id: true },
       });

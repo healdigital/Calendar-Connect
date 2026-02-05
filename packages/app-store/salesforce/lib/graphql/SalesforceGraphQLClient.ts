@@ -209,7 +209,7 @@ export class SalesforceGraphQLClient {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const accountNodesByAccountId = new Map<string, Record<string, any>>();
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error - in CD/CI pipeline this will have any type
+      // in CD/CI pipeline this will have any type
       const relatedContacts = relatedContactsResults.reduce(
         (contacts, edge) => {
           const node = edge?.node;
@@ -296,7 +296,7 @@ export class SalesforceGraphQLClient {
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error - in CD/CI pipeline this will have any type
+        // in CD/CI pipeline this will have any type
         const contactUnderAccount = relatedContacts.find((contact) => contact.AccountId === accountId);
         if (!contactUnderAccount) {
           log.error(
@@ -309,7 +309,7 @@ export class SalesforceGraphQLClient {
         // Trace account selection
         const contactsUnderAccount = relatedContacts.filter(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
+
           (contact) => contact.AccountId === accountId
         );
         SalesforceRoutingTraceService.graphqlDominantAccountSelected({

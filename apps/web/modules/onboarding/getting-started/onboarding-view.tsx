@@ -2,6 +2,7 @@
 
 import { isCompanyEmail } from "@calcom/features/ee/organizations/lib/utils";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
@@ -34,7 +35,7 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
   useEffect(() => {
     resetOnboardingPreservingPlan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [resetOnboardingPreservingPlan]);
 
   // If user has any team membership (pending or accepted), redirect them directly to personal onboarding
   // This handles the case where users sign up with an invite token (membership is auto-accepted)
@@ -46,6 +47,17 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
       });
     }
   }, [isPendingMembership, hasTeamMembership, router, setSelectedPlan]);
+
+  const { data: user } = trpc.viewer.me.get.useQuery();
+  const userType = (user?.metadata as { userType?: string })?.userType;
+
+  useEffect(() => {
+    if (userType === "MENTOR") {
+      startTransition(() => {
+        router.push("/onboarding/student-profile");
+      });
+    }
+  }, [userType, router]);
 
   // Plan order mapping for determining direction
   const planOrder: Record<PlanType, number> = {

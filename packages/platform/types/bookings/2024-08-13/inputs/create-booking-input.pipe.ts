@@ -107,6 +107,8 @@ export class CreateBookingInputPipe implements PipeTransform {
   }
 
   private isInstantBookingInput(value: CreateBookingInput): value is CreateInstantBookingInput_2024_08_13 {
-    return Object.prototype.hasOwnProperty.call(value, "instant") && "instant" in value && value.instant === true;
+    return (
+      Object.prototype.hasOwnProperty.call(value, "instant") && "instant" in value && value.instant === true
+    );
   }
 }

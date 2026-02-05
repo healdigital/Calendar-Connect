@@ -5,10 +5,11 @@ import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmail
 import { getTranslation } from "@calcom/lib/server/i18n";
 import prisma from "@calcom/prisma";
 import type { CalendarEvent } from "@calcom/types/Calendar";
+import type { Prisma } from "@prisma/client";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const CRON_SECRET = process.env.CRON_SECRET || "secret";
+const CRON_SECRET = process.env.CRON_SECRET;
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
@@ -103,6 +104,10 @@ export async function GET(req: NextRequest) {
         userId: mentor.id,
         metadata: booking.metadata,
       });
+
+      // Trigger Webhook
+      const { thotisWebhooks } = await import("../../../lib/webhooks/thotis");
+      await thotisWebhooks.onReminder(booking as unknown as any, "24h");
 
       // 4. Mark as sent
       await prisma.booking.update({

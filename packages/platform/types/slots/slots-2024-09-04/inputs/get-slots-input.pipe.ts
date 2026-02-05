@@ -136,12 +136,18 @@ export class GetSlotsInputPipe implements PipeTransform {
   private isByUsernameAndEventTypeSlug(
     value: GetSlotsInput_2024_09_04
   ): value is ByUsernameAndEventTypeSlug_2024_09_04 {
-    return Object.prototype.hasOwnProperty.call(value, "username") && Object.prototype.hasOwnProperty.call(value, "eventTypeSlug");
+    return (
+      Object.prototype.hasOwnProperty.call(value, "username") &&
+      Object.prototype.hasOwnProperty.call(value, "eventTypeSlug")
+    );
   }
 
   private isByTeamSlugAndEventTypeSlug(
     value: GetSlotsInput_2024_09_04
   ): value is ByTeamSlugAndEventTypeSlug_2024_09_04 {
-    return Object.prototype.hasOwnProperty.call(value, "teamSlug") && Object.prototype.hasOwnProperty.call(value, "eventTypeSlug");
+    return (
+      Object.prototype.hasOwnProperty.call(value, "teamSlug") &&
+      Object.prototype.hasOwnProperty.call(value, "eventTypeSlug")
+    );
   }
 }

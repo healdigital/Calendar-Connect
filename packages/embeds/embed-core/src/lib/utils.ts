@@ -32,7 +32,8 @@ export function fromEntriesWithDuplicateKeys(entries: IterableIterator<[string, 
     return result;
   }
 
-  for (const [key, value] of entries) {
+  for (const [key, value] of Array.from(entries)) {
+    // biome-ignore lint: Object.hasOwn is not available in the target environment
     if (Object.prototype.hasOwnProperty.call(result, key)) {
       let currentValue = result[key];
       if (!Array.isArray(currentValue)) {

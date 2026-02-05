@@ -1,5 +1,5 @@
 import prisma from "@calcom/prisma";
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@calcom/prisma/client";
 
 export class SessionRatingRepository {
   private prismaClient: PrismaClient;

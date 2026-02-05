@@ -17,52 +17,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { generateCSV, type Mentor } from "./AdminDashboardUtils";
 
 // --- Types & Interfaces ---
-
-export interface Mentor {
-  id: string;
-  university: string;
-  field: string;
-  totalSessions: number;
-  completedSessions: number;
-  cancelledSessions: number;
-  averageRating: number | null;
-}
+// Moved to AdminDashboardUtils.ts
 
 // --- Utilities ---
-
-export const generateCSV = (data: Mentor[], t: (key: string) => string): string => {
-  if (!data || data.length === 0) return "";
-
-  const headers = [
-    t("thotis_header_university"),
-    t("thotis_header_field"),
-    t("thotis_header_sessions"),
-    t("thotis_header_rating"),
-    t("thotis_header_completion"),
-  ];
-  const rows = data.map((profile) => {
-    const rate =
-      profile.totalSessions > 0
-        ? Math.round((profile.completedSessions / profile.totalSessions) * 100) + "%"
-        : "0%";
-
-    // Escape quotes in strings
-    const university = profile.university.replace(/"/g, '""');
-    const field = profile.field.replace(/"/g, '""');
-
-    return [
-      `"${university}"`,
-      `"${field}"`,
-      profile.totalSessions,
-      profile.averageRating?.toFixed(1) || "",
-      `"${rate}"`,
-    ].join(",");
-  });
-
-  return [headers.join(","), ...rows].join("\n");
-};
+// Moved to AdminDashboardUtils.ts
 
 // --- Sub-Components ---
 
@@ -104,6 +65,7 @@ const StatsOverview = ({ stats }: { stats: any }) => {
   );
 };
 
+const SessionTrendsChart = ({ trends }: { trends: any }) => {
   const { t } = useLocale();
   const data =
     trends?.daily?.map((d: any) => ({
@@ -144,14 +106,13 @@ const StatsOverview = ({ stats }: { stats: any }) => {
 
 const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
   const { t } = useLocale();
-  const data = [
-    { name: "Law", value: 400 },
-    { name: "Medicine", value: 300 },
-    { name: "Engineering", value: 300 },
-    { name: "Business", value: 200 },
-  ];
+  const data =
+    distribution?.fieldDistribution?.map((d: any) => ({
+      name: d.field,
+      value: d._count.id,
+    })) || [];
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
 
   return (
     <Card className="p-4">
@@ -248,7 +209,7 @@ export const AdminDashboard = () => {
 
     // In property test we can't test document.createElement easily without jsdom in browser env,
     // but the critical logic is generateCSV which we test separately.
-    const csvContent = "data:text/csv;charset=utf-8," + generateCSV(searchData.profiles as any, t);
+    const csvContent = "data:text/csv;charset=utf-8," + generateCSV(searchData.profiles as any);
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);

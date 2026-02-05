@@ -930,6 +930,7 @@ export const signupSchema = z.object({
   }),
   language: z.string().optional(),
   token: z.string().optional(),
+  userType: z.enum(["STUDENT", "MENTOR"]).optional(),
 });
 
 export const ZVerifyCodeInputSchema = z.object({
