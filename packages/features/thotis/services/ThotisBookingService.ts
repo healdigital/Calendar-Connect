@@ -6,8 +6,9 @@ import FeedbackRequestEmail from "@calcom/emails/templates/thotis/feedback-reque
 import { createEvent, deleteEvent, updateEvent } from "@calcom/features/calendars/lib/CalendarManager";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
-import type { TimeFormat } from "@calcom/lib/timeFormat";
+import { TimeFormat } from "@calcom/lib/timeFormat";
 import type { Prisma, PrismaClient } from "@calcom/prisma/client";
+import { MentorStatus, ThotisAnalyticsEventType } from "@calcom/prisma/enums";
 import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import type { CredentialForCalendarService } from "@calcom/types/Credential";
 import type { TFunction } from "next-i18next";
@@ -15,6 +16,7 @@ import { uuid } from "short-uuid";
 import type { ContextForGetSchedule } from "../../../trpc/server/routers/viewer/slots/types";
 import { RedisService } from "../../redis/RedisService";
 import { AnalyticsService } from "./AnalyticsService";
+import type { ThotisAnalyticsService } from "./ThotisAnalyticsService";
 
 /**
  * Service for managing Thotis student mentoring session bookings
@@ -22,15 +24,18 @@ import { AnalyticsService } from "./AnalyticsService";
  */
 export class ThotisBookingService {
   private analytics: AnalyticsService;
+  private thotisAnalytics: ThotisAnalyticsService | null = null;
   private redis?: RedisService;
 
   constructor(
     private readonly prisma: Prisma.TransactionClient | PrismaClient,
     analytics?: AnalyticsService,
-    redis?: RedisService
+    redis?: RedisService,
+    thotisAnalytics?: ThotisAnalyticsService
   ) {
     this.analytics = analytics || new AnalyticsService();
     this.redis = redis;
+    this.thotisAnalytics = thotisAnalytics || null;
 
     // Try to initialize Redis if not provided and env vars exist
     if (!this.redis && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
@@ -97,6 +102,7 @@ export class ThotisBookingService {
         id: true,
         userId: true,
         isActive: true,
+        status: true,
         user: {
           select: {
             id: true,
@@ -116,8 +122,11 @@ export class ThotisBookingService {
       throw new ErrorWithCode(ErrorCode.NotFound, `Student profile ${input.studentProfileId} not found`);
     }
 
-    if (!studentProfile.isActive) {
-      throw new ErrorWithCode(ErrorCode.BadRequest, "Student profile is not active");
+    if (studentProfile.status !== MentorStatus.VERIFIED) {
+      throw new ErrorWithCode(
+        ErrorCode.BadRequest,
+        "Student profile is not verified and cannot accept bookings"
+      );
     }
 
     // Calculate end time (exactly 15 minutes)
@@ -282,6 +291,18 @@ export class ThotisBookingService {
       input.prospectiveStudent.email
     );
 
+    // Track Postgres Analytics
+    if (this.thotisAnalytics) {
+      await this.thotisAnalytics.track({
+        eventType: ThotisAnalyticsEventType.booking_confirmed,
+        userId: booking.userId || undefined,
+        profileId: input.studentProfileId,
+        bookingId: booking.id,
+        field: studentProfile.user.studentProfile?.field || undefined,
+        metadata: booking.metadata,
+      });
+    }
+
     // Trigger Webhook
     const { thotisWebhooks } = await import("../../../../apps/web/lib/webhooks/thotis");
     await thotisWebhooks.onBookingCreated(
@@ -301,7 +322,7 @@ export class ThotisBookingService {
       email: organizerUser?.email || "",
       timeZone: organizerUser?.timeZone || "Europe/Paris",
       language: { translate: ((key: string) => key) as TFunction, locale: organizerUser?.locale || "fr" },
-      timeFormat: (organizerUser?.timeFormat === 24 ? 24 : 12) as TimeFormat,
+      timeFormat: organizerUser?.timeFormat === 24 ? TimeFormat.TWENTY_FOUR_HOUR : TimeFormat.TWELVE_HOUR,
     };
 
     const attendee: Person = {
@@ -309,7 +330,7 @@ export class ThotisBookingService {
       email: input.prospectiveStudent.email,
       timeZone: "Europe/Paris", // Default for Thotis
       language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
-      timeFormat: 24 as TimeFormat,
+      timeFormat: TimeFormat.TWENTY_FOUR_HOUR,
     };
 
     const calEvent: CalendarEvent = {
@@ -336,27 +357,12 @@ export class ThotisBookingService {
     try {
       const credentials = await this.prisma.credential.findMany({
         where: { userId: studentProfile.userId, type: "google_calendar" },
-        include: { user: true }, // Needed for typing compatibility usually
       });
 
-      // Cast to required type if needed, or rely on structural typing
-      // Note: CalendarManager expects CredentialForCalendarService.
-      // We might need to map or use a helper if types don't match perfectly.
-      // Assuming simple usage for now.
-
       if (credentials.length > 0) {
-        // Use the first Google Calendar credential found
-        // In a real scenario, we might want to check for 'primary' calendar or specific selection
-        // But for this priority, syncing to *a* connected calendar is the goal.
-        // We'll use the first one.
-        // We need to cast it because Prisma returns Credential model, but CalendarManager expects internal type.
-        // Often these are compatible or we need to use `credential as unknown as CredentialForCalendarService`.
-        // Let's use `as any` for safety in this fast iteration if types are complex, or try to be specific.
         const credential = credentials[0] as unknown as CredentialForCalendarService;
-
         const result = await createEvent(credential, calEvent);
 
-        // Update booking metadata with actual meet link if generated
         if (result.success && result.createdEvent?.location) {
           await this.prisma.booking.update({
             where: { id: booking.id },
@@ -374,12 +380,65 @@ export class ThotisBookingService {
       console.error("Failed to sync with Google Calendar", error);
     }
 
+    // Unify video link generation (Reliability)
+    const finalizedBooking = await this.prisma.booking.findUnique({
+      where: { id: booking.id },
+      select: { id: true, location: true, uid: true, metadata: true },
+    });
+
+    if (finalizedBooking) {
+      const videoLink = await this.ensureVideoLink(
+        finalizedBooking.id, // wait finalizedBooking doesn't have id in select
+        finalizedBooking.uid,
+        finalizedBooking.location,
+        finalizedBooking.metadata
+      );
+      return {
+        bookingId: booking.id,
+        googleMeetLink: videoLink,
+        calendarEventId: booking.uid,
+        confirmationSent: true,
+      };
+    }
+
     return {
       bookingId: booking.id,
-      googleMeetLink,
+      googleMeetLink, // Fallback to integrations:google-video if somehow record not found
       calendarEventId: booking.uid,
       confirmationSent: true,
     };
+  }
+
+  /**
+   * Ensures a valid video link exists for the booking (Property 32)
+   * Falls back to Jitsi if Google Meet generation fails
+   */
+  private async ensureVideoLink(
+    bookingId: number,
+    uid: string,
+    currentLocation: string | null,
+    metadata: Prisma.JsonValue
+  ): Promise<string> {
+    if (currentLocation && currentLocation !== "integrations:google-video") {
+      return currentLocation;
+    }
+
+    // Reliability: Generate a stable fallback link
+    const fallbackLink = `https://meet.jit.si/thotis-${uid}`;
+
+    await this.prisma.booking.update({
+      where: { id: bookingId },
+      data: {
+        location: fallbackLink,
+        metadata: {
+          ...(metadata as object),
+          googleMeetLink: fallbackLink,
+          isFallbackLink: true,
+        } as Prisma.InputJsonValue,
+      },
+    });
+
+    return fallbackLink;
   }
 
   /**
@@ -418,7 +477,7 @@ export class ThotisBookingService {
       throw new ErrorWithCode(ErrorCode.NotFound, "Student profile or user not found");
     }
 
-    if (!studentProfile.isActive) {
+    if (studentProfile.status !== MentorStatus.VERIFIED) {
       return [];
     }
 
@@ -473,7 +532,7 @@ export class ThotisBookingService {
         req: {
           headers: {},
           cookies: {},
-        } as any, // IncomingMessage is hard to mock fully, but ContextForGetSchedule allows this
+        } as unknown as ContextForGetSchedule["req"],
       };
 
       const result = await availableSlotsService.getAvailableSlots({
@@ -612,7 +671,7 @@ export class ThotisBookingService {
           email: organizerUser?.email || "",
           timeZone: organizerUser?.timeZone || "Europe/Paris",
           language: { translate: ((key: string) => key) as TFunction, locale: organizerUser?.locale || "fr" },
-          timeFormat: (organizerUser?.timeFormat === 24 ? 24 : 12) as TimeFormat,
+          timeFormat: organizerUser?.timeFormat === 24 ? TimeFormat.TWENTY_FOUR_HOUR : TimeFormat.TWELVE_HOUR,
         };
         // Retrieve attendee details from metadata if possible, or booking responses
         const responses = booking.responses as { email?: string; name?: string } | null;
@@ -624,7 +683,7 @@ export class ThotisBookingService {
           email: attendeeEmail,
           timeZone: "Europe/Paris",
           language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
-          timeFormat: 24 as TimeFormat,
+          timeFormat: TimeFormat.TWENTY_FOUR_HOUR,
         };
 
         const calEvent: CalendarEvent = {
@@ -663,6 +722,20 @@ export class ThotisBookingService {
       cancelledBy
     );
 
+    // Track Postgres Analytics
+    if (this.thotisAnalytics) {
+      await this.thotisAnalytics.track({
+        eventType: ThotisAnalyticsEventType.cancelled,
+        userId: booking.eventType?.userId || booking.userId || undefined,
+        profileId: studentProfileId,
+        bookingId: booking.id,
+        metadata: {
+          reason,
+          cancelledBy,
+        },
+      });
+    }
+
     // Trigger Webhook
     const { thotisWebhooks } = await import("../../../../apps/web/lib/webhooks/thotis");
     await thotisWebhooks.onBookingCancelled(booking, reason);
@@ -699,6 +772,7 @@ export class ThotisBookingService {
       select: {
         id: true,
         uid: true,
+        userId: true,
         startTime: true,
         endTime: true,
         status: true,
@@ -758,7 +832,6 @@ export class ThotisBookingService {
     }
 
     // Generate new Google Meet link (Property 32)
-    // Use integrations:google-video to trigger Cal.com's Google Calendar integration
     const newGoogleMeetLink = "integrations:google-video";
 
     // Update booking
@@ -780,10 +853,27 @@ export class ThotisBookingService {
       },
     });
 
+    // Unify video link generation (Reliability)
+    const finalizedBooking = await this.prisma.booking.findUnique({
+      where: { id: bookingId },
+      select: { id: true, uid: true, location: true, metadata: true },
+    });
+
+    let finalizedMeetLink = newGoogleMeetLink;
+    if (finalizedBooking) {
+      finalizedMeetLink = await this.ensureVideoLink(
+        finalizedBooking.id,
+        finalizedBooking.uid,
+        finalizedBooking.location,
+        finalizedBooking.metadata
+      );
+    }
+
     // Invalidate caches
     const updatedBookingWithUser = await this.prisma.booking.findUnique({
       where: { id: bookingId },
       select: {
+        id: true,
         eventType: { select: { userId: true } },
         metadata: true,
       },
@@ -810,7 +900,7 @@ export class ThotisBookingService {
           email: organizerUser?.email || "",
           timeZone: organizerUser?.timeZone || "Europe/Paris",
           language: { translate: ((key: string) => key) as TFunction, locale: organizerUser?.locale || "fr" },
-          timeFormat: (organizerUser?.timeFormat === 24 ? 24 : 12) as TimeFormat,
+          timeFormat: organizerUser?.timeFormat === 24 ? TimeFormat.TWENTY_FOUR_HOUR : TimeFormat.TWELVE_HOUR,
         };
 
         const responses = booking.responses as { email?: string; name?: string } | null;
@@ -819,7 +909,7 @@ export class ThotisBookingService {
           email: responses?.email || "",
           timeZone: "Europe/Paris",
           language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
-          timeFormat: 24 as TimeFormat,
+          timeFormat: TimeFormat.TWENTY_FOUR_HOUR,
         };
 
         const calEvent: CalendarEvent = {
@@ -830,7 +920,7 @@ export class ThotisBookingService {
           organizer,
           attendees: [attendee],
           uid: updatedBooking.uid,
-          location: newGoogleMeetLink,
+          location: finalizedMeetLink,
         };
 
         const email = new BookingRescheduledEmail(calEvent, attendee);
@@ -851,11 +941,24 @@ export class ThotisBookingService {
 
     // Trigger Webhook
     const { thotisWebhooks } = await import("../../../../apps/web/lib/webhooks/thotis");
-    await thotisWebhooks.onBookingRescheduled(updatedBooking, newStartTime, newEndTime, newGoogleMeetLink);
+    await thotisWebhooks.onBookingRescheduled(updatedBooking, newStartTime, newEndTime, finalizedMeetLink);
+
+    // Track Postgres Analytics
+    if (this.thotisAnalytics) {
+      await this.thotisAnalytics.track({
+        eventType: ThotisAnalyticsEventType.rescheduled,
+        userId: booking.eventType?.userId || booking.userId || undefined,
+        bookingId: updatedBooking.id,
+        metadata: {
+          newStartTime,
+          newEndTime,
+        },
+      });
+    }
 
     return {
       bookingId: updatedBooking.id,
-      googleMeetLink: newGoogleMeetLink,
+      googleMeetLink: finalizedMeetLink,
       calendarEventId: updatedBooking.uid,
       confirmationSent: true,
     };
@@ -973,7 +1076,8 @@ export class ThotisBookingService {
               translate: ((key: string) => key) as TFunction,
               locale: studentProfile.user.locale || "fr",
             },
-            timeFormat: (studentProfile.user.timeFormat === 24 ? 24 : 12) as TimeFormat,
+            timeFormat:
+              studentProfile.user.timeFormat === 24 ? TimeFormat.TWENTY_FOUR_HOUR : TimeFormat.TWELVE_HOUR,
           };
 
           const attendee: Person = {
@@ -981,7 +1085,7 @@ export class ThotisBookingService {
             email: attendeeEmail,
             timeZone: "Europe/Paris",
             language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
-            timeFormat: 24 as TimeFormat,
+            timeFormat: TimeFormat.TWENTY_FOUR_HOUR,
           };
           // CalEvent is valid without language now
           const calEvent: CalendarEvent = {
@@ -1013,6 +1117,17 @@ export class ThotisBookingService {
       userId: booking.userId,
       metadata: booking.metadata,
     });
+
+    // Track Postgres Analytics
+    if (this.thotisAnalytics) {
+      await this.thotisAnalytics.track({
+        eventType: ThotisAnalyticsEventType.session_completed,
+        userId: booking.userId || undefined,
+        profileId: studentProfileId,
+        bookingId: booking.id,
+        metadata: booking.metadata,
+      });
+    }
   }
 
   /**
@@ -1022,7 +1137,11 @@ export class ThotisBookingService {
    * 2. The prospective student (guest) associated with the booking (by email)
    */
   private verifySessionOwnership(
-    booking: { userId: number; responses: Prisma.JsonValue; eventType?: { userId: number | null } | null },
+    booking: {
+      userId: number | null;
+      responses: Prisma.JsonValue;
+      eventType?: { userId: number | null } | null;
+    },
     requester: { id?: number; email?: string; isSystem?: boolean }
   ): void {
     if (requester.isSystem) return;

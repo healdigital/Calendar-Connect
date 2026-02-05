@@ -4,6 +4,7 @@ import { ErrorWithCode } from "@calcom/lib/errors";
 import { RedisService } from "../../redis/RedisService";
 import type { ProfileRepository } from "../repositories/ProfileRepository";
 import type { SessionRatingRepository } from "../repositories/SessionRatingRepository";
+import type { ThotisAnalyticsService } from "./ThotisAnalyticsService";
 
 export interface StudentStats {
   totalSessions: number;
@@ -32,6 +33,14 @@ export interface PlatformStats {
     monthly: { date: string; count: number }[];
   };
   fieldDistribution: { field: string; _count: { id: number } }[];
+  funnel: {
+    counts: Record<string, number>;
+    conversion: Record<string, number>;
+  };
+  dataQuality: {
+    isValid: boolean;
+    issues: string[];
+  };
 }
 
 export class StatisticsService {
@@ -40,6 +49,7 @@ export class StatisticsService {
   constructor(
     private readonly profileRepository: ProfileRepository,
     private readonly ratingRepository: SessionRatingRepository,
+    private readonly analyticsService: ThotisAnalyticsService,
     private redis?: RedisService
   ) {
     // Try to initialize Redis if not provided and env vars exist
@@ -198,6 +208,8 @@ export class StatisticsService {
     const aggregates = await this.profileRepository.getPlatformAggregates();
     const trends = await this.profileRepository.getBookingTrends();
     const fieldDistribution = await this.profileRepository.getFieldDistribution();
+    const funnel = await this.analyticsService.getFunnelData();
+    const dataQuality = await this.analyticsService.getDataQualityMetrics();
 
     return {
       _sum: {
@@ -212,6 +224,8 @@ export class StatisticsService {
       _count: aggregates._count,
       trends,
       fieldDistribution: fieldDistribution as { field: string; _count: { id: number } }[],
+      funnel,
+      dataQuality,
     };
   }
 }

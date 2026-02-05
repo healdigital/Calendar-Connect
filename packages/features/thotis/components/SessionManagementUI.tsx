@@ -1,11 +1,14 @@
 import dayjs from "@calcom/dayjs";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { MentorIncidentType } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { useCallback, useState } from "react";
+import { PostSessionForm } from "./PostSessionForm";
 import { RatingForm } from "./RatingForm";
+import { SessionSummaryView } from "./SessionSummaryView";
 
 interface SessionBooking {
   id: number;
@@ -17,6 +20,7 @@ interface SessionBooking {
   metadata: Record<string, unknown> | null;
   responses: Record<string, unknown> | null;
   cancellationReason?: string | null;
+  thotisSessionSummary?: { id: number } | null;
 }
 
 interface SessionManagementUIProps {
@@ -24,21 +28,27 @@ interface SessionManagementUIProps {
   onActionComplete?: () => void;
   /** Whether the viewer is the mentor (true) or prospective student (false) */
   isMentor?: boolean;
+  token?: string;
 }
 
-type ModalState = "none" | "cancel" | "reschedule" | "complete";
+type ModalState = "none" | "cancel" | "reschedule" | "complete" | "incident";
 
 export const SessionManagementUI = ({
   booking,
   onActionComplete,
   isMentor = true,
+  token,
 }: SessionManagementUIProps) => {
   const { t } = useLocale();
   const [modalState, setModalState] = useState<ModalState>("none");
+  const [showPostSessionForm, setShowPostSessionForm] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [newDateTime, setNewDateTime] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [incidentType, setIncidentType] = useState<MentorIncidentType>(MentorIncidentType.OTHER);
+  const [incidentDescription, setIncidentDescription] = useState("");
   const utils = trpc.useUtils();
 
   const startTime = dayjs(booking.startTime);
@@ -60,7 +70,7 @@ export const SessionManagementUI = ({
       utils.thotis.booking.mentorSessions.invalidate();
       onActionComplete?.();
     },
-    onError: (err) => {
+    onError: (err: { message: string }) => {
       setErrorMessage(err.message);
     },
   });
@@ -73,7 +83,19 @@ export const SessionManagementUI = ({
       utils.thotis.booking.mentorSessions.invalidate();
       onActionComplete?.();
     },
-    onError: (err) => {
+    onError: (err: { message: string }) => {
+      setErrorMessage(err.message);
+    },
+  });
+
+  const reportIncidentMutation = trpc.thotis.incident.report.useMutation({
+    onSuccess: () => {
+      setSuccessMessage(t("thotis_incident_reported_success"));
+      setModalState("none");
+      setIncidentDescription("");
+      onActionComplete?.();
+    },
+    onError: (err: { message: string }) => {
       setErrorMessage(err.message);
     },
   });
@@ -85,7 +107,7 @@ export const SessionManagementUI = ({
       utils.thotis.booking.mentorSessions.invalidate();
       onActionComplete?.();
     },
-    onError: (err) => {
+    onError: (err: { message: string }) => {
       setErrorMessage(err.message);
     },
   });
@@ -110,6 +132,14 @@ export const SessionManagementUI = ({
   const handleComplete = useCallback(() => {
     completeMutation.mutate({ bookingId: booking.id });
   }, [booking.id, completeMutation]);
+
+  const handleReportIncident = useCallback(() => {
+    reportIncidentMutation.mutate({
+      bookingId: booking.id,
+      type: incidentType,
+      description: incidentDescription,
+    });
+  }, [booking.id, incidentType, incidentDescription, reportIncidentMutation]);
 
   const getStatusBadge = () => {
     if (isCancelled) {
@@ -191,6 +221,9 @@ export const SessionManagementUI = ({
             {getStatusBadge()}
           </div>
           <div className="text-subtle mt-1 flex flex-wrap items-center gap-3 text-xs">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
+              <Icon name="info" className="h-4 w-4 text-blue-600" />
+            </div>
             <span className="flex items-center gap-1">
               <Icon name="calendar" className="h-3 w-3" />
               {startTime.format("ddd, MMM D, YYYY")}
@@ -217,9 +250,44 @@ export const SessionManagementUI = ({
         )}
       </div>
 
+      {isMentor && (
+        <PostSessionForm
+          bookingId={booking.id}
+          open={showPostSessionForm}
+          onOpenChange={setShowPostSessionForm}
+        />
+      )}
+
+      {!isMentor && (
+        <SessionSummaryView
+          bookingId={booking.id}
+          token={token}
+          open={showSummary}
+          onOpenChange={setShowSummary}
+        />
+      )}
+
       {/* Action Buttons */}
-      {(canCancel || canReschedule || canComplete) && (
+      {(canCancel ||
+        canReschedule ||
+        canComplete ||
+        (isMentor && metadata?.completedAt) ||
+        (!isMentor && booking.thotisSessionSummary)) && (
         <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-3">
+          {isMentor && metadata?.completedAt && (
+            <Button
+              color="primary"
+              size="sm"
+              StartIcon="file-text"
+              onClick={() => setShowPostSessionForm(true)}>
+              {booking.thotisSessionSummary ? t("thotis_edit_summary") : t("thotis_add_summary")}
+            </Button>
+          )}
+          {!isMentor && booking.thotisSessionSummary && (
+            <Button color="primary" size="sm" StartIcon="file-text" onClick={() => setShowSummary(true)}>
+              {t("thotis_view_summary")}
+            </Button>
+          )}
           {canCancel && (
             <Button
               color="destructive"
@@ -248,6 +316,16 @@ export const SessionManagementUI = ({
               onClick={() => setModalState("complete")}
               disabled={completeMutation.isPending}>
               {t("thotis_mark_complete")}
+            </Button>
+          )}
+          {!isCancelled && !metadata?.completedAt && !isMentor && (
+            <Button
+              color="secondary"
+              size="sm"
+              StartIcon="info"
+              onClick={() => setModalState("incident")}
+              disabled={reportIncidentMutation.isPending}>
+              {t("thotis_report_issue")}
             </Button>
           )}
         </div>
@@ -300,6 +378,49 @@ export const SessionManagementUI = ({
               disabled={!newDateTime || rescheduleMutation.isPending}
               loading={rescheduleMutation.isPending}>
               {t("thotis_confirm_reschedule")}
+            </Button>
+            <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
+              {t("thotis_back")}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Incident Modal */}
+      {modalState === "incident" && (
+        <div className="mt-3 rounded-md border border-yellow-200 bg-yellow-50 p-3">
+          <h4 className="mb-2 text-sm font-medium text-yellow-800">{t("thotis_report_issue")}</h4>
+          <div className="mb-2">
+            <label className="mb-1 block text-xs text-yellow-700">{t("thotis_incident_type")}</label>
+            <select
+              value={incidentType}
+              onChange={(e) => setIncidentType(e.target.value as MentorIncidentType)}
+              className="w-full rounded-md border border-yellow-200 bg-white p-2 text-sm">
+              {Object.values(MentorIncidentType).map((type) => (
+                <option key={type} value={type}>
+                  {type.replace(/_/g, " ")}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-2">
+            <label className="mb-1 block text-xs text-yellow-700">{t("thotis_incident_description")}</label>
+            <textarea
+              value={incidentDescription}
+              onChange={(e) => setIncidentDescription(e.target.value)}
+              placeholder={t("thotis_incident_description_placeholder")}
+              className="w-full rounded-md border border-yellow-200 bg-white p-2 text-sm"
+              rows={3}
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              color="primary"
+              size="sm"
+              onClick={handleReportIncident}
+              disabled={reportIncidentMutation.isPending}
+              loading={reportIncidentMutation.isPending}>
+              {t("thotis_confirm_report")}
             </Button>
             <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
               {t("thotis_back")}

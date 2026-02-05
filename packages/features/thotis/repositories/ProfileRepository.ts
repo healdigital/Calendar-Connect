@@ -1,6 +1,6 @@
 import prisma from "@calcom/prisma";
 import type { Prisma, PrismaClient } from "@calcom/prisma/client";
-import type { AcademicField } from "@calcom/prisma/enums";
+import { type AcademicField, MentorStatus } from "@calcom/prisma/enums";
 
 const studentProfileSelect = {
   id: true,
@@ -14,6 +14,7 @@ const studentProfileSelect = {
   profilePhotoUrl: true,
   linkedInUrl: true,
   isActive: true,
+  status: true,
   totalSessions: true,
   completedSessions: true,
   cancelledSessions: true,
@@ -32,7 +33,6 @@ const studentProfileSelect = {
             select: {
               id: true,
               slug: true,
-              requestedSlug: true,
               logoUrl: true,
             },
           },
@@ -113,6 +113,7 @@ export class ProfileRepository {
       profilePhotoUrl?: string | null;
       linkedInUrl?: string | null;
       isActive?: boolean;
+      status?: MentorStatus;
     }
   ) {
     // Check if profile exists first (early return pattern)
@@ -211,7 +212,11 @@ export class ProfileRepository {
 
     // Build where clause
     const where: Prisma.StudentProfileWhereInput = {
-      isActive: true,
+      status: MentorStatus.VERIFIED,
+      isActive: true, // Keep checking isActive for backward compatibility if needed, or remove? Plan says deprecate. But safe to keep both for now if data migration isn't perfect.
+      // Actually, if I rely on status, I should trust status. But existing active might imply isActive.
+      // Let's use status only if I am sure. But since I added status with default PENDING, filtering by VERIFIED means NO ONE will appear until verified.
+      // This is expected for "Quality Workflow".
     };
 
     if (query.field) {
@@ -282,7 +287,7 @@ export class ProfileRepository {
   async getTopRatedProfiles(limit: number = 5) {
     return this.prismaClient.studentProfile.findMany({
       where: {
-        isActive: true,
+        status: MentorStatus.VERIFIED,
         averageRating: { gte: 4.5 },
       },
       orderBy: [{ averageRating: "desc" }, { totalRatings: "desc" }],
@@ -295,7 +300,7 @@ export class ProfileRepository {
    * Get recommended profiles based on field overlap or other criteria
    */
   async getRecommendedProfiles(field?: AcademicField, limit: number = 3) {
-    const baseWhere: Prisma.StudentProfileWhereInput = { isActive: true };
+    const baseWhere: Prisma.StudentProfileWhereInput = { status: MentorStatus.VERIFIED };
 
     if (!field) {
       // Generic recommendations: high rating and popular
@@ -355,7 +360,7 @@ export class ProfileRepository {
     // Basic filtering at DB level to reduce result set
     // We fetch more than limit to allow the service to score and sort
     const where: Prisma.StudentProfileWhereInput = {
-      isActive: true,
+      status: MentorStatus.VERIFIED,
       OR: [
         // Match by any of the target fields
         {
@@ -413,7 +418,7 @@ export class ProfileRepository {
    */
   async getPlatformAggregates() {
     return this.prismaClient.studentProfile.aggregate({
-      where: { isActive: true },
+      where: { status: MentorStatus.VERIFIED },
       _sum: {
         totalSessions: true,
         completedSessions: true,
@@ -437,10 +442,16 @@ export class ProfileRepository {
     const last30Days = new Date();
     last30Days.setDate(last30Days.getDate() - 30);
 
-    // Fetch daily bookings for the last 30 days
-    const bookingsDaily = await this.prismaClient.booking.findMany({
+    const last12Weeks = new Date();
+    last12Weeks.setDate(last12Weeks.getDate() - 84); // 12 * 7
+
+    const last12Months = new Date();
+    last12Months.setMonth(last12Months.getMonth() - 12);
+
+    // Fetch all bookings for trends (daily is 30 days, weekly/monthly can be more)
+    const allBookings = await this.prismaClient.booking.findMany({
       where: {
-        startTime: { gte: last30Days },
+        startTime: { gte: last12Months },
         eventType: {
           metadata: {
             path: ["isThotisSession"],
@@ -453,24 +464,50 @@ export class ProfileRepository {
       },
     });
 
-    // Aggregate daily
+    // Daily Map (Last 30 days)
     const dailyMap: Record<string, number> = {};
-    bookingsDaily.forEach((b) => {
+    // Weekly Map (Last 12 weeks)
+    const weeklyMap: Record<string, number> = {};
+    // Monthly Map (Last 12 months)
+    const monthlyMap: Record<string, number> = {};
+
+    allBookings.forEach((b) => {
       const date = b.startTime.toISOString().split("T")[0];
-      dailyMap[date] = (dailyMap[date] || 0) + 1;
+      const month = date.substring(0, 7); // YYYY-MM
+
+      // Week calculation
+      const d = new Date(b.startTime);
+      d.setHours(0, 0, 0, 0);
+      d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+      const yearStart = new Date(d.getFullYear(), 0, 1);
+      const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+      const week = `${d.getFullYear()}-W${String(weekNo).padStart(2, "0")}`;
+
+      if (b.startTime >= last30Days) {
+        dailyMap[date] = (dailyMap[date] || 0) + 1;
+      }
+      if (b.startTime >= last12Weeks) {
+        weeklyMap[week] = (weeklyMap[week] || 0) + 1;
+      }
+      monthlyMap[month] = (monthlyMap[month] || 0) + 1;
     });
 
     const daily = Object.entries(dailyMap)
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    // For simplicity, we return daily as the primary trend.
-    // Weekly and Monthly can be derived or fetched if needed,
-    // but the dashboard currently mostly uses daily.
+    const weekly = Object.entries(weeklyMap)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    const monthly = Object.entries(monthlyMap)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
     return {
       daily,
-      weekly: [],
-      monthly: [],
+      weekly,
+      monthly,
     };
   }
 
@@ -484,7 +521,7 @@ export class ProfileRepository {
         id: true,
       },
       where: {
-        isActive: true,
+        status: MentorStatus.VERIFIED,
       },
     });
   }

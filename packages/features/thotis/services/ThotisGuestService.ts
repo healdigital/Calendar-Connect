@@ -6,10 +6,9 @@ export class ThotisGuestService {
   private readonly TOKEN_TTL_MINUTES = 15;
 
   /**
-   * Request a magic link for a guest email.
    * Handles rate limiting and token generation.
    */
-  async requestInboxLink(email: string) {
+  async requestInboxLink(email: string, ttlMinutes: number = this.TOKEN_TTL_MINUTES) {
     const normalizedEmail = email.toLowerCase().trim();
 
     // 1. Find or create guest identity
@@ -50,10 +49,9 @@ export class ThotisGuestService {
       data: { lastRequestAt: now },
     });
 
-    // 3. Generate Token
     const tokenRaw = randomBytes(32).toString("hex");
     const tokenHash = createHash("sha256").update(tokenRaw).digest("hex");
-    const expiresAt = new Date(now.getTime() + this.TOKEN_TTL_MINUTES * 60 * 1000);
+    const expiresAt = new Date(now.getTime() + ttlMinutes * 60 * 1000);
 
     // 4. Store Token
     await prisma.thotisMagicLinkToken.create({

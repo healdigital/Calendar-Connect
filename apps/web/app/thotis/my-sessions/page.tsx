@@ -12,6 +12,7 @@ export default function MySessionsPage() {
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const token = searchParams?.get("token");
+  const displayEmail = session?.user?.email;
 
   if (status === "loading") {
     return (
@@ -44,9 +45,6 @@ export default function MySessionsPage() {
         <div>
           <StudentDashboard email={displayEmail || ""} token={token || undefined} />
         </div>
-      </div>
-    </div>
-  );
       </div>
     </div>
   );

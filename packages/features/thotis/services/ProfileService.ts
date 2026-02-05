@@ -1,7 +1,7 @@
 import process from "node:process";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
-import type { AcademicField } from "@calcom/prisma/enums";
+import { type AcademicField, MentorStatus } from "@calcom/prisma/enums";
 import sharp from "sharp";
 import { RedisService } from "../../redis/RedisService";
 import { ProfileRepository, type StudentProfileWithUser } from "../repositories/ProfileRepository";
@@ -26,6 +26,7 @@ export interface UpdateProfileInput {
   degree?: string;
   profilePhotoUrl?: string;
   isActive?: boolean;
+  status?: MentorStatus;
   expertise?: string[];
 }
 
@@ -72,7 +73,7 @@ export class ProfileService {
    * Cal.com v2 uses a 'profiles' array on the User model, but many components
    * expect a singular 'profile' object.
    */
-  private mapProfile<T extends { user: { profiles: unknown } }>(profile: T): T {
+  private mapProfile<T extends { user: { profiles: unknown } } | null>(profile: T): T {
     if (!profile || !profile.user) return profile;
 
     const userProfiles = profile.user.profiles as {
@@ -228,6 +229,7 @@ export class ProfileService {
       degree?: string;
       profilePhotoUrl?: string | null;
       isActive?: boolean;
+      status?: MentorStatus;
     } = {};
 
     if (input.fieldOfStudy !== undefined) updateData.field = input.fieldOfStudy as AcademicField;
@@ -239,6 +241,11 @@ export class ProfileService {
     if (input.profilePhotoUrl !== undefined)
       updateData.profilePhotoUrl = this.normalizeUrl(input.profilePhotoUrl);
     if (input.isActive !== undefined) updateData.isActive = input.isActive;
+    if (input.status !== undefined) {
+      updateData.status = input.status;
+      // Sync isActive for backward compatibility
+      updateData.isActive = input.status === MentorStatus.VERIFIED;
+    }
 
     const profile = await this.repository.updateProfile(existing.id, updateData);
 
@@ -252,7 +259,7 @@ export class ProfileService {
   async getProfile(userId: number) {
     if (this.redis) {
       const cached = await this.redis.get(`profile:${userId}`);
-      if (cached) return this.mapProfile(cached);
+      if (cached && Object.keys(cached).length > 0) return this.mapProfile(cached as any);
     }
 
     const profile = await this.repository.getProfileByUserId(userId);
@@ -268,7 +275,7 @@ export class ProfileService {
     const cacheKey = `profile:username:${username}`;
     if (this.redis) {
       const cached = await this.redis.get(cacheKey);
-      if (cached) return this.mapProfile(cached);
+      if (cached && Object.keys(cached).length > 0) return this.mapProfile(cached as any);
     }
 
     const profile = await this.repository.getProfileByUsername(username);

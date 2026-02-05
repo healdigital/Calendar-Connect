@@ -1,6 +1,7 @@
 import type { Dayjs } from "@calcom/dayjs";
 import dayjs from "@calcom/dayjs";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { ThotisAnalyticsEventType } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import { Button } from "@calcom/ui/components/button";
 import { useEffect, useMemo, useState } from "react";
@@ -128,6 +129,8 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
     },
   });
 
+  const trackEvent = trpc.thotis.analytics.track.useMutation();
+
   const onSubmit = (data: { name: string; email: string; notes: string }) => {
     if (!selectedSlot || !studentProfileId) return;
 
@@ -152,6 +155,17 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
   const handleSlotSelect = (slotIso: string) => {
     setSelectedSlot(slotIso);
     setStep("form");
+
+    // Track Postgres Analytics
+    if (studentProfileId) {
+      trackEvent.mutate({
+        eventType: ThotisAnalyticsEventType.booking_started,
+        profileId: studentProfileId,
+        metadata: {
+          slotTime: slotIso,
+        },
+      });
+    }
   };
 
   // Generate next 14 days for date selection

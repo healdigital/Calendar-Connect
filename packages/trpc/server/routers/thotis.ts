@@ -1,12 +1,19 @@
+import { AnalyticsRepository } from "@calcom/features/thotis/repositories/AnalyticsRepository";
 import { ProfileRepository } from "@calcom/features/thotis/repositories/ProfileRepository";
 import { SessionRatingRepository } from "@calcom/features/thotis/repositories/SessionRatingRepository";
 import { ProfileService } from "@calcom/features/thotis/services/ProfileService";
 import { StatisticsService } from "@calcom/features/thotis/services/StatisticsService";
 import { ThotisAdminService } from "@calcom/features/thotis/services/ThotisAdminService";
+import { ThotisAnalyticsService } from "@calcom/features/thotis/services/ThotisAnalyticsService";
 import { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBookingService";
 import { ThotisGuestService } from "@calcom/features/thotis/services/ThotisGuestService";
 import prisma from "@calcom/prisma";
-import { AcademicField } from "@calcom/prisma/enums";
+import {
+  AcademicField,
+  MentorIncidentType,
+  MentorStatus,
+  ThotisAnalyticsEventType,
+} from "@calcom/prisma/enums";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import authedProcedure, { authedAdminProcedure } from "../procedures/authedProcedure";
@@ -15,11 +22,73 @@ import { router } from "../trpc";
 
 const profileRepository = new ProfileRepository();
 const ratingRepository = new SessionRatingRepository();
+const analyticsRepository = new AnalyticsRepository();
+const analyticsService = new ThotisAnalyticsService(analyticsRepository);
 const profileService = new ProfileService(profileRepository);
 const bookingService = new ThotisBookingService(prisma);
-const statisticsService = new StatisticsService(profileRepository, ratingRepository);
+const statisticsService = new StatisticsService(profileRepository, ratingRepository, analyticsService);
 const adminService = new ThotisAdminService(profileService, profileRepository);
 const guestService = new ThotisGuestService();
+const analyticsRouter = router({
+  track: publicProcedure
+    .input(
+      z.object({
+        eventType: z.nativeEnum(ThotisAnalyticsEventType),
+        profileId: z.string().optional(),
+        bookingId: z.number().optional(),
+        field: z.string().optional(),
+        source: z.string().optional(),
+        metadata: z.any().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await analyticsService.track({
+        ...input,
+        userId: ctx.user?.id,
+      });
+    }),
+});
+const incidentRouter = router({
+  report: authedProcedure
+    .input(
+      z.object({
+        bookingId: z.number(),
+        type: z.nativeEnum(MentorIncidentType),
+        description: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Create quality incident
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: {
+          uid: true,
+          metadata: true,
+        },
+      });
+
+      if (!booking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+      }
+
+      const metadata = booking.metadata as { studentProfileId?: string } | null;
+      if (!metadata?.studentProfileId) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Not a valid mentor session" });
+      }
+
+      await prisma.mentorQualityIncident.create({
+        data: {
+          studentProfileId: metadata.studentProfileId,
+          bookingUid: booking.uid,
+          reportedByUserId: ctx.user.id,
+          type: input.type,
+          description: input.description || "",
+        },
+      });
+
+      return { success: true };
+    }),
+});
 
 const guestRouter = router({
   requestInboxLink: publicProcedure
@@ -81,6 +150,9 @@ const guestRouter = router({
               avatarUrl: true,
             },
           },
+          thotisSessionSummary: {
+            select: { id: true },
+          },
         },
         orderBy: { startTime: input.status === "upcoming" ? "asc" : "desc" },
       });
@@ -97,7 +169,7 @@ const guestRouter = router({
     )
     .mutation(async ({ input }) => {
       const magicLink = await guestService.verifyToken(input.token);
-      const requester = { id: 0, email: magicLink.guest.email, name: "Guest Student" }; // guest has no user ID
+      const requester = { id: 0, email: magicLink.guest.email, name: "Guest Student" };
 
       // Verify ownership? bookingService.cancelSession checks if requester is owner/host
       // We need to ensure bookingService handles id=0 or check it here.
@@ -106,7 +178,7 @@ const guestRouter = router({
 
       const result = await bookingService.cancelSession(input.bookingId, input.reason, "student", requester);
 
-      // Invalidate token after sensitive action?
+      // Invalidate token after sensitive action
       await guestService.invalidateToken(magicLink.id);
       await guestService.logAccess(
         magicLink.guestId,
@@ -221,6 +293,43 @@ const guestRouter = router({
 
       await guestService.logAccess(magicLink.guestId, "rateByToken", "RATE", String(input.bookingId), true);
       return { success: true };
+    }),
+
+  getPostSessionDataByToken: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        bookingId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      // Verify token
+      const magicLink = await guestService.verifyToken(input.token);
+      const email = magicLink.guest.email;
+
+      // Verify booking matches email
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: { responses: true },
+      });
+
+      if (!booking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+      }
+
+      const responses = booking.responses as { email?: string } | null;
+      if (responses?.email !== email) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized" });
+      }
+
+      const summary = await prisma.thotisSessionSummary.findUnique({
+        where: { bookingId: input.bookingId },
+      });
+      const resources = await prisma.thotisSessionResource.findMany({
+        where: { bookingId: input.bookingId },
+      });
+
+      return { summary, resources };
     }),
 });
 
@@ -439,6 +548,9 @@ const bookingRouter = router({
             metadata: true,
             responses: true,
             cancellationReason: true,
+            thotisSessionSummary: {
+              select: { id: true },
+            },
           },
           orderBy: { startTime: input.status === "upcoming" ? "asc" : "desc" },
           skip,
@@ -499,6 +611,9 @@ const bookingRouter = router({
               username: true,
               avatarUrl: true,
             },
+          },
+          thotisSessionSummary: {
+            select: { id: true },
           },
         },
         orderBy: { startTime: "desc" },
@@ -589,6 +704,18 @@ const ratingRouter = router({
         input.email
       );
 
+      // Track Postgres Analytics
+      await analyticsService.track({
+        eventType: ThotisAnalyticsEventType.session_rated,
+        userId: booking.userId,
+        profileId: studentProfileId,
+        bookingId: input.bookingId,
+        metadata: {
+          rating: input.rating,
+          hasFeedback: !!input.feedback,
+        },
+      });
+
       return { success: true };
     }),
 
@@ -605,6 +732,96 @@ const ratingRouter = router({
     });
     return rating;
   }),
+
+  submitPostSessionData: authedProcedure
+    .input(
+      z.object({
+        bookingId: z.number(),
+        content: z.string(),
+        nextSteps: z.string().optional(),
+        resources: z.array(
+          z.object({
+            type: z.string(),
+            title: z.string(),
+            url: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // 1. Verify ownership (Mentor)
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: { userId: true },
+      });
+
+      if (!booking || booking.userId !== ctx.user.id) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to edit this session" });
+      }
+
+      // 2. Upsert Summary
+      await prisma.thotisSessionSummary.upsert({
+        where: { bookingId: input.bookingId },
+        create: {
+          bookingId: input.bookingId,
+          content: input.content,
+          nextSteps: input.nextSteps,
+        },
+        update: {
+          content: input.content,
+          nextSteps: input.nextSteps,
+        },
+      });
+
+      // 3. Replace Resources
+      // Transaction to delete old and create new
+      await prisma.$transaction([
+        prisma.thotisSessionResource.deleteMany({
+          where: { bookingId: input.bookingId },
+        }),
+        prisma.thotisSessionResource.createMany({
+          data: input.resources.map((r) => ({
+            bookingId: input.bookingId,
+            type: r.type,
+            title: r.title,
+            url: r.url,
+          })),
+        }),
+      ]);
+
+      return { success: true };
+    }),
+
+  getPostSessionData: authedProcedure
+    .input(z.object({ bookingId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: { userId: true, responses: true },
+      });
+
+      if (!booking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+      }
+
+      // Allow Mentor (owner) or Student (email match)
+      const isMentor = booking.userId === ctx.user.id;
+      const responses = booking.responses as { email?: string } | null;
+      const isStudent = responses?.email === ctx.user.email;
+
+      if (!isMentor && !isStudent) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to view this session" });
+      }
+
+      const summary = await prisma.thotisSessionSummary.findUnique({
+        where: { bookingId: input.bookingId },
+      });
+      const resources = await prisma.thotisSessionResource.findMany({
+        where: { bookingId: input.bookingId },
+      });
+
+      return { summary, resources };
+    }),
 });
 
 const statisticsRouter = router({
@@ -661,15 +878,15 @@ const adminRouter = router({
       return await adminService.provisionAmbassador(input);
     }),
 
-  toggleStatus: authedAdminProcedure
+  updateStatus: authedAdminProcedure
     .input(
       z.object({
         profileId: z.string(),
-        isActive: z.boolean(),
+        status: z.nativeEnum(MentorStatus),
       })
     )
     .mutation(async ({ input }) => {
-      return await adminService.toggleAmbassadorStatus(input.profileId, input.isActive);
+      return await adminService.setAmbassadorStatus(input.profileId, input.status);
     }),
 
   sendPasswordReset: authedAdminProcedure
@@ -690,4 +907,6 @@ export const thotisRouter = router({
   statistics: statisticsRouter,
   admin: adminRouter,
   guest: guestRouter,
+  incident: incidentRouter,
+  analytics: analyticsRouter,
 });

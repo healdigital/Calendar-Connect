@@ -1,127 +1,159 @@
 import process from "node:process";
-import dayjs from "@calcom/dayjs";
-import { AnalyticsService } from "@calcom/features/thotis/services/AnalyticsService";
-import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmailService";
-import { getTranslation } from "@calcom/lib/server/i18n";
+import FeedbackRequestEmail from "@calcom/emails/templates/thotis/feedback-request";
 import prisma from "@calcom/prisma";
-import type { CalendarEvent } from "@calcom/types/Calendar";
-import type { Prisma } from "@prisma/client";
+import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import type { TFunction } from "next-i18next";
 
 const CRON_SECRET = process.env.CRON_SECRET;
-const WEBAPP_URL = process.env.NEXT_PUBLIC_WEBAPP_URL || "https://app.cal.com";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   const apiKey = req.nextUrl.searchParams.get("apiKey");
 
   if (authHeader !== `Bearer ${CRON_SECRET}` && apiKey !== CRON_SECRET) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const analytics = new AnalyticsService();
-  const thotisEmail = new ThotisEmailService();
+  const now = new Date();
+  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
 
-  const now = dayjs();
-  // Feedback requests for sessions that ended exactly 1 hour ago (window: ended 30m to 1h30m ago)
-  const windowStart = now.subtract(1, "hour").subtract(30, "minute");
-  const windowEnd = now.subtract(1, "hour").add(30, "minute");
-
+  // Find bookings that:
+  // 1. Are Thotis sessions
+  // 2. Are ACCEPTED (completed) or marked complete in metadata
+  // 3. Ended between 24h and 48h ago
+  // 4. Have not had feedback email sent yet
   const bookings = await prisma.booking.findMany({
     where: {
-      // Completed sessions in Thotis are marked as ACCEPTED (Cal.com convention) or PENDING but reached endTime.
-      // Based on ThotisBookingService.markSessionComplete, status is set to ACCEPTED.
-      // But a session might end without being manually marked.
-      // Requirement 19.1: "Query completed bookings (1 hour after completion)"
-      status: "ACCEPTED",
       endTime: {
-        gte: windowStart.toDate(),
-        lte: windowEnd.toDate(),
+        lt: twentyFourHoursAgo,
+        gt: fortyEightHoursAgo,
       },
+      OR: [
+        { status: "ACCEPTED" },
+        {
+          metadata: {
+            path: ["completedAt"],
+            not: null,
+          },
+        },
+      ],
       metadata: {
         path: ["isThotisSession"],
         equals: true,
       },
-      NOT: {
-        metadata: {
-          path: ["feedbackRequestSent"],
-          equals: true,
-        },
-      },
     },
     include: {
+      eventType: true,
       user: true, // Mentor
-      attendees: true, // Student
+      thotisSessionSummary: true,
     },
+    take: 50,
   });
 
-  let sentCount = 0;
+  const results = {
+    processed: 0,
+    errors: 0,
+    ids: [] as number[],
+  };
+
+  const webAppUrl = process.env.NEXT_PUBLIC_WEBAPP_URL || "https://app.cal.com";
 
   for (const booking of bookings) {
     try {
-      const metadata = (booking.metadata as Record<string, unknown>) || {};
+      const responses = booking.responses as { email?: string; name?: string } | null;
+      const attendeeEmail = responses?.email;
+      const attendeeName = responses?.name || "Student";
+
+      if (!attendeeEmail) continue;
+
       const mentor = booking.user;
+      if (!mentor) continue;
 
-      if (!mentor || !booking.attendees[0]) continue;
+      // Construct minimalist objects for Email template
+      const organizer: Person = {
+        name: mentor.name || "Mentor",
+        email: mentor.email,
+        timeZone: mentor.timeZone || "Europe/Paris",
+        language: { translate: ((key: string) => key) as TFunction, locale: mentor.locale || "fr" },
+      };
 
-      const student = booking.attendees[0];
-      const tStudent = await getTranslation(student.locale || "en", "common");
+      const attendee: Person = {
+        name: attendeeName,
+        email: attendeeEmail,
+        timeZone: "Europe/Paris",
+        language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
+      };
 
-      // Build CalendarEvent for emails
       const calEvent: CalendarEvent = {
+        type: "thotis-mentoring",
         title: booking.title,
-        type: booking.title,
         startTime: booking.startTime.toISOString(),
         endTime: booking.endTime.toISOString(),
-        organizer: {
-          id: mentor.id,
-          name: mentor.name || "Mentor",
-          email: mentor.email,
-          timeZone: mentor.timeZone,
-          language: { translate: tStudent, locale: student.locale || "en" },
-        },
-        attendees: [
-          {
-            name: student.name,
-            email: student.email,
-            timeZone: student.timeZone,
-            language: { translate: tStudent, locale: student.locale || "en" },
-          },
-        ],
-        location: (metadata.googleMeetLink as string) || "",
+        organizer,
+        attendees: [attendee],
         uid: booking.uid,
       };
 
-      // Generate feedback link
-      const feedbackLink = `${WEBAPP_URL}/thotis/rate/${booking.uid}`;
+      const metadata = (booking.metadata as Record<string, any>) || {};
 
-      // Send Feedback Request Email to Student
-      await thotisEmail.sendFeedbackRequest(calEvent, calEvent.attendees[0], feedbackLink);
+      // 1. Nudge Mentor if no summary exists
+      if (!booking.thotisSessionSummary && !metadata.mentorNudgeSent) {
+        const { default: MentorNudgeEmail } = await import(
+          "@calcom/emails/templates/thotis/MentorNudgeEmail"
+        );
+        const addSummaryLink = `${webAppUrl}/thotis/mentor-dashboard`;
+        const email = new MentorNudgeEmail({ calEvent, attendee, addSummaryLink });
+        await email.sendEmail();
 
-      // Log to Mixpanel
-      analytics.trackFeedbackRequestSent({
-        id: booking.id,
-        userId: mentor.id,
-        metadata: booking.metadata,
-      });
+        await prisma.booking.update({
+          where: { id: booking.id },
+          data: {
+            metadata: {
+              ...metadata,
+              mentorNudgeSent: true,
+              mentorNudgeSentAt: new Date().toISOString(),
+            },
+          },
+        });
+      }
 
-      // Mark as sent
-      await prisma.booking.update({
-        where: { id: booking.id },
-        data: {
-          metadata: {
-            ...metadata,
-            feedbackRequestSent: true,
-          } as Prisma.InputJsonValue,
-        },
-      });
+      // 2. Send feedback email to student ONLY if summary exists (Nudge Student)
+      if (booking.thotisSessionSummary && !metadata.feedbackEmailSent) {
+        const { ThotisGuestService } = await import("@calcom/features/thotis/services/ThotisGuestService");
+        const guestService = new ThotisGuestService();
+        const { debugToken } = await guestService.requestInboxLink(attendeeEmail, 1440);
+        const feedbackLink = `${webAppUrl}/thotis/my-sessions?token=${debugToken}`;
 
-      sentCount++;
+        const email = new FeedbackRequestEmail(calEvent, attendee, feedbackLink);
+        await email.sendEmail();
+
+        await prisma.booking.update({
+          where: { id: booking.id },
+          data: {
+            metadata: {
+              ...metadata,
+              feedbackEmailSent: true,
+              feedbackEmailSentAt: new Date().toISOString(),
+            },
+          },
+        });
+      }
+
+      results.processed++;
+      results.ids.push(booking.id);
     } catch (error) {
-      console.error(`Failed to send feedback request for booking ${booking.id}`, error);
+      console.error(`Failed to process booking ${booking.id}`, error);
+      results.errors++;
     }
   }
 
-  return NextResponse.json({ success: true, sentCount });
+  return NextResponse.json({
+    success: true,
+    ...results,
+  });
 }
+
+export const dynamic = "force-dynamic";

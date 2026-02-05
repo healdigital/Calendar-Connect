@@ -510,6 +510,9 @@ model User {
   oAuthClients                   OAuthClient[]
   holidaySettings                UserHolidaySettings?
   studentProfile                 StudentProfile?
+  thotisOrientationIntents       ThotisOrientationIntent[]
+  reportedMentorIncidents        MentorQualityIncident[]
+  moderationActions              MentorModerationAction[]
 
   autoOptInFeatures Boolean @default(false)
 
@@ -926,6 +929,9 @@ model Booking {
   report                       BookingReport?
   routingTrace                 RoutingTrace?
   sessionRating                SessionRating?
+  thotisSessionSummary         ThotisSessionSummary?
+  thotisSessionResources       ThotisSessionResource[]
+  mentorQualityIncidents       MentorQualityIncident[]
 
   // @@partial_index([reassignById])
 
@@ -3284,8 +3290,12 @@ model StudentProfile {
   expertise       String[] @default([])
 
   // Status
+  isActive Boolean      @default(true)
+  status   MentorStatus @default(PENDING_VERIFICATION)
 
-  isActive Boolean @default(true)
+  // Quality & Moderation
+  incidents         MentorQualityIncident[]
+  moderationActions MentorModerationAction[]
 
   // Statistics
   totalSessions     Int      @default(0)
@@ -3314,11 +3324,9 @@ model SessionRating {
   studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
 
   rating           Int // 1-5 stars
-  feedback         String? @db.Text
+  feedback         String?  @db.Text
   prospectiveEmail String // Email of the prospective student who rated
-
-  bookingId Int?     @unique
-  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
 }
 
 model ThotisOrientationIntent {
@@ -3326,9 +3334,9 @@ model ThotisOrientationIntent {
   userId              Int
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   targetFields        String[] // Array of AcademicField strings
-  academicLevel       String   // e.g., "Terminale", "Bachelor 1"
-  scheduleConstraints Json?    // Structured JSON for availability constraints
-  zone                String?  // Geographic or time zone preference
+  academicLevel       String // e.g., "Terminale", "Bachelor 1"
+  scheduleConstraints Json? // Structured JSON for availability constraints
+  zone                String? // Geographic or time zone preference
   goals               String[] // Specific goals e.g., "Parcoursup help", "Career advice"
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -3337,44 +3345,166 @@ model ThotisOrientationIntent {
 }
 
 model ThotisGuestIdentity {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  normalizedEmail String  @unique // Lowercase for easier matching
-  lastRequestAt  DateTime @default(now()) // For rate limiting requestLink
-  blocked        Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id              String   @id @default(cuid())
+  email           String   @unique
+  normalizedEmail String   @unique // Lowercase for easier matching
+  lastRequestAt   DateTime @default(now()) // For rate limiting requestLink
+  blocked         Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  magicLinks     ThotisMagicLinkToken[]
-  auditLogs      ThotisGuestAccessLog[]
+  magicLinks ThotisMagicLinkToken[]
+  auditLogs  ThotisGuestAccessLog[]
 }
 
 model ThotisMagicLinkToken {
-  id             String   @id @default(cuid())
-  tokenHash      String   @unique // Store hashed token, verification requires input to be hashed
-  guestId        String
-  guest          ThotisGuestIdentity @relation(fields: [guestId], references: [id], onDelete: Cascade)
-  expiresAt      DateTime
-  usedAt         DateTime?
-  invalidated    Boolean  @default(false)
-  createdAt      DateTime @default(now())
+  id          String              @id @default(cuid())
+  tokenHash   String              @unique // Store hashed token, verification requires input to be hashed
+  guestId     String
+  guest       ThotisGuestIdentity @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  usedAt      DateTime?
+  invalidated Boolean             @default(false)
+  createdAt   DateTime            @default(now())
 
   @@index([guestId])
   @@index([tokenHash])
 }
 
 model ThotisGuestAccessLog {
-  id             String   @id @default(cuid())
-  guestId        String?
-  guest          ThotisGuestIdentity? @relation(fields: [guestId], references: [id], onDelete: SetNull)
-  ipAddress      String?
-  userAgent      String?
-  endpoint       String   // e.g., "getSessions", "cancel"
-  action         String   // e.g., "VIEW", "CANCEL"
-  resourceId     String?  // e.g., bookingId
-  success        Boolean  @default(true)
-  metadata       Json?
-  createdAt      DateTime @default(now())
+  id         String               @id @default(cuid())
+  guestId    String?
+  guest      ThotisGuestIdentity? @relation(fields: [guestId], references: [id], onDelete: SetNull)
+  ipAddress  String?
+  userAgent  String?
+  endpoint   String // e.g., "getSessions", "cancel"
+  action     String // e.g., "VIEW", "CANCEL"
+  resourceId String? // e.g., bookingId
+  success    Boolean              @default(true)
+  metadata   Json?
+  createdAt  DateTime             @default(now())
 
   @@index([guestId])
+}
+
+model ThotisSessionSummary {
+  id        Int      @id @default(autoincrement())
+  bookingId Int      @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  content   String
+  nextSteps String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ThotisSessionResource {
+  id        Int      @id @default(autoincrement())
+  bookingId Int
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type      String // "LINK", "FILE"
+  title     String
+  url       String
+  createdAt DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+enum MentorStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  SUSPENDED
+  DELISTED
+}
+
+enum MentorIncidentType {
+  NO_SHOW
+  LATE_ARRIVAL
+  INAPPROPRIATE_BEHAVIOR
+  POOR_QUALITY
+  OTHER
+}
+
+enum MentorModerationActionType {
+  WARNING
+  SUSPENSION
+  DELISTING
+  MANUAL_STATUS_CHANGE
+}
+
+model MentorQualityIncident {
+  id               String         @id @default(cuid())
+  studentProfileId String
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+
+  reportedByUserId Int?
+  reportedByUser   User? @relation(fields: [reportedByUserId], references: [id], onDelete: SetNull)
+
+  bookingUid String?
+  booking    Booking? @relation(fields: [bookingUid], references: [uid], onDelete: SetNull)
+
+  type        MentorIncidentType
+  description String?            @db.Text
+  severity    Int                @default(1) // 1-5 scale
+
+  resolved   Boolean   @default(false)
+  resolvedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentProfileId])
+  @@index([reportedByUserId])
+  @@index([bookingUid])
+}
+
+model MentorModerationAction {
+  id               String         @id @default(cuid())
+  studentProfileId String
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+
+  actionByUserId Int
+  actionByUser   User @relation(fields: [actionByUserId], references: [id], onDelete: Cascade)
+
+  actionType MentorModerationActionType
+  reason     String?                    @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([studentProfileId])
+  @@index([actionByUserId])
+}
+
+enum ThotisAnalyticsEventType {
+  profile_viewed
+  booking_started
+  booking_confirmed
+  session_completed
+  rating_submitted
+  cancelled
+  rescheduled
+  no_show
+}
+
+model ThotisAnalyticsEvent {
+  id        String                   @id @default(cuid())
+  eventType ThotisAnalyticsEventType
+
+  // Actor identification
+  userId  Int?
+  guestId String?
+
+  // Context
+  profileId String? // Target mentor profile
+  bookingId Int? // Related booking if applicable
+
+  // Metadata for period, field, source of acquisition
+  field    String? // Academic field
+  source   String? // e.g., "search", "direct", "recommended"
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([profileId])
+  @@index([field])
 }

@@ -1,5 +1,3 @@
-import type { CalendarEvent, Person } from "@calcom/types/Calendar";
-import { ManageLink } from "../../components";
 import { ThotisBaseEmail } from "./ThotisBaseEmail";
 
 export const FeedbackRequestEmail = (
@@ -14,11 +12,13 @@ export const FeedbackRequestEmail = (
     <ThotisBaseEmail
       hideLogo={Boolean(props.calEvent.platformClientId)}
       headerType="checkCircle"
-      subject={t("feedback_request_subject")}
-      title={t("feedback_request_title")}
-      subtitle={t("feedback_request_subtitle")}>
+      subject={t("thotis_feedback_request_subject", "How was your session with {{name}}?", {
+        name: props.calEvent.organizer.name,
+      })}
+      title={t("thotis_feedback_request_title", "Your session recap is available")}
+      subtitle={t("thotis_feedback_request_subtitle", "Was this session useful to you?")}>
       <div style={{ marginBottom: "20px" }}>
-        <p>{t("feedback_request_body", { name: props.attendee.name })}</p>
+        <p>{t("thotis_feedback_request_body", { name: props.attendee.name })}</p>
       </div>
 
       <div style={{ textAlign: "center", margin: "30px 0" }}>
@@ -35,7 +35,7 @@ export const FeedbackRequestEmail = (
             fontSize: "16px",
             display: "inline-block",
           }}>
-          {t("give_feedback")}
+          {t("thotis_view_recap", "Voir le récapitulatif")}
         </a>
       </div>
     </ThotisBaseEmail>

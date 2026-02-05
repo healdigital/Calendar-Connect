@@ -7,7 +7,7 @@ import { ErrorWithCode } from "@calcom/lib/errors";
 import { getTranslation } from "@calcom/lib/server/i18n";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
-import type { AcademicField } from "@calcom/prisma/enums";
+import { type AcademicField, MentorStatus } from "@calcom/prisma/enums";
 import { ProfileRepository } from "../repositories/ProfileRepository";
 import { ProfileService } from "./ProfileService";
 
@@ -205,12 +205,12 @@ export class ThotisAdminService {
   }
 
   /**
-   * Toggle ambassador active status
+   * Set ambassador status
    */
-  async toggleAmbassadorStatus(profileId: string, isActive: boolean) {
-    return await prisma.studentProfile.update({
-      where: { id: profileId },
-      data: { isActive },
+  async setAmbassadorStatus(profileId: string, status: MentorStatus) {
+    return await this.profileRepository.updateProfile(profileId, {
+      status,
+      isActive: status === MentorStatus.VERIFIED,
     });
   }
 }

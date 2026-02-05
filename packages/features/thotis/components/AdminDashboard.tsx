@@ -17,7 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { generateCSV, type Mentor } from "./AdminDashboardUtils";
+import { generateCSV } from "./AdminDashboardUtils";
 
 // --- Types & Interfaces ---
 // Moved to AdminDashboardUtils.ts
@@ -27,7 +27,7 @@ import { generateCSV, type Mentor } from "./AdminDashboardUtils";
 
 // --- Sub-Components ---
 
-const StatsOverview = ({ stats }: { stats: any }) => {
+const StatsOverview = ({ stats }: { stats: Record<string, any> }) => {
   const { t } = useLocale();
 
   const completionRate = stats?._sum?.totalSessions
@@ -54,28 +54,62 @@ const StatsOverview = ({ stats }: { stats: any }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {cards.map((card, idx) => (
-        <Card key={idx} className="p-4">
-          <p className="text-subtle text-sm font-medium">{card.label}</p>
-          <p className="text-emphasis mt-2 text-2xl font-bold">{card.value}</p>
-        </Card>
-      ))}
+    <div className="space-y-4">
+      {stats?.dataQuality?.issues?.length > 0 && (
+        <div className="bg-error-subtle text-error p-3 rounded-md border border-error flex items-center gap-2 text-sm">
+          <span>⚠️</span>
+          <div>
+            <strong>{t("thotis_data_quality_warning")}:</strong>
+            <ul className="list-disc ml-5">
+              {stats.dataQuality.issues.map((issue: string, i: number) => (
+                <li key={i}>{issue}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((card, idx) => (
+          <Card key={idx} className="p-4">
+            <p className="text-subtle text-sm font-medium">{card.label}</p>
+            <p className="text-emphasis mt-2 text-2xl font-bold">{card.value}</p>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
 
-const SessionTrendsChart = ({ trends }: { trends: any }) => {
+const SessionTrendsChart = ({ trends }: { trends: Record<string, any> }) => {
   const { t } = useLocale();
-  const data =
-    trends?.daily?.map((d: any) => ({
-      date: new Date(d.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
-      count: d.count,
-    })) || [];
+  const [period, setPeriod] = useState<"daily" | "weekly" | "monthly">("daily");
+
+  const rawData = trends?.[period] || [];
+  const data = rawData.map((d: any) => ({
+    date:
+      period === "daily"
+        ? new Date(d.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })
+        : d.date,
+    count: d.count,
+  }));
 
   return (
     <Card className="p-4">
-      <h3 className="text-emphasis mb-4 text-lg font-semibold">{t("thotis_session_trends_daily")}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-emphasis text-lg font-semibold">{t(`thotis_session_trends_${period}`)}</h3>
+        <div className="flex gap-1 bg-subtle p-1 rounded-md">
+          {(["daily", "weekly", "monthly"] as const).map((p) => (
+            <Button
+              key={p}
+              size="sm"
+              color={period === p ? "primary" : "minimal"}
+              onClick={() => setPeriod(p)}
+              className="px-2 py-1 text-xs">
+              {t(`thotis_period_${p}`)}
+            </Button>
+          ))}
+        </div>
+      </div>
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
@@ -104,7 +138,48 @@ const SessionTrendsChart = ({ trends }: { trends: any }) => {
   );
 };
 
-const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
+const FunnelChart = ({ funnel }: { funnel: Record<string, any> }) => {
+  const { t } = useLocale();
+  const data = [
+    { name: t("thotis_funnel_viewed"), count: funnel?.counts?.profile_viewed || 0 },
+    { name: t("thotis_funnel_started"), count: funnel?.counts?.booking_started || 0 },
+    { name: t("thotis_funnel_confirmed"), count: funnel?.counts?.booking_confirmed || 0 },
+    { name: t("thotis_funnel_completed"), count: funnel?.counts?.session_completed || 0 },
+  ];
+
+  return (
+    <Card className="p-4">
+      <h3 className="text-emphasis mb-4 text-lg font-semibold">{t("thotis_conversion_funnel")}</h3>
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical">
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" />
+            <YAxis dataKey="name" type="category" width={100} />
+            <Tooltip />
+            <Bar dataKey="count" fill="#292929" radius={[0, 4, 4, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+        <div className="p-2 bg-subtle rounded-md">
+          <p className="text-subtle font-medium">{t("thotis_conv_started")}</p>
+          <p className="text-emphasis font-bold">
+            {funnel?.conversion?.profile_to_booking_started?.toFixed(1)}%
+          </p>
+        </div>
+        <div className="p-2 bg-subtle rounded-md">
+          <p className="text-subtle font-medium">{t("thotis_conv_confirmed")}</p>
+          <p className="text-emphasis font-bold">
+            {funnel?.conversion?.booking_started_to_confirmed?.toFixed(1)}%
+          </p>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const FieldDistributionChart = ({ distribution }: { distribution: Record<string, any> }) => {
   const { t } = useLocale();
   const data =
     distribution?.fieldDistribution?.map((d: any) => ({
@@ -236,6 +311,7 @@ export const AdminDashboard = () => {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <SessionTrendsChart trends={stats?.trends} />
+        <FunnelChart funnel={stats?.funnel} />
         <FieldDistributionChart distribution={stats} />
       </div>
 

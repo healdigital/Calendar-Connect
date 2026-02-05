@@ -1,11 +1,13 @@
 "use client";
 
 import { BookingWidget } from "@calcom/features/thotis/components/BookingWidget";
+import { ThotisAnalyticsEventType } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import { UserAvatar } from "@calcom/ui/components/avatar/UserAvatar";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function MentorProfilePage() {
   const params = useParams();
@@ -16,7 +18,26 @@ export default function MentorProfilePage() {
     data: profile,
     isLoading,
     error,
-  } = trpc.thotis.profile.getByUsername.useQuery({ username }, { enabled: !!username });
+  } = trpc.thotis.profile.getByUsername.useQuery(
+    {
+      username,
+    },
+    {
+      enabled: !!username,
+    }
+  );
+
+  const trackEvent = trpc.thotis.analytics.track.useMutation();
+
+  useEffect(() => {
+    if (profile && !isLoading && !error) {
+      trackEvent.mutate({
+        eventType: ThotisAnalyticsEventType.profile_viewed,
+        profileId: profile.id,
+        field: profile.field,
+      });
+    }
+  }, [profile, isLoading, error, trackEvent.mutate]);
 
   if (isLoading) {
     return (
