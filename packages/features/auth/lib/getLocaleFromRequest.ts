@@ -4,7 +4,9 @@ import type { GetServerSidePropsContext, NextApiRequest } from "next";
 
 type Maybe<T> = T | null | undefined;
 
-const { i18n } = require("@calcom/config/next-i18next.config");
+import i18nConfig from "@calcom/config/next-i18next.config";
+
+const { i18n } = i18nConfig;
 
 export async function getLocaleFromRequest(
   req: NextApiRequest | GetServerSidePropsContext["req"]

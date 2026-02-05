@@ -1,4 +1,7 @@
-import { i18n } from "@calcom/config/next-i18next.config";
+import i18nConfig from "@calcom/config/next-i18next.config";
+
+const { i18n } = i18nConfig;
+
 import { parse } from "accept-language-parser";
 import { lookup } from "bcp-47-match";
 import type { GetTokenParams } from "next-auth/jwt";

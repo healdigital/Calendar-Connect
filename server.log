@@ -1,0 +1,509 @@
+• turbo 2.7.1
+• Packages in scope: @calcom/web
+• Running dev in 1 packages
+• Remote caching disabled
+//:env-check:common: cache bypass, force executing 3108748e111cd3d1
+//:env-check:app-store: cache bypass, force executing f8eb5ea9590d323c
+//:env-check:app-store: 
+//:env-check:app-store: [ DOTENV-CHECKER ] - Initializing checks for .env files consistency & sync...
+//:env-check:app-store: 
+//:env-check:app-store: 📗 [ INFO ]  ✅ Schema file (.env.appStore.example) checked successfully
+//:env-check:app-store: 📗 [ INFO ]  ✅ Environment file (.env.appStore) checked successfully
+//:env-check:common: 
+//:env-check:common: [ DOTENV-CHECKER ] - Initializing checks for .env files consistency & sync...
+//:env-check:common: 
+//:env-check:common: 📗 [ INFO ]  ✅ Schema file (.env.example) checked successfully
+//:env-check:common: 📗 [ INFO ]  ✅ Environment file (.env) checked successfully
+@calcom/web:dev: cache bypass, force executing b8e8a351ecf7116b
+@calcom/web:dev: • turbo 2.7.1
+@calcom/web:dev: • Packages in scope: @calcom/web
+@calcom/web:dev: • Running copy-app-store-static in 1 packages
+@calcom/web:dev: • Remote caching disabled
+@calcom/web:dev: @calcom/web:copy-app-store-static: cache hit, suppressing logs 649a40ecfa599e16
+@calcom/web:dev: 
+@calcom/web:dev:  Tasks:    1 successful, 1 total
+@calcom/web:dev: Cached:    1 cached, 1 total
+@calcom/web:dev:   Time:    1.349s >>> FULL TURBO
+@calcom/web:dev: 
+@calcom/web:dev: [Phase: phase-development-server] Skipping rewrite config for organizations because ORGANIZATIONS_ENABLED is not set
+@calcom/web:dev: ▲ Next.js 16.1.5 (Turbopack)
+@calcom/web:dev: - Local:         http://localhost:3000
+@calcom/web:dev: - Network:       http://192.168.1.10:3000
+@calcom/web:dev: - Experiments (use with caution):
+@calcom/web:dev:   · optimizePackageImports
+@calcom/web:dev: 
+@calcom/web:dev: ✓ Starting...
+@calcom/web:dev: ✓ Ready in 1423ms
+@calcom/web:dev: [Phase: phase-development-server] Skipping rewrite config for organizations because ORGANIZATIONS_ENABLED is not set
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: 03[0m[0m:14[0m[0m:37[0m[0m:304[0m[0m [WARN[0m[0m] RateLimit Disabled because the UNKEY_ROOT_KEY environment variable was not found.
+@calcom/web:dev: ○ Compiling / ...
+@calcom/web:dev: ⨯ ./packages/features/auth/lib/getLocale.ts:1:1
+@calcom/web:dev: Export i18n doesn't exist in target module
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { i18n } [36mfrom[39m [32m"@calcom/config/next-i18next.config"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m { parse } [36mfrom[39m [32m"accept-language-parser"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m { lookup } [36mfrom[39m [32m"bcp-47-match"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m [36mimport[39m type { [33mGetTokenParams[39m } [36mfrom[39m [32m"next-auth/jwt"[39m[33m;[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: The export i18n was not found in module [project]/packages/config/next-i18next.config.js [app-rsc] (ecmascript).
+@calcom/web:dev: Did you mean to import default?
+@calcom/web:dev: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/layout.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/_utils.tsx
+@calcom/web:dev:     ./apps/web/app/not-found.tsx
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev:  GET / 500 in 9.0s (compile: 8.8s, proxy.ts: 117ms, render: 93ms)
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⨯ ./packages/features/auth/lib/getLocale.ts:1:1
+@calcom/web:dev: Export i18n doesn't exist in target module
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { i18n } [36mfrom[39m [32m"@calcom/config/next-i18next.config"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m { parse } [36mfrom[39m [32m"accept-language-parser"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m { lookup } [36mfrom[39m [32m"bcp-47-match"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m [36mimport[39m type { [33mGetTokenParams[39m } [36mfrom[39m [32m"next-auth/jwt"[39m[33m;[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: The export i18n was not found in module [project]/packages/config/next-i18next.config.js [app-rsc] (ecmascript).
+@calcom/web:dev: Did you mean to import default?
+@calcom/web:dev: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/layout.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/_utils.tsx
+@calcom/web:dev:     ./apps/web/app/not-found.tsx
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev:  GET / 500 in 46ms (compile: 30ms, proxy.ts: 8ms, render: 8ms)
+@calcom/web:dev: ⨯ ./packages/features/auth/lib/getLocale.ts:1:1
+@calcom/web:dev: Export i18n doesn't exist in target module
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { i18n } [36mfrom[39m [32m"@calcom/config/next-i18next.config"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m { parse } [36mfrom[39m [32m"accept-language-parser"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m { lookup } [36mfrom[39m [32m"bcp-47-match"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m [36mimport[39m type { [33mGetTokenParams[39m } [36mfrom[39m [32m"next-auth/jwt"[39m[33m;[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: The export i18n was not found in module [project]/packages/config/next-i18next.config.js [app-rsc] (ecmascript).
+@calcom/web:dev: Did you mean to import default?
+@calcom/web:dev: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/layout.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/_utils.tsx
+@calcom/web:dev:     ./apps/web/app/not-found.tsx
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev:  GET / 500 in 27ms (compile: 19ms, proxy.ts: 4ms, render: 4ms)
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⨯ ./packages/features/auth/lib/getLocale.ts:1:1
+@calcom/web:dev: Export i18n doesn't exist in target module
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { i18n } [36mfrom[39m [32m"@calcom/config/next-i18next.config"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m { parse } [36mfrom[39m [32m"accept-language-parser"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m { lookup } [36mfrom[39m [32m"bcp-47-match"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m [36mimport[39m type { [33mGetTokenParams[39m } [36mfrom[39m [32m"next-auth/jwt"[39m[33m;[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: The export i18n was not found in module [project]/packages/config/next-i18next.config.js [app-rsc] (ecmascript).
+@calcom/web:dev: Did you mean to import default?
+@calcom/web:dev: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/layout.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/features/auth/lib/getLocale.ts
+@calcom/web:dev:     ./apps/web/app/_utils.tsx
+@calcom/web:dev:     ./apps/web/app/not-found.tsx
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev:  GET / 500 in 41ms (compile: 30ms, proxy.ts: 4ms, render: 7ms)
+@calcom/web:dev: ⚠ ./apps/web/instrumentation.ts:1:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 3 |[39m [36mimport[39m type { [33mInstrumentation[39m } [36mfrom[39m [32m"next"[39m[33m;[39m
+@calcom/web:dev:  [90m 4 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 1) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⚠ ./apps/web/sentry.edge.config.ts:6:1
+@calcom/web:dev: Ecmascript file had an error
+@calcom/web:dev: [0m [90m 4 |[39m [90m// https://docs.sentry.io/platforms/javascript/guides/nextjs/[39m
+@calcom/web:dev:  [90m 5 |[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m process [36mfrom[39m [32m"node:process"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 7 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m"@sentry/nextjs"[39m[33m;[39m
+@calcom/web:dev:  [90m 8 |[39m
+@calcom/web:dev:  [90m 9 |[39m [33mSentry[39m[33m.[39minit({[0m
+@calcom/web:dev: 
+@calcom/web:dev: A Node.js module is loaded ('node:process' at line 6) which is not supported in the Edge Runtime.
+@calcom/web:dev: Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Edge Instrumentation:
+@calcom/web:dev:     ./apps/web/sentry.edge.config.ts
+@calcom/web:dev:     ./apps/web/instrumentation.ts
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ✓ Compiled in 65ms
+@calcom/web:dev: ⨯ ./packages/prisma/client/index.ts:2:1
+@calcom/web:dev: Module not found: Can't resolve '../generated/prisma/client'
+@calcom/web:dev: [0m [90m 1 |[39m [90m// INFO: This is to keep backwards compatibility with hundreds of imports before v6.16 of Prisma[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"../generated/prisma/client"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 3 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/prisma/client/index.ts
+@calcom/web:dev:     ./packages/features/flags/features.repository.ts
+@calcom/web:dev:     ./packages/features/auth/lib/onboardingUtils.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/prisma/client/index.ts
+@calcom/web:dev:     ./packages/features/users/repositories/UserRepository.ts
+@calcom/web:dev:     ./packages/features/auth/lib/getServerSession.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev: https://nextjs.org/docs/messages/module-not-found
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⨯ ./packages/prisma/client/index.ts:2:1
+@calcom/web:dev: Module not found: Can't resolve '../generated/prisma/client'
+@calcom/web:dev: [0m [90m 1 |[39m [90m// INFO: This is to keep backwards compatibility with hundreds of imports before v6.16 of Prisma[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"../generated/prisma/client"[39m[33m;[39m
+@calcom/web:dev:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m 3 |[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: Import traces:
+@calcom/web:dev:   #1 [Server Component]:
+@calcom/web:dev:     ./packages/prisma/client/index.ts
+@calcom/web:dev:     ./packages/features/flags/features.repository.ts
+@calcom/web:dev:     ./packages/features/auth/lib/onboardingUtils.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev:   #2 [Server Component]:
+@calcom/web:dev:     ./packages/prisma/client/index.ts
+@calcom/web:dev:     ./packages/features/users/repositories/UserRepository.ts
+@calcom/web:dev:     ./packages/features/auth/lib/getServerSession.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev: https://nextjs.org/docs/messages/module-not-found
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⨯ ./packages/prisma/index.ts:8:1
+@calcom/web:dev: Module not found: Can't resolve './generated/prisma/client'
+@calcom/web:dev: [0m [90m  6 |[39m [36mimport[39m { excludeLockedUsersExtension } [36mfrom[39m [32m"./extensions/exclude-locked-users"[39m[33m;[39m
+@calcom/web:dev:  [90m  7 |[39m [36mimport[39m { excludePendingPaymentsExtension } [36mfrom[39m [32m"./extensions/exclude-pending-payment-teams"[39m[33m;[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m  8 |[39m [36mimport[39m { type [33mPrisma[39m[33m,[39m [33mPrismaClient[39m } [36mfrom[39m [32m"./generated/prisma/client"[39m[33m;[39m
+@calcom/web:dev:  [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m  9 |[39m
+@calcom/web:dev:  [90m 10 |[39m [36mconst[39m connectionString [33m=[39m process[33m.[39menv[33m.[39m[33mDATABASE_URL[39m [33m||[39m [32m""[39m[33m;[39m
+@calcom/web:dev:  [90m 11 |[39m [36mconst[39m pool [33m=[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Server Component:
+@calcom/web:dev:     ./packages/prisma/index.ts
+@calcom/web:dev:     ./packages/features/auth/lib/getServerSession.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev: https://nextjs.org/docs/messages/module-not-found
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ⨯ ./packages/prisma/index.ts:8:1
+@calcom/web:dev: Module not found: Can't resolve './generated/prisma/client'
+@calcom/web:dev: [0m [90m  6 |[39m [36mimport[39m { excludeLockedUsersExtension } [36mfrom[39m [32m"./extensions/exclude-locked-users"[39m[33m;[39m
+@calcom/web:dev:  [90m  7 |[39m [36mimport[39m { excludePendingPaymentsExtension } [36mfrom[39m [32m"./extensions/exclude-pending-payment-teams"[39m[33m;[39m
+@calcom/web:dev: [31m[1m>[22m[39m[90m  8 |[39m [36mimport[39m { type [33mPrisma[39m[33m,[39m [33mPrismaClient[39m } [36mfrom[39m [32m"./generated/prisma/client"[39m[33m;[39m
+@calcom/web:dev:  [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+@calcom/web:dev:  [90m  9 |[39m
+@calcom/web:dev:  [90m 10 |[39m [36mconst[39m connectionString [33m=[39m process[33m.[39menv[33m.[39m[33mDATABASE_URL[39m [33m||[39m [32m""[39m[33m;[39m
+@calcom/web:dev:  [90m 11 |[39m [36mconst[39m pool [33m=[39m[0m
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: Import trace:
+@calcom/web:dev:   Server Component:
+@calcom/web:dev:     ./packages/prisma/index.ts
+@calcom/web:dev:     ./packages/features/auth/lib/getServerSession.ts
+@calcom/web:dev:     ./apps/web/app/page.tsx
+@calcom/web:dev: 
+@calcom/web:dev: https://nextjs.org/docs/messages/module-not-found
+@calcom/web:dev: 
+@calcom/web:dev: 
+@calcom/web:dev: ✓ Compiled in 44ms
+ ERROR  run failed: command  exited (1)

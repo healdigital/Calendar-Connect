@@ -1,5 +1,6 @@
 const path = require("node:path");
-const i18nConfig = require("@calcom/config/next-i18next.config");
+const i18nModule = require("@calcom/config/next-i18next.config");
+const i18nConfig = i18nModule.default || i18nModule;
 
 /** @type {import("next-i18next").UserConfig} */
 const config = {

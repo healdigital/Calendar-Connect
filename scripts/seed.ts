@@ -17,6 +17,7 @@ import type z from "zod";
 import type { teamMetadataSchema } from "../packages/prisma/zod-utils";
 import mainAppStore from "./seed-app-store";
 import mainHugeEventTypesSeed from "./seed-huge-event-types";
+import { seedThotis } from "./seed-thotis";
 import { createOAuthClientForUser, createUserAndEventType } from "./seed-utils";
 
 type PlatformUser = {
@@ -1644,6 +1645,7 @@ async function runSeed() {
 
   await mainAppStore();
   await main();
+  await seedThotis();
   await mainHugeEventTypesSeed();
 }
 

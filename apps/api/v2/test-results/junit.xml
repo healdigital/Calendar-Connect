@@ -1,3 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="0" failures="0" errors="0" time="2.798">
+<testsuites name="jest tests" tests="3" failures="3" errors="0" time="28.095">
+  <testsuite name="StudentsController (e2e)" errors="0" failures="3" skipped="0" timestamp="2026-02-05T03:00:45" time="27.874" tests="3">
+    <testcase classname="StudentsController (e2e) GET /students/:id should return 404 for non-existent profile" name="StudentsController (e2e) GET /students/:id should return 404 for non-existent profile" time="5.007">
+      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a test.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:59:5
+    at _dispatchDescribe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:91:26)
+    at describe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:55:5)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:58:3
+    at _dispatchDescribe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:91:26)
+    at describe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:55:5)
+    at Object.&lt;anonymous&gt; (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:23:1)
+    at Runtime._execModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:1439:24)
+    at Runtime._loadModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:882:12)
+    at jestAdapter (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:444:34)
+    at Object.worker (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="StudentsController (e2e) GET /students/:id should return student profile if exists" name="StudentsController (e2e) GET /students/:id should return student profile if exists" time="5">
+      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a test.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:63:5
+    at _dispatchDescribe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:91:26)
+    at describe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:55:5)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:58:3
+    at _dispatchDescribe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:91:26)
+    at describe (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/index.js:55:5)
+    at Object.&lt;anonymous&gt; (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:23:1)
+    at Runtime._execModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:1439:24)
+    at Runtime._loadModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:1022:12)
+    at Runtime.requireModule (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runtime/build/index.js:882:12)
+    at jestAdapter (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:444:34)
+    at Object.worker (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="StudentsController (e2e) GET /students/by-field/:field should return students by field" name="StudentsController (e2e) GET /students/by-field/:field should return students by field" time="0.608">
+      <failure>Error: expected 200 &quot;OK&quot;, got 500 &quot;Internal Server Error&quot;
+    at Object.&lt;anonymous&gt; (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/modules/students/students.e2e-spec.ts:85:97)
+    at Promise.then.completed (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/runTest.js:444:34)
+    at Object.worker (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/testWorker.js:106:12)
+----
+    at Test._assertStatus (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:252:14)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:308:13
+    at Test._assertFunction (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:285:13)
+    at Test.assert (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:164:23)
+    at localAssert (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:120:14)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/supertest/lib/test.js:125:7
+    at Test.fn [as callback] (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/superagent/src/node/index.js:925:3)
+    at callback (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/superagent/src/node/index.js:1166:18)
+    at IncomingMessage.fn (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/superagent/src/node/parsers/json.js:19:7)
+    at IncomingMessage.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21)</failure>
+    </testcase>
+  </testsuite>
 </testsuites>

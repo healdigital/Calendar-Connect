@@ -1,5 +1,5 @@
 import process from "node:process";
-const i18n = require("../../i18n.json");
+import i18n from "../../i18n.json";
 
 /** @type {import("next-i18next").UserConfig} */
 const config = {
@@ -14,4 +14,4 @@ const config = {
   reloadOnPrerender: process.env.NODE_ENV !== "production",
 };
 
-module.exports = config;
+export default config;
