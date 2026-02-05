@@ -1,0 +1,13 @@
+Couldn't find tsconfig.json. tsconfig-paths will be skipped
+Starting setup...
+Setup failed: Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
+    at new PrismaClient (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/.prisma/client/default.js:43:11)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:7:18
+    at step (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:33:23)
+    at Object.next (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:14:53)
+    at /Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:4:12)
+    at setup (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:46:12)
+    at Object.<anonymous> (/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/thotis/tests/setup_load_test.ts:77:1)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
