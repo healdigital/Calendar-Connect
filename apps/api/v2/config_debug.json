@@ -1,0 +1,188 @@
+{
+  "configs": [
+    {
+      "automock": false,
+      "cache": true,
+      "cacheDirectory": "/private/var/folders/lf/_1ctg98j7pnd72hph771429h0000gn/T/jest_dx",
+      "clearMocks": false,
+      "collectCoverageFrom": [],
+      "coverageDirectory": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/coverage",
+      "coveragePathIgnorePatterns": ["/node_modules/"],
+      "cwd": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2",
+      "detectLeaks": false,
+      "detectOpenHandles": false,
+      "errorOnDeprecated": false,
+      "extensionsToTreatAsEsm": [],
+      "fakeTimers": {
+        "enableGlobally": false
+      },
+      "forceCoverageMatch": [],
+      "globals": {},
+      "haste": {
+        "computeSha1": false,
+        "enableSymlinks": false,
+        "forceNodeFilesystemAPI": true,
+        "throwOnModuleCollision": false
+      },
+      "id": "dd899b1b06c301e5e6ff24694190de0a",
+      "injectGlobals": true,
+      "moduleDirectories": ["node_modules"],
+      "moduleFileExtensions": ["js", "json", "ts"],
+      "moduleNameMapper": [
+        ["^@/(.*)$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/src/$1"],
+        ["^test/(.*)$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/test/$1"],
+        [
+          "^@calcom/platform-libraries$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/libraries/index"
+        ],
+        [
+          "^@calcom/platform-libraries/(.*)$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/libraries/$1"
+        ],
+        [
+          "^@calcom/platform-constants$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/constants/index"
+        ],
+        [
+          "^@calcom/platform-types$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/types/index"
+        ],
+        [
+          "^@calcom/platform-utils$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/utils/index"
+        ],
+        [
+          "^@calcom/platform-enums$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/platform/enums/index"
+        ],
+        [
+          "^@calcom/prisma/client$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/prisma/generated/prisma/client"
+        ],
+        [
+          "^@calcom/prisma$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/prisma/index"
+        ],
+        ["^@calcom/trpc$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/trpc/index"],
+        ["^@calcom/trpc/(.*)$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/trpc/$1"],
+        ["^@calcom/lib$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/lib/index"],
+        ["^@calcom/lib/(.*)$", "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/lib/$1"],
+        [
+          "^@calcom/features$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/index"
+        ],
+        [
+          "^@calcom/features/(.*)$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages/features/$1"
+        ]
+      ],
+      "modulePathIgnorePatterns": [],
+      "openHandlesTimeout": 1000,
+      "prettierPath": "prettier",
+      "resetMocks": false,
+      "resetModules": false,
+      "restoreMocks": false,
+      "rootDir": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2",
+      "roots": [
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2",
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/packages"
+      ],
+      "runner": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-runner/build/index.js",
+      "sandboxInjectedGlobals": [],
+      "setupFiles": [
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/test/setEnvVars.ts",
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-date-mock/lib/index.js"
+      ],
+      "setupFilesAfterEnv": [
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/test/jest.setup-e2e.ts"
+      ],
+      "skipFilter": false,
+      "slowTestThreshold": 5,
+      "snapshotFormat": {
+        "escapeString": false,
+        "printBasicPrototype": false
+      },
+      "snapshotSerializers": [],
+      "testEnvironment": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-environment-node/build/index.js",
+      "testEnvironmentOptions": {},
+      "testLocationInResults": false,
+      "testMatch": [],
+      "testPathIgnorePatterns": ["/dist/", "/node_modules/"],
+      "testRegex": [".e2e-spec.ts$"],
+      "testRunner": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-circus/runner.js",
+      "transform": [
+        [
+          "^.+\\.ts$",
+          "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/ts-jest/dist/index.js",
+          {}
+        ]
+      ],
+      "transformIgnorePatterns": ["/node_modules/(?!(@calcom)/)"],
+      "watchPathIgnorePatterns": []
+    }
+  ],
+  "globalConfig": {
+    "bail": 0,
+    "changedFilesWithAncestor": false,
+    "ci": false,
+    "collectCoverage": false,
+    "collectCoverageFrom": [],
+    "coverageDirectory": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2/coverage",
+    "coverageProvider": "babel",
+    "coverageReporters": ["json", "text", "lcov", "clover"],
+    "detectLeaks": false,
+    "detectOpenHandles": false,
+    "errorOnDeprecated": false,
+    "expand": false,
+    "findRelatedTests": false,
+    "forceExit": false,
+    "json": false,
+    "lastCommit": false,
+    "listTests": false,
+    "logHeapUsage": false,
+    "maxConcurrency": 5,
+    "maxWorkers": 8,
+    "noStackTrace": false,
+    "nonFlagArgs": [],
+    "notify": false,
+    "notifyMode": "failure-change",
+    "onlyChanged": false,
+    "onlyFailures": false,
+    "openHandlesTimeout": 1000,
+    "passWithNoTests": false,
+    "projects": [],
+    "reporters": [
+      ["default", {}],
+      [
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-summarizing-reporter/src/JestSummaryReporter.js",
+        {}
+      ],
+      [
+        "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/jest-junit/index.js",
+        {
+          "outputDirectory": "./test-results",
+          "outputName": "junit.xml"
+        }
+      ]
+    ],
+    "rootDir": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/apps/api/v2",
+    "runTestsByPath": false,
+    "seed": -1024660497,
+    "skipFilter": false,
+    "snapshotFormat": {
+      "escapeString": false,
+      "printBasicPrototype": false
+    },
+    "testFailureExitCode": 1,
+    "testPathPattern": "",
+    "testSequencer": "/Users/leoturbetdelof/Downloads/Thotis Final/cal.com-main/node_modules/@jest/test-sequencer/build/index.js",
+    "updateSnapshot": "new",
+    "useStderr": false,
+    "watch": false,
+    "watchAll": false,
+    "watchman": true,
+    "workerIdleMemoryLimit": 512000000,
+    "workerThreads": false
+  },
+  "version": "29.7.0"
+}

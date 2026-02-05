@@ -1,9 +1,8 @@
+import { ERROR_STATUS, SUCCESS_STATUS } from "@calcom/platform-constants";
+import { OAuthClientType } from "@calcom/prisma/enums";
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose, Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsNotEmptyObject, IsOptional, IsString, ValidateNested } from "class-validator";
-
-import { SUCCESS_STATUS, ERROR_STATUS } from "@calcom/platform-constants";
-import { OAuthClientType } from "@calcom/prisma/enums";
 
 export class OAuth2ClientDto {
   @ApiProperty({

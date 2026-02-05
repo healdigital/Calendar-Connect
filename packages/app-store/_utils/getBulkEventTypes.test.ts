@@ -1,7 +1,5 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-
 import type { Prisma } from "@calcom/prisma/client";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { filterEventTypesWhereLocationUpdateIsAllowed, getBulkUserEventTypes } from "./getBulkEventTypes";
 
 vi.mock("@calcom/prisma", () => ({

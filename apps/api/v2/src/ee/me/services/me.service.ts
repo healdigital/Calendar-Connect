@@ -1,11 +1,10 @@
+import { sendChangeOfEmailVerification } from "@calcom/platform-libraries/emails";
+import type { Prisma } from "@calcom/prisma/client";
+import { Injectable } from "@nestjs/common";
 import { SchedulesService_2024_04_15 } from "@/ee/schedules/schedules_2024_04_15/services/schedules.service";
 import { PrismaFeaturesRepository } from "@/lib/repositories/prisma-features.repository";
 import { UpdateManagedUserInput } from "@/modules/users/inputs/update-managed-user.input";
-import { UserWithProfile, UsersRepository } from "@/modules/users/users.repository";
-import { Injectable } from "@nestjs/common";
-
-import { sendChangeOfEmailVerification } from "@calcom/platform-libraries/emails";
-import type { Prisma } from "@calcom/prisma/client";
+import { UsersRepository, UserWithProfile } from "@/modules/users/users.repository";
 
 export interface UpdateMeResult {
   updatedUser: UserWithProfile;

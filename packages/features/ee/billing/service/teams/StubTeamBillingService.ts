@@ -1,9 +1,9 @@
-import { TeamBillingPublishResponseStatus } from "./ITeamBillingService";
 import type {
   ITeamBillingService,
   TeamBillingInput,
   TeamBillingPublishResponse,
 } from "./ITeamBillingService";
+import { TeamBillingPublishResponseStatus } from "./ITeamBillingService";
 
 export class StubTeamBillingService implements ITeamBillingService {
   constructor(private team: TeamBillingInput) {}

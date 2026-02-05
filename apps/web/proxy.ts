@@ -1,13 +1,12 @@
-import { get } from "@vercel/edge-config";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-
+import process from "node:process";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";
 import getIP from "@calcom/lib/getIP";
 import { HttpError } from "@calcom/lib/http-error";
 import { piiHasher } from "@calcom/lib/server/PiiHasher";
-
 import { getCspHeader, getCspNonce } from "@lib/csp";
+import { get } from "@vercel/edge-config";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeGet = async <T = any>(key: string): Promise<T | undefined> => {

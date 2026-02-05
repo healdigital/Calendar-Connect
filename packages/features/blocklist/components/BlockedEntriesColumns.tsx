@@ -1,8 +1,5 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
-
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
 import {
@@ -13,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@calcom/ui/components/dropdown";
 import { Checkbox } from "@calcom/ui/components/form";
-
+import type { ColumnDef } from "@tanstack/react-table";
+import { useMemo } from "react";
 import type { BlocklistEntry, BlocklistScope } from "../types";
 
 interface UseBlockedEntriesColumnsProps<T extends BlocklistEntry> {

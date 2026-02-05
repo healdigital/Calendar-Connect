@@ -1,6 +1,6 @@
 import prisma from "@calcom/prisma";
+import type { Prisma, PrismaClient } from "@calcom/prisma/client";
 import type { AcademicField } from "@calcom/prisma/enums";
-import type { Prisma, PrismaClient } from "@prisma/client";
 
 /**
  * ProfileRepository handles all database operations for StudentProfile entities.

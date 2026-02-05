@@ -1,11 +1,9 @@
-import { useId } from "@radix-ui/react-id";
-import * as React from "react";
-import type { GroupBase, SingleValue, MultiValue } from "react-select";
-import ReactSelect from "react-select";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import cx from "@calcom/ui/classNames";
-
+import { useId } from "@radix-ui/react-id";
+import * as React from "react";
+import type { GroupBase, MultiValue, SingleValue } from "react-select";
+import ReactSelect from "react-select";
 import { Label } from "../inputs/Label";
 import { inputStyles } from "../inputs/TextField";
 import { getReactSelectProps } from "./selectTheme";

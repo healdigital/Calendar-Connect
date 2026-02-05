@@ -1,43 +1,34 @@
 "use client";
 
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Link from "next/link";
-import React, { useCallback, useState, useEffect } from "react";
-import { Query, Builder, Utils as QbUtils } from "react-awesome-query-builder";
-import type { ImmutableTree, BuilderProps, Config } from "react-awesome-query-builder";
-import type { JsonTree } from "react-awesome-query-builder";
-import type { UseFormReturn } from "react-hook-form";
-import { Toaster } from "sonner";
-
 import { buildEmptyQueryValue } from "@calcom/app-store/_utils/raqb/raqbUtils.client";
 import { raqbQueryValueUtils } from "@calcom/app-store/_utils/raqb/raqbUtils.server";
 import { routingFormAppComponents } from "@calcom/app-store/routing-forms/appComponents";
-import DynamicAppComponent from "@calcom/app-store/routing-forms/components/DynamicAppComponent";
 import { EmptyState } from "@calcom/app-store/routing-forms/components/_components/EmptyState";
 import { RoutingSkeleton } from "@calcom/app-store/routing-forms/components/_components/RoutingSkeleton";
+import DynamicAppComponent from "@calcom/app-store/routing-forms/components/DynamicAppComponent";
 import {
-  withRaqbSettingsAndWidgets,
   ConfigFor,
+  withRaqbSettingsAndWidgets,
 } from "@calcom/app-store/routing-forms/components/react-awesome-query-builder/config/uiConfig";
-import { RoutingPages } from "@calcom/app-store/routing-forms/lib/RoutingPages";
 import { createFallbackRoute } from "@calcom/app-store/routing-forms/lib/createFallbackRoute";
 import getEventTypeAppMetadata from "@calcom/app-store/routing-forms/lib/getEventTypeAppMetadata";
 import {
-  getQueryBuilderConfigForFormFields,
-  getQueryBuilderConfigForAttributes,
-  type FormFieldsQueryBuilderConfigWithRaqbFields,
   type AttributesQueryBuilderConfigWithRaqbFields,
+  type FormFieldsQueryBuilderConfigWithRaqbFields,
+  getQueryBuilderConfigForAttributes,
+  getQueryBuilderConfigForFormFields,
   isDynamicOperandField,
 } from "@calcom/app-store/routing-forms/lib/getQueryBuilderConfig";
 import isRouter from "@calcom/app-store/routing-forms/lib/isRouter";
-import type { RoutingFormWithResponseCount } from "@calcom/app-store/routing-forms/types/types";
+import { RoutingPages } from "@calcom/app-store/routing-forms/lib/RoutingPages";
 import type {
+  Attribute,
+  AttributeRoutingConfig,
+  EditFormRoute,
   GlobalRoute,
   LocalRoute,
+  RoutingFormWithResponseCount,
   SerializableRoute,
-  Attribute,
-  EditFormRoute,
-  AttributeRoutingConfig,
 } from "@calcom/app-store/routing-forms/types/types";
 import { RouteActionType } from "@calcom/app-store/routing-forms/zod";
 import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
@@ -52,15 +43,25 @@ import classNames from "@calcom/ui/classNames";
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
 import { FormCard } from "@calcom/ui/components/card";
-import { SelectWithValidation as Select, TextArea } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { SelectField } from "@calcom/ui/components/form";
-import { Switch } from "@calcom/ui/components/form";
+import {
+  SelectWithValidation as Select,
+  SelectField,
+  Switch,
+  TextArea,
+  TextField,
+} from "@calcom/ui/components/form";
 import type { IconName } from "@calcom/ui/components/icon";
 import { Icon } from "@calcom/ui/components/icon";
 import type { getServerSidePropsForSingleFormView as getServerSideProps } from "@calcom/web/lib/apps/routing-forms/[...pages]/getServerSidePropsSingleForm";
-
 import SingleForm from "@components/apps/routing-forms/SingleForm";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Link from "next/link";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { BuilderProps, Config, ImmutableTree, JsonTree } from "react-awesome-query-builder";
+import { Builder, Utils as QbUtils, Query } from "react-awesome-query-builder";
+import type { UseFormReturn } from "react-hook-form";
+import { Toaster } from "sonner";
 
 type Form = inferSSRProps<typeof getServerSideProps>["form"];
 

@@ -1,13 +1,12 @@
 import type { BookingStatus } from "@calcom/prisma/enums";
 import { z } from "zod";
-
 import { BookingStatusChangeSchema } from "../common/changeSchemas";
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
+  GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
-  GetDisplayTitleParams,
-  GetDisplayJsonParams,
 } from "./IAuditActionService";
 
 /**

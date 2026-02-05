@@ -1,16 +1,15 @@
 import dayjs from "@calcom/dayjs";
-import { getHostsAndGuests } from "@calcom/features/bookings/lib/getHostsAndGuests";
 import type { Host } from "@calcom/features/bookings/lib/getHostsAndGuests";
+import { getHostsAndGuests } from "@calcom/features/bookings/lib/getHostsAndGuests";
 import { sendGenericWebhookPayload } from "@calcom/features/webhooks/lib/sendPayload";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import prisma from "@calcom/prisma";
 import type { TimeUnit } from "@calcom/prisma/enums";
 import { BookingStatus, WebhookTriggerEvents } from "@calcom/prisma/enums";
-
 import { getBooking } from "./getBooking";
 import { getMeetingSessionsFromRoomName } from "./getMeetingSessionsFromRoomName";
-import type { TWebhook, TTriggerNoShowPayloadSchema } from "./schema";
+import type { TTriggerNoShowPayloadSchema, TWebhook } from "./schema";
 import { ZSendNoShowWebhookPayloadSchema } from "./schema";
 
 type OriginalRescheduledBooking =

@@ -1,9 +1,8 @@
-import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
-import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
+import type { Webhook } from "@calcom/prisma/client";
 import { Injectable } from "@nestjs/common";
 import { v4 as uuidv4 } from "uuid";
-
-import type { Webhook } from "@calcom/prisma/client";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
 type WebhookInputData = Pick<
   Webhook,

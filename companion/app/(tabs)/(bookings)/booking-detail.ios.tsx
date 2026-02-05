@@ -1,4 +1,5 @@
 import * as Clipboard from "expo-clipboard";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useRef } from "react";
 import { useColorScheme } from "react-native";
@@ -9,7 +10,6 @@ import type { Booking } from "@/services/calcom";
 import { showErrorAlert, showInfoAlert, showSuccessAlert } from "@/utils/alerts";
 import { type BookingActionsResult, getBookingActions } from "@/utils/booking-actions";
 import { openInAppBrowser } from "@/utils/browser";
-import { isLiquidGlassAvailable } from "expo-glass-effect";
 
 // Empty actions result for when no booking is loaded
 const EMPTY_ACTIONS: BookingActionsResult = {

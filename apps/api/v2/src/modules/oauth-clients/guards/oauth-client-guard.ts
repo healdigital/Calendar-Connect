@@ -1,14 +1,14 @@
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { ApiAuthGuardRequest, ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
 import { OAuthClientRepository } from "@/modules/oauth-clients/oauth-client.repository";
 import { UsersService } from "@/modules/users/services/users.service";
 import { UserWithProfile } from "@/modules/users/users.repository";
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  NotFoundException,
-} from "@nestjs/common";
 
 @Injectable()
 export class OAuthClientGuard implements CanActivate {

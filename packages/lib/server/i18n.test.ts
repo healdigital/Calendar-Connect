@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { mergeWithEnglishFallback } from "./i18n";
 
 describe("mergeWithEnglishFallback", () => {

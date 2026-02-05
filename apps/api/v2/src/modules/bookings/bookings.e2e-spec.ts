@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import path from "node:path";
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDMMF } from "@prisma/internals";
@@ -12,7 +13,7 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 let prismockInstance: any;
 
 async function getPrismock() {
-  const schemaPath = "../../packages/prisma/schema.prisma";
+  const schemaPath = path.resolve(__dirname, "../../../../../../packages/prisma/schema.prisma");
   const schemaContent = readFileSync(schemaPath, "utf-8");
   const dmmf = await getDMMF({ datamodel: schemaContent });
   const PrismockClient = createPrismock({ dmmf } as any);

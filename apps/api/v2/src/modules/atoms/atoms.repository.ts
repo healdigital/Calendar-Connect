@@ -1,9 +1,7 @@
+import { credentialForCalendarServiceSelect, paymentDataSelect } from "@calcom/platform-libraries";
+import { Injectable } from "@nestjs/common";
 import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { Injectable } from "@nestjs/common";
-
-import { credentialForCalendarServiceSelect } from "@calcom/platform-libraries";
-import { paymentDataSelect } from "@calcom/platform-libraries";
 
 @Injectable()
 export class AtomsRepository {

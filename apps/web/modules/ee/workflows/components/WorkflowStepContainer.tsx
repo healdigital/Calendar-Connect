@@ -1,7 +1,7 @@
-import { type TFunction } from "i18next";
+import type { TFunction } from "i18next";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { Controller, useWatch } from "react-hook-form";
 import "react-phone-number-input/style.css";
@@ -10,14 +10,14 @@ import type { RetellAgentWithDetails } from "@calcom/features/calAIPhone/provide
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import PhoneInput from "@calcom/features/components/phone-input";
 import {
-  isSMSAction,
-  isWhatsappAction,
   getTemplateBodyForAction,
-  shouldScheduleEmailReminder,
-  isSMSOrWhatsappAction,
+  hasCalAIAction,
   isCalAIAction,
   isFormTrigger,
-  hasCalAIAction,
+  isSMSAction,
+  isSMSOrWhatsappAction,
+  isWhatsappAction,
+  shouldScheduleEmailReminder,
 } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
 import { DYNAMIC_TEXT_VARIABLES } from "@calcom/features/ee/workflows/lib/constants";
 import {
@@ -48,7 +48,7 @@ import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Badge, InfoBadge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
-import { DialogContent, DialogFooter, DialogClose } from "@calcom/ui/components/dialog";
+import { DialogClose, DialogContent, DialogFooter } from "@calcom/ui/components/dialog";
 import {
   Dropdown,
   DropdownItem,
@@ -56,26 +56,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@calcom/ui/components/dropdown";
-import { AddVariablesDropdown } from "@calcom/ui/components/editor";
-import { Editor } from "@calcom/ui/components/editor";
-import { CheckboxField } from "@calcom/ui/components/form";
-import { EmailField } from "@calcom/ui/components/form";
-import { TextArea } from "@calcom/ui/components/form";
-import { Input } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { Select } from "@calcom/ui/components/form";
-import { MultiSelectCheckbox } from "@calcom/ui/components/form";
+import { AddVariablesDropdown, Editor } from "@calcom/ui/components/editor";
 import type { MultiSelectCheckboxesOptionType as Option } from "@calcom/ui/components/form";
+import {
+  CheckboxField,
+  EmailField,
+  Input,
+  Label,
+  MultiSelectCheckbox,
+  Select,
+  TextArea,
+  TextField,
+} from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { SkeletonText } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
-import { useHasPaidPlan, useHasActiveTeamPlan } from "@calcom/web/modules/billing/hooks/useHasPaidPlan";
-
+import { useHasActiveTeamPlan, useHasPaidPlan } from "@calcom/web/modules/billing/hooks/useHasPaidPlan";
+import { AgentConfigurationSheet } from "./agent-configuration/AgentConfigurationSheet";
 import { TestPhoneCallDialog } from "./TestPhoneCallDialog";
 import { TimeTimeUnitInput } from "./TimeTimeUnitInput";
 import { WebCallDialog } from "./WebCallDialog";
-import { AgentConfigurationSheet } from "./agent-configuration/AgentConfigurationSheet";
 
 type User = RouterOutputs["viewer"]["me"]["get"];
 

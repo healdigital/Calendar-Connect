@@ -1,5 +1,4 @@
 import { describe, expect, test } from "vitest";
-
 import { hasInvalidConsecutiveChars } from "./VideoApiAdapter";
 
 describe("hasInvalidConsecutiveChars", () => {

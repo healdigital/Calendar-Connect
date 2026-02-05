@@ -1,8 +1,7 @@
-import { describe, test, expect, vi, beforeEach } from "vitest";
-
 import { SelectedCalendarRepository } from "@calcom/features/selectedCalendar/repositories/SelectedCalendarRepository";
 import type { PrismaClient } from "@calcom/prisma";
 import type { Prisma, SelectedCalendar } from "@calcom/prisma/client";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const mockPrismaClient = {
   selectedCalendar: {

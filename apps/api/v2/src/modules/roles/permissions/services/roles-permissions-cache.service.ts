@@ -1,5 +1,5 @@
-import { RedisService } from "@/modules/redis/redis.service";
 import { Injectable, Logger } from "@nestjs/common";
+import { RedisService } from "@/modules/redis/redis.service";
 
 export const REDIS_TEAM_PERMISSIONS_CACHE_PATTERN = (teamId: number) =>
   `apiv2:user:*:team:${teamId}:requiredPermissions:*:guard:pbac`;

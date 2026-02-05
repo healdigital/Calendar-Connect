@@ -1,11 +1,10 @@
 import { getBillingProviderService } from "@calcom/ee/billing/di/containers/Billing";
 import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/repositories/PrismaPhoneNumberRepository";
+import { extractBillingDataFromStripeSubscription } from "@calcom/features/ee/billing/lib/stripe-subscription-utils";
 import { PrismaOrganizationBillingRepository } from "@calcom/features/ee/billing/repository/billing/PrismaOrganizationBillingRepository";
 import { PrismaTeamBillingRepository } from "@calcom/features/ee/billing/repository/billing/PrismaTeamBillingRepository";
-import { extractBillingDataFromStripeSubscription } from "@calcom/features/ee/billing/lib/stripe-subscription-utils";
 import logger from "@calcom/lib/logger";
 import prisma from "@calcom/prisma";
-
 import { PhoneNumberSubscriptionStatus } from "@calcom/prisma/enums";
 
 const log = logger.getSubLogger({ prefix: ["subscription-updated-webhook"] });

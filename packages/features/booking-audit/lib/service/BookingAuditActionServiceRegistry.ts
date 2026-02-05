@@ -1,40 +1,38 @@
 import type { IAttendeeRepository } from "@calcom/features/bookings/repositories/IAttendeeRepository";
 import type { UserRepository } from "@calcom/features/users/repositories/UserRepository";
-import type { IAuditActionService } from "../actions/IAuditActionService";
-import type { BookingAuditAction } from "../repository/IBookingAuditRepository";
-
-import { CreatedAuditActionService, type CreatedAuditData } from "../actions/CreatedAuditActionService";
-import { CancelledAuditActionService, type CancelledAuditData } from "../actions/CancelledAuditActionService";
-import {
-  RescheduledAuditActionService,
-  type RescheduledAuditData,
-} from "../actions/RescheduledAuditActionService";
 import { AcceptedAuditActionService, type AcceptedAuditData } from "../actions/AcceptedAuditActionService";
-import {
-  RescheduleRequestedAuditActionService,
-  type RescheduleRequestedAuditData,
-} from "../actions/RescheduleRequestedAuditActionService";
 import {
   AttendeeAddedAuditActionService,
   type AttendeeAddedAuditData,
 } from "../actions/AttendeeAddedAuditActionService";
 import {
-  NoShowUpdatedAuditActionService,
-  type NoShowUpdatedAuditData,
-} from "../actions/NoShowUpdatedAuditActionService";
-import { RejectedAuditActionService, type RejectedAuditData } from "../actions/RejectedAuditActionService";
-import {
   AttendeeRemovedAuditActionService,
   type AttendeeRemovedAuditData,
 } from "../actions/AttendeeRemovedAuditActionService";
-import {
-  ReassignmentAuditActionService,
-  type ReassignmentAuditData,
-} from "../actions/ReassignmentAuditActionService";
+import { CancelledAuditActionService, type CancelledAuditData } from "../actions/CancelledAuditActionService";
+import { CreatedAuditActionService, type CreatedAuditData } from "../actions/CreatedAuditActionService";
+import type { IAuditActionService } from "../actions/IAuditActionService";
 import {
   LocationChangedAuditActionService,
   type LocationChangedAuditData,
 } from "../actions/LocationChangedAuditActionService";
+import {
+  NoShowUpdatedAuditActionService,
+  type NoShowUpdatedAuditData,
+} from "../actions/NoShowUpdatedAuditActionService";
+import {
+  ReassignmentAuditActionService,
+  type ReassignmentAuditData,
+} from "../actions/ReassignmentAuditActionService";
+import { RejectedAuditActionService, type RejectedAuditData } from "../actions/RejectedAuditActionService";
+import {
+  RescheduledAuditActionService,
+  type RescheduledAuditData,
+} from "../actions/RescheduledAuditActionService";
+import {
+  RescheduleRequestedAuditActionService,
+  type RescheduleRequestedAuditData,
+} from "../actions/RescheduleRequestedAuditActionService";
 import {
   SeatBookedAuditActionService,
   type SeatBookedAuditData,
@@ -43,6 +41,7 @@ import {
   SeatRescheduledAuditActionService,
   type SeatRescheduledAuditData,
 } from "../actions/SeatRescheduledAuditActionService";
+import type { BookingAuditAction } from "../repository/IBookingAuditRepository";
 
 /**
  * Union type for all audit action data types

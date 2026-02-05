@@ -1,13 +1,12 @@
 import authedProcedure, { authedAdminProcedure } from "@calcom/trpc/server/procedures/authedProcedure";
-
 import { router } from "../../../trpc";
 import { ZCreateClientInputSchema } from "./createClient.schema";
+import { ZDeleteClientInputSchema } from "./deleteClient.schema";
 import { ZGenerateAuthCodeInputSchema } from "./generateAuthCode.schema";
 import { ZGetClientForAuthorizationInputSchema } from "./getClientForAuthorization.schema";
 import { ZListClientsInputSchema } from "./listClients.schema";
 import { ZSubmitClientInputSchema, ZSubmitClientOutputSchema } from "./submitClientForReview.schema";
 import { ZUpdateClientInputSchema } from "./updateClient.schema";
-import { ZDeleteClientInputSchema } from "./deleteClient.schema";
 
 export const oAuthRouter = router({
   getClientForAuthorization: authedProcedure

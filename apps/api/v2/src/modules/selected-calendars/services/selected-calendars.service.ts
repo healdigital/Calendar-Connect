@@ -1,5 +1,7 @@
-import { CalendarsCacheService } from "@/ee/calendars/services/calendars-cache.service";
+import { SelectedCalendarRepository } from "@calcom/platform-libraries";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CalendarsService } from "@/ee/calendars/services/calendars.service";
+import { CalendarsCacheService } from "@/ee/calendars/services/calendars-cache.service";
 import { OrganizationsDelegationCredentialRepository } from "@/modules/organizations/delegation-credentials/organizations-delegation-credential.repository";
 import { OrganizationsMembershipService } from "@/modules/organizations/memberships/services/organizations-membership.service";
 import {
@@ -12,9 +14,6 @@ import {
   SelectedCalendarsRepository,
 } from "@/modules/selected-calendars/selected-calendars.repository";
 import { UserWithProfile } from "@/modules/users/users.repository";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-
-import { SelectedCalendarRepository } from "@calcom/platform-libraries";
 
 type SelectedCalendarsInputDelegationCredential = SelectedCalendarsInputDto & {
   delegationCredentialId: string;

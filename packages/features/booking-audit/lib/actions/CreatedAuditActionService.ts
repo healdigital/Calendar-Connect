@@ -1,13 +1,12 @@
-import { z } from "zod";
-import { BookingStatus } from "@calcom/prisma/enums";
 import type { UserRepository } from "@calcom/features/users/repositories/UserRepository";
-
+import { BookingStatus } from "@calcom/prisma/enums";
+import { z } from "zod";
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
+  GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
-  GetDisplayTitleParams,
-  GetDisplayJsonParams,
 } from "./IAuditActionService";
 
 /**

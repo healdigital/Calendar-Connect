@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
-
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import classNames from "@calcom/ui/classNames";
 import { Icon } from "@calcom/ui/components/icon";
+import Link from "next/link";
 
 export const AppDependencyComponent = ({
   appName,

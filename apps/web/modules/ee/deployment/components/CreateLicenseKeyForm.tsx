@@ -1,19 +1,17 @@
 "use client";
 
-import type { SessionContextValue } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { UserPermissionRole } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import type { Ensure } from "@calcom/types/utils";
 import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
-import { Label, TextField, ToggleGroup, Form } from "@calcom/ui/components/form";
+import { Form, Label, TextField, ToggleGroup } from "@calcom/ui/components/form";
 import { showToast } from "@calcom/ui/components/toast";
-
-import { UserPermissionRole } from "@calcom/prisma/enums";
+import type { SessionContextValue } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 export const CreateANewLicenseKeyForm = () => {
   const session = useSession();

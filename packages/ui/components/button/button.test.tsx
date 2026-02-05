@@ -2,7 +2,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { vi } from "vitest";
-
 import { Button, buttonClasses } from "./Button";
 
 const observeMock = vi.fn();

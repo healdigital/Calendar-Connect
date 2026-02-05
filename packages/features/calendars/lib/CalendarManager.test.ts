@@ -1,8 +1,6 @@
 import { prisma } from "@calcom/prisma/__mocks__/prisma";
-
 import { describe, expect, it, vi } from "vitest";
-
-import { getCalendarCredentials, deduplicateCredentialsBasedOnSelectedCalendars } from "./CalendarManager";
+import { deduplicateCredentialsBasedOnSelectedCalendars, getCalendarCredentials } from "./CalendarManager";
 
 vi.mock("@calcom/prisma", () => ({
   prisma,

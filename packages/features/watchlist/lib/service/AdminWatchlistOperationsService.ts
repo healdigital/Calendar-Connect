@@ -2,7 +2,6 @@ import type { PrismaBookingReportRepository } from "@calcom/features/bookingRepo
 import type { WatchlistRepository } from "@calcom/features/watchlist/lib/repository/WatchlistRepository";
 import logger from "@calcom/lib/logger";
 import { SystemReportStatus, WatchlistType } from "@calcom/prisma/enums";
-
 import { WatchlistErrors } from "../errors/WatchlistErrors";
 import { extractDomainFromEmail, normalizeEmail } from "../utils/normalization";
 import type {

@@ -2,12 +2,12 @@ import { BookingSeatRepository } from "@calcom/features/bookings/repositories/Bo
 import type { CreditCheckFn } from "@calcom/features/ee/billing/credit-service";
 import {
   isAttendeeAction,
+  isCalAIAction,
+  isEmailAction,
   isSMSAction,
   isSMSOrWhatsappAction,
   isWhatsappAction,
-  isCalAIAction,
 } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
-import { isEmailAction } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
 import { EmailWorkflowService } from "@calcom/features/ee/workflows/lib/service/EmailWorkflowService";
 import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
 import type { Workflow, WorkflowStep } from "@calcom/features/ee/workflows/lib/types";
@@ -17,12 +17,9 @@ import { withReporting } from "@calcom/lib/sentryWrapper";
 import { getTranslation } from "@calcom/lib/server/i18n";
 import { checkSMSRateLimit } from "@calcom/lib/smsLockState";
 import { prisma } from "@calcom/prisma";
-import { SchedulingType } from "@calcom/prisma/enums";
-import { WorkflowActions, WorkflowTriggerEvents } from "@calcom/prisma/enums";
+import { type SchedulingType, WorkflowActions, WorkflowTriggerEvents } from "@calcom/prisma/enums";
 import type { CalendarEvent } from "@calcom/types/Calendar";
-
-import type { FormSubmissionData } from "../types";
-import type { BookingInfo } from "../types";
+import type { BookingInfo, FormSubmissionData } from "../types";
 import type { ScheduleTextReminderAction } from "./smsReminderManager";
 
 export type WorkflowContextData =

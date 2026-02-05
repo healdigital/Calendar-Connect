@@ -1,15 +1,12 @@
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
-
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { isCompanyEmail } from "@calcom/features/ee/organizations/lib/utils";
 import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import { OnboardingPathService } from "@calcom/features/onboarding/lib/onboarding-path.service";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import { prisma } from "@calcom/prisma";
-
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
-
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { OrganizationMigrateTeamsView } from "~/onboarding/organization/migrate-teams/organization-migrate-teams-view";
 
 type PageProps = {

@@ -1,7 +1,6 @@
 "use client";
 
 import { Fieldset as FieldsetPrimitive } from "@base-ui/react/fieldset";
-
 import { cn } from "@coss/ui/lib/utils";
 
 function Fieldset({ className, ...props }: FieldsetPrimitive.Root.Props) {

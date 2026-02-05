@@ -1,16 +1,15 @@
-import { expect } from "@playwright/test";
-import type { Page } from "@playwright/test";
-
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { APP_CREDENTIAL_SHARING_ENABLED } from "@calcom/lib/constants";
 import prisma from "@calcom/prisma";
 import type { CredentialForCalendarServiceWithEmail } from "@calcom/types/Credential";
 import { test } from "@calcom/web/playwright/lib/fixtures";
 import { selectSecondAvailableTimeSlotNextMonth } from "@calcom/web/playwright/lib/testUtils";
-
+import type { Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 import metadata from "../_metadata";
 import GoogleCalendarService from "../lib/CalendarService";
-import { createBookingAndFetchGCalEvent, deleteBookingAndEvent, assertValueExists } from "./testUtils";
+import { assertValueExists, createBookingAndFetchGCalEvent, deleteBookingAndEvent } from "./testUtils";
 
 test.describe("Google Calendar", async () => {
   // Skip till the tests are flaky
@@ -159,7 +158,7 @@ test.describe("Google Calendar", async () => {
         await expect(page.locator("[data-testid=success-page]")).toBeVisible();
 
         const rescheduledBookingUrl = await page.url();
-        const rescheduledBookingUid = rescheduledBookingUrl.match(/booking\/([^\/?]+)/);
+        const rescheduledBookingUid = rescheduledBookingUrl.match(/booking\/([^/?]+)/);
 
         assertValueExists(rescheduledBookingUid, "rescheduledBookingUid");
 
@@ -179,7 +178,7 @@ test.describe("Google Calendar", async () => {
         const gCalRescheduledEventResponse = await authedCalendar.events.get({
           calendarId: "primary",
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
+          //@ts-expect-error
           eventId: gCalReference.uid,
         });
 
@@ -226,7 +225,7 @@ test.describe("Google Calendar", async () => {
         const canceledGCalEventResponse = await authedCalendar.events.get({
           calendarId: "primary",
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
+          //@ts-expect-error
           eventId: gCalReference.uid,
         });
 

@@ -1,15 +1,9 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { ErrorMessage } from "@hookform/error-message";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useFieldArray } from "react-hook-form";
-import type { UseFormGetValues, UseFormSetValue, Control, FormState } from "react-hook-form";
-
 import type { EventLocationType } from "@calcom/app-store/locations";
 import { getEventLocationType, MeetLocationType } from "@calcom/app-store/locations";
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
+import LocationInput from "@calcom/features/eventtypes/components/locations/LocationInput";
 import type { LocationCustomClassNames } from "@calcom/features/eventtypes/components/locations/types";
-import type { LocationFormValues, EventTypeSetupProps } from "@calcom/features/eventtypes/lib/types";
+import type { EventTypeSetupProps, LocationFormValues } from "@calcom/features/eventtypes/lib/types";
 import CheckboxField from "@calcom/features/form/components/CheckboxField";
 import type { SingleValueLocationOption } from "@calcom/features/form/components/LocationSelect";
 import LocationSelect from "@calcom/features/form/components/LocationSelect";
@@ -20,10 +14,14 @@ import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
-
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { ErrorMessage } from "@hookform/error-message";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import type { Control, FormState, UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import CalVideoSettings from "./CalVideoSettings";
 import DefaultLocationSettings from "./DefaultLocationSettings";
-import LocationInput from "@calcom/features/eventtypes/components/locations/LocationInput";
 
 export type TEventTypeLocation = Pick<EventTypeSetupProps["eventType"], "locations" | "calVideoSettings">;
 export type TLocationOptions = Pick<EventTypeSetupProps, "locationOptions">["locationOptions"];

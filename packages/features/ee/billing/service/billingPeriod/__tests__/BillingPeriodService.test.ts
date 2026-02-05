@@ -1,8 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { prisma } from "@calcom/prisma";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BillingPeriodService } from "../BillingPeriodService";
 
 vi.mock("@calcom/prisma", () => ({

@@ -1,12 +1,10 @@
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-
 import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import { useIsStandalone } from "@calcom/lib/hooks/useIsStandalone";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Icon } from "@calcom/ui/components/icon";
 import { Logo } from "@calcom/ui/components/logo";
-
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { KBarTrigger } from "./Kbar";
 import { UserDropdown } from "./user-dropdown/UserDropdown";
 

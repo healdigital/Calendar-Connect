@@ -1,9 +1,6 @@
-import { getTranslate, _generateMetadata } from "app/_utils";
-
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
-
+import { _generateMetadata, getTranslate } from "app/_utils";
 import { AdminAPIView } from "~/ee/organizations/admin-api";
-
 import { validateUserHasOrg } from "../actions/validateUserHasOrg";
 
 export const generateMetadata = async () =>

@@ -3,7 +3,6 @@
 import type { OptInFeatureConfig } from "@calcom/features/feature-opt-in/config";
 import type { ReactElement } from "react";
 import { createPortal } from "react-dom";
-
 import { FeatureOptInBanner } from "./FeatureOptInBanner";
 import type { FeatureOptInMutations } from "./FeatureOptInConfirmDialog";
 import { FeatureOptInConfirmDialog } from "./FeatureOptInConfirmDialog";

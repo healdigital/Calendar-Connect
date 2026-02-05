@@ -25,10 +25,10 @@ const ALL_APPS_MAP = Object.keys(appStoreMetadata).reduce(
     store[key] = metadata;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    //@ts-expect-error
     delete store[key]["/*"];
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    //@ts-expect-error
     delete store[key]["__createdUsingCli"];
     return store;
   },

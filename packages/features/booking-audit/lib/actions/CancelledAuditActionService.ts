@@ -1,12 +1,11 @@
 import { z } from "zod";
-
-import { StringChangeSchema, BookingStatusChangeSchema } from "../common/changeSchemas";
+import { BookingStatusChangeSchema, StringChangeSchema } from "../common/changeSchemas";
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
+  GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
-  GetDisplayTitleParams,
-  GetDisplayJsonParams,
 } from "./IAuditActionService";
 
 /**

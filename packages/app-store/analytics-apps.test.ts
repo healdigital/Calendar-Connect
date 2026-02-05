@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { appDataSchema as databuddySchema } from "./databuddy/zod";
 import { appDataSchema as fathomSchema } from "./fathom/zod";
 import { appDataSchema as ga4Schema } from "./ga4/zod";

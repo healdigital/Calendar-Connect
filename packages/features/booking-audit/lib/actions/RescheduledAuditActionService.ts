@@ -1,13 +1,12 @@
 import { z } from "zod";
-
 import { NumberChangeSchema, StringChangeSchema } from "../common/changeSchemas";
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
+  BaseStoredAuditData,
+  GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
-  GetDisplayTitleParams,
-  GetDisplayJsonParams,
-  BaseStoredAuditData,
 } from "./IAuditActionService";
 
 /**

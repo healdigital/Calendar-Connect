@@ -1,6 +1,6 @@
 import "../__mocks__/delegationCredential";
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 vi.mock("@sentry/nextjs", () => ({
   metrics: {
@@ -15,7 +15,6 @@ import type { CalendarSyncService } from "@calcom/features/calendar-subscription
 import type { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import type { ISelectedCalendarRepository } from "@calcom/features/selectedCalendar/repositories/SelectedCalendarRepository.interface";
 import type { SelectedCalendar } from "@calcom/prisma/client";
-
 import { CalendarSubscriptionService } from "../CalendarSubscriptionService";
 
 const mockSelectedCalendar: SelectedCalendar = {

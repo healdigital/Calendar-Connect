@@ -1,8 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
 import type { RoutingFormTraceService } from "@calcom/features/routing-trace/domains/RoutingFormTraceService";
 import { RaqbLogicResult } from "@calcom/lib/raqb/evaluateRaqbLogic";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { FormResponse, SerializableForm } from "../types/types";
 import { findMatchingRoute } from "./processRoute";
 

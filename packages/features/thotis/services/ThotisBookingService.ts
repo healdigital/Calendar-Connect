@@ -1,7 +1,8 @@
 import process from "node:process";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
-import type { Prisma } from "@prisma/client";
+import type { Prisma, PrismaClient } from "@calcom/prisma/client";
+import { uuid } from "short-uuid";
 import { RedisService } from "../../redis/RedisService";
 import { AnalyticsService } from "./AnalyticsService";
 
@@ -15,7 +16,7 @@ export class ThotisBookingService {
   private readonly AVAILABILITY_CACHE_TTL = 2 * 60 * 1000; // 2 minutes
 
   constructor(
-    private readonly prisma: Prisma.TransactionClient | typeof import("@prisma/client").PrismaClient,
+    private readonly prisma: Prisma.TransactionClient | PrismaClient,
     analytics?: AnalyticsService,
     redis?: RedisService
   ) {
@@ -193,6 +194,7 @@ export class ThotisBookingService {
     // Create booking
     const booking = await this.prisma.booking.create({
       data: {
+        uid: uuid(),
         userId: studentProfile.userId,
         eventTypeId: eventType.id,
         startTime,
@@ -422,11 +424,7 @@ export class ThotisBookingService {
     });
 
     if (!booking) {
-      throw new ErrorWithCode({
-        message: `Booking ${bookingId} not found`,
-        code: "BOOKING_NOT_FOUND",
-        statusCode: 404,
-      });
+      throw new ErrorWithCode(ErrorCode.NotFound, `Booking ${bookingId} not found`);
     }
 
     // Validate booking is not already cancelled
@@ -538,11 +536,7 @@ export class ThotisBookingService {
     });
 
     if (!booking) {
-      throw new ErrorWithCode({
-        message: `Booking ${bookingId} not found`,
-        code: "BOOKING_NOT_FOUND",
-        statusCode: 404,
-      });
+      throw new ErrorWithCode(ErrorCode.NotFound, `Booking ${bookingId} not found`);
     }
 
     // Validate booking is not cancelled
@@ -617,7 +611,7 @@ export class ThotisBookingService {
     if (updatedBookingWithUser) {
       const metadata = updatedBookingWithUser.metadata as { studentProfileId?: string } | null;
       const studentProfileId = metadata?.studentProfileId;
-      if (studentProfileId && updatedBookingWithUser.eventType) {
+      if (studentProfileId && updatedBookingWithUser.eventType?.userId) {
         await this.invalidateStudentCache(updatedBookingWithUser.eventType.userId, studentProfileId);
       }
     }
@@ -652,11 +646,7 @@ export class ThotisBookingService {
     });
 
     if (!booking) {
-      throw new ErrorWithCode({
-        message: `Booking ${bookingId} not found`,
-        code: "BOOKING_NOT_FOUND",
-        statusCode: 404,
-      });
+      throw new ErrorWithCode(ErrorCode.NotFound, `Booking ${bookingId} not found`);
     }
 
     // Validate booking is not cancelled

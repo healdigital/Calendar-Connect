@@ -1,9 +1,4 @@
-import { auth, Client, webln } from "@getalby/sdk";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useCallback, useEffect } from "react";
-import { Toaster } from "sonner";
-
+import process from "node:process";
 import AppNotInstalledMessage from "@calcom/app-store/_components/AppNotInstalledMessage";
 import { albyCredentialKeysSchema } from "@calcom/app-store/alby/lib/albyCredentialKeysSchema";
 import type { IAlbySetupProps } from "@calcom/app-store/alby/pages/setup/_getServerSideProps";
@@ -14,6 +9,11 @@ import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
+import { auth, Client, webln } from "@getalby/sdk";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { Toaster } from "sonner";
 
 export default function AlbySetup(props: IAlbySetupProps) {
   const params = useCompatSearchParams();

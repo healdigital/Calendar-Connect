@@ -1,8 +1,6 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-
 import { prisma } from "@calcom/prisma";
 import type { TrpcSessionUser } from "@calcom/trpc/server/trpc";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { OrganizationPaymentService } from "./OrganizationPaymentService";
 import type { IOrganizationPermissionService } from "./OrganizationPermissionService";
 

@@ -1,5 +1,4 @@
 import { _generateMetadata } from "app/_utils";
-
 import CreateNewTeamView, { LayoutWrapper } from "~/settings/teams/new/create-new-team-view";
 
 export const generateMetadata = async () =>

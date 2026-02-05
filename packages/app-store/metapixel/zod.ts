@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { eventTypeAppCardZod } from "@calcom/app-store/eventTypeAppCardZod";
+import { z } from "zod";
 
 // Meta Pixel IDs are numeric strings of 15-16 digits
 const metaPixelIdSchema = z

@@ -1,5 +1,4 @@
 import type { DirectorySyncEvent, Group } from "@boxyhq/saml-jackson";
-
 import { addNewMembersToEventTypes } from "@calcom/features/ee/teams/lib/queries";
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
 import logger from "@calcom/lib/logger";
@@ -9,10 +8,9 @@ import prisma from "@calcom/prisma";
 import { IdentityProvider, MembershipRole } from "@calcom/prisma/enums";
 import {
   getTeamOrThrow,
-  sendSignupToOrganizationEmail,
   sendExistingUserTeamInviteEmails,
+  sendSignupToOrganizationEmail,
 } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/utils";
-
 import createUsersAndConnectToOrg from "./users/createUsersAndConnectToOrg";
 
 const handleGroupEvents = async (event: DirectorySyncEvent, organizationId: number) => {
@@ -160,26 +158,24 @@ const handleGroupEvents = async (event: DirectorySyncEvent, organizationId: numb
     // For existing users create membership for team and org if needed
     await prisma.membership.createMany({
       data: [
-        ...users
-          .map((user) => {
-            return [
-              {
-                createdAt: new Date(),
-                userId: user.id,
-                teamId: group.teamId,
-                role: MembershipRole.MEMBER,
-                accepted: true,
-              },
-              {
-                createdAt: new Date(),
-                userId: user.id,
-                teamId: organizationId,
-                role: MembershipRole.MEMBER,
-                accepted: true,
-              },
-            ];
-          })
-          .flat(),
+        ...users.flatMap((user) => {
+          return [
+            {
+              createdAt: new Date(),
+              userId: user.id,
+              teamId: group.teamId,
+              role: MembershipRole.MEMBER,
+              accepted: true,
+            },
+            {
+              createdAt: new Date(),
+              userId: user.id,
+              teamId: organizationId,
+              role: MembershipRole.MEMBER,
+              accepted: true,
+            },
+          ];
+        }),
       ],
       skipDuplicates: true,
     });

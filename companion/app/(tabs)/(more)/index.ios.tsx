@@ -13,13 +13,13 @@ import {
   View,
 } from "react-native";
 import { LogoutConfirmModal } from "@/components/LogoutConfirmModal";
+import { getColors } from "@/constants/colors";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryContext } from "@/contexts/QueryContext";
 import { useUserProfile } from "@/hooks";
 import { showErrorAlert, showNotAvailableAlert } from "@/utils/alerts";
 import { openInAppBrowser } from "@/utils/browser";
 import { getAvatarUrl } from "@/utils/getAvatarUrl";
-import { getColors } from "@/constants/colors";
 
 interface MoreMenuItem {
   name: string;

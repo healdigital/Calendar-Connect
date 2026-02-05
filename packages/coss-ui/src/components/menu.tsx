@@ -1,9 +1,9 @@
 "use client";
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
+import { cn } from "@coss/ui/lib/utils";
 import { ChevronRightIcon } from "lucide-react";
 import type * as React from "react";
-import { cn } from "@coss/ui/lib/utils";
 
 const MenuCreateHandle = MenuPrimitive.createHandle;
 

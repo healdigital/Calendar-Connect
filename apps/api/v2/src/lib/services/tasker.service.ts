@@ -1,6 +1,5 @@
-import { Injectable } from "@nestjs/common";
-
 import { getTasker, type Tasker } from "@calcom/platform-libraries";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class TaskerService {

@@ -1,5 +1,3 @@
-import type { EventStatus } from "ics";
-
 import dayjs from "@calcom/dayjs";
 import generateIcsString from "@calcom/emails/lib/generateIcsString";
 import { sendCustomWorkflowEmail } from "@calcom/emails/workflow-email-service";
@@ -12,19 +10,23 @@ import { UserRepository } from "@calcom/features/users/repositories/UserReposito
 import { getVideoCallUrlFromCalEvent } from "@calcom/lib/CalEventParser";
 import { SENDER_NAME, WEBSITE_URL } from "@calcom/lib/constants";
 import logger from "@calcom/lib/logger";
-import { TimeFormat } from "@calcom/lib/timeFormat";
 import { getTranslation } from "@calcom/lib/server/i18n";
+import { TimeFormat } from "@calcom/lib/timeFormat";
 import { prisma } from "@calcom/prisma";
-import { WorkflowActions, WorkflowTemplates } from "@calcom/prisma/enums";
-import { SchedulingType, WorkflowTriggerEvents } from "@calcom/prisma/enums";
+import {
+  SchedulingType,
+  WorkflowActions,
+  WorkflowTemplates,
+  WorkflowTriggerEvents,
+} from "@calcom/prisma/enums";
 import { bookingMetadataSchema } from "@calcom/prisma/zod-utils";
-import { CalendarEvent } from "@calcom/types/Calendar";
-
+import type { CalendarEvent } from "@calcom/types/Calendar";
+import type { EventStatus } from "ics";
 import type { WorkflowReminderRepository } from "../../repositories/WorkflowReminderRepository";
 import {
-  isEmailAction,
   getTemplateBodyForAction,
   getTemplateSubjectForAction,
+  isEmailAction,
 } from "../actionHelperFunctions";
 import { detectMatchedTemplate } from "../detectMatchedTemplate";
 import { getWorkflowRecipientEmail } from "../getWorkflowReminders";
@@ -35,11 +37,11 @@ import customTemplate, {
 import emailRatingTemplate from "../reminders/templates/emailRatingTemplate";
 import emailReminderTemplate from "../reminders/templates/emailReminderTemplate";
 import type {
-  FormSubmissionData,
-  WorkflowContextData,
   AttendeeInBookingInfo,
   BookingInfo,
+  FormSubmissionData,
   ScheduleEmailReminderAction,
+  WorkflowContextData,
 } from "../types";
 import { WorkflowService } from "./WorkflowService";
 

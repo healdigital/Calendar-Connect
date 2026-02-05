@@ -1,15 +1,14 @@
 import type { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
 import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import type { ZCreateAttributeSyncSchema } from "@calcom/trpc/server/routers/viewer/attribute-sync/createAttributeSync.schema";
-
 import { enabledAppSlugs } from "../constants";
 import {
+  AttributeSyncIntegrations,
+  ConditionIdentifierEnum,
+  type IAttributeSyncRule,
   type IIntegrationAttributeSyncRepository,
   type ISyncFormData,
   type ITeamCondition,
-  type IAttributeSyncRule,
-  AttributeSyncIntegrations,
-  ConditionIdentifierEnum,
 } from "../repositories/IIntegrationAttributeSyncRepository";
 import { attributeSyncRuleSchema } from "../schemas/zod";
 

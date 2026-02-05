@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Text, TextInput, useColorScheme, View } from "react-native";
+import { AppPressable } from "@/components/AppPressable";
 import { BookingListScreen } from "@/components/booking-list-screen/BookingListScreen";
 import { Header } from "@/components/Header";
 import {
@@ -9,10 +10,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AppPressable } from "@/components/AppPressable";
-import { useActiveBookingFilter } from "@/hooks/useActiveBookingFilter";
-import { useEventTypes } from "@/hooks";
 import { getColors } from "@/constants/colors";
+import { useEventTypes } from "@/hooks";
+import { useActiveBookingFilter } from "@/hooks/useActiveBookingFilter";
 
 export default function Bookings() {
   const [searchQuery, setSearchQuery] = useState("");

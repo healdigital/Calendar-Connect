@@ -1,7 +1,6 @@
 import { CrmRoutingTraceService } from "@calcom/features/routing-trace/services/CrmRoutingTraceService";
 import type { RoutingTraceService } from "@calcom/features/routing-trace/services/RoutingTraceService";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
 import { SalesforceRoutingTraceService } from "./SalesforceRoutingTraceService";
 
 describe("SalesforceRoutingTraceService", () => {

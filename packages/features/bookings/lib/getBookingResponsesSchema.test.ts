@@ -1,10 +1,9 @@
 /* eslint-disable playwright/no-conditional-in-test */
-import { describe, expect } from "vitest";
-import type { z } from "zod";
 
 import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import { test } from "@calcom/testing/lib/fixtures/fixtures";
-
+import { describe, expect } from "vitest";
+import type { z } from "zod";
 import getBookingResponsesSchema, { getBookingResponsesPartialSchema } from "./getBookingResponsesSchema";
 
 const CUSTOM_REQUIRED_FIELD_ERROR_MSG = "error_required_field";
@@ -115,7 +114,7 @@ describe("getBookingResponsesSchema", () => {
         });
         expect(parsedResponsesWithJustName.success).toBe(false);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+        //@ts-expect-error
         expect(parsedResponsesWithJustName.error.issues[0]).toEqual(
           expect.objectContaining({
             path: ["email"],
@@ -129,7 +128,7 @@ describe("getBookingResponsesSchema", () => {
 
         expect(parsedResponsesWithJustEmail.success).toBe(false);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+        //@ts-expect-error
         expect(parsedResponsesWithJustEmail.error.issues[0]).toEqual(
           expect.objectContaining({
             message: "Invalid input",
@@ -165,7 +164,7 @@ describe("getBookingResponsesSchema", () => {
         });
         expect(parsedResponses.success).toBe(false);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error
         expect(parsedResponses.error.issues[0]).toEqual(
           expect.objectContaining({
             // We don't get zod default email address validation error because `bookingResponses` schema defines email as z.string() only

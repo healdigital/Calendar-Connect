@@ -4,25 +4,24 @@ import prisma from "@calcom/prisma";
 import type { BufferedBusyTime } from "@calcom/types/BufferedBusyTime";
 import type {
   Calendar,
-  CalendarServiceEvent,
   CalendarEvent,
+  CalendarServiceEvent,
   EventBusyDate,
   GetAvailabilityParams,
   IntegrationCalendar,
   NewCalendarEventType,
 } from "@calcom/types/Calendar";
 import type { CredentialPayload } from "@calcom/types/Credential";
-
 import refreshOAuthTokens from "../../_utils/oauth/refreshOAuthTokens";
-import { handleFeishuError, isExpired, FEISHU_HOST } from "../common";
+import { FEISHU_HOST, handleFeishuError, isExpired } from "../common";
 import type {
   CreateAttendeesResp,
   CreateEventResp,
-  FreeBusyResp,
-  GetPrimaryCalendarsResp,
   FeishuAuthCredentials,
   FeishuEvent,
   FeishuEventAttendee,
+  FreeBusyResp,
+  GetPrimaryCalendarsResp,
   ListCalendarsResp,
   RefreshTokenResp,
 } from "../types/FeishuCalendar";

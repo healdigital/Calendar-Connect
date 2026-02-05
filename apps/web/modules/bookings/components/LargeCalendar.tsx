@@ -1,17 +1,15 @@
-import { useMemo, useEffect } from "react";
-
 import dayjs from "@calcom/dayjs";
 import { useBookerStoreContext } from "@calcom/features/bookings/Booker/BookerStoreProvider";
+import { useOverlayCalendarStore } from "@calcom/features/bookings/Booker/components/OverlayCalendar/store";
 import { useAvailableTimeSlots } from "@calcom/features/bookings/Booker/hooks/useAvailableTimeSlots";
 import { useBookerTime } from "@calcom/features/bookings/Booker/hooks/useBookerTime";
-import type { BookerEvent } from "@calcom/features/bookings/types";
-import { Calendar } from "@calcom/web/modules/calendars/weeklyview/components/Calendar";
-import type { CalendarEvent } from "@calcom/features/calendars/weeklyview/types/events";
-import { localStorage } from "@calcom/lib/webstorage";
-
 import type { useScheduleForEventReturnType } from "@calcom/features/bookings/Booker/utils/event";
 import { getQueryParam } from "@calcom/features/bookings/Booker/utils/query-param";
-import { useOverlayCalendarStore } from "@calcom/features/bookings/Booker/components/OverlayCalendar/store";
+import type { BookerEvent } from "@calcom/features/bookings/types";
+import type { CalendarEvent } from "@calcom/features/calendars/weeklyview/types/events";
+import { localStorage } from "@calcom/lib/webstorage";
+import { Calendar } from "@calcom/web/modules/calendars/weeklyview/components/Calendar";
+import { useEffect, useMemo } from "react";
 
 export const LargeCalendar = ({
   extraDays,

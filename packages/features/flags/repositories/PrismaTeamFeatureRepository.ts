@@ -1,9 +1,7 @@
-import { captureException } from "@sentry/nextjs";
-
 import type { TeamFeaturesDto } from "@calcom/lib/dto/TeamFeaturesDto";
 import type { PrismaClient } from "@calcom/prisma/client";
 import { Prisma } from "@calcom/prisma/client";
-
+import { captureException } from "@sentry/nextjs";
 import type { FeatureId, TeamFeatures } from "../config";
 
 export interface ITeamFeatureRepository {

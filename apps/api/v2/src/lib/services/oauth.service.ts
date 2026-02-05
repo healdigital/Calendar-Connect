@@ -1,9 +1,8 @@
+import { OAuthService as BaseOAuthService } from "@calcom/platform-libraries";
+import { Injectable } from "@nestjs/common";
 import { PrismaAccessCodeRepository } from "@/lib/repositories/prisma-access-code.repository";
 import { PrismaOAuthClientRepository } from "@/lib/repositories/prisma-oauth-client.repository";
 import { PrismaTeamRepository } from "@/lib/repositories/prisma-team.repository";
-import { Injectable } from "@nestjs/common";
-
-import { OAuthService as BaseOAuthService } from "@calcom/platform-libraries";
 
 @Injectable()
 export class OAuthService extends BaseOAuthService {

@@ -1,17 +1,16 @@
-import { Client, cacheExchange, fetchExchange } from "@urql/core";
-import { retryExchange } from "@urql/exchange-retry";
-
+import process from "node:process";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import type { Contact } from "@calcom/types/CrmService";
-
+import { Client, cacheExchange, fetchExchange } from "@urql/core";
+import { retryExchange } from "@urql/exchange-retry";
+import type { RRSkipFieldRule } from "../../zod";
+import { RRSkipFieldRuleActionEnum } from "../../zod";
 import { SalesforceRecordEnum } from "../enums";
 import { SalesforceRoutingTraceService } from "../tracing";
 import getAllPossibleWebsiteValuesFromEmailDomain from "../utils/getAllPossibleWebsiteValuesFromEmailDomain";
 import getDominantAccountId from "../utils/getDominantAccountId";
 import { GetAccountRecordsForRRSkip } from "./documents/queries";
-import type { RRSkipFieldRule } from "../../zod";
-import { RRSkipFieldRuleActionEnum } from "../../zod";
 
 export class SalesforceGraphQLClient {
   private log: typeof logger;
@@ -210,7 +209,7 @@ export class SalesforceGraphQLClient {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const accountNodesByAccountId = new Map<string, Record<string, any>>();
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - in CD/CI pipeline this will have any type
+      // @ts-expect-error - in CD/CI pipeline this will have any type
       const relatedContacts = relatedContactsResults.reduce(
         (contacts, edge) => {
           const node = edge?.node;
@@ -297,7 +296,7 @@ export class SalesforceGraphQLClient {
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore - in CD/CI pipeline this will have any type
+        // @ts-expect-error - in CD/CI pipeline this will have any type
         const contactUnderAccount = relatedContacts.find((contact) => contact.AccountId === accountId);
         if (!contactUnderAccount) {
           log.error(
@@ -310,7 +309,7 @@ export class SalesforceGraphQLClient {
         // Trace account selection
         const contactsUnderAccount = relatedContacts.filter(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error
           (contact) => contact.AccountId === accountId
         );
         SalesforceRoutingTraceService.graphqlDominantAccountSelected({

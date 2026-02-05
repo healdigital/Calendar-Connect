@@ -1,6 +1,8 @@
 "use client";
 
 import { Toast } from "@base-ui/react/toast";
+import { buttonVariants } from "@coss/ui/components/button";
+import { cn } from "@coss/ui/lib/utils";
 import {
   CircleAlertIcon,
   CircleCheckIcon,
@@ -8,9 +10,6 @@ import {
   LoaderCircleIcon,
   TriangleAlertIcon,
 } from "lucide-react";
-
-import { cn } from "@coss/ui/lib/utils";
-import { buttonVariants } from "@coss/ui/components/button";
 
 const toastManager = Toast.createToastManager();
 const anchoredToastManager = Toast.createToastManager();

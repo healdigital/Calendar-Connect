@@ -1,14 +1,14 @@
-import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { z } from "zod";
-
+import process from "node:process";
+import { makeUserActor } from "@calcom/features/booking-audit/lib/makeActor";
 import { symmetricDecrypt } from "@calcom/lib/crypto";
 import { distributedTracing } from "@calcom/lib/tracing/factory";
 import prisma from "@calcom/prisma";
 import { confirmHandler } from "@calcom/trpc/server/routers/viewer/bookings/confirm.handler";
 import { TRPCError } from "@trpc/server";
-import { makeUserActor } from "@calcom/features/booking-audit/lib/makeActor";
+import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 enum DirectAction {
   ACCEPT = "accept",

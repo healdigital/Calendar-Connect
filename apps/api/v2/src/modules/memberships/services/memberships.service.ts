@@ -1,8 +1,7 @@
-import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
+import type { Membership } from "@calcom/prisma/client";
 import { Injectable } from "@nestjs/common";
 import { intersectionBy } from "lodash";
-
-import type { Membership } from "@calcom/prisma/client";
+import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 
 @Injectable()
 export class MembershipsService {

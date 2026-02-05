@@ -1,5 +1,6 @@
 /// <reference types="../env" />
 
+import process from "node:process";
 import {
   EMBED_MODAL_IFRAME_FORCE_RELOAD_THRESHOLD_MS,
   EMBED_MODAL_IFRAME_SLOT_STALE_TIME,

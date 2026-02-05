@@ -1,7 +1,6 @@
-import { describe, expect, vi, beforeEach, test } from "vitest";
-
 import type { BookingSeatRepository } from "@calcom/features/bookings/repositories/BookingSeatRepository";
 import type { WorkflowReminderRepository } from "@calcom/features/ee/workflows/repositories/WorkflowReminderRepository";
+import { TimeFormat } from "@calcom/lib/timeFormat";
 import {
   SchedulingType,
   TimeUnit,
@@ -9,9 +8,8 @@ import {
   WorkflowTemplates,
   WorkflowTriggerEvents,
 } from "@calcom/prisma/enums";
-import { TimeFormat } from "@calcom/lib/timeFormat";
 import type { CalendarEvent } from "@calcom/types/Calendar";
-
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { EmailWorkflowService } from "./EmailWorkflowService";
 
 vi.mock("@calcom/emails/workflow-email-service", () => ({

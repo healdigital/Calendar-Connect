@@ -1,12 +1,10 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
-import { Label, TextField, Select } from "@calcom/ui/components/form";
+import { Label, Select, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
-
+import { useFormContext } from "react-hook-form";
 import type { InviteRole } from "../store/onboarding-store";
 
 type BaseInviteFormData = {

@@ -1,15 +1,9 @@
-import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
+import type { ISimpleLogger } from "@calcom/features/di/shared/services/logger.service";
 import type { Tasker } from "@calcom/features/tasker/tasker";
 import { IS_PRODUCTION } from "@calcom/lib/constants";
 import { safeStringify } from "@calcom/lib/safeStringify";
-import type { ISimpleLogger } from "@calcom/features/di/shared/services/logger.service";
-
-import type { BookingAuditAction } from "../types/bookingAuditTask";
-import type { ActionSource } from "../types/actionSource";
-import type { PiiFreeActor, Actor, BookingAuditContext } from "../dto/types";
-import { makeActorById, buildActorEmail } from "../makeActor";
-import type { IAuditActorRepository } from "../repository/IAuditActorRepository";
+import { v4 as uuidv4 } from "uuid";
+import type { z } from "zod";
 import { AcceptedAuditActionService } from "../actions/AcceptedAuditActionService";
 import { AttendeeAddedAuditActionService } from "../actions/AttendeeAddedAuditActionService";
 import { AttendeeRemovedAuditActionService } from "../actions/AttendeeRemovedAuditActionService";
@@ -19,10 +13,15 @@ import { LocationChangedAuditActionService } from "../actions/LocationChangedAud
 import { NoShowUpdatedAuditActionService } from "../actions/NoShowUpdatedAuditActionService";
 import { ReassignmentAuditActionService } from "../actions/ReassignmentAuditActionService";
 import { RejectedAuditActionService } from "../actions/RejectedAuditActionService";
-import { RescheduleRequestedAuditActionService } from "../actions/RescheduleRequestedAuditActionService";
 import { RescheduledAuditActionService } from "../actions/RescheduledAuditActionService";
+import { RescheduleRequestedAuditActionService } from "../actions/RescheduleRequestedAuditActionService";
 import { SeatBookedAuditActionService } from "../actions/SeatBookedAuditActionService";
 import { SeatRescheduledAuditActionService } from "../actions/SeatRescheduledAuditActionService";
+import type { Actor, BookingAuditContext, PiiFreeActor } from "../dto/types";
+import { buildActorEmail, makeActorById } from "../makeActor";
+import type { IAuditActorRepository } from "../repository/IAuditActorRepository";
+import type { ActionSource } from "../types/actionSource";
+import type { BookingAuditAction } from "../types/bookingAuditTask";
 import type { BookingAuditProducerService } from "./BookingAuditProducerService.interface";
 
 interface BookingAuditTaskerProducerServiceDeps {

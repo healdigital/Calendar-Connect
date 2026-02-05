@@ -1,7 +1,5 @@
 import { _generateMetadata } from "app/_utils";
-
 import InsightsVirtualQueuesPage from "~/insights/views/insights-virtual-queues-view";
-
 import { checkInsightsPagePermission } from "../checkInsightsPagePermission";
 
 export const generateMetadata = async () =>

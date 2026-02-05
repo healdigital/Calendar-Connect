@@ -1,12 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { Toaster } from "sonner";
-import { z } from "zod";
-
 import AppNotInstalledMessage from "@calcom/app-store/_components/AppNotInstalledMessage";
 import KeyField from "@calcom/app-store/hitpay/components/KeyInput";
 import { hitpayCredentialKeysSchema } from "@calcom/app-store/hitpay/lib/hitpayCredentialKeysSchema";
@@ -18,6 +9,14 @@ import { Button } from "@calcom/ui/components/button";
 import { Switch } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Toaster } from "sonner";
+import { z } from "zod";
 
 export default function HitPaySetup(props: IHitPaySetupProps) {
   const params = useCompatSearchParams();

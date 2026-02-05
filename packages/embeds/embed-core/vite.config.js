@@ -1,6 +1,6 @@
+import process from "node:process";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import EnvironmentPlugin from "vite-plugin-environment";
-
 import viteBaseConfig, { embedCoreEnvVars } from "../vite.config";
 
 const path = require("node:path");

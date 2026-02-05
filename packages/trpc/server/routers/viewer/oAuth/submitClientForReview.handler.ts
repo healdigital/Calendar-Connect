@@ -1,9 +1,8 @@
 import { sendAdminOAuthClientNotification } from "@calcom/emails/oauth-email-service";
-import { getTranslation } from "@calcom/lib/server/i18n";
 import { OAuthClientRepository } from "@calcom/features/oauth/repositories/OAuthClientRepository";
 import { generateSecret } from "@calcom/features/oauth/utils/generateSecret";
+import { getTranslation } from "@calcom/lib/server/i18n";
 import type { PrismaClient } from "@calcom/prisma";
-
 import type { TSubmitClientInputSchema } from "./submitClientForReview.schema";
 
 type SubmitClientOptions = {

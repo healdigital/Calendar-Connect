@@ -5,7 +5,6 @@ import { transformScheduleToAvailabilityForAtom } from "@calcom/lib/schedules/tr
 import type { PrismaClient } from "@calcom/prisma";
 import type { TUpdateInputSchema } from "@calcom/trpc/server/routers/viewer/availability/schedule/update.schema";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import { ScheduleRepository } from "../repositories/ScheduleRepository";
 
 interface IUpdateScheduleOptions {

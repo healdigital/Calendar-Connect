@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback, useState } from "react";
-
 import { sdkActionManager } from "@calcom/embed-core/embed-iframe";
 import { shouldChargeNoShowCancellationFee } from "@calcom/features/bookings/lib/payment/shouldChargeNoShowCancellationFee";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -9,9 +7,10 @@ import { useRefreshData } from "@calcom/lib/hooks/useRefreshData";
 import type { RecurringEvent } from "@calcom/types/Calendar";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
-import { Label, Select, TextArea, CheckboxField } from "@calcom/ui/components/form";
+import { CheckboxField, Label, Select, TextArea } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
+import { useCallback, useState } from "react";
 
 interface InternalNotePresetsSelectProps {
   internalNotePresets: { id: number; name: string }[];

@@ -1,12 +1,10 @@
-import type { NextApiRequest } from "next";
-
 import { HttpError } from "@calcom/lib/http-error";
 import { defaultResponder } from "@calcom/lib/server/defaultResponder";
 import type { UpdateArguments } from "@calcom/lib/server/repository/selectedCalendar";
 import { SelectedCalendarRepository } from "@calcom/lib/server/repository/selectedCalendar";
 import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
-
+import type { NextApiRequest } from "next";
 import {
   schemaSelectedCalendarPublic,
   schemaSelectedCalendarUpdateBodyParams,

@@ -1,10 +1,9 @@
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { trpc } from "@calcom/trpc/react";
-import { Dialog, ConfirmationDialogContent } from "@calcom/ui/components/dialog";
-import { showToast } from "@calcom/ui/components/toast";
-
 import { useDataTable } from "@calcom/features/data-table/hooks";
 import type { FilterSegmentOutput } from "@calcom/features/data-table/lib/types";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { trpc } from "@calcom/trpc/react";
+import { ConfirmationDialogContent, Dialog } from "@calcom/ui/components/dialog";
+import { showToast } from "@calcom/ui/components/toast";
 
 export function DeleteSegmentDialog({
   segment,

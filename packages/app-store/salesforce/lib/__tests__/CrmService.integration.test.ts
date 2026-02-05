@@ -7,13 +7,12 @@
  * CrmService.test.ts could still focus on testing detailed edge cases as needed.
  */
 import jsforce from "@jsforce/jsforce-node";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSalesforceCrmServiceWithSalesforceType } from "../CrmService";
 import { SalesforceRecordEnum } from "../enums";
 import {
-  mockValueOfAccountOwnershipQueryMatchingContact,
   mockValueOfAccountOwnershipQueryMatchingAccountWebsite,
+  mockValueOfAccountOwnershipQueryMatchingContact,
   mockValueOfAccountOwnershipQueryMatchingRelatedContacts,
 } from "../graphql/__tests__/urqlMock";
 import { createSalesforceMock } from "./salesforceMock";
@@ -131,7 +130,7 @@ describe("SalesforceCRMService", () => {
     );
     // Override jsforce mock with our custom mock
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore - Not full implementation of jsforce.Connection
+    // @ts-expect-error - Not full implementation of jsforce.Connection
     vi.mocked(jsforce.Connection).mockImplementation(function () {
       return {
         ...salesforceMock.mockConnection,

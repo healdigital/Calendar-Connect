@@ -10,7 +10,6 @@ import { SkeletonText } from "@calcom/ui/components/skeleton";
 import { Tooltip } from "@calcom/ui/components/tooltip";
 import type { ReactElement } from "react";
 import { useMemo } from "react";
-
 import { getOptInFeatureConfig } from "../config";
 import type { NormalizedFeature, UseFeatureOptInResult } from "../types";
 

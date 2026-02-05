@@ -1,5 +1,4 @@
 import { CAL_URL } from "@calcom/lib/constants";
-
 import type { TextComponent } from "../lib";
 
 /**

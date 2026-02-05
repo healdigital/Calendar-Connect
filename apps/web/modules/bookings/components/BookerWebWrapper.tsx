@@ -10,11 +10,6 @@ import {
 } from "@calcom/features/bookings/Booker/BookerStoreProvider";
 import { useBookerLayout } from "@calcom/features/bookings/Booker/hooks/useBookerLayout";
 import { useBookingForm } from "@calcom/features/bookings/Booker/hooks/useBookingForm";
-import { useBookings } from "../hooks/useBookings";
-import { useCalendars } from "../hooks/useCalendars";
-import { useSlots } from "../hooks/useSlots";
-import { useVerifyCode } from "../hooks/useVerifyCode";
-import { useVerifyEmail } from "../hooks/useVerifyEmail";
 import { useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
 import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
 import { useBrandColors } from "@calcom/features/bookings/Booker/utils/use-brand-colors";
@@ -26,6 +21,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { shallow } from "zustand/shallow";
+import { useBookings } from "../hooks/useBookings";
+import { useCalendars } from "../hooks/useCalendars";
+import { useSlots } from "../hooks/useSlots";
+import { useVerifyCode } from "../hooks/useVerifyCode";
+import { useVerifyEmail } from "../hooks/useVerifyEmail";
 import { Booker as BookerComponent } from "./Booker";
 
 export type BookerWebWrapperAtomProps = BookerProps & {

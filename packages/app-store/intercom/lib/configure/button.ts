@@ -1,6 +1,5 @@
 import type { NextApiRequest } from "next";
-
-import type { NewCanvas, InputComponent, SpacerComponent, TextComponent, ButtonComponent } from "../../lib";
+import type { ButtonComponent, InputComponent, NewCanvas, SpacerComponent, TextComponent } from "../../lib";
 
 export async function handleButtonAndInvitationStep(req: NextApiRequest): Promise<NewCanvas | undefined> {
   const { input_values, current_canvas, component_id } = req.body;

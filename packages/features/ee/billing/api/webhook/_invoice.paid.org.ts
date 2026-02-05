@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import { getBillingProviderService } from "@calcom/ee/billing/di/containers/Billing";
 import { extractBillingDataFromStripeSubscription } from "@calcom/features/ee/billing/lib/stripe-subscription-utils";
 import { Plan, SubscriptionStatus } from "@calcom/features/ee/billing/repository/billing/IBillingRepository";
@@ -10,7 +8,7 @@ import { UserRepository } from "@calcom/features/users/repositories/UserReposito
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
-
+import { z } from "zod";
 import { getTeamBillingServiceFactory } from "../../di/containers/Billing";
 import type { SWHMap } from "./__handler";
 

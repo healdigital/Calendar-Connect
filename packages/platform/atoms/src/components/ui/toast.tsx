@@ -1,16 +1,14 @@
+import { Icon } from "@calcom/ui/components/icon";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
 import type {
-  ForwardRefExoticComponent,
-  ElementRef,
   ComponentPropsWithoutRef,
-  RefAttributes,
+  ElementRef,
+  ForwardRefExoticComponent,
   ReactElement,
+  RefAttributes,
 } from "react";
 import { forwardRef } from "react";
-
-import { Icon } from "@calcom/ui/components/icon";
-
 import { cn } from "../../lib/utils";
 
 const ToastProvider = ToastPrimitives.Provider;

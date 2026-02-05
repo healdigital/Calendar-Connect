@@ -1,6 +1,5 @@
-import { Injectable } from "@nestjs/common";
-
 import { type OrgMembershipLookup, ProfileRepository } from "@calcom/platform-libraries";
+import { Injectable } from "@nestjs/common";
 
 /**
  * NestJS service that implements OrgMembershipLookup interface.

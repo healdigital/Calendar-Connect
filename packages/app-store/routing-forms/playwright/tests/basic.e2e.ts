@@ -1,6 +1,3 @@
-import type { Locator, Page } from "@playwright/test";
-import { expect } from "@playwright/test";
-
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { prisma } from "@calcom/prisma";
 import { AttributeType, MembershipRole, SchedulingType } from "@calcom/prisma/enums";
@@ -15,12 +12,13 @@ import {
   testEmail,
   testName,
 } from "@calcom/web/playwright/lib/testUtils";
-
+import type { Locator, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 import {
   addForm,
+  addOneFieldAndDescriptionAndSaveForm,
   saveCurrentForm,
   verifySelectOptions,
-  addOneFieldAndDescriptionAndSaveForm,
 } from "./testUtils";
 
 function todo(title: string) {
@@ -389,7 +387,7 @@ test.describe("Routing Forms", () => {
       // This also delete forms on cascade
       await users.deleteAll();
     });
-    const createUserAndLogin = async function ({ users, page }: { users: Fixtures["users"]; page: Page }) {
+    const createUserAndLogin = async ({ users, page }: { users: Fixtures["users"]; page: Page }) => {
       const user = await users.create(
         { username: "routing-forms" },
         { seedRoutingForms: true, hasTeam: true }

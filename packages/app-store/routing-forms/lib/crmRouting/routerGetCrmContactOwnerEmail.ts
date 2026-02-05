@@ -4,7 +4,6 @@ import { CrmRoutingTraceService } from "@calcom/features/routing-trace/services/
 import type { RoutingTraceService } from "@calcom/features/routing-trace/services/RoutingTraceService";
 import { prisma } from "@calcom/prisma";
 import { SchedulingType } from "@calcom/prisma/enums";
-
 import type { LocalRoute } from "../../types/types";
 import { enabledAppSlugs } from "../enabledApps";
 

@@ -2,7 +2,6 @@
 
 import type { GlobalCal, GlobalCalWithoutNs } from "@calcom/embed-core";
 import EmbedSnippet from "@calcom/embed-snippet";
-
 import Cal from "./Cal";
 
 // Exporting for consumption by @calcom/embed-react user

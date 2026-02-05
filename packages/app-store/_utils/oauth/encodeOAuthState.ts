@@ -1,5 +1,4 @@
 import type { NextApiRequest } from "next";
-
 import type { IntegrationOAuthCallbackState } from "../../types";
 
 export function encodeOAuthState(req: NextApiRequest) {

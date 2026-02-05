@@ -1,14 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import slugify from "@calcom/lib/slugify";
 import classNames from "@calcom/ui/classNames";
 import { Label, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
-
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { checkTeamSlugAvailability } from "./action/check-team-slug-availability";
 
 type ValidationState = "idle" | "checking" | "available" | "taken";

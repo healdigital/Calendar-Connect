@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
-
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
+import type { MemberPermissions } from "@calcom/features/pbac/lib/team-member-permissions";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { RouterOutputs } from "@calcom/trpc/react";
-import type { MemberPermissions } from "@calcom/features/pbac/lib/team-member-permissions";
-
+import { useState } from "react";
+import LicenseRequired from "~/ee/common/components/LicenseRequired";
 import { MemberInvitationModalWithoutMembers } from "~/ee/teams/components/MemberInvitationModal";
-
 import MemberList from "../components/MemberList";
 
 interface TeamMembersViewProps {

@@ -1,12 +1,11 @@
-import { isValidPhoneNumber } from "libphonenumber-js/max";
-import z from "zod";
-
 import type { ALL_VIEWS } from "@calcom/features/form-builder/schema";
 import { fieldTypesSchemaMap } from "@calcom/features/form-builder/schema";
 import { dbReadResponseSchema } from "@calcom/lib/dbReadResponseSchema";
 import logger from "@calcom/lib/logger";
 import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import { bookingResponses, emailSchemaRefinement } from "@calcom/prisma/zod-utils";
+import { isValidPhoneNumber } from "libphonenumber-js/max";
+import z from "zod";
 
 type View = ALL_VIEWS | (string & {});
 type BookingFields = (z.infer<typeof eventTypeBookingFields> & z.BRAND<"HAS_SYSTEM_FIELDS">) | null;
@@ -386,7 +385,7 @@ function preprocess<T extends z.ZodType>({
   );
   if (isPartialSchema) {
     // Query Params can be completely invalid, try to preprocess as much of it in correct format but in worst case simply don't prefill instead of crashing
-    return preprocessed.catch(function (res?: { error?: unknown[] }) {
+    return preprocessed.catch((res?: { error?: unknown[] }) => {
       console.error("Failed to preprocess query params, prefilling will be skipped", res?.error);
       return {};
     });

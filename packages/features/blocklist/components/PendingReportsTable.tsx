@@ -1,16 +1,14 @@
 "use client";
 
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import type { WatchlistType } from "@calcom/prisma/enums";
+import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-
 import { DataTableSelectionBar, DataTableWrapper } from "~/data-table/components";
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import type { WatchlistType } from "@calcom/prisma/enums";
-import { EmptyScreen } from "@calcom/ui/components/empty-screen";
-
-import type { GroupedBookingReport, BlocklistScope } from "../types";
+import type { BlocklistScope, GroupedBookingReport } from "../types";
 import { BookingReportDetailsModal } from "./BookingReportDetailsModal";
 import { usePendingReportsColumns } from "./PendingReportsColumns";
 

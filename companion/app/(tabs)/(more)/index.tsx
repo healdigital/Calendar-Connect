@@ -11,11 +11,11 @@ import {
 } from "react-native";
 import { Header } from "@/components/Header";
 import { LogoutConfirmModal } from "@/components/LogoutConfirmModal";
+import { getColors } from "@/constants/colors";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryContext } from "@/contexts/QueryContext";
 import { showErrorAlert } from "@/utils/alerts";
 import { openInAppBrowser } from "@/utils/browser";
-import { getColors } from "@/constants/colors";
 
 interface MoreMenuItem {
   name: string;

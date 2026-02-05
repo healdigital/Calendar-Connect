@@ -1,6 +1,3 @@
-import { useState } from "react";
-import type { UseFormReturn } from "react-hook-form";
-
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import PhoneInput from "@calcom/features/components/phone-input";
 import { getEventTypeIdForCalAiTest } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
@@ -12,6 +9,8 @@ import { DialogContent, DialogFooter } from "@calcom/ui/components/dialog";
 import { Label } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
+import { useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
 interface TestPhoneCallDialogProps {
   open: boolean;

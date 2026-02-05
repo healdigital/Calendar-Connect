@@ -1,9 +1,31 @@
+import { SUCCESS_STATUS } from "@calcom/platform-constants";
+import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+import { SkipTakePagination } from "@calcom/platform-types";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  UnprocessableEntityException,
+  UseGuards,
+} from "@nestjs/common";
+import { ApiHeader, ApiOperation, ApiTags as DocsTags } from "@nestjs/swagger";
+import { plainToClass } from "class-transformer";
 import { API_VERSIONS_VALUES } from "@/lib/api-versions";
 import {
   OPTIONAL_API_KEY_HEADER,
   OPTIONAL_X_CAL_CLIENT_ID_HEADER,
   OPTIONAL_X_CAL_SECRET_KEY_HEADER,
 } from "@/lib/docs/headers";
+import { OrganizationMembershipService } from "@/lib/services/organization-membership.service";
 import { PlatformPlan } from "@/modules/auth/decorators/billing/platform-plan.decorator";
 import { Roles } from "@/modules/auth/decorators/roles/roles.decorator";
 import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
@@ -12,38 +34,15 @@ import { IsAdminAPIEnabledGuard } from "@/modules/auth/guards/organizations/is-a
 import { IsOrgGuard } from "@/modules/auth/guards/organizations/is-org.guard";
 import { RolesGuard } from "@/modules/auth/guards/roles/roles.guard";
 import { IsTeamInOrg } from "@/modules/auth/guards/teams/is-team-in-org.guard";
-import { OrganizationMembershipService } from "@/lib/services/organization-membership.service";
 import { OrganizationsRepository } from "@/modules/organizations/index/organizations.repository";
 import { CreateOrgTeamMembershipDto } from "@/modules/organizations/teams/memberships/inputs/create-organization-team-membership.input";
 import { UpdateOrgTeamMembershipDto } from "@/modules/organizations/teams/memberships/inputs/update-organization-team-membership.input";
 import {
-  OrgTeamMembershipsOutputResponseDto,
   OrgTeamMembershipOutputResponseDto,
+  OrgTeamMembershipsOutputResponseDto,
 } from "@/modules/organizations/teams/memberships/outputs/organization-teams-memberships.output";
 import { OrganizationsTeamsMembershipsService } from "@/modules/organizations/teams/memberships/services/organizations-teams-memberships.service";
 import { TeamMembershipOutput } from "@/modules/teams/memberships/outputs/team-membership.output";
-import {
-  Controller,
-  UseGuards,
-  Get,
-  Param,
-  ParseIntPipe,
-  Query,
-  Delete,
-  Patch,
-  Post,
-  Body,
-  HttpStatus,
-  HttpCode,
-  UnprocessableEntityException,
-  Logger,
-} from "@nestjs/common";
-import { ApiHeader, ApiOperation, ApiTags as DocsTags } from "@nestjs/swagger";
-import { plainToClass } from "class-transformer";
-
-import { SUCCESS_STATUS } from "@calcom/platform-constants";
-import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
-import { SkipTakePagination } from "@calcom/platform-types";
 
 @Controller({
   path: "/v2/organizations/:orgId/teams/:teamId/memberships",

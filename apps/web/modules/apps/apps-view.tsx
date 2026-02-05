@@ -1,12 +1,5 @@
 "use client";
 
-import type { ChangeEventHandler } from "react";
-import { useState } from "react";
-
-import { AllApps } from "@calcom/web/modules/apps/components/AllApps";
-import { AppStoreCategories } from "@calcom/web/modules/apps/components/Categories";
-import { PopularAppsSlider } from "@calcom/web/modules/apps/components/PopularAppsSlider";
-import { RecentAppsSlider } from "@calcom/web/modules/apps/components/RecentAppsSlider";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { AppCategories } from "@calcom/prisma/enums";
 import type { AppFrontendPayload } from "@calcom/types/App";
@@ -15,8 +8,13 @@ import { TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import type { HorizontalTabItemProps } from "@calcom/ui/components/navigation";
 import { HorizontalTabs } from "@calcom/ui/components/navigation";
-
+import { AllApps } from "@calcom/web/modules/apps/components/AllApps";
+import { AppStoreCategories } from "@calcom/web/modules/apps/components/Categories";
+import { PopularAppsSlider } from "@calcom/web/modules/apps/components/PopularAppsSlider";
+import { RecentAppsSlider } from "@calcom/web/modules/apps/components/RecentAppsSlider";
 import AppsLayout from "@components/apps/layouts/AppsLayout";
+import type { ChangeEventHandler } from "react";
+import { useState } from "react";
 
 const tabs: HorizontalTabItemProps[] = [
   {

@@ -64,7 +64,7 @@ export const ThotisBaseScheduledEmail = (
   }
 
   /* eslint-disable @typescript-eslint/ban-ts-comment */
-  // @ts-expect-error
+
   const title = t(
     props.title ||
       (props.calEvent.recurringEvent?.count

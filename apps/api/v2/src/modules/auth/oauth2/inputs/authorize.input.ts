@@ -1,7 +1,6 @@
+import { AccessScope } from "@calcom/prisma/enums";
 import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
 import { Equals, IsArray, IsEnum, IsOptional, IsString } from "class-validator";
-
-import { AccessScope } from "@calcom/prisma/enums";
 
 export class OAuth2AuthorizeInput {
   @ApiProperty({

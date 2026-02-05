@@ -1,34 +1,3 @@
-import { BookingsRepository_2024_08_13 } from "@/ee/bookings/2024-08-13/repositories/bookings.repository";
-import {
-  eventTypeBookingFieldsSchema,
-  EventTypeWithOwnerAndTeam,
-} from "@/ee/bookings/2024-08-13/services/bookings.service";
-import {
-  bookingResponsesSchema,
-  seatedBookingDataSchema,
-} from "@/ee/bookings/2024-08-13/services/output.service";
-import { PlatformBookingsService } from "@/ee/bookings/shared/platform-bookings.service";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
-import { OutputEventTypesService_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/services/output-event-types.service";
-import { apiToInternalintegrationsMapping } from "@/ee/event-types/event-types_2024_06_14/transformers";
-import { sha256Hash, isApiKey, stripApiKey } from "@/lib/api-key";
-import { defaultBookingResponses } from "@/lib/safe-parse/default-responses-booking";
-import { safeParse } from "@/lib/safe-parse/safe-parse";
-import { ApiKeysRepository } from "@/modules/api-keys/api-keys-repository";
-import { BookingSeatRepository } from "@/modules/booking-seat/booking-seat.repository";
-import { OAuthClientUsersService } from "@/modules/oauth-clients/services/oauth-clients-users.service";
-import { OAuthFlowService } from "@/modules/oauth-clients/services/oauth-flow.service";
-import { UsersRepository } from "@/modules/users/users.repository";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { isURL, isPhoneNumber } from "class-validator";
-import { Request } from "express";
-import { DateInput, DateTime } from "luxon";
-import { NextApiRequest } from "next/types";
-import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
-
 import { CreationSource } from "@calcom/platform-libraries";
 import { EventTypeMetaDataSchema } from "@calcom/platform-libraries/event-types";
 import type {
@@ -46,6 +15,35 @@ import type {
 } from "@calcom/platform-types";
 import type { BookingInputLocation_2024_08_13 } from "@calcom/platform-types/bookings/2024-08-13/inputs/location.input";
 import type { EventType } from "@calcom/prisma/client";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { isPhoneNumber, isURL } from "class-validator";
+import { Request } from "express";
+import { DateInput, DateTime } from "luxon";
+import { NextApiRequest } from "next/types";
+import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
+import { BookingsRepository_2024_08_13 } from "@/ee/bookings/2024-08-13/repositories/bookings.repository";
+import {
+  EventTypeWithOwnerAndTeam,
+  eventTypeBookingFieldsSchema,
+} from "@/ee/bookings/2024-08-13/services/bookings.service";
+import {
+  bookingResponsesSchema,
+  seatedBookingDataSchema,
+} from "@/ee/bookings/2024-08-13/services/output.service";
+import { PlatformBookingsService } from "@/ee/bookings/shared/platform-bookings.service";
+import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
+import { OutputEventTypesService_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/services/output-event-types.service";
+import { apiToInternalintegrationsMapping } from "@/ee/event-types/event-types_2024_06_14/transformers";
+import { isApiKey, sha256Hash, stripApiKey } from "@/lib/api-key";
+import { defaultBookingResponses } from "@/lib/safe-parse/default-responses-booking";
+import { safeParse } from "@/lib/safe-parse/safe-parse";
+import { ApiKeysRepository } from "@/modules/api-keys/api-keys-repository";
+import { BookingSeatRepository } from "@/modules/booking-seat/booking-seat.repository";
+import { OAuthClientUsersService } from "@/modules/oauth-clients/services/oauth-clients-users.service";
+import { OAuthFlowService } from "@/modules/oauth-clients/services/oauth-flow.service";
+import { UsersRepository } from "@/modules/users/users.repository";
 
 type BookingRequest = NextApiRequest & {
   userId: number | undefined;
@@ -526,7 +524,7 @@ export class InputBookingsService_2024_08_13 {
     );
 
     const newRequest = { ...request };
-    let userId: number | undefined = undefined;
+    let userId: number | undefined;
 
     if (
       oAuthClientParams &&
@@ -572,7 +570,7 @@ export class InputBookingsService_2024_08_13 {
   }
 
   isRescheduleSeatedBody(body: RescheduleBookingInput): body is RescheduleSeatedBookingInput_2024_08_13 {
-    return Object.prototype.hasOwnProperty.call(body, "seatUid");
+    return Object.hasOwn(body, "seatUid");
   }
 
   async transformInputRescheduleSeatedBooking(
@@ -810,7 +808,7 @@ export class InputBookingsService_2024_08_13 {
   }
 
   isCancelSeatedBody(body: CancelBookingInput): body is CancelSeatedBookingInput_2024_08_13 {
-    return Object.prototype.hasOwnProperty.call(body, "seatUid");
+    return Object.hasOwn(body, "seatUid");
   }
 
   async transformInputCancelBooking(bookingUid: string, inputBooking: CancelBookingInput_2024_08_13) {

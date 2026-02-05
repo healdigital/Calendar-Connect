@@ -1,5 +1,5 @@
 import type { CalendarEvent, Person } from "@calcom/types/Calendar";
-import { Info, ManageLink } from "../../components";
+import { ManageLink } from "../../components";
 import { ThotisBaseEmail } from "./ThotisBaseEmail";
 
 export const FeedbackRequestEmail = (
@@ -9,7 +9,7 @@ export const FeedbackRequestEmail = (
     feedbackLink: string;
   } & Partial<React.ComponentProps<typeof ThotisBaseEmail>>
 ) => {
-  const { t } = props.attendee.language;
+  const { translate: t } = props.attendee.language;
   return (
     <ThotisBaseEmail
       hideLogo={Boolean(props.calEvent.platformClientId)}

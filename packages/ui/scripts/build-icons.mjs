@@ -1,12 +1,13 @@
 // this script is based on https://github.com/epicweb-dev/epic-stack/blob/main/other/build-icons.ts
 //
+
+import { createRequire } from "node:module";
+import * as path from "node:path";
+import process from "node:process";
 import { $ } from "execa";
 import glob from "fast-glob";
 import fsExtra from "fs-extra";
 import { parse } from "node-html-parser";
-import * as path from "node:path";
-import { createRequire } from "node:module";
-
 import { copyIcons, removeTempDir } from "./generate-icons.mjs";
 
 const require = createRequire(import.meta.url);

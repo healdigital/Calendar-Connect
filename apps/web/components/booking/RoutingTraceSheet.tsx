@@ -5,7 +5,7 @@ import { DomainIcon } from "@calcom/features/routing-trace/components/DomainIcon
 import { getDomainLabel } from "@calcom/features/routing-trace/presenters/getDomainLabel";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetBody } from "@calcom/ui/components/sheet";
+import { Sheet, SheetBody, SheetContent, SheetHeader, SheetTitle } from "@calcom/ui/components/sheet";
 
 interface RoutingTraceSheetProps {
   isOpen: boolean;

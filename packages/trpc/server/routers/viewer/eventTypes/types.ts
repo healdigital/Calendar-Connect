@@ -1,25 +1,24 @@
-import { z } from "zod";
-
 import type { TemplateType } from "@calcom/features/calAIPhone/zod-utils";
 import { templateTypeEnum } from "@calcom/features/calAIPhone/zod-utils";
 import { MAX_SEATS_PER_TIME_SLOT } from "@calcom/lib/constants";
 import type { PeriodType, SchedulingType } from "@calcom/prisma/enums";
 import type {
   CustomInputSchema,
+  EventTypeLocation,
   EventTypeMetadata,
   IntervalLimit,
-  EventTypeLocation,
 } from "@calcom/prisma/zod-utils";
 import {
   customInputSchema,
   EventTypeMetaDataSchema,
-  rrSegmentQueryValueSchema,
-  eventTypeLocations,
-  recurringEventType,
-  intervalLimitsType,
   eventTypeBookingFields,
   eventTypeColor,
+  eventTypeLocations,
+  intervalLimitsType,
+  recurringEventType,
+  rrSegmentQueryValueSchema,
 } from "@calcom/prisma/zod-utils";
+import { z } from "zod";
 
 // ============================================================================
 // EXPLICIT TYPE DEFINITIONS

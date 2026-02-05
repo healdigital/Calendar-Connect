@@ -1,5 +1,3 @@
-import * as Popover from "@radix-ui/react-popover";
-
 import {
   formatTime,
   isNextDayInTimezone,
@@ -7,7 +5,7 @@ import {
   isSupportedTimeZone,
   sortByTimezone,
 } from "@calcom/lib/dayjs";
-
+import * as Popover from "@radix-ui/react-popover";
 import { Icon } from "../icon";
 
 type Attendee = {

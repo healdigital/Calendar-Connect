@@ -1,11 +1,11 @@
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
+import { getAttributeSyncFieldMappingService } from "@calcom/features/ee/integration-attribute-sync/di/AttributeSyncFieldMappingService.container";
 import { getAttributeSyncRuleService } from "@calcom/features/ee/integration-attribute-sync/di/AttributeSyncRuleService.container";
 import { getIntegrationAttributeSyncService } from "@calcom/features/ee/integration-attribute-sync/di/IntegrationAttributeSyncService.container";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import logger from "@calcom/lib/logger";
 import { prisma } from "@calcom/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAttributeSyncFieldMappingService } from "@calcom/features/ee/integration-attribute-sync/di/AttributeSyncFieldMappingService.container";
 
 const log = logger.getSubLogger({ prefix: ["[salesforce/user-sync]"] });
 

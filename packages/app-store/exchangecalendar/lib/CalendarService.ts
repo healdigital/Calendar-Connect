@@ -1,3 +1,16 @@
+import process from "node:process";
+import { symmetricDecrypt } from "@calcom/lib/crypto";
+import logger from "@calcom/lib/logger";
+import type {
+  Calendar,
+  CalendarEvent,
+  EventBusyDate,
+  GetAvailabilityParams,
+  IntegrationCalendar,
+  NewCalendarEventType,
+  Person,
+} from "@calcom/types/Calendar";
+import type { CredentialPayload } from "@calcom/types/Credential";
 import type { FindFoldersResults, FindItemsResults } from "ews-javascript-api";
 import {
   Appointment,
@@ -25,20 +38,6 @@ import {
   WebCredentials,
   WellKnownFolderName,
 } from "ews-javascript-api";
-
-import { symmetricDecrypt } from "@calcom/lib/crypto";
-import logger from "@calcom/lib/logger";
-import type {
-  Calendar,
-  CalendarEvent,
-  EventBusyDate,
-  GetAvailabilityParams,
-  IntegrationCalendar,
-  NewCalendarEventType,
-  Person,
-} from "@calcom/types/Calendar";
-import type { CredentialPayload } from "@calcom/types/Credential";
-
 import { ExchangeAuthentication } from "../enums";
 
 class ExchangeCalendarService implements Calendar {

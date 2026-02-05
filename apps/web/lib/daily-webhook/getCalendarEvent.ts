@@ -1,6 +1,5 @@
 import { getTranslation } from "@calcom/lib/server/i18n";
 import type { CalendarEvent } from "@calcom/types/Calendar";
-
 import type { getBookingResponse } from "./getBooking";
 
 export const getCalendarEvent = async (booking: getBookingResponse) => {

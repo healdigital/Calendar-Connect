@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
-
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { sdkActionManager } from "../../sdk-event";
 import { embedStore, resetPageData } from "../lib/embedStore";
 import { useBookerEmbedEvents } from "../react-hooks";

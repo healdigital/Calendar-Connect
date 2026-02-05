@@ -1,5 +1,4 @@
 import type { App } from "@calcom/types/App";
-
 import _package from "./package.json";
 
 export const metadata = {

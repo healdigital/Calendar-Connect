@@ -1,9 +1,7 @@
 import { DEFAULT_WEBHOOK_VERSION } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import type { EventPayloadType } from "@calcom/features/webhooks/lib/sendPayload";
 import sendPayload from "@calcom/features/webhooks/lib/sendPayload";
-
 import { getTranslation } from "@calcom/lib/server/i18n";
-
 import type { TTestTriggerInputSchema } from "./testTrigger.schema";
 
 type TestTriggerOptions = {

@@ -1,5 +1,11 @@
 import { AddMembersWithSwitchPlatformWrapper } from "@calcom/atoms/add-members-switch/AddMembersWithSwitchPlatformWrapper";
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
+import AssignAllTeamMembers from "@calcom/features/eventtypes/components/AssignAllTeamMembers";
+import type {
+  CheckedSelectOption,
+  CheckedTeamSelectCustomClassNames,
+} from "@calcom/features/eventtypes/components/CheckedTeamSelect";
+import CheckedTeamSelect from "@calcom/features/eventtypes/components/CheckedTeamSelect";
 import type {
   FormValues,
   Host,
@@ -14,13 +20,6 @@ import { type ComponentProps, type Dispatch, type SetStateAction, useMemo } from
 import { Controller, useFormContext } from "react-hook-form";
 import type { Options } from "react-select";
 import { AddMembersWithSwitchWebWrapper } from "./AddMembersWithSwitchWebWrapper";
-
-import AssignAllTeamMembers from "@calcom/features/eventtypes/components/AssignAllTeamMembers";
-import type {
-  CheckedSelectOption,
-  CheckedTeamSelectCustomClassNames,
-} from "@calcom/features/eventtypes/components/CheckedTeamSelect";
-import CheckedTeamSelect from "@calcom/features/eventtypes/components/CheckedTeamSelect";
 
 interface IUserToValue {
   id: number | null;

@@ -1,7 +1,6 @@
 "use client";
 
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
-
 import { cn } from "@coss/ui/lib/utils";
 
 const TooltipCreateHandle = TooltipPrimitive.createHandle;

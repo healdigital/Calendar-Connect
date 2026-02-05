@@ -1,6 +1,5 @@
 import dns from "node:dns/promises";
 import net from "node:net";
-
 import logger from "@calcom/lib/logger";
 
 const log: ReturnType<typeof logger.getSubLogger> = logger.getSubLogger({ prefix: ["ssrf-protection"] });

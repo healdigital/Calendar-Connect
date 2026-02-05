@@ -1,7 +1,3 @@
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-
-import { FilterCheckboxField, FilterCheckboxFieldsContainer } from "~/filters/components/TeamsFilter";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
@@ -10,7 +6,9 @@ import { Divider } from "@calcom/ui/components/divider";
 import { FilterSearchField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { AnimatedPopover } from "@calcom/ui/components/popover";
-
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { FilterCheckboxField, FilterCheckboxFieldsContainer } from "~/filters/components/TeamsFilter";
 import { useInsightsOrgTeams } from "../../hooks/useInsightsOrgTeams";
 
 export type OrgTeamsType = "org" | "team" | "yours";

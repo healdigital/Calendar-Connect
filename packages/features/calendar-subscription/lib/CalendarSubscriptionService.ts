@@ -12,8 +12,8 @@ import type { CalendarSyncService } from "@calcom/features/calendar-subscription
 import type { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import type { ISelectedCalendarRepository } from "@calcom/features/selectedCalendar/repositories/SelectedCalendarRepository.interface";
 import logger from "@calcom/lib/logger";
-import { metrics } from "@sentry/nextjs";
 import type { SelectedCalendar } from "@calcom/prisma/client";
+import { metrics } from "@sentry/nextjs";
 
 // biome-ignore lint/nursery/useExplicitType: logger type is inferred
 const log = logger.getSubLogger({ prefix: ["CalendarSubscriptionService"] });

@@ -1,8 +1,8 @@
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { hasMinimumPlan } from "@/modules/auth/guards/billing/platform-plan.guard";
 import { orderedPlans, PlatformPlan } from "@/modules/billing/types";
 import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ManagedOrganizationsBillingService {

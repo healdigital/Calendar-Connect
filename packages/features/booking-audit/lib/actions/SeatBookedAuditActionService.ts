@@ -1,9 +1,8 @@
 import { z } from "zod";
-
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
-  GetDisplayTitleParams,
   GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
 } from "./IAuditActionService";

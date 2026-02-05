@@ -1,17 +1,15 @@
-import type { Mock } from "vitest";
-import { vi } from "vitest";
-
 import type { MockResponse } from "@calcom/features/auth/signup/handlers/__tests__/mocks/next.mocks";
-
 import {
   prismaMock,
   resetPrismaMock,
 } from "@calcom/features/auth/signup/handlers/__tests__/mocks/prisma.mocks";
-import {
-  createMockTeam,
-  createMockFoundToken,
-} from "@calcom/features/auth/signup/handlers/__tests__/mocks/signup.factories";
 import type { SignupBody } from "@calcom/features/auth/signup/handlers/__tests__/mocks/signup.factories";
+import {
+  createMockFoundToken,
+  createMockTeam,
+} from "@calcom/features/auth/signup/handlers/__tests__/mocks/signup.factories";
+import type { Mock } from "vitest";
+import { vi } from "vitest";
 
 const mockFindTokenByToken: Mock = vi.fn();
 const mockValidateAndGetCorrectedUsernameForTeam: Mock = vi.fn();

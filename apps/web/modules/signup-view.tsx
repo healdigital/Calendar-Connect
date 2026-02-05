@@ -1,35 +1,22 @@
 "use client";
 
-import { Analytics as DubAnalytics } from "@dub/analytics/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Script from "next/script";
-import posthog from "posthog-js";
-import { useState, useEffect } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import { useForm, useFormContext } from "react-hook-form";
-import { Toaster } from "sonner";
-import { z } from "zod";
-
+import process from "node:process";
 import getStripe from "@calcom/app-store/stripepayment/lib/client";
 import { getPremiumPlanPriceValue } from "@calcom/app-store/stripepayment/lib/utils";
 import {
   fetchSignup,
-  isUserAlreadyExistsError,
   hasCheckoutSession,
+  isUserAlreadyExistsError,
 } from "@calcom/features/auth/signup/lib/fetchSignup";
 import { getOrgUsernameFromEmail } from "@calcom/features/auth/signup/utils/getOrgUsernameFromEmail";
 import { getOrgFullOrigin } from "@calcom/features/ee/organizations/lib/orgDomains";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
 import {
   APP_NAME,
-  URL_PROTOCOL_REGEX,
-  IS_CALCOM,
-  WEBAPP_URL,
   CLOUDFLARE_SITE_ID,
+  IS_CALCOM,
+  URL_PROTOCOL_REGEX,
+  WEBAPP_URL,
   WEBSITE_PRIVACY_POLICY_URL,
   WEBSITE_TERMS_URL,
   WEBSITE_URL,
@@ -47,11 +34,23 @@ import type { inferSSRProps } from "@calcom/types/inferSSRProps";
 import classNames from "@calcom/ui/classNames";
 import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
-import { PasswordField, CheckboxField, TextField, Form, SelectField } from "@calcom/ui/components/form";
+import { CheckboxField, Form, PasswordField, SelectField, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
-
+import { Analytics as DubAnalytics } from "@dub/analytics/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { getServerSideProps } from "@lib/signup/getServerSideProps";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import { signIn } from "next-auth/react";
+import posthog from "posthog-js";
+import { useEffect, useState } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
+import { Toaster } from "sonner";
+import { z } from "zod";
 
 const signupSchema = apiSignupSchema.extend({
   apiError: z.string().optional(), // Needed to display API errors doesn't get passed to the API

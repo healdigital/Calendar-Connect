@@ -1,8 +1,5 @@
-import { faker } from "@faker-js/faker";
 import { randomUUID } from "node:crypto";
-import { uuid } from "short-uuid";
-import type z from "zod";
-
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { hashPassword } from "@calcom/lib/auth/hashPassword";
 import { DEFAULT_SCHEDULE, getAvailabilityFromSchedule } from "@calcom/lib/availability";
@@ -10,6 +7,9 @@ import prisma from "@calcom/prisma";
 import type { Prisma, UserPermissionRole } from "@calcom/prisma/client";
 import { MembershipRole } from "@calcom/prisma/enums";
 import type { teamMetadataSchema } from "@calcom/prisma/zod-utils";
+import { faker } from "@faker-js/faker";
+import { uuid } from "short-uuid";
+import type z from "zod";
 
 export async function createUserAndEventType({
   user,

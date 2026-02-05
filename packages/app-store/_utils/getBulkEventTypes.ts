@@ -3,7 +3,6 @@ import {
   eventTypeLocations as eventTypeLocationsSchema,
   eventTypeMetaDataSchemaWithoutApps,
 } from "@calcom/prisma/zod-utils";
-
 import { getAppFromLocationValue } from "../utils";
 
 /**

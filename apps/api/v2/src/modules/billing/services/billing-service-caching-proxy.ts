@@ -1,9 +1,9 @@
-import { IBillingService, BillingData } from "@/modules/billing/interfaces/billing-service.interface";
+import { Injectable } from "@nestjs/common";
+import Stripe from "stripe";
+import { BillingData, IBillingService } from "@/modules/billing/interfaces/billing-service.interface";
 import { BillingService } from "@/modules/billing/services/billing.service";
 import { PlatformPlan } from "@/modules/billing/types";
 import { RedisService } from "@/modules/redis/redis.service";
-import { Injectable } from "@nestjs/common";
-import Stripe from "stripe";
 
 export const REDIS_BILLING_CACHE_KEY = (teamId: number) => `apiv2:team:${teamId}:billing`;
 export const BILLING_CACHE_TTL_MS = 3_600_000; // 1 hour

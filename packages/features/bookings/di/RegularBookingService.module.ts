@@ -9,7 +9,6 @@ import { moduleLoader as prismaModuleLoader } from "@calcom/features/di/modules/
 import { moduleLoader as userRepositoryModuleLoader } from "@calcom/features/di/modules/User";
 import { DI_TOKENS } from "@calcom/features/di/tokens";
 import { moduleLoader as hashedLinkServiceModuleLoader } from "@calcom/features/hashedLink/di/HashedLinkService.module";
-
 import { moduleLoader as bookingEmailAndSmsTaskerModuleLoader } from "./tasker/BookingEmailAndSmsTasker.module";
 
 const thisModule = createModule();

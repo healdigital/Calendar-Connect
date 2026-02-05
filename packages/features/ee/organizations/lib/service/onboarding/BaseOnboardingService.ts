@@ -1,5 +1,3 @@
-import type { TFunction } from "i18next";
-
 import { sendOrganizationCreationEmail } from "@calcom/emails/organization-email-service";
 import { sendEmailVerification } from "@calcom/features/auth/lib/verifyEmail";
 import { getOrganizationRepository } from "@calcom/features/ee/organizations/di/OrganizationRepository.container";
@@ -23,23 +21,23 @@ import slugify from "@calcom/lib/slugify";
 import { prisma } from "@calcom/prisma";
 import type { Prisma, Team, User } from "@calcom/prisma/client";
 import { CreationSource, MembershipRole, UserPermissionRole } from "@calcom/prisma/enums";
-import { userMetadata, teamMetadataStrictSchema } from "@calcom/prisma/zod-utils";
+import { teamMetadataStrictSchema, userMetadata } from "@calcom/prisma/zod-utils";
 import { createTeamsHandler } from "@calcom/trpc/server/routers/viewer/organizations/createTeams.handler";
 import { inviteMembersWithNoInviterPermissionCheck } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/inviteMember.handler";
-
+import type { TFunction } from "i18next";
 import { OrganizationPaymentService } from "../../OrganizationPaymentService";
 import { OrganizationPermissionService } from "../../OrganizationPermissionService";
 import type { IOrganizationOnboardingService } from "./IOrganizationOnboardingService";
 import type {
-  TeamInput,
-  InvitedMemberInput,
   CreateOnboardingIntentInput,
+  InvitedMember,
+  InvitedMemberInput,
+  OnboardingIntentResult,
   OnboardingUser,
   OrganizationData,
-  TeamData,
-  InvitedMember,
   OrganizationOnboardingData,
-  OnboardingIntentResult,
+  TeamData,
+  TeamInput,
 } from "./types";
 
 const log = logger.getSubLogger({ prefix: ["BaseOnboardingService"] });

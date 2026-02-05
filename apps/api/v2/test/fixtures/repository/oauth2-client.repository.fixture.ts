@@ -1,8 +1,7 @@
+import { OAuthClientType } from "@calcom/prisma/enums";
+import { TestingModule } from "@nestjs/testing";
 import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { TestingModule } from "@nestjs/testing";
-
-import { OAuthClientType } from "@calcom/prisma/enums";
 
 export class OAuth2ClientRepositoryFixture {
   private prismaReadClient: PrismaReadService["prisma"];

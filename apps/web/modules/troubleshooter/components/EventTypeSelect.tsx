@@ -1,11 +1,9 @@
-import { useMemo, useEffect, startTransition } from "react";
-import { shallow } from "zustand/shallow";
-
-import { trpc } from "@calcom/trpc/react";
-import { SelectField } from "@calcom/ui/components/form";
-
 import { getQueryParam } from "@calcom/features/bookings/Booker/utils/query-param";
 import { useTroubleshooterStore } from "@calcom/features/troubleshooter/store";
+import { trpc } from "@calcom/trpc/react";
+import { SelectField } from "@calcom/ui/components/form";
+import { startTransition, useEffect, useMemo } from "react";
+import { shallow } from "zustand/shallow";
 
 export function EventTypeSelect() {
   const { data: eventTypes, isPending } = trpc.viewer.eventTypes.listWithTeam.useQuery();

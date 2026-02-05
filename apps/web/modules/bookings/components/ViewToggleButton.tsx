@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import useMediaQuery from "@calcom/lib/hooks/useMediaQuery";
 import { ToggleGroup } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
-
+import { useEffect } from "react";
 import { useBookingsView } from "../hooks/useBookingsView";
 
 type ViewToggleButtonProps = {

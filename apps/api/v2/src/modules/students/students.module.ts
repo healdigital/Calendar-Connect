@@ -1,6 +1,7 @@
 import {
   ProfileService,
   SessionRatingRepository,
+  SessionRatingService,
   StatisticsService,
   ThotisBookingService,
   ThotisProfileRepository,
@@ -35,6 +36,11 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
       useFactory: (prisma: PrismaWriteService) =>
         new SessionRatingRepository({ prismaClient: prisma as any }),
       inject: [PrismaWriteService],
+    },
+    {
+      provide: SessionRatingService,
+      useFactory: (repo: SessionRatingRepository) => new SessionRatingService(repo),
+      inject: [SessionRatingRepository],
     },
     {
       provide: StatisticsService,

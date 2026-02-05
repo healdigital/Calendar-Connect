@@ -1,3 +1,21 @@
+import { bookingMetadataSchema } from "@calcom/platform-libraries";
+import type {
+  CreateRecurringSeatedBookingOutput_2024_08_13,
+  CreateSeatedBookingOutput_2024_08_13,
+  ReassignBookingOutput_2024_08_13,
+} from "@calcom/platform-types";
+import {
+  BookingOutput_2024_08_13,
+  GetRecurringSeatedBookingOutput_2024_08_13,
+  GetSeatedBookingOutput_2024_08_13,
+  RecurringBookingOutput_2024_08_13,
+  SeatedAttendee,
+} from "@calcom/platform-types";
+import type { Booking, BookingSeat } from "@calcom/prisma/client";
+import { Injectable } from "@nestjs/common";
+import { plainToClass } from "class-transformer";
+import { DateTime } from "luxon";
+import { z } from "zod";
 import { BookingsRepository_2024_08_13 } from "@/ee/bookings/2024-08-13/repositories/bookings.repository";
 import {
   defaultBookingMetadata,
@@ -6,25 +24,6 @@ import {
   defaultSeatedBookingMetadata,
 } from "@/lib/safe-parse/default-responses-booking";
 import { safeParse } from "@/lib/safe-parse/safe-parse";
-import { Injectable } from "@nestjs/common";
-import { plainToClass } from "class-transformer";
-import { DateTime } from "luxon";
-import { z } from "zod";
-
-import { bookingMetadataSchema } from "@calcom/platform-libraries";
-import {
-  GetRecurringSeatedBookingOutput_2024_08_13,
-  RecurringBookingOutput_2024_08_13,
-  SeatedAttendee,
-  BookingOutput_2024_08_13,
-  GetSeatedBookingOutput_2024_08_13,
-} from "@calcom/platform-types";
-import type {
-  CreateRecurringSeatedBookingOutput_2024_08_13,
-  CreateSeatedBookingOutput_2024_08_13,
-  ReassignBookingOutput_2024_08_13,
-} from "@calcom/platform-types";
-import type { Booking, BookingSeat } from "@calcom/prisma/client";
 
 export const bookingResponsesSchema = z
   .object({

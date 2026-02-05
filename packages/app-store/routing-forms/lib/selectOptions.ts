@@ -4,7 +4,6 @@
  * This file holds the utilities to build the options to render in the select field and it could be loaded on client side as well.
  */
 import type { z } from "zod";
-
 import type { zodFieldView } from "../zod";
 
 type Field = z.infer<typeof zodFieldView>;

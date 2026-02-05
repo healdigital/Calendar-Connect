@@ -1,6 +1,5 @@
-import type { GroupBase, SelectComponentsConfig, MenuPlacement } from "react-select";
-
-import { InputComponent, OptionComponent, ControlComponent } from "./components";
+import type { GroupBase, MenuPlacement, SelectComponentsConfig } from "react-select";
+import { ControlComponent, InputComponent, OptionComponent } from "./components";
 
 export const getReactSelectProps = <
   Option,

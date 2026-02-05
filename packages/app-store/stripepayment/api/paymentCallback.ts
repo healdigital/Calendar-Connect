@@ -1,6 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import z from "zod";
-
 import { getCustomerAndCheckoutSession } from "@calcom/app-store/stripepayment/lib/getCustomerAndCheckoutSession";
 import sendVerificationRequest from "@calcom/features/auth/lib/sendVerificationRequest";
 import { WEBAPP_URL } from "@calcom/lib/constants";
@@ -11,6 +8,8 @@ import { defaultResponder } from "@calcom/lib/server/defaultResponder";
 import { VerificationTokenService } from "@calcom/lib/server/service/VerificationTokenService";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
+import z from "zod";
 
 const querySchema = z.object({
   callbackUrl: z.string().transform((url) => {

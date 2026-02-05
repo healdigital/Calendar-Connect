@@ -1,16 +1,14 @@
-import { AtomsWrapper } from "@/components/atoms-wrapper";
-
+import { TeamEventTypeForm } from "@calcom/features/ee/teams/components/TeamEventTypeForm";
 import CreateEventTypeForm from "@calcom/features/eventtypes/components/CreateEventTypeForm";
 import { useCreateEventTypeForm } from "@calcom/features/eventtypes/hooks/useCreateEventType";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { EventType } from "@calcom/prisma/client";
 import { Button } from "@calcom/ui/components/button";
-import { TeamEventTypeForm } from "@calcom/features/ee/teams/components/TeamEventTypeForm";
-
 import { useCreateEventType } from "../../hooks/event-types/private/useCreateEventType";
 import { useCreateTeamEventType } from "../../hooks/event-types/private/useCreateTeamEventType";
 import { useTeams } from "../../hooks/teams/useTeams";
 import { cn } from "../../src/lib/utils";
+import { AtomsWrapper } from "@/components/atoms-wrapper";
 
 type ActionButtonsClassNames = {
   container?: string;

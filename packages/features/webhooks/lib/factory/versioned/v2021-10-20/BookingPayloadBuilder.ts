@@ -1,13 +1,12 @@
 import { getUTCOffsetByTimezone } from "@calcom/lib/dayjs";
 import { BookingStatus, WebhookTriggerEvents } from "@calcom/prisma/enums";
-
 import type { BookingWebhookEventDTO } from "../../../dto/types";
-import type { WebhookPayload } from "../../types";
 import {
   BaseBookingPayloadBuilder,
   type BookingExtraDataMap,
   type BookingPayloadParams,
 } from "../../base/BaseBookingPayloadBuilder";
+import type { WebhookPayload } from "../../types";
 
 /**
  * Booking payload builder for webhook version 2021-10-20.

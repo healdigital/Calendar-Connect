@@ -1,14 +1,13 @@
 import "dotenv/config";
-import { faker } from "@faker-js/faker";
-import { v4 as uuidv4 } from "uuid";
-
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { hashPassword } from "@calcom/lib/auth/hashPassword";
 import { RefundPolicy } from "@calcom/lib/payment/types";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
-import { BookingStatus, AssignmentReasonEnum, PaymentOption } from "@calcom/prisma/enums";
-
+import { AssignmentReasonEnum, BookingStatus, PaymentOption } from "@calcom/prisma/enums";
+import { faker } from "@faker-js/faker";
+import { v4 as uuidv4 } from "uuid";
 import { seedAttributes, seedRoutingFormResponses, seedRoutingForms } from "./seed-utils";
 
 // Valid statuses for seed data

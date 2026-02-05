@@ -7,8 +7,7 @@
 import type { Request, Response } from "express";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createMocks } from "node-mocks-http";
-import { describe, test, expect, vi, beforeEach } from "vitest";
-
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import handler from "../../../pages/api/users/_post";
 
 type CustomNextApiRequest = NextApiRequest & Request;

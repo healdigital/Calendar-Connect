@@ -1,8 +1,6 @@
-import { useMemo, useState, useRef, useEffect } from "react";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import useMediaQuery from "@calcom/lib/hooks/useMediaQuery";
-
+import { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "../../../classNames";
 import { Dropdown, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../dropdown";
 import { Input } from "../../form";

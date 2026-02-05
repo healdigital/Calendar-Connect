@@ -1,14 +1,16 @@
+import process from "node:process";
 import { EMBED_DARK_THEME_CLASS, EMBED_LIGHT_THEME_CLASS } from "./constants";
-import type { EmbedThemeConfig, AllPossibleLayouts, BookerLayouts, EmbedPageType } from "./types";
+import type { AllPossibleLayouts, BookerLayouts, EmbedPageType, EmbedThemeConfig } from "./types";
+import type { ExternalThemeClass } from "./ui/themeClass";
 import {
+  addDarkColorSchemeChangeListener,
+  getMaxHeightForModal,
   getThemeClassForEmbed,
   getTrueLayout,
   isThemePreferenceProvided,
   removeDarkColorSchemeChangeListener,
-  addDarkColorSchemeChangeListener,
-  getMaxHeightForModal,
 } from "./ui-utils";
-import type { ExternalThemeClass } from "./ui/themeClass";
+
 type ShadowRootWithStyle = ShadowRoot & {
   host: HTMLElement & { style: CSSStyleDeclaration };
 };

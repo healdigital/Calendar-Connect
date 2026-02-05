@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import { createPaymentLink } from "@calcom/app-store/stripepayment/lib/client";
 import { sendAwaitingPaymentEmailAndSMS } from "@calcom/emails/email-manager";
 import { getBooking } from "@calcom/features/bookings/lib/payment/getBooking";
@@ -9,6 +7,7 @@ import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { PrismaBookingPaymentRepository } from "@calcom/lib/server/repository/PrismaBookingPaymentRepository";
 import prisma from "@calcom/prisma";
+import { z } from "zod";
 
 const log = logger.getSubLogger({ prefix: ["sendAwaitingPaymentEmail"] });
 

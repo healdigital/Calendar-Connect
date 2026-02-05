@@ -1,7 +1,5 @@
+import { type FieldType, fieldSchema, fieldTypeEnum, variantsConfigSchema } from "@calcom/prisma/zod-utils";
 import { z } from "zod";
-
-import { fieldSchema, fieldTypeEnum, variantsConfigSchema, type FieldType } from "@calcom/prisma/zod-utils";
-
 import { fieldTypesConfigMap } from "./fieldTypes";
 import { preprocessNameFieldDataWithVariant } from "./utils";
 import { getConfig as getVariantsConfig } from "./utils/variantsConfig";
@@ -229,7 +227,7 @@ export const fieldTypesSchemaMap: Partial<
       const urlSchema = z.string().url();
 
       // Check for malformed protocols (missing second slash test case)
-      if (value.match(/^https?:\/[^\/]/)) {
+      if (value.match(/^https?:\/[^/]/)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: m("url_validation_error"),

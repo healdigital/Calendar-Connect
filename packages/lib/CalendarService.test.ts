@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createEvent as createIcsEvent } from "ics";
 import { createCalendarObject, updateCalendarObject } from "tsdav";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("ics", () => ({
   createEvent: vi.fn(),
@@ -41,7 +41,6 @@ vi.mock("./CalEventParser", () => ({
 }));
 
 import type { CalendarServiceEvent } from "@calcom/types/Calendar";
-
 import BaseCalendarService from "./CalendarService";
 
 const createMockEvent = (overrides: Partial<CalendarServiceEvent> = {}): CalendarServiceEvent => ({

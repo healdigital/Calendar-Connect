@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-
 import { AppDependencyComponent } from "./AppDependencyComponent";
 
 // Type for dependency data

@@ -1,7 +1,3 @@
-import type { Params } from "app/_types";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-
 import { BookingRepository } from "@calcom/features/bookings/repositories/BookingRepository";
 import type { CalendarSubscriptionProvider } from "@calcom/features/calendar-subscription/adapters/AdaptersFactory";
 import { DefaultAdapterFactory } from "@calcom/features/calendar-subscription/adapters/AdaptersFactory";
@@ -10,10 +6,13 @@ import { CalendarCacheEventRepository } from "@calcom/features/calendar-subscrip
 import { CalendarCacheEventService } from "@calcom/features/calendar-subscription/lib/cache/CalendarCacheEventService";
 import { CalendarSyncService } from "@calcom/features/calendar-subscription/lib/sync/CalendarSyncService";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
-import logger from "@calcom/lib/logger";
 import { SelectedCalendarRepository } from "@calcom/features/selectedCalendar/repositories/SelectedCalendarRepository";
+import logger from "@calcom/lib/logger";
 import { prisma } from "@calcom/prisma";
 import { defaultResponderForAppDir } from "@calcom/web/app/api/defaultResponderForAppDir";
+import type { Params } from "app/_types";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const log = logger.getSubLogger({ prefix: ["calendar-webhook"] });
 

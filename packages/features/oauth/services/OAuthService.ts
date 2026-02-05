@@ -1,15 +1,15 @@
 import { randomBytes } from "node:crypto";
-import jwt from "jsonwebtoken";
-
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
-import { AccessCodeRepository } from "@calcom/features/oauth/repositories/AccessCodeRepository";
-import { OAuthClientRepository } from "@calcom/features/oauth/repositories/OAuthClientRepository";
+import process from "node:process";
+import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
+import type { AccessCodeRepository } from "@calcom/features/oauth/repositories/AccessCodeRepository";
+import type { OAuthClientRepository } from "@calcom/features/oauth/repositories/OAuthClientRepository";
 import { generateSecret } from "@calcom/features/oauth/utils/generateSecret";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
 import { verifyCodeChallenge } from "@calcom/lib/pkce";
-import { OAuthClientStatus } from "@calcom/prisma/enums";
 import type { AccessScope, OAuthClientType } from "@calcom/prisma/enums";
+import { OAuthClientStatus } from "@calcom/prisma/enums";
+import jwt from "jsonwebtoken";
 
 export interface OAuth2Client {
   clientId: string;

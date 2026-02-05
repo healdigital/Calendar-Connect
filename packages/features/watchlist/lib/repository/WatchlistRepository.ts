@@ -1,13 +1,12 @@
 import type { PrismaClient } from "@calcom/prisma";
 import { WatchlistAction, WatchlistSource } from "@calcom/prisma/enums";
-
 import type {
-  IWatchlistRepository,
-  CreateWatchlistInput,
   CheckWatchlistInput,
-  WatchlistEntry,
+  CreateWatchlistInput,
   FindAllEntriesInput,
+  IWatchlistRepository,
   WatchlistAuditEntry,
+  WatchlistEntry,
 } from "./IWatchlistRepository";
 
 export class WatchlistRepository implements IWatchlistRepository {

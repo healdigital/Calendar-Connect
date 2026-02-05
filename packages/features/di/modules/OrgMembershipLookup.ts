@@ -1,6 +1,5 @@
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
 import type { OrgMembershipLookup } from "@calcom/trpc/server/routers/viewer/slots/util";
-
 import { createModule, type Module } from "../di";
 import { DI_TOKENS } from "../tokens";
 

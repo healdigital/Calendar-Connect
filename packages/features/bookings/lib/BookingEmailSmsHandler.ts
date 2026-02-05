@@ -1,10 +1,7 @@
-import { default as cloneDeep } from "lodash/cloneDeep";
-import type { Logger } from "tslog";
-
 import dayjs from "@calcom/dayjs";
 import {
-  allowDisablingHostConfirmationEmails,
   allowDisablingAttendeeConfirmationEmails,
+  allowDisablingHostConfirmationEmails,
 } from "@calcom/ee/workflows/lib/allowDisablingStandardEmails";
 import type { Workflow as WorkflowType } from "@calcom/ee/workflows/lib/types";
 import type { BookingType } from "@calcom/features/bookings/lib/handleNewBooking/originalRescheduledBookingUtils";
@@ -17,6 +14,8 @@ import type { Prisma, User } from "@calcom/prisma/client";
 import type { SchedulingType } from "@calcom/prisma/enums";
 import type { EventTypeMetadata } from "@calcom/prisma/zod-utils";
 import type { AdditionalInformation, CalendarEvent, Person } from "@calcom/types/Calendar";
+import { default as cloneDeep } from "lodash/cloneDeep";
+import type { Logger } from "tslog";
 
 export const BookingActionMap = {
   confirmed: "BOOKING_CONFIRMED",

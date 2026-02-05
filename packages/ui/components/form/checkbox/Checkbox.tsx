@@ -1,9 +1,8 @@
+import classNames from "@calcom/ui/classNames";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { useId } from "@radix-ui/react-id";
 import type { InputHTMLAttributes } from "react";
 import React, { forwardRef } from "react";
-import classNames from "@calcom/ui/classNames";
-
 import { Icon } from "../../icon";
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {

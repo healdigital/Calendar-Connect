@@ -5,7 +5,6 @@ import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-
 import type { ComplianceDocument } from "./compliance-documents";
 
 interface ComplianceDocumentCardProps {

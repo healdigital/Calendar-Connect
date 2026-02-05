@@ -3,9 +3,8 @@
  *
  * It works in conjunction with `/api/cron/credentials` route(which creates the Credential records for all the members of an organization that has delegation credentials enabled)
  */
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 
+import process from "node:process";
 import { findUniqueDelegationCalendarCredential } from "@calcom/app-store/delegationCredential";
 import {
   createGoogleCalendarServiceWithGoogleType,
@@ -19,7 +18,8 @@ import { safeStringify } from "@calcom/lib/safeStringify";
 import { SelectedCalendarRepository } from "@calcom/lib/server/repository/selectedCalendar";
 import type { CredentialForCalendarServiceWithEmail } from "@calcom/types/Credential";
 import type { Ensure } from "@calcom/types/utils";
-
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { defaultResponderForAppDir } from "../../defaultResponderForAppDir";
 
 const limitOnQueryingGoogleCalendar = 50;

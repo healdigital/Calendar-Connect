@@ -1,3 +1,4 @@
+import process from "node:process";
 import { defineWorkspace } from "vitest/config";
 
 // Vitest 4.0 no longer allows custom CLI flags, so we use environment variables instead

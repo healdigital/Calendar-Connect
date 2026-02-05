@@ -1,5 +1,5 @@
+import process from "node:process";
 import logger from "@calcom/lib/logger";
-
 import type { LazyModule, SWHMap } from "./__handler";
 
 type Data = SWHMap["invoice.paid"]["data"];

@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
-
 import { cn } from "@coss/ui/lib/utils";
 
 function Avatar({ className, ...props }: AvatarPrimitive.Root.Props) {

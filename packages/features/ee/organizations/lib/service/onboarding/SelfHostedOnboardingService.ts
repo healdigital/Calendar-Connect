@@ -1,3 +1,4 @@
+import process from "node:process";
 import { LicenseKeySingleton } from "@calcom/ee/common/server/LicenseKeyService";
 import { DeploymentRepository } from "@calcom/features/ee/deployment/repositories/DeploymentRepository";
 import { getOrganizationRepository } from "@calcom/features/ee/organizations/di/OrganizationRepository.container";
@@ -11,13 +12,12 @@ import { prisma } from "@calcom/prisma";
 import type { Team, User } from "@calcom/prisma/client";
 import { BillingPeriod } from "@calcom/prisma/enums";
 import { orgOnboardingInvitedMembersSchema, orgOnboardingTeamsSchema } from "@calcom/prisma/zod-utils";
-
 import { BaseOnboardingService } from "./BaseOnboardingService";
 import type {
   CreateOnboardingIntentInput,
   OnboardingIntentResult,
-  OrganizationOnboardingData,
   OrganizationData,
+  OrganizationOnboardingData,
 } from "./types";
 
 const log = logger.getSubLogger({ prefix: ["SelfHostedOrganizationOnboardingService"] });

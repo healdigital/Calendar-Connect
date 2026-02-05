@@ -1,17 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
-import type { Dispatch, SetStateAction } from "react";
-import type { RegisterOptions, UseFormReturn } from "react-hook-form";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Label, Switch, TextArea, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { ImageUploader } from "@calcom/ui/components/image-uploader";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-
+import type { Dispatch, SetStateAction } from "react";
+import { useMemo } from "react";
+import type { RegisterOptions, UseFormReturn } from "react-hook-form";
 import type { OAuthClientCreateFormValues } from "../create/OAuthClientCreateModal";
 
 export const OAuthClientFormFields = ({

@@ -1,11 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z, ZodError } from "zod";
-
+import { ZodError, z } from "zod";
 import { GiphyManager } from "../lib";
 
-const giphyUrlRegexp = new RegExp(
-  "^https?:\\/\\/(?:[\\w.-]+\\.)?giphy\\.com\\/media\\/(?:[^/]+\\/)*([a-zA-Z0-9_-]+)\\/giphy\\.gif(?:\\?.*)?$"
-);
+const giphyUrlRegexp = /^https?:\\/\\/(?:[\w.-]+\.)?giphy\.com\\/media\\/(?:[^/]+\\/)*([a-zA-Z0-9_-]+)\\/giphy\.gif(?:\?.*)?$/;
 
 const getSchema = z.object({
   url: z.string().regex(giphyUrlRegexp, "Giphy URL is invalid"),

@@ -1,45 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import i18nMock from "../__mocks__/libServerI18n";
 import prismock from "../__mocks__/prisma";
-
 import { v4 as uuidv4 } from "uuid";
 import { vi } from "vitest";
 import "vitest-fetch-mock";
-import type { z } from "zod";
-
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
-import { weekdayToWeekIndex, type WeekDays } from "@calcom/lib/dayjs";
+import { type WeekDays, weekdayToWeekIndex } from "@calcom/lib/dayjs";
 import type { IntervalLimit } from "@calcom/lib/intervalLimits/intervalLimitSchema";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
-import type { BookingReference, Attendee, Booking, Membership } from "@calcom/prisma/client";
-import type { Prisma } from "@calcom/prisma/client";
-import type { WebhookTriggerEvents } from "@calcom/prisma/client";
 import type {
+  Attendee,
+  Booking,
+  BookingReference,
+  Membership,
+  Prisma,
+  WebhookTriggerEvents,
   WorkflowActions,
+  WorkflowMethods,
   WorkflowTemplates,
   WorkflowTriggerEvents,
-  WorkflowMethods,
 } from "@calcom/prisma/client";
-import type { PaymentOption, SchedulingType, SMSLockState, TimeUnit } from "@calcom/prisma/enums";
-import type { BookingStatus } from "@calcom/prisma/enums";
-import type { teamMetadataSchema } from "@calcom/prisma/zod-utils";
-import type { userMetadataType } from "@calcom/prisma/zod-utils";
-import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
-import type { EventTypeMetaDataSchema } from "@calcom/prisma/zod-utils";
+import type {
+  BookingStatus,
+  PaymentOption,
+  SchedulingType,
+  SMSLockState,
+  TimeUnit,
+} from "@calcom/prisma/enums";
+import type {
+  EventTypeMetaDataSchema,
+  eventTypeBookingFields,
+  teamMetadataSchema,
+  userMetadataType,
+} from "@calcom/prisma/zod-utils";
 import type { AppMeta } from "@calcom/types/App";
 import type {
   Calendar,
   CalendarEvent,
+  EventBusyDate,
   IntegrationCalendar,
   NewCalendarEventType,
-  EventBusyDate,
 } from "@calcom/types/Calendar";
 import type { CredentialPayload } from "@calcom/types/Credential";
 import type { VideoApiAdapter } from "@calcom/types/VideoApiAdapter";
-
-import { getMockPaymentService } from "./MockPaymentService";
+import type { z } from "zod";
 import type { getMockRequestDataForBooking } from "./getMockRequestDataForBooking";
+import { getMockPaymentService } from "./MockPaymentService";
 
 type NonNullableVideoApiAdapter = NonNullable<VideoApiAdapter>;
 vi.mock("@calcom/app-store/calendar.services.generated", () => ({
@@ -1717,7 +1724,7 @@ export function mockNoTranslations() {
   });
 }
 
-export const enum BookingLocations {
+export enum BookingLocations {
   CalVideo = "integrations:daily",
   ZoomVideo = "integrations:zoom",
   GoogleMeet = "integrations:google:meet",
@@ -1833,9 +1840,7 @@ export async function mockCalendar(
     const resolvedService = await calendarServicePromise;
     vi.mocked(resolvedService.default).mockImplementation(function MockCalendarService(credential) {
       return {
-        createEvent: async function (
-          ...rest: Parameters<Calendar["createEvent"]>
-        ): Promise<NewCalendarEventType> {
+        createEvent: async (...rest: Parameters<Calendar["createEvent"]>): Promise<NewCalendarEventType> => {
           if (calendarData?.creationCrash) {
             throw new Error("MockCalendarService.createEvent fake error");
           }
@@ -1906,9 +1911,7 @@ export async function mockCalendar(
             });
           }
         },
-        updateEvent: async function (
-          ...rest: Parameters<Calendar["updateEvent"]>
-        ): Promise<NewCalendarEventType> {
+        updateEvent: async (...rest: Parameters<Calendar["updateEvent"]>): Promise<NewCalendarEventType> => {
           if (calendarData?.updationCrash) {
             throw new Error("MockCalendarService.updateEvent fake error");
           }
@@ -1981,9 +1984,7 @@ export async function mockCalendar(
             resolve(calendarData?.busySlots || []);
           });
         },
-        listCalendars: async function (): Promise<IntegrationCalendar[]> {
-          return Promise.resolve([]);
-        },
+        listCalendars: async (): Promise<IntegrationCalendar[]> => Promise.resolve([]),
       } as Calendar;
     });
   }

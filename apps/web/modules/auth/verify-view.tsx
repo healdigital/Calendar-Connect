@@ -1,11 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { signIn } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import z from "zod";
-
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -14,6 +8,11 @@ import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
+import { motion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
+import z from "zod";
 
 async function sendVerificationLogin(email: string, username: string, t: (key: string) => string) {
   await signIn("email", {

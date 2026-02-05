@@ -4,13 +4,13 @@
  * So, they should start with isBrowser check.
  */
 import useMediaQuery from "@calcom/lib/hooks/useMediaQuery";
-import { sdkActionManager } from "../sdk-event";
 import { useEmbedUiConfig, useIsEmbed } from "../embed-iframe";
+import { sdkActionManager } from "../sdk-event";
 import {
   embedStore,
   getEventHasFired,
-  setEventHasFired,
   getReloadInitiated,
+  setEventHasFired,
   setReloadInitiated,
 } from "./lib/embedStore";
 import { isBrowser, isPrerendering } from "./lib/utils";

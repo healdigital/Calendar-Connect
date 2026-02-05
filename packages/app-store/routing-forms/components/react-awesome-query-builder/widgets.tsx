@@ -1,5 +1,9 @@
 "use client";
 
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { Button as CalButton } from "@calcom/ui/components/button";
+import { TextArea, TextField } from "@calcom/ui/components/form";
+import { Icon } from "@calcom/ui/components/icon";
 import dynamic from "next/dynamic";
 import type { ChangeEvent } from "react";
 import type {
@@ -9,12 +13,6 @@ import type {
   FieldProps,
   ProviderProps,
 } from "react-awesome-query-builder";
-
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { Button as CalButton } from "@calcom/ui/components/button";
-import { TextArea } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { Icon } from "@calcom/ui/components/icon";
 
 const Select = dynamic(
   async () => (await import("@calcom/ui/components/form")).SelectWithValidation

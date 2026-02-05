@@ -1,11 +1,11 @@
+import { getQueueToken } from "@nestjs/bull";
+import { Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Test, TestingModule } from "@nestjs/testing";
 import { CALENDARS_QUEUE, DEFAULT_CALENDARS_JOB } from "@/ee/calendars/processors/calendars.processor";
 import { CalendarsTasker } from "@/lib/services/tasker/calendars-tasker.service";
 import { OrganizationsDelegationCredentialRepository } from "@/modules/organizations/delegation-credentials/organizations-delegation-credential.repository";
 import { OrganizationsDelegationCredentialService } from "@/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service";
-import { Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { getQueueToken } from "@nestjs/bull";
-import { Test, TestingModule } from "@nestjs/testing";
 
 describe("OrganizationsDelegationCredentialService", () => {
   let service: OrganizationsDelegationCredentialService;

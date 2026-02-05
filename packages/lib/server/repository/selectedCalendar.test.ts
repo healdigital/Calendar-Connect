@@ -1,12 +1,9 @@
 import prismock from "@calcom/testing/lib/__mocks__/prisma";
-
-import { describe, expect, it, beforeEach } from "vitest";
-
 import type { FeatureId } from "@calcom/features/flags/config";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import prisma from "@calcom/prisma";
 import { MembershipRole } from "@calcom/prisma/enums";
-
+import { beforeEach, describe, expect, it } from "vitest";
 import { SelectedCalendarRepository } from "./selectedCalendar";
 
 describe("SelectedCalendarRepository", () => {

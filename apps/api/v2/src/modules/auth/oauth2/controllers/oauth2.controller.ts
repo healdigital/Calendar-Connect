@@ -1,13 +1,5 @@
-import { API_VERSIONS_VALUES } from "@/lib/api-versions";
-import { OAuthService } from "@/lib/services/oauth.service";
-import { ApiAuthGuardOnlyAllow } from "@/modules/auth/decorators/api-auth-guard-only-allow.decorator";
-import { GetUser } from "@/modules/auth/decorators/get-user/get-user.decorator";
-import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
-import { OAuth2AuthorizeInput } from "@/modules/auth/oauth2/inputs/authorize.input";
-import { OAuth2ExchangeInput } from "@/modules/auth/oauth2/inputs/exchange.input";
-import { OAuth2RefreshInput } from "@/modules/auth/oauth2/inputs/refresh.input";
-import { OAuth2ClientDto, OAuth2ClientResponseDto } from "@/modules/auth/oauth2/outputs/oauth2-client.output";
-import { OAuth2TokensDto, OAuth2TokensResponseDto } from "@/modules/auth/oauth2/outputs/oauth2-tokens.output";
+import { SUCCESS_STATUS } from "@calcom/platform-constants";
+import { ErrorWithCode, getHttpStatusCode } from "@calcom/platform-libraries/errors";
 import {
   Body,
   Controller,
@@ -25,9 +17,16 @@ import {
 import { ApiExcludeController, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import type { Response } from "express";
-
-import { SUCCESS_STATUS } from "@calcom/platform-constants";
-import { ErrorWithCode, getHttpStatusCode } from "@calcom/platform-libraries/errors";
+import { API_VERSIONS_VALUES } from "@/lib/api-versions";
+import { OAuthService } from "@/lib/services/oauth.service";
+import { ApiAuthGuardOnlyAllow } from "@/modules/auth/decorators/api-auth-guard-only-allow.decorator";
+import { GetUser } from "@/modules/auth/decorators/get-user/get-user.decorator";
+import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
+import { OAuth2AuthorizeInput } from "@/modules/auth/oauth2/inputs/authorize.input";
+import { OAuth2ExchangeInput } from "@/modules/auth/oauth2/inputs/exchange.input";
+import { OAuth2RefreshInput } from "@/modules/auth/oauth2/inputs/refresh.input";
+import { OAuth2ClientDto, OAuth2ClientResponseDto } from "@/modules/auth/oauth2/outputs/oauth2-client.output";
+import { OAuth2TokensDto, OAuth2TokensResponseDto } from "@/modules/auth/oauth2/outputs/oauth2-tokens.output";
 
 @Controller({
   path: "/v2/auth/oauth2/clients/:clientId",

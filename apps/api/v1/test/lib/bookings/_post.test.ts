@@ -1,20 +1,17 @@
 // TODO: Fix tests (These test were never running due to the vitest workspace config)
 import prismaMock from "@calcom/testing/lib/__mocks__/prismaMock";
-
-import type { Request, Response } from "express";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { createMocks } from "node-mocks-http";
-import { describe, expect, test, vi, beforeEach } from "vitest";
-
 import dayjs from "@calcom/dayjs";
 import { getEventTypesFromDB } from "@calcom/features/bookings/lib/handleNewBooking/getEventTypesFromDB";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
 import { ErrorCode } from "@calcom/lib/errorCodes";
-import { buildBooking, buildEventType, buildWebhook, buildUser } from "@calcom/lib/test/builder";
+import { buildBooking, buildEventType, buildUser, buildWebhook } from "@calcom/lib/test/builder";
 import { prisma } from "@calcom/prisma";
 import type { Booking } from "@calcom/prisma/client";
-import { CreationSource, BookingStatus } from "@calcom/prisma/enums";
-
+import { BookingStatus, CreationSource } from "@calcom/prisma/enums";
+import type { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { createMocks } from "node-mocks-http";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import handler from "../../../pages/api/bookings/_post";
 
 vi.mock("@calcom/features/bookings/lib/handleNewBooking/getEventTypesFromDB", () => ({

@@ -1,12 +1,11 @@
-import { type DMMF } from "@prisma/client/runtime/client";
-import { getDMMF } from "@prisma/internals";
 import { readFileSync } from "node:fs";
-import { beforeEach, vi } from "vitest";
-import { createPrismock } from "prismock/build/main/lib/client";
-
 import logger from "@calcom/lib/logger";
 import type { PrismaClient } from "@calcom/prisma";
 import * as selects from "@calcom/prisma/selects";
+import type { DMMF } from "@prisma/client/runtime/client";
+import { getDMMF } from "@prisma/internals";
+import { createPrismock } from "prismock/build/main/lib/client";
+import { beforeEach, vi } from "vitest";
 
 vi.stubEnv("DATABASE_URL", "postgresql://user:password@localhost:5432/testdb");
 

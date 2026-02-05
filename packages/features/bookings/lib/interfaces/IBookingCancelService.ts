@@ -1,6 +1,6 @@
 import type {
-  CancelRegularBookingData,
   CancelBookingMeta,
+  CancelRegularBookingData,
   HandleCancelBookingResponse,
 } from "../dto/BookingCancel";
 

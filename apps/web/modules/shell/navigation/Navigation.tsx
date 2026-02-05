@@ -1,20 +1,18 @@
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
-
 import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import {
-  useOrgBranding,
   type OrganizationBranding,
+  useOrgBranding,
 } from "@calcom/features/ee/organizations/context/provider";
 import { useIsStandalone } from "@calcom/lib/hooks/useIsStandalone";
 import classNames from "@calcom/ui/classNames";
 import { useHasPaidPlan } from "@calcom/web/modules/billing/hooks/useHasPaidPlan";
-
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 import UnconfirmedBookingBadge from "../../bookings/components/UnconfirmedBookingBadge";
 import { KBarTrigger } from "../Kbar";
 import { TeamInviteBadge } from "../TeamInviteBadge";
 import type { NavigationItemType } from "./NavigationItem";
-import { NavigationItem, MobileNavigationItem, MobileNavigationMoreItem } from "./NavigationItem";
+import { MobileNavigationItem, MobileNavigationMoreItem, NavigationItem } from "./NavigationItem";
 
 export const MORE_SEPARATOR_NAME = "more";
 

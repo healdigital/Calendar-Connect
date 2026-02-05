@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import type { ExternalToast } from "sonner";
 import { toast } from "sonner";
-
 import { Icon } from "../icon";
 
 type IToast = {

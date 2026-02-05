@@ -1,7 +1,6 @@
-import { z } from "zod";
-
-import { eventTypeAppCardZod } from "../eventTypeAppCardZod";
 import { safeUrlSchema } from "@calcom/app-store/_lib/analytics-schemas";
+import { z } from "zod";
+import { eventTypeAppCardZod } from "../eventTypeAppCardZod";
 
 // Domain schema for Plausible tracking (e.g., example.com, sub.example.com)
 const domainSchema = z

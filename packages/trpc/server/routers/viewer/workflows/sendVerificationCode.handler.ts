@@ -2,9 +2,7 @@ import { CreditsRepository } from "@calcom/features/credits/repositories/Credits
 import { sendVerificationCode } from "@calcom/features/ee/workflows/lib/reminders/verifyPhoneNumber";
 import hasKeyInMetadata from "@calcom/lib/hasKeyInMetadata";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import { TRPCError } from "@trpc/server";
-
 import { hasTeamPlanHandler } from "../teams/hasTeamPlan.handler";
 import type { TSendVerificationCodeInputSchema } from "./sendVerificationCode.schema";
 

@@ -4,17 +4,16 @@ import {
   IsArray,
   IsBoolean,
   IsDateString,
+  IsEmail,
   IsEnum,
   IsInt,
   IsObject,
   IsOptional,
   IsString,
-  IsEmail,
   IsTimeZone,
   IsUrl,
   ValidateNested,
 } from "class-validator";
-
 import type { BookingLanguageType } from "../inputs/language";
 import { BookingLanguage } from "../inputs/language";
 

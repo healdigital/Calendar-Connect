@@ -22,7 +22,6 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
-
 import {
   AppleIcon,
   ChromeIcon,

@@ -1,15 +1,13 @@
-import { TRPCError } from "@trpc/server";
-
 import {
   sendOAuthClientApprovedNotification,
   sendOAuthClientRejectedNotification,
 } from "@calcom/emails/oauth-email-service";
-import { getTranslation } from "@calcom/lib/server/i18n";
 import { OAuthClientRepository } from "@calcom/features/oauth/repositories/OAuthClientRepository";
+import { getTranslation } from "@calcom/lib/server/i18n";
 import type { PrismaClient } from "@calcom/prisma";
-import { UserPermissionRole } from "@calcom/prisma/enums";
 import type { OAuthClientStatus } from "@calcom/prisma/enums";
-
+import { UserPermissionRole } from "@calcom/prisma/enums";
+import { TRPCError } from "@trpc/server";
 import type { TUpdateClientInputSchema } from "./updateClient.schema";
 
 type UpdateClientOptions = {

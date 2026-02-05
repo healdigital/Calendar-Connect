@@ -1,12 +1,11 @@
 "use client";
 
-import type { Row, VisibilityState } from "@tanstack/react-table";
-import { noop } from "lodash";
-import { useEffect, useRef } from "react";
-
 import { useColumnFilters } from "@calcom/features/data-table/hooks/useColumnFilters";
 import { useDataTable } from "@calcom/features/data-table/hooks/useDataTable";
 import { useFetchMoreOnBottomReached } from "@calcom/features/data-table/hooks/useFetchMoreOnBottomReached";
+import type { Row, VisibilityState } from "@tanstack/react-table";
+import { noop } from "lodash";
+import { useEffect, useRef } from "react";
 import type { DataTablePropsFromWrapper } from "./DataTable";
 import { DataTable } from "./DataTable";
 import { DataTablePagination } from "./DataTablePagination";

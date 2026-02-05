@@ -1,10 +1,7 @@
-import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
-import { getTranslate } from "app/_utils";
-
 import { CTA_CONTAINER_CLASS_NAME } from "@calcom/features/data-table/lib/utils";
-
+import { getTranslate } from "app/_utils";
+import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
 import Shell from "~/shell/Shell";
-
 import UpgradeTipWrapper from "./UpgradeTipWrapper";
 
 export default async function InsightsLayout({ children }: { children: React.ReactNode }) {

@@ -1,8 +1,8 @@
-import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Platform, Text, View, useColorScheme } from "react-native";
+import { Platform, Text, useColorScheme, View } from "react-native";
 import { AppPressable } from "@/components/AppPressable";
 import { HeaderButtonWrapper } from "@/components/HeaderButtonWrapper";
 import { BookingDetailScreen } from "@/components/screens/BookingDetailScreen";

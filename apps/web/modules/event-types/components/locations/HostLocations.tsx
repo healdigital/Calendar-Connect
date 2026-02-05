@@ -1,11 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
-import type { CSSObjectWithLabel } from "react-select";
-import { components } from "react-select";
-
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import {
   defaultLocations,
@@ -16,22 +10,26 @@ import {
 } from "@calcom/app-store/locations";
 import { getAppFromSlug } from "@calcom/app-store/utils";
 import PhoneInput from "@calcom/features/components/phone-input";
-import invertLogoOnDark from "@calcom/lib/invertLogoOnDark";
+import type { FormValues, Host, HostLocation } from "@calcom/features/eventtypes/lib/types";
 import type { LocationOption } from "@calcom/features/form/components/LocationSelect";
 import LocationSelect from "@calcom/features/form/components/LocationSelect";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import invertLogoOnDark from "@calcom/lib/invertLogoOnDark";
 import { trpc } from "@calcom/trpc/react";
 import { Alert } from "@calcom/ui/components/alert";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@calcom/ui/components/dialog";
-import { Label, TextField, Select, SettingsToggle } from "@calcom/ui/components/form";
+import { Label, Select, SettingsToggle, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { Skeleton } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
-
-import type { FormValues, Host, HostLocation } from "@calcom/features/eventtypes/lib/types";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import type { CSSObjectWithLabel } from "react-select";
+import { components } from "react-select";
 import type { TLocationOptions } from "./Locations";
 
 type HostWithLocationOptions = {

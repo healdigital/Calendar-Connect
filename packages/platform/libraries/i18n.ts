@@ -1,9 +1,9 @@
-import { createInstance } from "i18next";
-import type { i18n as I18nInstance } from "i18next";
-
+import process from "node:process";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { fetchWithTimeout } from "@calcom/lib/fetchWithTimeout";
 import logger from "@calcom/lib/logger";
+import type { i18n as I18nInstance } from "i18next";
+import { createInstance } from "i18next";
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { i18n } = require("@calcom/config/next-i18next.config");

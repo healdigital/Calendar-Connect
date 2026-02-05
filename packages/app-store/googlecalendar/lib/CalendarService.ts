@@ -1,19 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { calendar_v3 } from "@googleapis/calendar";
-import type { GaxiosResponse } from "googleapis-common";
-import { RRule } from "rrule";
+
 import { MeetLocationType } from "@calcom/app-store/constants";
+import { getDestinationCalendarRepository } from "@calcom/features/di/containers/DestinationCalendar";
 import { getLocation, getRichDescription } from "@calcom/lib/CalEventParser";
 import { ORGANIZER_EMAIL_EXEMPT_DOMAINS } from "@calcom/lib/constants";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
-import { getDestinationCalendarRepository } from "@calcom/features/di/containers/DestinationCalendar";
 import { SelectedCalendarRepository } from "@calcom/lib/server/repository/selectedCalendar";
 import type { Prisma } from "@calcom/prisma/client";
 import type {
   Calendar,
-  CalendarServiceEvent,
   CalendarEvent,
+  CalendarServiceEvent,
   EventBusyDate,
   GetAvailabilityParams,
   IntegrationCalendar,
@@ -21,7 +19,9 @@ import type {
   SelectedCalendarEventTypeIds,
 } from "@calcom/types/Calendar";
 import type { CredentialForCalendarServiceWithEmail } from "@calcom/types/Credential";
-
+import type { calendar_v3 } from "@googleapis/calendar";
+import type { GaxiosResponse } from "googleapis-common";
+import { RRule } from "rrule";
 import { AxiosLikeResponseToFetchResponse } from "../../_utils/oauth/AxiosLikeResponseToFetchResponse";
 import { CalendarAuth } from "./CalendarAuth";
 
@@ -69,7 +69,7 @@ interface GoogleCalError extends Error {
 }
 
 const isGaxiosResponse = (error: unknown): error is GaxiosResponse<calendar_v3.Schema$Event> =>
-  typeof error === "object" && !!error && Object.prototype.hasOwnProperty.call(error, "config");
+  typeof error === "object" && !!error && Object.hasOwn(error, "config");
 
 class GoogleCalendarService implements Calendar {
   private integrationName = "";

@@ -1,12 +1,11 @@
-import { z } from "zod";
 import { emailSchema } from "@calcom/lib/emailSchema";
-
+import { z } from "zod";
 import { AuditActionServiceHelper } from "./AuditActionServiceHelper";
 import type {
+  GetDisplayJsonParams,
+  GetDisplayTitleParams,
   IAuditActionService,
   TranslationWithParams,
-  GetDisplayTitleParams,
-  GetDisplayJsonParams,
 } from "./IAuditActionService";
 
 /**

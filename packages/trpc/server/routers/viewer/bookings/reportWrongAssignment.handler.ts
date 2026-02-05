@@ -6,9 +6,7 @@ import logger from "@calcom/lib/logger";
 import prisma from "@calcom/prisma";
 import { WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import { TRPCError } from "@trpc/server";
-
 import type { TReportWrongAssignmentInputSchema } from "./reportWrongAssignment.schema";
 
 type ReportWrongAssignmentOptions = {

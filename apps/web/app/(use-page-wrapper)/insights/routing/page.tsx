@@ -1,9 +1,6 @@
-import { _generateMetadata } from "app/_utils";
-
 import { prisma } from "@calcom/prisma";
-
+import { _generateMetadata } from "app/_utils";
 import InsightsRoutingPage from "~/insights/views/insights-routing-view";
-
 import { checkInsightsPagePermission } from "../checkInsightsPagePermission";
 
 export const generateMetadata = async () =>

@@ -1,8 +1,6 @@
-import { z } from "zod";
-
-import { eventTypeAppCardZod } from "@calcom/app-store/eventTypeAppCardZod";
-
 import { safeUrlSchema } from "@calcom/app-store/_lib/analytics-schemas";
+import { eventTypeAppCardZod } from "@calcom/app-store/eventTypeAppCardZod";
+import { z } from "zod";
 
 // PostHog Project API Keys (typically start with phc_) - allow alphanumeric to not break legacy data
 const posthogIdSchema = z

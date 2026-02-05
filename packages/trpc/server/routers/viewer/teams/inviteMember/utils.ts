@@ -24,7 +24,6 @@ import { MembershipRole } from "@calcom/prisma/enums";
 import { teamMetadataSchema } from "@calcom/prisma/zod-utils";
 import { TRPCError } from "@trpc/server";
 import type { TFunction } from "i18next";
-
 import { isEmail } from "../util";
 import type { TeamWithParent } from "./types";
 

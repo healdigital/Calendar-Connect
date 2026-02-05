@@ -1,38 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { mapOldToNewCssVars } from "./ui/cssVarsMap";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Message } from "./embed";
 import {
-  embedStore,
   EMBED_IFRAME_STATE,
+  embedStore,
+  incrementView,
   resetPageData,
   setReloadInitiated,
-  incrementView,
 } from "./embed-iframe/lib/embedStore";
 import {
-  runAsap,
   isBookerReady,
-  isLinkReady,
-  recordResponseIfQueued,
-  keepParentInformedAboutDimensionChanges,
-  isPrerendering,
   isBrowser,
+  isLinkReady,
+  isPrerendering,
+  keepParentInformedAboutDimensionChanges,
   log,
+  recordResponseIfQueued,
+  runAsap,
 } from "./embed-iframe/lib/utils";
 import { sdkActionManager } from "./sdk-event";
 import type {
-  UiConfig,
-  EmbedNonStylesConfig,
   BookerLayouts,
-  EmbedStyles,
   EmbedBookerState,
-  SlotsQuery,
+  EmbedNonStylesConfig,
+  EmbedStyles,
   PrefillAndIframeAttrsConfig,
   SetStyles,
+  SlotsQuery,
   setNonStylesConfig,
+  UiConfig,
 } from "./types";
+import { mapOldToNewCssVars } from "./ui/cssVarsMap";
 import { useCompatSearchParams } from "./useCompatSearchParams";
+
 export { useBookerEmbedEvents, useSlotsViewOnSmallScreen } from "./embed-iframe/react-hooks";
 
 // We don't import it from Booker/types because the types from this module are published to npm and we can't import packages that aren't published

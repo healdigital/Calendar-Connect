@@ -1,5 +1,6 @@
+import process from "node:process";
 import { sdkActionManager } from "../../sdk-event";
-import { type EmbedStore } from "../lib/embedStore";
+import type { EmbedStore } from "../lib/embedStore";
 
 export const isBrowser = typeof window !== "undefined";
 

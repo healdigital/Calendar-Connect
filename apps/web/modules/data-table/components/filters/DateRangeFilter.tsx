@@ -1,39 +1,37 @@
-import { format } from "date-fns";
-import type { Dayjs } from "dayjs";
-import { useState, useEffect, useCallback } from "react";
-
 import dayjs from "@calcom/dayjs";
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { CURRENT_TIMEZONE } from "@calcom/lib/timezoneConstants";
-import classNames from "@calcom/ui/classNames";
-import { Badge } from "@calcom/ui/components/badge";
-import { Button, buttonClasses } from "@calcom/ui/components/button";
-import {
-  Command,
-  CommandList,
-  CommandItem,
-  CommandGroup,
-  CommandSeparator,
-} from "@calcom/ui/components/command";
-import { DateRangePicker } from "@calcom/ui/components/form";
-import { Icon } from "@calcom/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@calcom/ui/components/popover";
-
 import { useDataTable, useFilterValue } from "@calcom/features/data-table/hooks";
 import {
   CUSTOM_PRESET,
   CUSTOM_PRESET_VALUE,
   DEFAULT_PRESET,
-  getDefaultStartDate,
-  getDefaultEndDate,
-  getDateRangeFromPreset,
   getCompatiblePresets,
+  getDateRangeFromPreset,
+  getDefaultEndDate,
+  getDefaultStartDate,
   type PresetOption,
 } from "@calcom/features/data-table/lib/dateRange";
 import { preserveLocalTime } from "@calcom/features/data-table/lib/preserveLocalTime";
-import type { FilterableColumn, DateRangeFilterOptions } from "@calcom/features/data-table/lib/types";
-import { ZDateRangeFilterValue, ColumnFilterType } from "@calcom/features/data-table/lib/types";
+import type { DateRangeFilterOptions, FilterableColumn } from "@calcom/features/data-table/lib/types";
+import { ColumnFilterType, ZDateRangeFilterValue } from "@calcom/features/data-table/lib/types";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { CURRENT_TIMEZONE } from "@calcom/lib/timezoneConstants";
 import type { FilterType } from "@calcom/types/data-table";
+import classNames from "@calcom/ui/classNames";
+import { Badge } from "@calcom/ui/components/badge";
+import { Button, buttonClasses } from "@calcom/ui/components/button";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@calcom/ui/components/command";
+import { DateRangePicker } from "@calcom/ui/components/form";
+import { Icon } from "@calcom/ui/components/icon";
+import { Popover, PopoverContent, PopoverTrigger } from "@calcom/ui/components/popover";
+import { format } from "date-fns";
+import type { Dayjs } from "dayjs";
+import { useCallback, useEffect, useState } from "react";
 import { useFilterPopoverOpen } from "./useFilterPopoverOpen";
 
 type DateRangeFilterProps = {

@@ -1,11 +1,8 @@
+import { useFlagMap } from "@calcom/features/flags/context/provider";
+import { CreationSource, MembershipRole } from "@calcom/prisma/enums";
+import { trpc } from "@calcom/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import { useFlagMap } from "@calcom/features/flags/context/provider";
-import { MembershipRole } from "@calcom/prisma/enums";
-import { CreationSource } from "@calcom/prisma/enums";
-import { trpc } from "@calcom/trpc/react";
-
 import type { OnboardingState } from "../store/onboarding-store";
 import { useOnboardingStore } from "../store/onboarding-store";
 

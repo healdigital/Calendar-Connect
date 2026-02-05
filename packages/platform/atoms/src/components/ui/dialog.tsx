@@ -3,11 +3,10 @@ In this file we can edit all the Primitives from radix-ui/react-dialog
 when building atoms package this will automatically replace the DialogPrimitives used in components from all over the monorepo
 ensuring that we don't have issues with atoms.
 */
-import * as DialogPrimitives from "@radix-ui/react-dialog-atoms";
-import * as React from "react";
 
 import { Icon } from "@calcom/ui/components/icon";
-
+import * as DialogPrimitives from "@radix-ui/react-dialog-atoms";
+import * as React from "react";
 import { cn } from "../../lib/utils";
 
 const Dialog = DialogPrimitives.Root;

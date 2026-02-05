@@ -4,7 +4,6 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { BookingStatus } from "@calcom/prisma/enums";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
-
 import { useJoinableLocation } from "./useJoinableLocation";
 
 interface JoinMeetingButtonProps {

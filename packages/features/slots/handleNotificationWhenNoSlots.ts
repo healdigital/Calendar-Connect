@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { Dayjs } from "@calcom/dayjs";
 import { sendOrganizationAdminNoSlotsNotification } from "@calcom/emails/organization-email-service";
 import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";

@@ -70,7 +70,7 @@ export class StatisticsService {
       totalSessions: profile.totalSessions,
       completedSessions: profile.completedSessions,
       cancelledSessions: profile.cancelledSessions,
-      averageRating: profile.averageRating,
+      averageRating: profile.averageRating ? Number(profile.averageRating) : null,
       totalRatings: profile.totalRatings,
     };
 
@@ -194,9 +194,17 @@ export class StatisticsService {
   async getPlatformStats(): Promise<PlatformStats> {
     const aggregates = await this.profileRepository.getPlatformAggregates();
     const trends = await this.profileRepository.getBookingTrends();
-
     return {
-      ...aggregates,
+      _sum: {
+        totalSessions: aggregates._sum.totalSessions,
+        completedSessions: aggregates._sum.completedSessions,
+        cancelledSessions: aggregates._sum.cancelledSessions,
+        totalRatings: aggregates._sum.totalRatings,
+      },
+      _avg: {
+        averageRating: aggregates._avg.averageRating ? Number(aggregates._avg.averageRating) : null,
+      },
+      _count: aggregates._count,
       trends,
     };
   }

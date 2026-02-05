@@ -4,7 +4,6 @@ import { FeaturesSettings } from "@calcom/features/feature-opt-in/components/Fea
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { ReactElement } from "react";
-
 import { useTeamFeatureOptIn } from "~/feature-opt-in/hooks/useTeamFeatureOptIn";
 
 interface TeamFeaturesViewProps {

@@ -1,9 +1,8 @@
-import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
-import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { Injectable, NotFoundException } from "@nestjs/common";
-
 import { teamMetadataSchema } from "@calcom/platform-libraries";
 import type { Membership, Prisma } from "@calcom/prisma/client";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
 @Injectable()
 export class TeamsRepository {
