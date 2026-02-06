@@ -1,4 +1,3 @@
-import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import * as twilio from "@calcom/features/ee/workflows/lib/reminders/providers/twilioProvider";
 import { IS_SMS_CREDITS_ENABLED } from "@calcom/lib/constants";

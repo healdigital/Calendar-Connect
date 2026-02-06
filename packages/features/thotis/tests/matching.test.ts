@@ -6,7 +6,7 @@ import { ProfileService } from "../services/ProfileService"; // Adjust import pa
 const mockRepository = {
   searchProfiles: vi.fn(),
   getTopRatedProfiles: vi.fn(),
-  getRecommendedProfiles: vi.fn(),
+  getRecommendedProfilesByIntent: vi.fn(),
   getProfileByUserId: vi.fn(),
 };
 
@@ -82,10 +82,51 @@ describe("Thotis Matching & Discovery Backend", () => {
       expect(mockRepository.getTopRatedProfiles).toHaveBeenCalled();
     });
 
-    it("should call getRecommendedProfiles with field", async () => {
-      mockRepository.getRecommendedProfiles.mockResolvedValue([]);
-      await service.getRecommendedProfiles("COMPUTER_SCIENCE");
-      expect(mockRepository.getRecommendedProfiles).toHaveBeenCalledWith("COMPUTER_SCIENCE");
+    it("should call getRecommendedProfilesByIntent with intent", async () => {
+      const intent = {
+        targetFields: ["COMPUTER_SCIENCE"],
+        academicLevel: "BACHELOR",
+        goals: ["React"],
+        scheduleConstraints: { preferredTimes: ["weekdays"] },
+      };
+      mockRepository.getRecommendedProfilesByIntent.mockResolvedValue([]);
+      await service.getRecommendedProfilesByIntent(intent);
+      expect(mockRepository.getRecommendedProfilesByIntent).toHaveBeenCalledWith(intent);
+    });
+  });
+
+  describe("MentorMatchingService", () => {
+    it("should score mentor higher with goal match", async () => {
+      const { MentorMatchingService } = await import("../services/MentorMatchingService");
+      const matchingService = new MentorMatchingService();
+
+      const mentorBase = {
+        field: "COMPUTER_SCIENCE",
+        expertise: ["React", "Node.js"],
+        currentYear: 3,
+        isActive: true,
+        totalSessions: 15,
+        completedSessions: 14,
+        averageRating: 4.9,
+      } as any;
+
+      const intentWithGoal = {
+        targetFields: ["COMPUTER_SCIENCE"],
+        goals: ["React"],
+        scheduleConstraints: { preferredTimes: ["weekdays"] },
+      } as any;
+
+      const intentWithoutGoal = {
+        targetFields: ["COMPUTER_SCIENCE"],
+        goals: ["Law"],
+        scheduleConstraints: { preferredTimes: ["weekdays"] },
+      } as any;
+
+      const scoredWithGoal = matchingService.scoreMentor(mentorBase, intentWithGoal);
+      const scoredWithoutGoal = matchingService.scoreMentor(mentorBase, intentWithoutGoal);
+
+      expect(scoredWithGoal.matchScore).toBeGreaterThan(scoredWithoutGoal.matchScore);
+      expect(scoredWithGoal.matchReasons).toContain("Expert in: React");
     });
   });
 });

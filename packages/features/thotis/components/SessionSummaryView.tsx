@@ -33,14 +33,13 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold">{t("thotis_session_summary_title", "Résumé de la session")}</h2>
-          <p className="text-sm text-gray-500">
-            {t("thotis_session_summary_desc", "Récapitulatif et ressources fournis par votre mentor.")}
-          </p>
-        </div>
-
+      <DialogContent
+        className="max-w-2xl"
+        title={t("thotis_session_summary_title", "Résumé de la session")}
+        description={t(
+          "thotis_session_summary_desc",
+          "Récapitulatif et ressources fournis par votre mentor."
+        )}>
         {isLoading ? (
           <div className="flex justify-center p-8">
             <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />

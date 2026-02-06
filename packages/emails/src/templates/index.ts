@@ -50,6 +50,8 @@ export { BookingConfirmationEmail } from "./thotis/BookingConfirmationEmail";
 export { BookingReminderEmail } from "./thotis/BookingReminderEmail";
 export { BookingRescheduledEmail } from "./thotis/BookingRescheduledEmail";
 export { FeedbackRequestEmail } from "./thotis/FeedbackRequestEmail";
+export { MagicLinkEmail } from "./thotis/MagicLinkEmail";
+export { MentorNudgeEmail } from "./thotis/MentorNudgeEmail";
 export { VerifyAccountEmail } from "./VerifyAccountEmail";
 export { VerifyEmailByCode } from "./VerifyEmailByCode";
 export { VerifyEmailChangeEmail } from "./VerifyEmailChangeEmail";

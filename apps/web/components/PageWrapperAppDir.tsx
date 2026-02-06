@@ -2,11 +2,9 @@
 
 import "@calcom/embed-core/src/embed-iframe";
 import AppProviders from "@lib/app-providers-app-dir";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 export type PageWrapperProps = Readonly<{
   children: React.ReactNode;
-  requiresLicense: boolean;
   nonce: string | undefined;
   isBookingPage?: boolean;
 }>;
@@ -25,13 +23,7 @@ function PageWrapper(props: PageWrapperProps) {
   return (
     <>
       <AppProviders {...providerProps}>
-        <>
-          {props.requiresLicense ? (
-            <LicenseRequired>{props.children}</LicenseRequired>
-          ) : (
-            <>{props.children}</>
-          )}
-        </>
+        <>{props.children}</>
       </AppProviders>
     </>
   );

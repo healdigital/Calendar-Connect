@@ -1,5 +1,5 @@
 import { Dialog } from "@calcom/features/components/controlled-dialog";
-import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
+import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
 import type { EventTypeSetupProps, FormValues } from "@calcom/features/eventtypes/lib/types";
 import { subscriberUrlReserved } from "@calcom/features/webhooks/lib/subscriberUrlReserved";
 import ServerTrans from "@calcom/lib/components/ServerTrans";

@@ -32,7 +32,6 @@ import { DialogContent } from "@calcom/ui/components/dialog";
 import { UnpublishedEntity } from "@calcom/ui/components/unpublished-entity";
 import TurnstileCaptcha from "@calcom/web/modules/auth/components/Turnstile";
 import { useSkipConfirmStep } from "@calcom/web/modules/bookings/hooks/useSkipConfirmStep";
-import PoweredBy from "@calcom/web/modules/ee/common/components/PoweredBy";
 import { AnimatePresence, LazyMotion, m } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import StickyBox from "react-sticky-box";
@@ -617,9 +616,7 @@ const BookerComponent = ({
               "mb-6 mt-auto pt-6 [&_img]:h-[15px]",
               hasDarkBackground ? "dark" : "",
               layout === BookerLayouts.MONTH_VIEW ? "block" : "hidden"
-            )}>
-            <PoweredBy logoOnly hasValidLicense={hasValidLicense} />
-          </m.span>
+            )}></m.span>
         )}
       </div>
       <>

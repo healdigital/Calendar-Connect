@@ -1,4 +1,4 @@
-import type { TeamWithMembers } from "@calcom/features/ee/teams/lib/queries";
+// import type { TeamWithMembers } from "@calcom/features/ee/teams/lib/queries";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { useRouterQuery } from "@calcom/lib/hooks/useRouterQuery";
 import { markdownToSafeHTML } from "@calcom/lib/markdownToSafeHTML";
@@ -6,6 +6,7 @@ import type { UserProfile } from "@calcom/types/UserProfile";
 import { UserAvatar } from "@calcom/ui/components/avatar";
 import Link from "next/link";
 
+type TeamWithMembers = any; // simplified for AGPL
 type TeamType = Omit<NonNullable<TeamWithMembers>, "inviteToken">;
 type MembersType = TeamType["members"];
 type MemberType = Pick<

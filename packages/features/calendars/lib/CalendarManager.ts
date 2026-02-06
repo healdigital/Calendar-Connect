@@ -94,7 +94,7 @@ export const getCalendarCredentials = (credentials: Array<CredentialForCalendarS
 };
 
 export const getCalendarCredentialsWithoutDelegation = (credentials: CredentialPayload[]) => {
-  return getCalendarCredentials(buildNonDelegationCredentials(credentials));
+  return getCalendarCredentials(buildNonDelegationCredentials(credentials) as any);
 };
 
 export type ConnectedCalendar = Omit<IntegrationCalendar, "primary"> & {

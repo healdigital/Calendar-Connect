@@ -1,6 +1,5 @@
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import { _generateMetadata, getTranslate } from "app/_utils";
-import LegacyPage from "~/ee/teams/views/team-appearance-view";
 
 export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }) =>
   await _generateMetadata(
@@ -19,7 +18,9 @@ const Page = async () => {
       title={t("booking_appearance")}
       description={t("appearance_team_description")}
       borderInShellHeader={false}>
-      <LegacyPage />
+      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
+        {t("team_appearance_not_available")}
+      </div>
     </SettingsHeader>
   );
 };

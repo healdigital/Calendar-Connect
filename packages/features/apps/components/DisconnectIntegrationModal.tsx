@@ -4,12 +4,6 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { App } from "@calcom/types/App";
 import { ConfirmationDialogContent } from "@calcom/ui/components/dialog";
 
-export type RemoveAppParams = {
-  credentialId: number;
-  app?: App["slug"];
-  teamId?: number;
-  callback: () => void;
-};
 interface DisconnectIntegrationModalProps {
   credentialId: number | null;
   isOpen: boolean;
@@ -18,6 +12,13 @@ interface DisconnectIntegrationModalProps {
   handleRemoveApp: (params: RemoveAppParams) => void;
   app?: App["slug"] | null;
 }
+
+export type RemoveAppParams = {
+  credentialId: number;
+  app?: App["slug"];
+  teamId?: number;
+  callback: () => void;
+};
 
 export default function DisconnectIntegrationModal({
   credentialId,

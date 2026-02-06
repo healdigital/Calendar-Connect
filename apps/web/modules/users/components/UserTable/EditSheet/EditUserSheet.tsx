@@ -1,4 +1,4 @@
-import { useOrgBranding } from "@calcom/ee/organizations/context/provider";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";

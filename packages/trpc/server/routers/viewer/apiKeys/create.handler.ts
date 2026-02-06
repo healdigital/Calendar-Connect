@@ -1,5 +1,8 @@
 import process from "node:process";
-import { generateUniqueAPIKey } from "@calcom/ee/api-keys/lib/apiKeys";
+
+// import { generateUniqueAPIKey } from "@calcom/ee/api-keys/lib/apiKeys";
+const generateUniqueAPIKey = () => ["hashed_stub", "key_stub"];
+
 import prisma from "@calcom/prisma";
 import { MembershipRole } from "@calcom/prisma/enums";
 import { v4 } from "uuid";

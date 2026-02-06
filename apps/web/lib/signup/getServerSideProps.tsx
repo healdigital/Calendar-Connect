@@ -1,8 +1,6 @@
 import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { getOrgUsernameFromEmail } from "@calcom/features/auth/signup/utils/getOrgUsernameFromEmail";
-import { checkPremiumUsername } from "@calcom/features/ee/common/lib/checkPremiumUsername";
-import { isSAMLLoginEnabled } from "@calcom/features/ee/sso/lib/saml";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { IS_SELF_HOSTED, WEBAPP_URL } from "@calcom/lib/constants";
 import { emailSchema } from "@calcom/lib/emailSchema";
@@ -71,7 +69,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const props = {
     redirectUrl,
     isGoogleLoginEnabled: IS_GOOGLE_LOGIN_ENABLED,
-    isSAMLLoginEnabled,
+    isSAMLLoginEnabled: false,
     prepopulateFormValues: undefined,
     emailVerificationEnabled,
     onboardingV3Enabled,
@@ -181,7 +179,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return username;
   };
 
-  let username = isValidEmail ? guessUsernameFromEmail(verificationToken.identifier) : "";
+  const username = isValidEmail ? guessUsernameFromEmail(verificationToken.identifier) : "";
 
   const tokenTeam = {
     ...verificationToken.team,
@@ -199,10 +197,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   // Org context shouldn't check if a username is premium
   if (!IS_SELF_HOSTED && !isOrganizationOrATeamInOrganization && username) {
-    // Im not sure we actually hit this because of next redirects signup to website repo - but just in case this is pretty cool :)
-    const { available, suggestion } = await checkPremiumUsername(username);
-
-    username = available ? username : suggestion || username;
+    // Premium username check removed for AGPL compliance
   }
 
   const isOrgInviteByLink = isOrganizationOrATeamInOrganization && !isValidEmail;

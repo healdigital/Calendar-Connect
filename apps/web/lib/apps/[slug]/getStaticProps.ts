@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import process from "node:process";
 import { getAppWithMetadata } from "@calcom/app-store/_appRegistry";
 import { getAppAssetFullPath } from "@calcom/app-store/getAppAssetFullPath";
 import { IS_PRODUCTION } from "@calcom/lib/constants";

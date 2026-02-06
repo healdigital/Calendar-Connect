@@ -211,6 +211,7 @@ export const Components: Record<FieldType, Component> = {
       if (!props) {
         return <div />;
       }
+      const { setValue, ...rest } = props;
 
       return (
         <InputField
@@ -218,8 +219,8 @@ export const Components: Record<FieldType, Component> = {
           id={props.name}
           noLabel={true}
           autoComplete="email"
-          {...props}
-          onChange={(e) => props.setValue(e.target.value)}
+          {...rest}
+          onChange={(e) => setValue(e.target.value)}
         />
       );
     },
@@ -227,13 +228,14 @@ export const Components: Record<FieldType, Component> = {
   address: {
     propsType: propsTypes.address,
     factory: (props) => {
+      const { setValue, ...rest } = props;
       return (
         <AddressInput
           id={props.name}
           onChange={(val) => {
-            props.setValue(val);
+            setValue(val);
           }}
-          {...props}
+          {...rest}
           disabled={props.readOnly}
         />
       );
@@ -550,7 +552,8 @@ export const Components: Record<FieldType, Component> = {
   url: {
     propsType: propsTypes.url,
     factory: (props) => {
-      return <Widgets.TextWidget type="url" autoComplete="url" noLabel={true} {...props} />;
+      const { setValue: _setValue, ...rest } = props;
+      return <Widgets.TextWidget type="url" autoComplete="url" noLabel={true} {...rest} />;
     },
   },
 } as const;

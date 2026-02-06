@@ -1,7 +1,13 @@
 import { getFeatureOptInService } from "@calcom/features/di/containers/FeatureOptInService";
 import { getTeamFeatureRepository } from "@calcom/features/di/containers/TeamFeatureRepository";
 import { getUserFeatureRepository } from "@calcom/features/di/containers/UserFeatureRepository";
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
+
+// import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
+class TeamRepository {
+  constructor(...args: any[]) {}
+  findParentOrganizationByTeamId = async (...args: any[]) => null as any;
+}
+
 import { isOptInFeature } from "@calcom/features/feature-opt-in/config";
 import { prisma } from "@calcom/prisma";
 import { TRPCError } from "@trpc/server";

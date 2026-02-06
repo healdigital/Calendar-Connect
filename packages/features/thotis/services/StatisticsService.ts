@@ -204,12 +204,16 @@ export class StatisticsService {
    * Get platform aggregator stats
    * Requirement 20.3: Platform analytics
    */
-  async getPlatformStats(): Promise<PlatformStats> {
+  async getPlatformStats(
+    period: "daily" | "weekly" | "monthly" = "monthly",
+    field?: string,
+    profileId?: string
+  ): Promise<PlatformStats> {
     const aggregates = await this.profileRepository.getPlatformAggregates();
     const trends = await this.profileRepository.getBookingTrends();
     const fieldDistribution = await this.profileRepository.getFieldDistribution();
-    const funnel = await this.analyticsService.getFunnelData();
-    const dataQuality = await this.analyticsService.getDataQualityMetrics();
+    const funnel = await this.analyticsService.getFunnelData(period, field, profileId);
+    const dataQuality = await this.analyticsService.getDataQualityMetrics(period, field, profileId);
 
     return {
       _sum: {

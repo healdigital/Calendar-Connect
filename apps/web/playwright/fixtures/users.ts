@@ -1,4 +1,3 @@
-import process from "node:process";
 import updateChildrenEventTypes from "@calcom/features/ee/managed-event-types/lib/handleChildrenEventTypes";
 import stripe from "@calcom/features/ee/payments/server/stripe";
 import type { AppFlags, FeatureId } from "@calcom/features/flags/config";

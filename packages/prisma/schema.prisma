@@ -446,7 +446,8 @@ model User {
   allowSEOIndexing Boolean? @default(true)
 
   // receive monthly digest email for teams or not
-  receiveMonthlyDigestEmail       Boolean? @default(true)
+  receiveMonthlyDigestEmail Boolean? @default(true)
+
   // require email verification when someone books using your email
   requiresBookerEmailVerification Boolean? @default(false)
 
@@ -934,6 +935,7 @@ model Booking {
   mentorQualityIncidents       MentorQualityIncident[]
 
   // @@partial_index([reassignById])
+  magicLinkTokens ThotisMagicLinkToken[]
 
   @@index([eventTypeId])
   @@index([userId])
@@ -3269,6 +3271,9 @@ enum AcademicField {
   EDUCATION
   ARTS
   SCIENCES
+  POLITICAL_SCIENCE
+  ECONOMICS
+  LANGUAGES
   OTHER
 }
 
@@ -3341,6 +3346,7 @@ model ThotisOrientationIntent {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
+  @@unique([userId])
   @@index([userId])
 }
 
@@ -3348,7 +3354,7 @@ model ThotisGuestIdentity {
   id              String   @id @default(cuid())
   email           String   @unique
   normalizedEmail String   @unique // Lowercase for easier matching
-  lastRequestAt   DateTime @default(now()) // For rate limiting requestLink
+  lastRequestAt   DateTime @default(dbgenerated("'1970-01-01 00:00:00'")) // For rate limiting requestLink
   blocked         Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -3365,10 +3371,15 @@ model ThotisMagicLinkToken {
   expiresAt   DateTime
   usedAt      DateTime?
   invalidated Boolean             @default(false)
-  createdAt   DateTime            @default(now())
+
+  bookingId Int?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 
   @@index([guestId])
   @@index([tokenHash])
+  @@index([bookingId])
 }
 
 model ThotisGuestAccessLog {

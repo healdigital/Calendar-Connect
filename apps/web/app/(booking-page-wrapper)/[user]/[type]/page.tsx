@@ -1,4 +1,4 @@
-import { getOrgFullOrigin } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { loadTranslations } from "@calcom/lib/server/i18n";
 import { buildLegacyCtx, decodeParams } from "@lib/buildLegacyCtx";
 import { getServerSideProps } from "@server/lib/[user]/[type]/getServerSideProps";

@@ -1,4 +1,4 @@
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { IS_SELF_HOSTED, WEBSITE_URL } from "@calcom/lib/constants";
 import { trpc } from "@calcom/trpc/react";
 import type { AppRouter } from "@calcom/trpc/types/server/routers/_app";

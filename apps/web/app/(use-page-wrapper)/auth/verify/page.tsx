@@ -1,4 +1,3 @@
-import process from "node:process";
 import type { PageProps as _PageProps } from "app/_types";
 import { _generateMetadata } from "app/_utils";
 import { z } from "zod";

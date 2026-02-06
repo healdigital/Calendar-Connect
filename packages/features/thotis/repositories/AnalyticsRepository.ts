@@ -33,7 +33,22 @@ export class AnalyticsRepository {
     });
   }
 
-  async getFunnelStats(period: "daily" | "weekly" | "monthly" = "monthly") {
+  async getFunnelStats(
+    period: "daily" | "weekly" | "monthly" = "monthly",
+    field?: string,
+    profileId?: string
+  ) {
+    const now = new Date();
+    const startDate = new Date();
+
+    if (period === "daily") {
+      startDate.setDate(now.getDate() - 1);
+    } else if (period === "weekly") {
+      startDate.setDate(now.getDate() - 7);
+    } else {
+      startDate.setMonth(now.getMonth() - 1);
+    }
+
     // Basic funnel aggregation: profile_viewed -> booking_started -> booking_confirmed -> session_completed
     const events = await this.prismaClient.thotisAnalyticsEvent.findMany({
       where: {
@@ -43,8 +58,14 @@ export class AnalyticsRepository {
             ThotisAnalyticsEventType.booking_started,
             ThotisAnalyticsEventType.booking_confirmed,
             ThotisAnalyticsEventType.session_completed,
+            ThotisAnalyticsEventType.rating_submitted,
           ],
         },
+        createdAt: {
+          gte: startDate,
+        },
+        field: field || undefined,
+        profileId: profileId || undefined,
       },
       select: {
         eventType: true,
@@ -57,6 +78,7 @@ export class AnalyticsRepository {
       booking_started: 0,
       booking_confirmed: 0,
       session_completed: 0,
+      rating_submitted: 0,
     };
 
     events.forEach((e) => {

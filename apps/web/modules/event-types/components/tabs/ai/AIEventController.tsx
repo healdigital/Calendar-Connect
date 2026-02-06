@@ -18,7 +18,6 @@ import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 type AIEventControllerProps = {
   eventType: EventTypeSetup;
@@ -36,7 +35,7 @@ export default function AIEventController({ eventType, isTeamEvent }: AIEventCon
   if (session.status === "loading") return <></>;
 
   return (
-    <LicenseRequired>
+    <>
       <div className="block items-start sm:flex">
         {!isOrg || !isTeamEvent ? (
           <EmptyScreen
@@ -79,7 +78,7 @@ export default function AIEventController({ eventType, isTeamEvent }: AIEventCon
           </div>
         )}
       </div>
-    </LicenseRequired>
+    </>
   );
 }
 

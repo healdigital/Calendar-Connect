@@ -1,6 +1,6 @@
 import type { Host } from "@calcom/features/bookings/lib/getHostsAndGuests";
 import { prisma } from "@calcom/prisma";
-import { WebhookTriggerEvents } from "@calcom/prisma/enums";
+import { type TimeUnit, WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type { Booking } from "./common";
 import { calculateMaxStartTime, log, prepareNoShowTrigger, sendWebhookPayload } from "./common";
 
@@ -44,7 +44,11 @@ export async function triggerHostNoShow(payload: string): Promise<void> {
 
   const { booking, webhook, hostsThatDidntJoinTheCall, originalRescheduledBooking, participants } = result;
 
-  const maxStartTime = calculateMaxStartTime(booking.startTime, webhook.time, webhook.timeUnit);
+  const maxStartTime = calculateMaxStartTime(
+    booking.startTime,
+    webhook.time as number,
+    webhook.timeUnit as TimeUnit
+  );
 
   const updatedData = await markHostsAsNoShowInBooking(booking, hostsThatDidntJoinTheCall);
   const bookingWithUpdatedData = updatedData

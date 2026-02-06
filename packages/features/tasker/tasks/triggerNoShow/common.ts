@@ -36,14 +36,14 @@ export function sendWebhookPayload(
   const maxStartTimeHumanReadable = dayjs.unix(maxStartTime).format("YYYY-MM-DD HH:mm:ss Z");
 
   return sendGenericWebhookPayload({
-    secretKey: webhook.secret,
+    secretKey: webhook.secret as string | null,
     triggerEvent,
     createdAt: new Date().toISOString(),
     webhook: {
-      subscriberUrl: webhook.subscriberUrl,
-      appId: webhook.appId,
-      payloadTemplate: webhook.payloadTemplate,
-      version: webhook.version,
+      subscriberUrl: webhook.subscriberUrl as string,
+      appId: webhook.appId as string | null,
+      payloadTemplate: webhook.payloadTemplate as string | null,
+      version: webhook.version as any,
     },
     data: {
       title: booking.title,

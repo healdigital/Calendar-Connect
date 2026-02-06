@@ -1,4 +1,3 @@
-import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { sendMonthlyDigestEmail } from "@calcom/emails/workflow-email-service";
 import { EventsInsights } from "@calcom/features/insights/server/events";

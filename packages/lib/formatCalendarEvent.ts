@@ -1,6 +1,9 @@
 // eslint-disable-next-line no-restricted-imports
 
-import type { ExtendedCalendarEvent } from "@calcom/ee/workflows/lib/reminders/reminderScheduler";
+// import type { ExtendedCalendarEvent } from "@calcom/ee/workflows/lib/reminders/reminderScheduler";
+// Stub for ExtendedCalendarEvent
+type ExtendedCalendarEvent = CalendarEvent & { platformClientId?: string };
+
 import type { CalendarEvent } from "@calcom/types/Calendar";
 import { cloneDeep } from "lodash";
 

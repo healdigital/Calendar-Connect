@@ -125,16 +125,20 @@ export function DialogHeader(props: DialogHeaderProps) {
 
   return (
     <div className="mb-4">
-      <h2
-        data-testid="dialog-title"
-        className="text-semibold text-emphasis font-cal mb-1 text-xl"
-        id="modal-title">
-        {props.title}
-      </h2>
+      <DialogPrimitive.Title asChild>
+        <h2
+          data-testid="dialog-title"
+          className="text-semibold text-emphasis font-cal mb-1 text-xl"
+          id="modal-title">
+          {props.title}
+        </h2>
+      </DialogPrimitive.Title>
       {props.subtitle && (
-        <p className="text-subtle text-sm" data-testid="dialog-subtitle">
-          {props.subtitle}
-        </p>
+        <DialogPrimitive.Description asChild>
+          <p className="text-subtle text-sm" data-testid="dialog-subtitle">
+            {props.subtitle}
+          </p>
+        </DialogPrimitive.Description>
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { AnalyticsService } from "@calcom/features/thotis/services/AnalyticsService";
 import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmailService";

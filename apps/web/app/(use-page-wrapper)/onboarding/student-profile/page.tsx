@@ -2,7 +2,7 @@ import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { StudentProfileView } from "~/modules/onboarding/student-profile/student-profile-view";
+import { StudentProfileView } from "~/onboarding/student-profile/student-profile-view";
 
 const StudentProfilePage = async () => {
   const session = await getServerSession({ req: buildLegacyRequest(await headers(), await cookies()) });

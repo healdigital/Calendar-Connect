@@ -21,6 +21,9 @@ vi.mock("@calcom/prisma", () => {
     sessionRating: {
       findUnique: vi.fn(),
     },
+    thotisAnalyticsEvent: {
+      create: vi.fn(),
+    },
   };
   return {
     default: mockPrisma,
@@ -193,6 +196,202 @@ describe("thotisRouter", () => {
 
       const result = await caller.statistics.platformStats();
       expect(result).toBeDefined();
+    });
+  });
+
+  describe("ratingRouter", () => {
+    it("should allow mentor to get rating for their booking", async () => {
+      const bookingId = 123;
+      const mentorId = 1; // From mockCtx
+      const mockBooking = { userId: mentorId, responses: { email: "student@example.com" } };
+      const mockRating = { id: 1, rating: 5, feedback: "Great!" };
+
+      const prisma = (await import("@calcom/prisma")).default;
+      vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+      vi.mocked(prisma.sessionRating.findUnique).mockResolvedValue(mockRating as any);
+
+      const result = await caller.rating.getByBooking({ bookingId });
+
+      expect(result).toEqual(mockRating);
+    });
+
+    it("should allow student to get rating for their booking", async () => {
+      const bookingId = 123;
+      const studentEmail = "test@example.com"; // From mockCtx
+      const mockBooking = { userId: 999, responses: { email: studentEmail } };
+      const mockRating = { id: 1, rating: 5, feedback: "Great!" };
+
+      const prisma = (await import("@calcom/prisma")).default;
+      vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+      vi.mocked(prisma.sessionRating.findUnique).mockResolvedValue(mockRating as any);
+
+      const result = await caller.rating.getByBooking({ bookingId });
+
+      expect(result).toEqual(mockRating);
+    });
+
+    it("should deny access to rating if not owner", async () => {
+      const bookingId = 123;
+      const mockBooking = { userId: 999, responses: { email: "other@example.com" } };
+
+      const prisma = (await import("@calcom/prisma")).default;
+      vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+      await expect(caller.rating.getByBooking({ bookingId })).rejects.toThrow(
+        "Not authorized to view this rating"
+      );
+    });
+
+    describe("submit", () => {
+      it("should allow student to submit rating for a completed session", async () => {
+        const bookingId = 123;
+        const studentEmail = "test@example.com";
+        const mentorId = 999;
+        const mockBooking = {
+          id: bookingId,
+          userId: mentorId,
+          status: "ACCEPTED",
+          endTime: new Date(Date.now() - 3600000),
+          responses: { email: studentEmail },
+          metadata: { studentProfileId: "prof-1", completedAt: new Date().toISOString() },
+        };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+        vi.mocked(prisma.sessionRating.findUnique).mockResolvedValue(null);
+
+        const result = await caller.rating.submit({
+          bookingId,
+          rating: 5,
+          feedback: "Excellent",
+          email: studentEmail,
+        });
+
+        expect(result).toEqual({ success: true });
+        expect(StatisticsService.prototype.addRating).toHaveBeenCalled();
+      });
+
+      it("should fail if session is not marked as complete (missing completedAt)", async () => {
+        const bookingId = 123;
+        const studentEmail = "test@example.com";
+        const mockBooking = {
+          userId: 999,
+          status: "ACCEPTED",
+          endTime: new Date(Date.now() - 3600000),
+          responses: { email: studentEmail },
+          metadata: { studentProfileId: "prof-1" }, // missing completedAt
+        };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        await expect(
+          caller.rating.submit({
+            bookingId,
+            rating: 5,
+            email: studentEmail,
+          })
+        ).rejects.toThrow("Only completed Thotis sessions can be rated");
+      });
+    });
+
+    describe("submitPostSessionData", () => {
+      it("should fail if not mentor", async () => {
+        const bookingId = 123;
+        const mockBooking = { userId: 999 }; // Different from mockCtx.user.id (1)
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        await expect(
+          caller.booking.submitPostSessionData({
+            bookingId,
+            content: "Summary",
+            resources: [],
+          })
+        ).rejects.toThrow("Not authorized to edit this session");
+      });
+
+      it("should fail if session hasn't ended", async () => {
+        const bookingId = 123;
+        const futureDate = new Date(Date.now() + 3600000); // 1 hour in future
+        const mockBooking = { userId: 1, endTime: futureDate, status: "ACCEPTED" };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        await expect(
+          caller.booking.submitPostSessionData({
+            bookingId,
+            content: "Summary",
+            resources: [],
+          })
+        ).rejects.toThrow("Cannot submit post-session data for a session that hasn't ended yet");
+      });
+
+      it("should fail if session status is not ACCEPTED", async () => {
+        const bookingId = 123;
+        const pastDate = new Date(Date.now() - 3600000); // 1 hour in past
+        const mockBooking = { userId: 1, endTime: pastDate, status: "PENDING" };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        await expect(
+          caller.booking.submitPostSessionData({
+            bookingId,
+            content: "Summary",
+            resources: [],
+          })
+        ).rejects.toThrow("Only completed sessions can have post-session data");
+      });
+
+      it("should fail if session is not marked as complete (missing completedAt)", async () => {
+        const bookingId = 123;
+        const pastDate = new Date(Date.now() - 3600000);
+        const mockBooking = { userId: 1, endTime: pastDate, status: "ACCEPTED", metadata: {} };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        await expect(
+          caller.booking.submitPostSessionData({
+            bookingId,
+            content: "Summary",
+            resources: [],
+          })
+        ).rejects.toThrow("Session must be marked as complete before adding a summary");
+      });
+
+      it("should succeed if all conditions are met", async () => {
+        const bookingId = 123;
+        const pastDate = new Date(Date.now() - 3600000);
+        const mockBooking = {
+          userId: 1,
+          endTime: pastDate,
+          status: "ACCEPTED",
+          metadata: { completedAt: pastDate.toISOString() },
+        };
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue(mockBooking as any);
+
+        // Mock upsert and transaction
+        // @ts-expect-error
+        prisma.thotisSessionSummary = { upsert: vi.fn().mockResolvedValue({}) };
+        // @ts-expect-error
+        prisma.thotisSessionResource = { deleteMany: vi.fn(), createMany: vi.fn() };
+        // @ts-expect-error
+        prisma.$transaction = vi.fn().mockResolvedValue([]);
+
+        const result = await caller.booking.submitPostSessionData({
+          bookingId,
+          content: "Summary",
+          resources: [],
+        });
+
+        expect(result).toEqual({ success: true });
+      });
     });
   });
 });

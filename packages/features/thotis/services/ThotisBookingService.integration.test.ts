@@ -58,6 +58,7 @@ async function setup() {
       year: 3,
       bio: "Test Bio",
       isActive: true,
+      status: "VERIFIED",
     },
   });
 
@@ -141,7 +142,7 @@ describe("ThotisBookingService Integration Tests", () => {
       },
     });
 
-    await service.markSessionComplete(pastBooking.id, { id: mentorUser.id });
+    await service.markSessionComplete(pastBooking.id, { id: mentorUser.id, isSystem: true });
 
     const completedBooking = await prismock.booking.findUnique({
       where: { id: pastBooking.id },

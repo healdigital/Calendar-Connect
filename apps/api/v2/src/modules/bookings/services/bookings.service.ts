@@ -1,15 +1,13 @@
+import { ThotisBookingService } from "@calcom/platform-libraries";
 import { Injectable } from "@nestjs/common";
-// Using relative path to access the package service
-import { ThotisBookingService } from "../../../../../../../packages/features/thotis/services/ThotisBookingService";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
 @Injectable()
 export class BookingsService {
-  private thotisBookingService: ThotisBookingService;
-
-  constructor(private readonly prismaService: PrismaWriteService) {
-    this.thotisBookingService = new ThotisBookingService(prismaService.prisma);
-  }
+  constructor(
+    private readonly thotisBookingService: ThotisBookingService,
+    private readonly prismaService: PrismaWriteService
+  ) {}
 
   async createBooking(input: {
     studentProfileId: string;
@@ -50,17 +48,13 @@ export class BookingsService {
     };
   }
 
-  async cancelBooking(bookingId: number, reason: string) {
-    // Assuming cancelledBy is user driven via API, could be "student" or "mentor" depending on auth.
-    // For public API used by prospective students (if that's the use case), it might be "student".
-    // Or if used by the mentor app, "mentor".
-    // Let's assume "student" for this open API or checking the user context.
-    // Requirements say "Implement DELETE ... (cancel)".
-    // I will default to "student" if no auth context implies otherwise, or "mentor" if authorized.
-    return this.thotisBookingService.cancelSession(bookingId, reason, "student");
+  async cancelBooking(bookingId: number, reason: string, requester: { id?: number; email?: string }) {
+    // For API v2, we assume "student" role for cancellation if via public/student API
+    // We pass the requester context to the service
+    return this.thotisBookingService.cancelSession(bookingId, reason, "student", requester);
   }
 
-  async rescheduleBooking(bookingId: number, newDateTime: Date) {
-    return this.thotisBookingService.rescheduleSession(bookingId, newDateTime);
+  async rescheduleBooking(bookingId: number, newDateTime: Date, requester: { id?: number; email?: string }) {
+    return this.thotisBookingService.rescheduleSession(bookingId, newDateTime, requester);
   }
 }

@@ -1,12 +1,14 @@
 import process from "node:process";
+import { AnalyticsRepository } from "@calcom/features/thotis/repositories/AnalyticsRepository";
+import { ThotisAnalyticsService } from "@calcom/features/thotis/services/ThotisAnalyticsService";
 import { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBookingService";
 import prisma from "@calcom/prisma";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
 const CRON_SECRET = process.env.CRON_SECRET;
+
+export const dynamic = "force-dynamic";
 
 /**
  * Thotis Session Lifecycle Cron
@@ -20,7 +22,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const bookingService = new ThotisBookingService(prisma);
+  const analyticsRepository = new AnalyticsRepository();
+  const thotisAnalytics = new ThotisAnalyticsService(analyticsRepository);
+  const bookingService = new ThotisBookingService(prisma, undefined, undefined, thotisAnalytics);
 
   const now = new Date();
   // Buffer of 15 minutes + 5 minutes to ensure we don't complete too early or miss execution
@@ -60,11 +64,12 @@ export async function GET(req: NextRequest) {
 
   for (const booking of pendingBookings) {
     try {
-      await bookingService.markSessionComplete(booking.id, { isSystem: true });
+      // If a session is still PENDING 15 minutes after end time, it's a No-Show
+      await bookingService.markSessionAsNoShow(booking.id, { isSystem: true });
       results.processed++;
       results.ids.push(booking.id);
     } catch (error) {
-      console.error(`Failed to auto-complete session ${booking.id}`, error);
+      console.error(`Failed to record no-show for session ${booking.id}`, error);
       results.errors++;
     }
   }

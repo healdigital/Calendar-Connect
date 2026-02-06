@@ -16,6 +16,8 @@ export type StudentProfileWithUser = StudentProfile & {
       } | null;
     } | null;
   };
+  matchScore?: number;
+  matchReasons?: string[];
 };
 
 export type ProfileCardProps = {
@@ -45,14 +47,25 @@ export const ProfileCard = ({
       className={classNames(
         "bg-default group border-subtle relative flex w-full flex-col overflow-hidden rounded-md border p-5 transition-shadow hover:shadow-md",
         className
-      )}>
+      )}
+      data-testid="mentor-card">
       <div className="mb-4 flex items-start justify-between">
         <UserAvatar size="lg" user={user} className="h-16 w-16" />
-        <div className="flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-1 dark:bg-green-900/20">
-          <div className="h-2 w-2 rounded-full bg-green-500" />
-          <span className="text-xs font-medium text-green-700 dark:text-green-400">
-            {t("thotis_available")}
-          </span>
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-1 dark:bg-green-900/20">
+            <div className="h-2 w-2 rounded-full bg-green-500" />
+            <span className="text-xs font-medium text-green-700 dark:text-green-400">
+              {t("thotis_available")}
+            </span>
+          </div>
+          {student.matchScore !== undefined && (
+            <div className="flex items-center gap-1.5 rounded-full bg-blue-50 px-2 py-1 dark:bg-blue-900/20">
+              <Icon name="sparkles" className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-bold text-blue-700 dark:text-blue-400">
+                {student.matchScore}% {t("thotis_match")}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

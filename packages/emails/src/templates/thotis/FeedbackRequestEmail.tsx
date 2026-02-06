@@ -1,3 +1,4 @@
+import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import { ThotisBaseEmail } from "./ThotisBaseEmail";
 
 export const FeedbackRequestEmail = (

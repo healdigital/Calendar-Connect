@@ -1,4 +1,3 @@
-import process from "node:process";
 import { withBotId } from "botid/next/config";
 import { config as dotenvConfig } from "dotenv";
 import type { NextConfig } from "next";

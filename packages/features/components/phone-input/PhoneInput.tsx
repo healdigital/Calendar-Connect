@@ -37,8 +37,9 @@ function BasePhoneInput({
   onChange,
   value,
   defaultCountry = "us",
+  setValue: _setValue,
   ...rest
-}: PhoneInputProps) {
+}: PhoneInputProps & { setValue?: never }) {
   const isPlatform = useIsPlatform();
   const defaultPhoneCountryFromStore = useBookerStore((state) => state.defaultPhoneCountry);
   const effectiveDefaultCountry = defaultPhoneCountryFromStore || defaultCountry;
@@ -114,8 +115,9 @@ function BasePhoneInputWeb({
   value,
   inputStyle,
   flagButtonStyle,
+  setValue: _setValue,
   ...rest
-}: Omit<PhoneInputProps, "defaultCountry">) {
+}: Omit<PhoneInputProps, "defaultCountry"> & { setValue?: never }) {
   const defaultCountry = useDefaultCountry();
 
   return (

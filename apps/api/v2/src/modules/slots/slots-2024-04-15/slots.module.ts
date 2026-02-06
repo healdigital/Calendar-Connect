@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { EventTypesModule_2024_04_15 } from "@/ee/event-types/event-types_2024_04_15/event-types.module";
 import { AvailableSlotsModule } from "@/lib/modules/available-slots.module";
+import { EventTypesModule } from "@/modules/event-types/event-types.module";
 import { PrismaModule } from "@/modules/prisma/prisma.module";
 import { SlotsController_2024_04_15 } from "@/modules/slots/slots-2024-04-15/controllers/slots.controller";
 import { SlotsService_2024_04_15 } from "@/modules/slots/slots-2024-04-15/services/slots.service";
@@ -9,7 +9,7 @@ import { SlotsWorkerService_2024_04_15 } from "@/modules/slots/slots-2024-04-15/
 import { SlotsRepository_2024_04_15 } from "@/modules/slots/slots-2024-04-15/slots.repository";
 
 @Module({
-  imports: [PrismaModule, EventTypesModule_2024_04_15, AvailableSlotsModule],
+  imports: [PrismaModule, EventTypesModule, AvailableSlotsModule],
   providers: [
     SlotsRepository_2024_04_15,
     SlotsService_2024_04_15,

@@ -1,7 +1,7 @@
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
 import dayjs from "@calcom/dayjs";
 import { SelectSkeletonLoader } from "@calcom/features/availability/components/SkeletonLoader";
-import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
+import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
 import type {
   AvailabilityOption,
   EventTypeSetup,

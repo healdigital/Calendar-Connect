@@ -1,4 +1,4 @@
-import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
+import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
 import { LearnMoreLink } from "@calcom/features/eventtypes/components/LearnMoreLink";
 import type {
   EventTypeSetup,

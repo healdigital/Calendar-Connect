@@ -1,11 +1,6 @@
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { CreationSource } from "@calcom/prisma/enums";
-import { trpc } from "@calcom/trpc/react";
-import { showToast } from "@calcom/ui/components/toast";
-import usePlatformMe from "@calcom/web/components/settings/platform/hooks/usePlatformMe";
 import { useSession } from "next-auth/react";
 import type { Dispatch } from "react";
-import MemberInvitationModal from "~/ee/teams/components/MemberInvitationModal";
 import type { UserTableAction } from "./types";
 
 interface Props {
@@ -14,64 +9,18 @@ interface Props {
 
 export function InviteMemberModal(props: Props) {
   const { data: session } = useSession();
-  const { data: platformUser } = usePlatformMe();
-  const utils = trpc.useUtils();
-  const { t, i18n } = useLocale();
-  const inviteMemberMutation = trpc.viewer.teams.inviteMember.useMutation({
-    async onSuccess(data) {
-      props.dispatch({ type: "CLOSE_MODAL" });
-      // Need to figure out if invalidating here is the right approach - we could have already
-      // loaded a bunch of data and idk how pagination works with invalidation. We may need to use
-      // Optimistic updates here instead.
-      await utils.viewer.organizations.listMembers.invalidate();
+  const { t } = useLocale();
 
-      if (Array.isArray(data.usernameOrEmail)) {
-        showToast(
-          t("email_invite_team_bulk", {
-            userCount: data.numUsersInvited,
-          }),
-          "success"
-        );
-      } else {
-        showToast(
-          t("email_invite_team", {
-            email: data.usernameOrEmail,
-          }),
-          "success"
-        );
-      }
-    },
-    onError: (error) => {
-      showToast(error.message, "error");
-    },
-  });
-
-  const orgId = session?.user.org?.id ?? platformUser?.organizationId;
+  const orgId = session?.user.org?.id;
 
   if (!orgId) return null;
 
   return (
-    <MemberInvitationModal
-      members={[]}
-      isOpen={true}
-      onExit={() => {
-        props.dispatch({
-          type: "CLOSE_MODAL",
-        });
-      }}
-      teamId={orgId}
-      isOrg={true}
-      isPending={inviteMemberMutation.isPending}
-      onSubmit={(values) => {
-        inviteMemberMutation.mutate({
-          teamId: orgId,
-          language: i18n.language,
-          role: values.role,
-          usernameOrEmail: values.emailOrUsername,
-          isPlatform: platformUser?.organization.isPlatform,
-          creationSource: CreationSource.WEBAPP,
-        });
-      }}
-    />
+    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
+      {t("inviting_members_not_available")}
+      <button className="ml-2 underline" onClick={() => props.dispatch({ type: "CLOSE_MODAL" })}>
+        {t("close")}
+      </button>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { WEBSITE_URL } from "@calcom/lib/constants";
 import { localeOptions } from "@calcom/lib/i18n";
 import { useSession } from "next-auth/react";

@@ -12,7 +12,6 @@ import {
   validateAndGetCorrectedUsernameForTeam,
 } from "@calcom/features/auth/signup/utils/token";
 import { validateAndGetCorrectedUsernameAndEmail } from "@calcom/features/auth/signup/utils/validateUsername";
-import { getBillingProviderService } from "@calcom/features/ee/billing/di/containers/Billing";
 import { sentrySpan } from "@calcom/features/watchlist/lib/telemetry";
 import { checkIfEmailIsBlockedInWatchlistController } from "@calcom/features/watchlist/operations/check-if-email-in-watchlist.controller";
 import { hashPassword } from "@calcom/lib/auth/hashPassword";
@@ -47,7 +46,7 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
     })
     .parse(body);
 
-  const billingService = getBillingProviderService();
+  // Billing service removed for AGPL compliance
 
   const shouldLockByDefault = await checkIfEmailIsBlockedInWatchlistController({
     email: _email,
@@ -58,7 +57,7 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
   log.debug("handler", { email: _email });
 
   let username: string | null = usernameStatus.requestedUserName;
-  let checkoutSessionId: string | null = null;
+  const checkoutSessionId: string | null = null;
 
   // Check for premium username
   if (usernameStatus.statusCode === 418) {
@@ -118,45 +117,9 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
     username = usernameAndEmailValidation.username;
   }
 
-  // Create the customer in Stripe with ad tracking metadata
-  const cookieStore = await cookies();
-  const cookiesObj = Object.fromEntries(cookieStore.getAll().map((c) => [c.name, c.value]));
-  const tracking = getTrackingFromCookies(cookiesObj, query);
+  // Customer creation in Stripe removed for AGPL compliance
 
-  const customer = await billingService.createCustomer({
-    email,
-    metadata: {
-      email /* Stripe customer email can be changed, so we add this to keep track of which email was used to signup */,
-      username,
-      ...(tracking.googleAds?.gclid && {
-        gclid: tracking.googleAds.gclid,
-        campaignId: tracking.googleAds.campaignId,
-      }),
-      ...(tracking.linkedInAds?.liFatId && {
-        liFatId: tracking.linkedInAds.liFatId,
-        linkedInCampaignId: tracking.linkedInAds.campaignId,
-      }),
-    },
-  });
-
-  const returnUrl = `${WEBAPP_URL}/api/integrations/stripepayment/paymentCallback?checkoutSessionId={CHECKOUT_SESSION_ID}&callbackUrl=/auth/verify?sessionId={CHECKOUT_SESSION_ID}`;
-
-  // Pro username, must be purchased
-  if (usernameStatus.statusCode === 402) {
-    const checkoutSession = await billingService.createSubscriptionCheckout({
-      mode: "subscription",
-      customerId: customer.stripeCustomerId,
-      successUrl: returnUrl,
-      cancelUrl: returnUrl,
-      priceId: getPremiumMonthlyPlanPriceId(),
-      quantity: 1,
-      allowPromotionCodes: true,
-    });
-
-    /** We create a username-less user until he pays */
-    checkoutSessionId = checkoutSession.sessionId;
-    username = null;
-  }
+  // Pro username checkout removed for AGPL compliance
 
   // Hash the password
   const hashedPassword = await hashPassword(password);
@@ -254,7 +217,6 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
         },
       });
     } else {
-      // Create the user
       try {
         await prisma.user.create({
           data: {
@@ -263,8 +225,6 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
             locked: shouldLockByDefault,
             password: { create: { hash: hashedPassword } },
             metadata: {
-              stripeCustomerId: customer.stripeCustomerId,
-              checkoutSessionId,
               ...(userType ? { userType } : {}),
             },
             creationSource: CreationSource.WEBAPP,
@@ -303,10 +263,7 @@ const handler: CustomNextApiHandler = async (body, usernameStatus, query) => {
     );
   }
 
-  return NextResponse.json(
-    { message: "Created user", stripeCustomerId: customer.stripeCustomerId },
-    { status: 201 }
-  );
+  return NextResponse.json({ message: "Created user" }, { status: 201 });
 };
 
 export default usernameHandler(handler);

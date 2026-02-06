@@ -1,7 +1,7 @@
 import type { EventType } from "@calcom/prisma/client";
 import { Injectable } from "@nestjs/common";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 import { MembershipsService } from "@/modules/memberships/services/memberships.service";
 import { TeamsRepository } from "@/modules/teams/teams/teams.repository";
@@ -9,7 +9,7 @@ import { TeamsRepository } from "@/modules/teams/teams/teams.repository";
 @Injectable()
 export class EventTypeAccessService {
   constructor(
-    private readonly eventTypesRepository: EventTypesRepository_2024_06_14,
+    private readonly eventTypesRepository: EventTypesRepository,
     private readonly membershipsRepository: MembershipsRepository,
     private readonly membershipsService: MembershipsService,
     private readonly teamsRepository: TeamsRepository

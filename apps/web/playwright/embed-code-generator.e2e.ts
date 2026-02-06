@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
-import { getOrgFullOrigin } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { EMBED_LIB_URL, WEBAPP_URL } from "@calcom/lib/constants";
 import { MembershipRole } from "@calcom/prisma/enums";
 import type { Page } from "@playwright/test";

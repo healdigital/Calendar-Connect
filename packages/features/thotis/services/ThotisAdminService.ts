@@ -7,7 +7,13 @@ import { ErrorWithCode } from "@calcom/lib/errors";
 import { getTranslation } from "@calcom/lib/server/i18n";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
-import { type AcademicField, MentorStatus } from "@calcom/prisma/enums";
+import {
+  type AcademicField,
+  type MentorIncidentType,
+  type MentorModerationActionType,
+  MentorStatus,
+} from "@calcom/prisma/enums";
+import { MentorQualityRepository } from "../repositories/MentorQualityRepository";
 import { ProfileRepository } from "../repositories/ProfileRepository";
 import { ProfileService } from "./ProfileService";
 
@@ -22,12 +28,18 @@ export interface ProvisionAmbassadorInput {
 }
 
 export class ThotisAdminService {
-  private profileService: ProfileService;
   private profileRepository: ProfileRepository;
+  private mentorQualityRepository: MentorQualityRepository;
+  private profileService: ProfileService;
 
-  constructor(profileService?: ProfileService, profileRepository?: ProfileRepository) {
+  constructor(
+    profileService?: ProfileService,
+    profileRepository?: ProfileRepository,
+    mentorQualityRepository?: MentorQualityRepository
+  ) {
     this.profileRepository = profileRepository || new ProfileRepository();
     this.profileService = profileService || new ProfileService(this.profileRepository);
+    this.mentorQualityRepository = mentorQualityRepository || new MentorQualityRepository();
   }
 
   /**
@@ -180,6 +192,7 @@ export class ThotisAdminService {
           isActive: true,
           createdAt: true,
           updatedAt: true,
+          status: true,
           user: {
             select: {
               name: true,
@@ -212,5 +225,52 @@ export class ThotisAdminService {
       status,
       isActive: status === MentorStatus.VERIFIED,
     });
+  }
+
+  /**
+   * List quality incidents
+   */
+  async listIncidents(filters: {
+    page?: number;
+    pageSize?: number;
+    studentProfileId?: string;
+    type?: MentorIncidentType;
+    resolved?: boolean;
+  }) {
+    return await this.mentorQualityRepository.listIncidents(filters);
+  }
+
+  /**
+   * Resolve an incident
+   */
+  async resolveIncident(incidentId: string) {
+    return await this.mentorQualityRepository.updateIncident(incidentId, {
+      resolved: true,
+      resolvedAt: new Date(),
+    });
+  }
+
+  /**
+   * Take a moderation action
+   */
+  async takeModerationAction(input: {
+    studentProfileId: string;
+    actionByUserId: number;
+    actionType: MentorModerationActionType;
+    reason?: string;
+    updateStatusTo?: MentorStatus;
+  }) {
+    const action = await this.mentorQualityRepository.createModerationAction({
+      studentProfileId: input.studentProfileId,
+      actionByUserId: input.actionByUserId,
+      actionType: input.actionType,
+      reason: input.reason,
+    });
+
+    if (input.updateStatusTo) {
+      await this.setAmbassadorStatus(input.studentProfileId, input.updateStatusTo);
+    }
+
+    return action;
   }
 }

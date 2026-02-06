@@ -1,4 +1,3 @@
-import process from "node:process";
 import { getTeamBillingServiceFactory } from "@calcom/features/ee/billing/di/containers/Billing";
 import prisma from "@calcom/prisma";
 import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";

@@ -68,6 +68,20 @@ export const SessionManagementUI = ({
       setModalState("none");
       setCancelReason("");
       utils.thotis.booking.mentorSessions.invalidate();
+      utils.thotis.guest.getSessionsByToken.invalidate();
+      onActionComplete?.();
+    },
+    onError: (err: { message: string }) => {
+      setErrorMessage(err.message);
+    },
+  });
+
+  const guestCancelMutation = trpc.thotis.guest.cancelByToken.useMutation({
+    onSuccess: () => {
+      setSuccessMessage(t("thotis_session_cancelled"));
+      setModalState("none");
+      setCancelReason("");
+      utils.thotis.guest.getSessionsByToken.invalidate();
       onActionComplete?.();
     },
     onError: (err: { message: string }) => {
@@ -81,6 +95,20 @@ export const SessionManagementUI = ({
       setModalState("none");
       setNewDateTime("");
       utils.thotis.booking.mentorSessions.invalidate();
+      utils.thotis.guest.getSessionsByToken.invalidate();
+      onActionComplete?.();
+    },
+    onError: (err: { message: string }) => {
+      setErrorMessage(err.message);
+    },
+  });
+
+  const guestRescheduleMutation = trpc.thotis.guest.rescheduleByToken.useMutation({
+    onSuccess: () => {
+      setSuccessMessage(t("thotis_session_rescheduled"));
+      setModalState("none");
+      setNewDateTime("");
+      utils.thotis.guest.getSessionsByToken.invalidate();
       onActionComplete?.();
     },
     onError: (err: { message: string }) => {
@@ -93,6 +121,19 @@ export const SessionManagementUI = ({
       setSuccessMessage(t("thotis_incident_reported_success"));
       setModalState("none");
       setIncidentDescription("");
+      onActionComplete?.();
+    },
+    onError: (err: { message: string }) => {
+      setErrorMessage(err.message);
+    },
+  });
+
+  const guestReportMutation = trpc.thotis.guest.reportByToken.useMutation({
+    onSuccess: () => {
+      setSuccessMessage(t("thotis_incident_reported_success"));
+      setModalState("none");
+      setIncidentDescription("");
+      utils.thotis.guest.getSessionsByToken.invalidate();
       onActionComplete?.();
     },
     onError: (err: { message: string }) => {
@@ -114,32 +155,57 @@ export const SessionManagementUI = ({
 
   const handleCancel = useCallback(() => {
     if (!cancelReason.trim()) return;
-    cancelMutation.mutate({
-      bookingId: booking.id,
-      reason: cancelReason,
-      cancelledBy: isMentor ? "mentor" : "student",
-    });
-  }, [booking.id, cancelReason, cancelMutation, isMentor]);
+    if (token) {
+      guestCancelMutation.mutate({
+        token,
+        bookingId: booking.id,
+        reason: cancelReason,
+      });
+    } else {
+      cancelMutation.mutate({
+        bookingId: booking.id,
+        reason: cancelReason,
+        cancelledBy: isMentor ? "mentor" : "student",
+      });
+    }
+  }, [booking.id, cancelReason, cancelMutation, guestCancelMutation, isMentor, token]);
 
   const handleReschedule = useCallback(() => {
     if (!newDateTime) return;
-    rescheduleMutation.mutate({
-      bookingId: booking.id,
-      newDateTime: new Date(newDateTime),
-    });
-  }, [booking.id, newDateTime, rescheduleMutation, isMentor]);
+    if (token) {
+      guestRescheduleMutation.mutate({
+        token,
+        bookingId: booking.id,
+        newDateTime: new Date(newDateTime),
+      });
+    } else {
+      rescheduleMutation.mutate({
+        bookingId: booking.id,
+        newDateTime: new Date(newDateTime),
+      });
+    }
+  }, [booking.id, newDateTime, rescheduleMutation, guestRescheduleMutation, token]);
 
   const handleComplete = useCallback(() => {
     completeMutation.mutate({ bookingId: booking.id });
   }, [booking.id, completeMutation]);
 
   const handleReportIncident = useCallback(() => {
-    reportIncidentMutation.mutate({
-      bookingId: booking.id,
-      type: incidentType,
-      description: incidentDescription,
-    });
-  }, [booking.id, incidentType, incidentDescription, reportIncidentMutation]);
+    if (token) {
+      guestReportMutation.mutate({
+        token,
+        bookingId: booking.id,
+        type: incidentType,
+        description: incidentDescription,
+      });
+    } else {
+      reportIncidentMutation.mutate({
+        bookingId: booking.id,
+        type: incidentType,
+        description: incidentDescription,
+      });
+    }
+  }, [booking.id, incidentType, incidentDescription, reportIncidentMutation, guestReportMutation, token]);
 
   const getStatusBadge = () => {
     if (isCancelled) {
@@ -294,7 +360,8 @@ export const SessionManagementUI = ({
               size="sm"
               StartIcon="x"
               onClick={() => setModalState("cancel")}
-              disabled={cancelMutation.isPending}>
+              disabled={cancelMutation.isPending || guestCancelMutation.isPending}
+              data-testid="cancel-button">
               {t("thotis_cancel_session")}
             </Button>
           )}
@@ -304,7 +371,8 @@ export const SessionManagementUI = ({
               size="sm"
               StartIcon="calendar"
               onClick={() => setModalState("reschedule")}
-              disabled={rescheduleMutation.isPending}>
+              disabled={rescheduleMutation.isPending || guestRescheduleMutation.isPending}
+              data-testid="reschedule-button">
               {t("thotis_reschedule_session")}
             </Button>
           )}
@@ -324,7 +392,7 @@ export const SessionManagementUI = ({
               size="sm"
               StartIcon="info"
               onClick={() => setModalState("incident")}
-              disabled={reportIncidentMutation.isPending}>
+              disabled={reportIncidentMutation.isPending || guestReportMutation.isPending}>
               {t("thotis_report_issue")}
             </Button>
           )}
@@ -347,8 +415,9 @@ export const SessionManagementUI = ({
               color="destructive"
               size="sm"
               onClick={handleCancel}
-              disabled={!cancelReason.trim() || cancelMutation.isPending}
-              loading={cancelMutation.isPending}>
+              disabled={!cancelReason.trim() || cancelMutation.isPending || guestCancelMutation.isPending}
+              loading={cancelMutation.isPending || guestCancelMutation.isPending}
+              data-testid="confirm-cancel">
               {t("thotis_confirm_cancel")}
             </Button>
             <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
@@ -375,8 +444,9 @@ export const SessionManagementUI = ({
               color="primary"
               size="sm"
               onClick={handleReschedule}
-              disabled={!newDateTime || rescheduleMutation.isPending}
-              loading={rescheduleMutation.isPending}>
+              disabled={!newDateTime || rescheduleMutation.isPending || guestRescheduleMutation.isPending}
+              loading={rescheduleMutation.isPending || guestRescheduleMutation.isPending}
+              data-testid="confirm-reschedule">
               {t("thotis_confirm_reschedule")}
             </Button>
             <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
@@ -418,8 +488,8 @@ export const SessionManagementUI = ({
               color="primary"
               size="sm"
               onClick={handleReportIncident}
-              disabled={reportIncidentMutation.isPending}
-              loading={reportIncidentMutation.isPending}>
+              disabled={reportIncidentMutation.isPending || guestReportMutation.isPending}
+              loading={reportIncidentMutation.isPending || guestReportMutation.isPending}>
               {t("thotis_confirm_report")}
             </Button>
             <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
@@ -455,7 +525,7 @@ export const SessionManagementUI = ({
       {/* NEW: Student Rating & Feedback Section (Only for students, past sessions, completed/accepted) */}
       {!isMentor && (isPast || metadata?.completedAt) && !isCancelled && responses?.email && (
         <div className="mt-4 border-t border-gray-100 pt-4">
-          <RatingForm bookingId={booking.id} email={responses.email} />
+          <RatingForm bookingId={booking.id} email={responses.email} token={token} />
         </div>
       )}
 

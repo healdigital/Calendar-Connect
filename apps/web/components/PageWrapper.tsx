@@ -24,7 +24,6 @@ import { GoogleTagManagerComponent } from "@components/GTM";
 import type { AppProps } from "@lib/app-providers";
 import AppProviders from "@lib/app-providers";
 import { seoConfig } from "@lib/config/next-seo.config";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 export interface CalPageWrapper {
   (props?: AppProps): JSX.Element;
@@ -94,15 +93,7 @@ function PageWrapper(props: AppProps) {
       `}</style>
       <IconSprites />
 
-      {getLayout(
-        Component.requiresLicense ? (
-          <LicenseRequired>
-            <Component {...pageProps} err={err} />
-          </LicenseRequired>
-        ) : (
-          <Component {...pageProps} err={err} />
-        )
-      )}
+      {getLayout(<Component {...pageProps} err={err} />)}
       <GoogleTagManagerComponent />
     </AppProviders>
   );

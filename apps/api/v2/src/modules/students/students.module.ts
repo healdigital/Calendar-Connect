@@ -1,8 +1,10 @@
 import {
+  AnalyticsRepository,
   ProfileService,
   SessionRatingRepository,
   SessionRatingService,
   StatisticsService,
+  ThotisAnalyticsService,
   ThotisBookingService,
   ThotisProfileRepository,
 } from "@calcom/platform-libraries";
@@ -27,9 +29,20 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
       inject: [ThotisProfileRepository],
     },
     {
-      provide: ThotisBookingService,
-      useFactory: (prisma: PrismaWriteService) => new ThotisBookingService(prisma as any),
+      provide: AnalyticsRepository,
+      useFactory: (prisma: PrismaWriteService) => new AnalyticsRepository({ prismaClient: prisma as any }),
       inject: [PrismaWriteService],
+    },
+    {
+      provide: ThotisAnalyticsService,
+      useFactory: (repo: AnalyticsRepository) => new ThotisAnalyticsService(repo),
+      inject: [AnalyticsRepository],
+    },
+    {
+      provide: ThotisBookingService,
+      useFactory: (prisma: PrismaWriteService, analytics: ThotisAnalyticsService) =>
+        new ThotisBookingService(prisma as any, undefined, undefined, analytics),
+      inject: [PrismaWriteService, ThotisAnalyticsService],
     },
     {
       provide: SessionRatingRepository,
@@ -44,9 +57,12 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     },
     {
       provide: StatisticsService,
-      useFactory: (profileRepo: ThotisProfileRepository, ratingRepo: SessionRatingRepository) =>
-        new StatisticsService(profileRepo, ratingRepo),
-      inject: [ThotisProfileRepository, SessionRatingRepository],
+      useFactory: (
+        profileRepo: ThotisProfileRepository,
+        ratingRepo: SessionRatingRepository,
+        analytics: ThotisAnalyticsService
+      ) => new StatisticsService(profileRepo, ratingRepo, analytics),
+      inject: [ThotisProfileRepository, SessionRatingRepository, ThotisAnalyticsService],
     },
   ],
 })

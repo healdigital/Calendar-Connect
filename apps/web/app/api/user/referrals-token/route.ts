@@ -1,4 +1,3 @@
-import process from "node:process";
 import { dub } from "@calcom/feature-auth/lib/dub";
 import { getServerSession } from "@calcom/feature-auth/lib/getServerSession";
 import { IS_DUB_REFERRALS_ENABLED } from "@calcom/lib/constants";

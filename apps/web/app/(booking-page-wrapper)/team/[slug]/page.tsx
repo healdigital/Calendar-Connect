@@ -1,4 +1,4 @@
-import { getOrgFullOrigin } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { getOrgOrTeamAvatar } from "@calcom/lib/defaultAvatarImage";
 import { buildLegacyCtx, decodeParams } from "@lib/buildLegacyCtx";
 import { getServerSideProps } from "@lib/team/[slug]/getServerSideProps";

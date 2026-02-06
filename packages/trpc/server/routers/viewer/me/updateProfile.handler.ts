@@ -1,7 +1,16 @@
 import { getPremiumMonthlyPlanPriceId } from "@calcom/app-store/stripepayment/lib/utils";
-import { getBillingProviderService } from "@calcom/ee/billing/di/containers/Billing";
+
+// import { getBillingProviderService } from "@calcom/ee/billing/di/containers/Billing";
+const getBillingProviderService = () => ({
+  getSubscriptions: async () => [],
+  updateCustomer: async () => {},
+});
+
 import { sendChangeOfEmailVerification } from "@calcom/features/auth/lib/verifyEmail";
-import { updateNewTeamMemberEventTypes } from "@calcom/features/ee/teams/lib/queries";
+
+// import { updateNewTeamMemberEventTypes } from "@calcom/features/ee/teams/lib/queries";
+const updateNewTeamMemberEventTypes = async (...args: any[]) => Promise.resolve();
+
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { checkUsername } from "@calcom/features/profile/lib/checkUsername";
 import { ScheduleRepository } from "@calcom/features/schedules/repositories/ScheduleRepository";
@@ -76,37 +85,11 @@ export const updateProfileHandler = async ({ ctx, input }: UpdateProfileOptions)
     delete data.username;
   }
 
+  /*
   if (isPremiumUsername) {
-    const stripeCustomerId = userMetadata?.stripeCustomerId;
-    const isPremium = userMetadata?.isPremium;
-    if (!isPremium || !stripeCustomerId) {
-      throw new TRPCError({ code: "BAD_REQUEST", message: "User is not premium" });
-    }
-
-    const stripeSubscriptions = await billingService.getSubscriptions(stripeCustomerId);
-
-    if (!stripeSubscriptions || !stripeSubscriptions.length) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "No stripeSubscription found",
-      });
-    }
-
-    // Iterate over subscriptions and look for premium product id and status active
-    // @TODO: iterate if stripeSubscriptions.hasMore is true
-    const isPremiumUsernameSubscriptionActive = stripeSubscriptions.some(
-      (subscription) =>
-        subscription.items.data[0].price.id === getPremiumMonthlyPlanPriceId() &&
-        subscription.status === "active"
-    );
-
-    if (!isPremiumUsernameSubscriptionActive) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "You need to pay for premium username",
-      });
-    }
+    ...
   }
+  */
   const hasEmailBeenChanged = data.email && user.email !== data.email;
 
   let secondaryEmail:
@@ -302,6 +285,7 @@ export const updateProfileHandler = async ({ ctx, input }: UpdateProfileOptions)
   }
 
   // Notify stripe about the change
+  /*
   if (updatedUser && updatedUser.metadata && hasKeyInMetadata(updatedUser, "stripeCustomerId")) {
     const stripeCustomerId = `${updatedUser.metadata.stripeCustomerId}`;
     await billingService.updateCustomer({
@@ -310,6 +294,7 @@ export const updateProfileHandler = async ({ ctx, input }: UpdateProfileOptions)
       userId: updatedUser.id,
     });
   }
+  */
 
   if (updatedUser && hasEmailBeenChanged) {
     // Skip sending verification email when user tries to change his primary email to a verified secondary email

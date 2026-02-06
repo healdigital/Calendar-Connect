@@ -3,7 +3,6 @@ import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-util
 import dayjs from "@calcom/dayjs";
 import { sendNoShowFeeChargedEmail } from "@calcom/emails/billing-email-service";
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import { MembershipRepository } from "@calcom/features/membership/repositories/MembershipRepository";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
@@ -115,23 +114,14 @@ export const handleNoShowFee = async ({
       throw new Error("User is not a member of the team");
     }
   }
-  let paymentCredential = await CredentialRepository.findPaymentCredentialByAppIdAndUserIdOrTeamId({
+  const paymentCredential = await CredentialRepository.findPaymentCredentialByAppIdAndUserIdOrTeamId({
     appId,
     userId,
     teamId,
   });
 
   if (!paymentCredential && teamId) {
-    const teamRepository = new TeamRepository(prisma);
-    // See if the team event belongs to an org
-    const org = await teamRepository.findParentOrganizationByTeamId(teamId);
-
-    if (org) {
-      paymentCredential = await CredentialRepository.findPaymentCredentialByAppIdAndTeamId({
-        appId,
-        teamId: org.id,
-      });
-    }
+    // Logic to find parent organization removed for OSS
   }
 
   if (!paymentCredential) {

@@ -1,6 +1,5 @@
 import { _generateMetadata } from "app/_utils";
 import LegacyPage from "~/connect-and-join/connect-and-join-view";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 export const generateMetadata = async () => {
   return await _generateMetadata(
@@ -13,10 +12,6 @@ export const generateMetadata = async () => {
 };
 
 const ServerPage = async () => {
-  return (
-    <LicenseRequired>
-      <LegacyPage />
-    </LicenseRequired>
-  );
+  return <LegacyPage />;
 };
 export default ServerPage;

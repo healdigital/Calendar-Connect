@@ -3,7 +3,7 @@
 // import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 // import { getTeamsFiltersFromQuery } from "@calcom/features/filters/lib/getTeamsFiltersFromQuery";
 // import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
-import LegacyPage from "@calcom/web/modules/ee/workflows/views/WorkflowsPage";
+// import LegacyPage from "@calcom/web/modules/ee/workflows/views/WorkflowsPage";
 
 const Page = async () => {
   // const session = await getServerSession({ req: buildLegacyRequest(await headers(), await cookies()) });
@@ -21,11 +21,7 @@ const Page = async () => {
   //   });
   // } catch (err) {}
 
-  return (
-    <LegacyPage
-    //  filteredList={filteredList}
-    />
-  );
+  return <div>Workflows are not available in Open Source edition.</div>;
 };
 
 export default Page;

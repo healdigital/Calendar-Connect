@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { EventTypesModule_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.module";
 import { AvailableSlotsModule } from "@/lib/modules/available-slots.module";
+import { EventTypesModule } from "@/modules/event-types/event-types.module";
 import { MembershipsModule } from "@/modules/memberships/memberships.module";
 import { OrganizationsRepository } from "@/modules/organizations/index/organizations.repository";
 import { OrganizationsTeamsRepository } from "@/modules/organizations/teams/index/organizations-teams.repository";
@@ -19,7 +19,7 @@ import { UsersRepository } from "@/modules/users/users.repository";
 @Module({
   imports: [
     PrismaModule,
-    EventTypesModule_2024_06_14,
+    EventTypesModule,
     StripeModule,
     TeamsModule,
     MembershipsModule,

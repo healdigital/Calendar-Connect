@@ -3,9 +3,9 @@ import { moduleLoader as prismaModuleLoader } from "@calcom/features/di/modules/
 import { PrismaAttributeToUserRepository } from "../repositories/PrismaAttributeToUserRepository";
 import { ATTRIBUTE_DI_TOKENS } from "./tokens";
 
-export const attributeToUserRepositoryModule = createModule();
 const token = ATTRIBUTE_DI_TOKENS.ATTRIBUTE_TO_USER_REPOSITORY;
 const moduleToken = ATTRIBUTE_DI_TOKENS.ATTRIBUTE_TO_USER_REPOSITORY_MODULE;
+const attributeToUserRepositoryModule = createModule();
 const loadModule = bindModuleToClassOnToken({
   module: attributeToUserRepositoryModule,
   moduleToken,
@@ -14,9 +14,10 @@ const loadModule = bindModuleToClassOnToken({
   dep: prismaModuleLoader,
 });
 
-export const moduleLoader: ModuleLoader = {
+const moduleLoader: ModuleLoader = {
   token,
   loadModule,
 };
 
+export { attributeToUserRepositoryModule, moduleLoader };
 export type { PrismaAttributeToUserRepository };

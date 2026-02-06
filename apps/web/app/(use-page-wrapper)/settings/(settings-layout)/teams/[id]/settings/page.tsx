@@ -1,5 +1,5 @@
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
-import TeamSettingsView from "@calcom/web/modules/ee/teams/views/team-settings-view";
+// import TeamSettingsView from "@calcom/web/modules/ee/teams/views/team-settings-view";
 import { _generateMetadata, getTranslate } from "app/_utils";
 
 export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }) =>
@@ -18,7 +18,7 @@ const Page = async () => {
       title={t("settings")}
       description={t("team_settings_description")}
       borderInShellHeader={false}>
-      <TeamSettingsView />
+      <div>Team Settings are not available in Open Source.</div>
     </SettingsHeader>
   );
 };

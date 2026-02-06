@@ -1,6 +1,5 @@
 "use client";
 
-import process from "node:process";
 import { ENDPOINTS } from "@calcom/trpc/react/shared";
 import { httpBatchLink, httpLink, loggerLink, splitLink } from "@trpc/client";
 import superjson from "superjson";

@@ -1,7 +1,6 @@
-import process from "node:process";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
-import { TeamEventTypeForm } from "@calcom/features/ee/teams/components/TeamEventTypeForm";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
+import { TeamEventTypeForm } from "@calcom/features/teams/components/TeamEventTypeForm";
 import CreateEventTypeForm from "@calcom/features/eventtypes/components/CreateEventTypeForm";
 import { useCreateEventType } from "@calcom/features/eventtypes/hooks/useCreateEventType";
 import { useLocale } from "@calcom/lib/hooks/useLocale";

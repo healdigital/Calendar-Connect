@@ -17,7 +17,9 @@ import { CreateBookingInput } from "./inputs/create-booking.input";
 import { RescheduleBookingInput } from "./inputs/reschedule-booking.input";
 import { BookingResponseDto } from "./outputs/booking.output";
 import { API_VERSIONS_VALUES } from "@/lib/api-versions";
+import { GetUser } from "@/modules/auth/decorators/get-user/get-user.decorator";
 import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
+import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
 
 @Controller({
   path: "/v2/bookings",
@@ -68,8 +70,11 @@ export class BookingsController {
   @HttpCode(HttpStatus.OK)
   // Guard is applied at controller level
   @ApiOperation({ summary: "Cancel a booking" })
-  async cancelBooking(@Param("id", ParseIntPipe) id: number): Promise<{ status: string }> {
-    await this.bookingsService.cancelBooking(id, "Cancelled via API");
+  async cancelBooking(
+    @Param("id", ParseIntPipe) id: number,
+    @GetUser() user: ApiAuthGuardUser
+  ): Promise<{ status: string }> {
+    await this.bookingsService.cancelBooking(id, "Cancelled via API", user);
     return { status: "success" };
   }
 
@@ -79,9 +84,10 @@ export class BookingsController {
   @ApiResponse({ status: 200, type: BookingResponseDto })
   async rescheduleBooking(
     @Param("id", ParseIntPipe) id: number,
-    @Body() input: RescheduleBookingInput
+    @Body() input: RescheduleBookingInput,
+    @GetUser() user: ApiAuthGuardUser
   ): Promise<BookingResponseDto> {
-    const result = await this.bookingsService.rescheduleBooking(id, new Date(input.newDateTime));
+    const result = await this.bookingsService.rescheduleBooking(id, new Date(input.newDateTime), user);
     return {
       status: "success",
       data: result,

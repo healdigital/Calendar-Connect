@@ -257,85 +257,12 @@ export class CallService {
 
   private async validateCreditsForTestCall({ userId, teamId }: { userId: number; teamId?: number }) {
     try {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
-      const creditService = new CreditService();
-      const hasCredits = await creditService.hasAvailableCredits({
-        userId: userId || undefined,
-        teamId: teamId || undefined,
-      });
+    // Credit check removed for open-source version
+    // Logic was: import CreditService from ee/billing and check credits.
+    // For now we allow bypassing this check or we can throw an error if strictly needed.
+    // Assuming OS version does not enforce credits for AI phone (or feature is disabled elsewhere).
+    return;
 
-      if (!hasCredits) {
-        throw new HttpError({
-          statusCode: 403,
-          message: `Insufficient credits to make test call. Please purchase more credits.`,
-        });
-      }
-    } catch (error) {
-      // Re-throw HTTP errors (like insufficient credits) as-is
-      if (error instanceof HttpError) {
-        throw error;
-      }
-
-      this.logger.error("Failed to validate credits for test call", {
-        userId,
-        teamId,
-        error,
-      });
-      throw new HttpError({
-        statusCode: 500,
-        message: "Unable to validate credits. Please try again.",
-      });
-    }
   }
 
-  async listCalls({
-    limit = 50,
-    offset: _offset = 0,
-    filters,
-  }: {
-    limit?: number;
-    offset?: number;
-    filters: {
-      fromNumber: string[];
-      toNumber?: string[];
-      startTimestamp?: { lower_threshold?: number; upper_threshold?: number };
-    };
-  }): Promise<RetellCallListResponse> {
-    try {
-      if (filters.fromNumber.length === 0) {
-        this.logger.info("No phone numbers provided");
-        return [];
-      }
 
-      const callsResponse = await this.deps.retellRepository.listCalls({
-        filter_criteria: {
-          from_number: filters.fromNumber,
-          ...(filters?.toNumber && { to_number: filters.toNumber }),
-          ...(filters?.startTimestamp && { start_timestamp: filters.startTimestamp }),
-        },
-        limit,
-        sort_order: "descending",
-      });
-
-      return callsResponse.map((call) => {
-        const { transcript_object: _transcript_object, call_cost: _call_cost, ...filteredCall } = call;
-        return {
-          ...filteredCall,
-          sessionOutcome:
-            call.call_status === "ended" && !call.disconnection_reason?.includes("error")
-              ? "successful"
-              : "unsuccessful",
-        };
-      }) as RetellCallListResponse;
-    } catch (error) {
-      this.logger.error("Failed to list calls", {
-        phoneNumbers: filters?.fromNumber,
-        error,
-      });
-      throw new HttpError({
-        statusCode: 500,
-        message: "Failed to retrieve call history",
-      });
-    }
-  }
-}

@@ -1,4 +1,3 @@
-import process from "node:process";
 import { getOAuthService } from "@calcom/features/oauth/di/OAuthService.container";
 import { OAUTH_ERROR_REASONS } from "@calcom/features/oauth/services/OAuthService";
 import { ErrorWithCode } from "@calcom/lib/errors";

@@ -1,4 +1,6 @@
-import { getOrgFullOrigin } from "@calcom/ee/organizations/lib/orgDomains";
+// import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
+const getOrgFullOrigin = (slug: string) => `https://${slug}.cal.com`; // Mock for open source
+
 import { CreationSource, RedirectType } from "@calcom/prisma/enums";
 import { UserSchema } from "@calcom/prisma/zod/modelSchema/UserSchema";
 import { authedAdminProcedure } from "@calcom/trpc/server/procedures/authedProcedure";

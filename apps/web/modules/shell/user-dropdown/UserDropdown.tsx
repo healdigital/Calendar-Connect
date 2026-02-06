@@ -6,7 +6,7 @@ import classNames from "@calcom/ui/classNames";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Icon } from "@calcom/ui/components/icon";
 import { useGetUserAttributes } from "@calcom/web/components/settings/platform/hooks/useGetUserAttributes";
-import FreshChatProvider from "@calcom/web/modules/ee/support/lib/freshchat/FreshChatProvider";
+// import FreshChatProvider from "@calcom/web/modules/ee/support/lib/freshchat/FreshChatProvider";
 import {
   Menu,
   MenuItem,
@@ -174,7 +174,7 @@ export function UserDropdown({ small }: UserDropdownProps) {
         )}
       </MenuTrigger>
 
-      <FreshChatProvider>
+      <>
         <MenuPopup align="start">
           {!isPlatformPages && (
             <>
@@ -292,7 +292,7 @@ export function UserDropdown({ small }: UserDropdownProps) {
             {t("sign_out")}
           </MenuItem>
         </MenuPopup>
-      </FreshChatProvider>
+      </>
     </Menu>
   );
 }

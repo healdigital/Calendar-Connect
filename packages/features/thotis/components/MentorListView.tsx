@@ -8,7 +8,7 @@ import { ProfileCard } from "./ProfileCard";
 
 type ViewMode = "grid" | "list";
 
-type SortOption = "rating" | "sessions" | "recent";
+type SortOption = "recommended" | "rating" | "sessions" | "recent";
 
 interface MentorListViewProps {
   profiles: StudentProfileWithUser[];
@@ -20,11 +20,15 @@ interface MentorListViewProps {
 export const MentorListView = ({ profiles, isLoading, total, onBookSession }: MentorListViewProps) => {
   const { t } = useLocale();
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const [sortBy, setSortBy] = useState<SortOption>("rating");
+  const hasRecommendations = profiles.some((p) => p.matchScore !== undefined);
+  const [sortBy, setSortBy] = useState<SortOption>(hasRecommendations ? "recommended" : "rating");
 
   const sortedProfiles = useCallback(() => {
     const sorted = [...profiles];
     switch (sortBy) {
+      case "recommended":
+        sorted.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+        break;
       case "rating":
         sorted.sort((a, b) => {
           const ratingA = Number(a.averageRating) || 0;
@@ -79,6 +83,7 @@ export const MentorListView = ({ profiles, isLoading, total, onBookSession }: Me
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="border-subtle bg-default text-emphasis rounded-md border px-2 py-1 text-xs">
+              <option value="recommended">{t("thotis_sort_recommended")}</option>
               <option value="rating">{t("thotis_sort_rating")}</option>
               <option value="sessions">{t("thotis_sort_sessions")}</option>
               <option value="recent">{t("thotis_sort_recent")}</option>
@@ -175,6 +180,18 @@ const MentorListItem = ({
               </>
             )}
           </div>
+          {student.matchReasons && student.matchReasons.length > 0 && (
+            <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+              {student.matchReasons.slice(0, 2).map((reason) => (
+                <span
+                  key={reason}
+                  className="text-blue-600 dark:text-blue-400 text-[10px] font-medium flex items-center">
+                  <Icon name="sparkles" className="h-2 w-2 mr-1" />
+                  {reason}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

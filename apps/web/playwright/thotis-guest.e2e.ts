@@ -3,23 +3,28 @@ import { uuid } from "short-uuid";
 
 test.describe("Thotis Guest Journey E2E", () => {
   test("should complete guest booking -> reschedule -> join flow", async ({ page }) => {
-    // 1. Visit Thotis landing/search page (assuming /thotis)
+    // 1. Visit Thotis Landing
     await page.goto("/thotis");
+    await page.click("text=Find a Mentor");
 
-    // 2. Click on a mentor (search results)
-    // For E2E we assume a seeded mentor exists
+    // 2. Select a Mentor
+    await page.waitForSelector('[data-testid="mentor-card"]');
     await page.click('[data-testid="mentor-card"]');
 
-    // 3. Book a slot
+    // 3. Select a slot (BookingWidget)
+    await page.waitForSelector('[data-testid="available-slot"]');
     await page.click('[data-testid="available-slot"]');
-    await page.fill('[name="name"]', "E2E Student");
-    await page.fill('[name="email"]', `e2e-${uuid()}@example.com`);
+
+    // 4. Fill details
+    await page.fill('input[name="name"]', "Test Student");
+    await page.fill('input[name="email"]', `e2e-${uuid()}@example.com`); // Use uuid for unique email
     await page.click('[data-testid="confirm-booking"]');
 
+    // 5. Success check
+    await expect(page.locator("text=Booking Confirmed")).toBeVisible();
     expect(page.url()).toContain("/thotis/success");
-    await expect(page.locator("text=Booking confirmed")).toBeVisible();
 
-    // 4. Access Student Inbox via email link (simulated)
+    // 6. Access Student Inbox via email link (simulated)
     // We'll go to the inbox page directly if we can generate the token or use a mock
     // For now, let's verify the success page has the necessary info
     await expect(page.locator('[data-testid="meet-link"]')).not.toContainText("integrations:google-video");

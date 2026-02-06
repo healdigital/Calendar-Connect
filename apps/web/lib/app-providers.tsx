@@ -9,11 +9,7 @@
 
 import process from "node:process";
 import type { ParsedUrlQuery } from "node:querystring";
-import { OrgBrandingProvider } from "@calcom/features/ee/organizations/context/provider";
-import { FeatureProvider } from "@calcom/features/flags/context/provider";
-import DynamicHelpscoutProvider from "@calcom/web/modules/ee/support/lib/helpscout/providerDynamic";
-import DynamicIntercomProvider from "@calcom/web/modules/ee/support/lib/intercom/providerDynamic";
-import { useFlags } from "@calcom/web/modules/feature-flags/hooks/useFlags";
+import { FeatureProvider, useFlagMap } from "@calcom/features/flags/context/provider";
 import { useViewerI18n } from "@components/I18nLanguageHandler";
 import useIsBookingPage from "@lib/hooks/useIsBookingPage";
 import { useNuqsParams } from "@lib/hooks/useNuqsParams";
@@ -29,6 +25,7 @@ import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/pages";
 import type { PropsWithChildren, ReactNode } from "react";
 import { useEffect } from "react";
+import { useFlags } from "../modules/feature-flags/hooks/useFlags";
 
 const I18nextAdapter = appWithTranslation<
   NextJsAppProps<SSRConfig> & {
@@ -263,8 +260,8 @@ function useOrgBrandingValues() {
 }
 
 function OrgBrandProvider({ children }: { children: React.ReactNode }) {
-  const orgBrand = useOrgBrandingValues();
-  return <OrgBrandingProvider value={{ orgBrand }}>{children}</OrgBrandingProvider>;
+  // const orgBrand = useOrgBrandingValues();
+  return <>{children}</>;
 }
 
 const AppProviders = (props: AppPropsWithChildren) => {
@@ -288,9 +285,7 @@ const AppProviders = (props: AppPropsWithChildren) => {
               {_isBookingPage ? (
                 <OrgBrandProvider>{props.children}</OrgBrandProvider>
               ) : (
-                <DynamicIntercomProvider>
-                  <OrgBrandProvider>{props.children}</OrgBrandProvider>
-                </DynamicIntercomProvider>
+                <OrgBrandProvider>{props.children}</OrgBrandProvider>
               )}
             </FeatureFlagsProvider>
           </NuqsAdapter>
@@ -303,11 +298,7 @@ const AppProviders = (props: AppPropsWithChildren) => {
     return RemainingProviders;
   }
 
-  return (
-    <>
-      <DynamicHelpscoutProvider>{RemainingProviders}</DynamicHelpscoutProvider>
-    </>
-  );
+  return <>{RemainingProviders}</>;
 };
 
 export default AppProviders;

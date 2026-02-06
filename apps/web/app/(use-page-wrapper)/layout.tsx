@@ -1,4 +1,3 @@
-import process from "node:process";
 import PageWrapper from "@components/PageWrapperAppDir";
 import { headers } from "next/headers";
 import Script from "next/script";

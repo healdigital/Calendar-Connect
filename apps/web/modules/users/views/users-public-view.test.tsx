@@ -1,4 +1,4 @@
-import { getOrgFullOrigin } from "@calcom/ee/organizations/lib/orgDomains";
+import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { useRouterQuery } from "@calcom/lib/hooks/useRouterQuery";
 import { render } from "@testing-library/react";
 import { describe, it, vi } from "vitest";
@@ -8,7 +8,7 @@ vi.mock("@calcom/lib/constants", async () => {
   return await vi.importActual("@calcom/lib/constants");
 });
 
-vi.mock("@calcom/ee/organizations/lib/orgDomains", () => ({
+vi.mock("@calcom/features/organizations/lib/orgDomains", () => ({
   getOrgFullOrigin: vi.fn(),
 }));
 

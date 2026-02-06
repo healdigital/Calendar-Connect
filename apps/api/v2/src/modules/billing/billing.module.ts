@@ -1,6 +1,5 @@
 import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
-import { BookingsRepository_2024_08_13 } from "@/ee/bookings/2024-08-13/repositories/bookings.repository";
 import { PlatformBillingTaskerModule } from "@/lib/modules/platform-billing-tasker.module";
 import { BillingProcessor } from "@/modules/billing/billing.processor";
 import { BillingRepository } from "@/modules/billing/billing.repository";
@@ -46,7 +45,7 @@ import { UsersModule } from "@/modules/users/users.module";
     BillingProcessor,
     ManagedOrganizationsBillingService,
     OAuthClientRepository,
-    BookingsRepository_2024_08_13,
+
     IsUserInBillingOrg,
   ],
   exports: [BillingService, BillingRepository, ManagedOrganizationsBillingService],

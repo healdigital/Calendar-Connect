@@ -8,15 +8,15 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import { WebhooksService } from "@/modules/webhooks/services/webhooks.service";
 
 @Injectable()
 export class IsUserEventTypeWebhookGuard implements CanActivate {
   constructor(
     private readonly webhooksService: WebhooksService,
-    private readonly eventtypesRepository: EventTypesRepository_2024_06_14
+    private readonly eventtypesRepository: EventTypesRepository
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

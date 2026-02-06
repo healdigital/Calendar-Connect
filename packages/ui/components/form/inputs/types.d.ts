@@ -22,6 +22,7 @@ export type InputFieldProps<Translations extends Record<string, string> = object
   dataTestid?: string;
   noLabel?: boolean;
   onClickAddon?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  setValue?: any;
 } & InputProps & {
     labelProps?: React.ComponentProps<typeof Label>;
     labelClassName?: string;
@@ -30,4 +31,5 @@ export type InputFieldProps<Translations extends Record<string, string> = object
 export type InputProps = Omit<JSX.IntrinsicElements["input"], "size" | "ref"> &
   VariantProps<typeof inputStyles> & {
     isFullWidth?: boolean;
+    setValue?: any;
   };

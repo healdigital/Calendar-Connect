@@ -24,7 +24,6 @@ import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags("Students")
 @Controller("students")
-@UseGuards(AuthGuard("jwt"))
 export class StudentsController {
   constructor(
     private readonly profileService: ProfileService,
@@ -56,13 +55,15 @@ export class StudentsController {
 
   @Get(":id")
   async getStudent(@Param("id") id: string) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) {
-      throw new BadRequestException("Invalid ID format");
-    }
+    // Try as userId first if it's a number, otherwise as profileId string
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     try {
-      const profile = await this.profileService.getProfile(userId);
+      const profile = isNumeric
+        ? await this.profileService.getProfile(idAsNumber)
+        : await this.profileService.getProfileById(id);
+
       if (!profile) {
         throw new NotFoundException("Profile not found");
       }
@@ -81,10 +82,8 @@ export class StudentsController {
 
   @Get(":id/availability")
   async getAvailability(@Param("id") id: string, @Query("start") start: string, @Query("end") end: string) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) {
-      throw new BadRequestException("Invalid ID format");
-    }
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     if (!start || !end) {
       throw new BadRequestException("Start and end dates are required");
@@ -92,7 +91,10 @@ export class StudentsController {
 
     try {
       // We need the profile ID, not the user ID, for booking service
-      const profile = await this.profileService.getProfile(userId);
+      const profile = isNumeric
+        ? await this.profileService.getProfile(idAsNumber)
+        : await this.profileService.getProfileById(id);
+
       if (!profile) {
         throw new NotFoundException("Profile not found");
       }
@@ -116,12 +118,18 @@ export class StudentsController {
 
   @Get(":id/stats")
   async getStudentStats(@Param("id") id: string) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) {
-      throw new BadRequestException("Invalid ID format");
-    }
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     try {
+      // Statistics service works with userId
+      let userId = idAsNumber;
+      if (!isNumeric) {
+        const profile = await this.profileService.getProfileById(id);
+        if (!profile) throw new NotFoundException("Profile not found");
+        userId = profile.userId;
+      }
+
       const stats = await this.statisticsService.getStudentStats(userId);
       if (!stats) {
         throw new NotFoundException("Stats not found for student");
@@ -143,7 +151,8 @@ export class StudentsController {
   @Post(":id/profile")
   async createProfile(@Param("id") id: string, @Body() body: any) {
     const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) throw new BadRequestException("Invalid ID");
+    if (Number.isNaN(userId))
+      throw new BadRequestException("Profile creation requires a numeric userId as ID");
 
     try {
       const profile = await this.profileService.createProfile({
@@ -167,10 +176,17 @@ export class StudentsController {
   @UseGuards(AuthGuard("jwt"))
   @Put(":id/profile")
   async updateProfile(@Param("id") id: string, @Body() body: any) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) throw new BadRequestException("Invalid ID");
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     try {
+      let userId = idAsNumber;
+      if (!isNumeric) {
+        const profile = await this.profileService.getProfileById(id);
+        if (!profile) throw new NotFoundException("Profile not found");
+        userId = profile.userId;
+      }
+
       const profile = await this.profileService.updateProfile(userId, body);
       return {
         status: "success",
@@ -186,14 +202,21 @@ export class StudentsController {
   @UseGuards(AuthGuard("jwt"))
   @Patch(":id/status")
   async updateStatus(@Param("id") id: string, @Body() body: { isActive: boolean }) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) throw new BadRequestException("Invalid ID");
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     if (typeof body.isActive !== "boolean") {
       throw new BadRequestException("isActive must be a boolean");
     }
 
     try {
+      let userId = idAsNumber;
+      if (!isNumeric) {
+        const profile = await this.profileService.getProfileById(id);
+        if (!profile) throw new NotFoundException("Profile not found");
+        userId = profile.userId;
+      }
+
       const profile = body.isActive
         ? await this.profileService.activateProfile(userId)
         : await this.profileService.deactivateProfile(userId);
@@ -210,13 +233,14 @@ export class StudentsController {
 
   @Get(":id/ratings")
   async getStudentRatings(@Param("id") id: string) {
-    const userId = parseInt(id, 10);
-    if (Number.isNaN(userId)) {
-      throw new BadRequestException("Invalid ID format");
-    }
+    const idAsNumber = parseInt(id, 10);
+    const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 
     try {
-      const profile = await this.profileService.getProfile(userId);
+      const profile = isNumeric
+        ? await this.profileService.getProfile(idAsNumber)
+        : await this.profileService.getProfileById(id);
+
       if (!profile) {
         throw new NotFoundException("Profile not found");
       }

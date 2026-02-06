@@ -129,8 +129,8 @@ function MatchingTeamMembers({
 
   if (!hasValidValue) {
     return (
-      <div className="border-subtle bg-cal-muted mt-4 stack-y-3 rounded-md border p-4">
-        <div className="text-subtle flex items-center text-sm font-medium">
+      <div className="stack-y-3 mt-4 rounded-md border border-subtle bg-cal-muted p-4">
+        <div className="flex items-center font-medium text-sm text-subtle">
           <span>{t("no_filter_set")}</span>
         </div>
       </div>
@@ -140,16 +140,17 @@ function MatchingTeamMembers({
   if (isPending) {
     return (
       <div
-        className="border-subtle bg-cal-muted mt-4 stack-y-3 rounded-md border p-4"
+        className="stack-y-3 mt-4 rounded-md border border-subtle bg-cal-muted p-4"
         data-testid="segment_loading_state">
         <div className="text-emphasis flex items-center text-sm font-medium">
           <div className="bg-subtle h-4 w-32 animate-pulse rounded" />
         </div>
-        <ul className="divide-subtle divide-y">
+        <ul className="divide-y divide-subtle">
           {[...Array(3)].map((_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: Loading skeleton
             <li key={index} className="flex items-center py-2">
               <div className="flex flex-1 items-center space-x-2 text-sm">
-                <div className="bg-subtle h-4 w-24 animate-pulse rounded" />
+                <div className="h-4 w-24 animate-pulse rounded bg-subtle" />
                 <div className="bg-subtle h-4 w-32 animate-pulse rounded" />
               </div>
             </li>
@@ -163,7 +164,7 @@ function MatchingTeamMembers({
   const { result: allMatchingTeamMembers } = matchingTeamMembersWithResult;
 
   const matchingTeamMembers = filterMemberIds
-    ? allMatchingTeamMembers?.filter((member) => filterMemberIds.includes(member.id))
+    ? allMatchingTeamMembers?.filter((member: { id: number }) => filterMemberIds.includes(member.id))
     : allMatchingTeamMembers;
 
   return (
@@ -171,8 +172,8 @@ function MatchingTeamMembers({
       <div className="text-emphasis flex items-center text-sm font-medium">
         <span>{t("x_matching_members", { x: matchingTeamMembers?.length ?? 0 })}</span>
       </div>
-      <ul className="divide-subtle divide-y">
-        {matchingTeamMembers?.map((member) => (
+      <ul className="divide-y divide-subtle">
+        {matchingTeamMembers?.map((member: { id: number; name: string | null; email: string }) => (
           <li key={member.id} className="flex items-center py-2">
             <div className="flex flex-1 items-center space-x-2 text-sm">
               <span className="font-medium">{member.name}</span>

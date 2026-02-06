@@ -340,22 +340,19 @@ export const getPlatformCancelLink = (
   return "";
 };
 
-export const getCancelLink = (
-  calEvent: {
-    platformClientId?: string | null;
-    platformCancelUrl?: string | null;
-    type: string;
-    organizer: Person;
-    recurringEvent?: RecurringEvent | null;
-    bookerUrl?: string | null;
-    uid?: string | null;
-    attendeeSeatId?: string;
-    team?: {
-      id: number;
-    };
-  },
-  attendee?: Person
-): string => {
+export const getCancelLink = (calEvent: {
+  platformClientId?: string | null;
+  platformCancelUrl?: string | null;
+  type: string;
+  organizer: Person;
+  recurringEvent?: RecurringEvent | null;
+  bookerUrl?: string | null;
+  uid?: string | null;
+  attendeeSeatId?: string;
+  team?: {
+    id: number;
+  };
+}): string => {
   const Uid = getUid(calEvent.uid);
   const seatReferenceUid = getSeatReferenceId(calEvent.attendeeSeatId);
   if (calEvent.platformClientId) {
@@ -365,9 +362,6 @@ export const getCancelLink = (
   const cancelLink = new URL(`${calEvent.bookerUrl ?? WEBAPP_URL}/booking/${Uid}`);
   cancelLink.searchParams.append("cancel", "true");
   cancelLink.searchParams.append("allRemainingBookings", String(!!calEvent.recurringEvent));
-  if (attendee?.email) {
-    cancelLink.searchParams.append("cancelledBy", attendee.email);
-  }
   if (seatReferenceUid) cancelLink.searchParams.append("seatReferenceUid", seatReferenceUid);
   return cancelLink.toString();
 };
@@ -402,7 +396,6 @@ export const getPlatformRescheduleLink = (
 export const getRescheduleLink = ({
   calEvent,
   allowRescheduleForCancelledBooking = false,
-  attendee,
 }: {
   calEvent: {
     platformClientId?: string | null;
@@ -417,7 +410,6 @@ export const getRescheduleLink = ({
     bookerUrl?: string | null;
   };
   allowRescheduleForCancelledBooking?: boolean;
-  attendee?: Person;
 }): string => {
   const Uid = getUid(calEvent.uid);
   const seatUid = getSeatReferenceId(calEvent.attendeeSeatId);
@@ -430,10 +422,6 @@ export const getRescheduleLink = ({
   if (allowRescheduleForCancelledBooking) {
     url.searchParams.append("allowRescheduleForCancelledBooking", "true");
   }
-  if (attendee?.email) {
-    url.searchParams.append("rescheduledBy", attendee.email);
-  }
-
   return url.toString();
 };
 

@@ -9,7 +9,6 @@ import {
   isUserAlreadyExistsError,
 } from "@calcom/features/auth/signup/lib/fetchSignup";
 import { getOrgUsernameFromEmail } from "@calcom/features/auth/signup/utils/getOrgUsernameFromEmail";
-import { getOrgFullOrigin } from "@calcom/features/ee/organizations/lib/orgDomains";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
 import {
   APP_NAME,
@@ -506,18 +505,9 @@ export default function Signup({
                       setUsernameTaken={(value) => setUsernameTaken(value)}
                       data-testid="signup-usernamefield"
                       setPremium={(value) => setPremiumUsername(value)}
-                      addOnLeading={
-                        orgSlug
-                          ? truncateDomain(
-                              `${getOrgFullOrigin(orgSlug, { protocol: true }).replace(
-                                URL_PROTOCOL_REGEX,
-                                ""
-                              )}/`
-                            )
-                          : truncateDomain(
-                              `${process.env.NEXT_PUBLIC_WEBSITE_URL.replace(URL_PROTOCOL_REGEX, "")}/`
-                            )
-                      }
+                      addOnLeading={truncateDomain(
+                        `${process.env.NEXT_PUBLIC_WEBSITE_URL.replace(URL_PROTOCOL_REGEX, "")}/`
+                      )}
                     />
                   ) : null}
                   {/* Email */}

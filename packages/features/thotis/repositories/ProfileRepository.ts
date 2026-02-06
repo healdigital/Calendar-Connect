@@ -525,4 +525,39 @@ export class ProfileRepository {
       },
     });
   }
+
+  /**
+   * Upsert a student orientation intent
+   */
+  async upsertOrientationIntent(
+    userId: number,
+    data: {
+      targetFields: string[];
+      academicLevel: string;
+      zone?: string | null;
+      goals?: string[];
+      scheduleConstraints?: any;
+    }
+  ) {
+    return this.prismaClient.thotisOrientationIntent.upsert({
+      where: {
+        userId,
+      },
+      update: {
+        targetFields: data.targetFields,
+        academicLevel: data.academicLevel,
+        zone: data.zone,
+        goals: data.goals || [],
+        scheduleConstraints: data.scheduleConstraints,
+      },
+      create: {
+        userId,
+        targetFields: data.targetFields,
+        academicLevel: data.academicLevel,
+        zone: data.zone,
+        goals: data.goals || [],
+        scheduleConstraints: data.scheduleConstraints,
+      },
+    });
+  }
 }

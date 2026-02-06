@@ -666,7 +666,13 @@ export async function scheduleNoShowTaskForBooking(
       webhook: {
         ...webhook,
         time: webhook.time ?? 0,
-        timeUnit: webhook.timeUnit ?? "HOUR",
+        timeUnit: (webhook.timeUnit?.toLowerCase() === "day"
+          ? "d"
+          : webhook.timeUnit?.toLowerCase() === "hour"
+            ? "h"
+            : webhook.timeUnit?.toLowerCase() === "minute"
+              ? "m"
+              : "h") as any,
         version,
       },
     },

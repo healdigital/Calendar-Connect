@@ -1,5 +1,3 @@
-import { CHECKOUT_SESSION_TYPES } from "@calcom/features/ee/billing/constants";
-import stripe from "@calcom/features/ee/payments/server/stripe";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { HttpError } from "@calcom/lib/http-error";
 import logger from "@calcom/lib/logger";

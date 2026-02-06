@@ -1,6 +1,6 @@
 "use client";
 
-import { subdomainSuffix } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { subdomainSuffix } from "@calcom/features/organizations/lib/orgDomains";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";

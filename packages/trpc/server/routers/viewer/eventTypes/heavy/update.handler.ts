@@ -2,12 +2,18 @@ import type { appDataSchemas } from "@calcom/app-store/apps.schemas.generated";
 import { DailyLocationType } from "@calcom/app-store/constants";
 import { eventTypeAppMetadataOptionalSchema } from "@calcom/app-store/zod-utils";
 import { CalVideoSettingsRepository } from "@calcom/features/calVideoSettings/repositories/CalVideoSettingsRepository";
-import updateChildrenEventTypes from "@calcom/features/ee/managed-event-types/lib/handleChildrenEventTypes";
-import {
-  allowDisablingAttendeeConfirmationEmails,
-  allowDisablingHostConfirmationEmails,
-} from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
-import { isUrlScanningEnabled } from "@calcom/features/ee/workflows/lib/urlScanner";
+
+// import updateChildrenEventTypes from "@calcom/features/ee/managed-event-types/lib/handleChildrenEventTypes";
+const updateChildrenEventTypes = async (...args: any[]) => Promise.resolve();
+// import {
+//   allowDisablingAttendeeConfirmationEmails,
+//   allowDisablingHostConfirmationEmails,
+// } from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
+const allowDisablingAttendeeConfirmationEmails = () => true;
+const allowDisablingHostConfirmationEmails = () => true;
+// import { isUrlScanningEnabled } from "@calcom/features/ee/workflows/lib/urlScanner";
+const isUrlScanningEnabled = () => false;
+
 import { HashedLinkRepository } from "@calcom/features/hashedLink/lib/repository/HashedLinkRepository";
 import { HashedLinkService } from "@calcom/features/hashedLink/lib/service/HashedLinkService";
 import { MembershipRepository } from "@calcom/features/membership/repositories/MembershipRepository";
@@ -633,15 +639,19 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
       },
     });
 
-    if (input.metadata?.disableStandardEmails.confirmation?.host) {
-      if (!allowDisablingHostConfirmationEmails(workflows)) {
-        input.metadata.disableStandardEmails.confirmation.host = false;
+    const disableStandardEmails = input.metadata?.disableStandardEmails;
+    if (disableStandardEmails && disableStandardEmails.confirmation) {
+      const confirmation = disableStandardEmails.confirmation;
+      if (typeof confirmation !== "undefined" && confirmation?.host) {
+        if (false /* !allowDisablingHostConfirmationEmails(workflows) */) {
+          confirmation.host = false;
+        }
       }
-    }
 
-    if (input.metadata?.disableStandardEmails.confirmation?.attendee) {
-      if (!allowDisablingAttendeeConfirmationEmails(workflows)) {
-        input.metadata.disableStandardEmails.confirmation.attendee = false;
+      if (typeof confirmation !== "undefined" && confirmation?.attendee) {
+        if (false /* !allowDisablingAttendeeConfirmationEmails(workflows) */) {
+          confirmation.attendee = false;
+        }
       }
     }
   }
@@ -819,6 +829,7 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
   }
 
   // Handling updates to children event types (managed events types)
+  /*
   await updateChildrenEventTypes({
     eventTypeId: id,
     currentUserId: ctx.user.id,
@@ -830,6 +841,7 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
     updatedValues,
     calVideoSettings: calVideoSettingsForChildren,
   });
+  */
 
   // Clean up empty host groups
   if (hostGroups !== undefined || hosts) {

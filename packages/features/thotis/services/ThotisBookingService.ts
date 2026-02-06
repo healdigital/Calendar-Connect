@@ -2,13 +2,12 @@ import process from "node:process";
 import BookingCancellationEmail from "@calcom/emails/templates/thotis/booking-cancellation";
 import BookingConfirmationEmail from "@calcom/emails/templates/thotis/booking-confirmation";
 import BookingRescheduledEmail from "@calcom/emails/templates/thotis/booking-rescheduled";
-import FeedbackRequestEmail from "@calcom/emails/templates/thotis/feedback-request";
 import { createEvent, deleteEvent, updateEvent } from "@calcom/features/calendars/lib/CalendarManager";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
 import { TimeFormat } from "@calcom/lib/timeFormat";
 import type { Prisma, PrismaClient } from "@calcom/prisma/client";
-import { MentorStatus, ThotisAnalyticsEventType } from "@calcom/prisma/enums";
+import { MentorIncidentType, MentorStatus, ThotisAnalyticsEventType } from "@calcom/prisma/enums";
 import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import type { CredentialForCalendarService } from "@calcom/types/Credential";
 import type { TFunction } from "next-i18next";
@@ -299,7 +298,7 @@ export class ThotisBookingService {
         profileId: input.studentProfileId,
         bookingId: booking.id,
         field: studentProfile.user.studentProfile?.field || undefined,
-        metadata: booking.metadata,
+        metadata: booking.metadata as Record<string, any>,
       });
     }
 
@@ -1047,67 +1046,6 @@ export class ThotisBookingService {
       });
     }
 
-    // Send feedback request email
-    try {
-      if (studentProfileId) {
-        // Need to fetch booking details again or rely on what we have (we have metadata)
-        // But we need params for email.
-        const studentProfile = await this.prisma.studentProfile.findUnique({
-          where: { id: studentProfileId },
-          select: {
-            userId: true,
-            user: { select: { email: true, name: true, timeZone: true, locale: true, timeFormat: true } },
-          },
-        });
-
-        if (studentProfile) {
-          const responses = booking.metadata as unknown as {
-            prospectiveStudentEmail?: string;
-            prospectiveStudentName?: string;
-          };
-          const attendeeEmail = responses?.prospectiveStudentEmail || "";
-          const attendeeName = responses?.prospectiveStudentName || "Student";
-
-          const organizer: Person = {
-            name: studentProfile.user.name || "Mentor",
-            email: studentProfile.user.email || "",
-            timeZone: studentProfile.user.timeZone || "Europe/Paris",
-            language: {
-              translate: ((key: string) => key) as TFunction,
-              locale: studentProfile.user.locale || "fr",
-            },
-            timeFormat:
-              studentProfile.user.timeFormat === 24 ? TimeFormat.TWENTY_FOUR_HOUR : TimeFormat.TWELVE_HOUR,
-          };
-
-          const attendee: Person = {
-            name: attendeeName,
-            email: attendeeEmail,
-            timeZone: "Europe/Paris",
-            language: { translate: ((key: string) => key) as TFunction, locale: "fr" },
-            timeFormat: TimeFormat.TWENTY_FOUR_HOUR,
-          };
-          // CalEvent is valid without language now
-          const calEvent: CalendarEvent = {
-            type: "thotis-mentoring",
-            title: "Thotis Student Mentoring Session",
-            startTime: booking.endTime.toISOString(), // use end time as reference
-            endTime: booking.endTime.toISOString(),
-            organizer,
-            attendees: [attendee],
-            uid: "feedback-" + booking.id, // Dummy UID
-          };
-
-          const feedbackLink = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/thotis/rate/${booking.uid}`;
-
-          const email = new FeedbackRequestEmail(calEvent, attendee, feedbackLink);
-          await email.sendEmail();
-        }
-      }
-    } catch (error) {
-      console.error("Failed to send feedback email", error);
-    }
-
     // Trigger Webhook
     const { thotisWebhooks } = await import("../../../../apps/web/lib/webhooks/thotis");
     await thotisWebhooks.onBookingCompleted(booking, 15); // Duration is fixed 15 min
@@ -1125,7 +1063,135 @@ export class ThotisBookingService {
         userId: booking.userId || undefined,
         profileId: studentProfileId,
         bookingId: booking.id,
+        metadata: booking.metadata as Record<string, any>,
+      });
+    }
+  }
+
+  /**
+   * Marks a session as a No-Show
+   * Automatically triggered by lifecycle cron or manually by admin/student
+   */
+  async markSessionAsNoShow(
+    bookingId: number,
+    requester: { id?: number; email?: string; isSystem?: boolean }
+  ): Promise<void> {
+    // Get booking
+    const booking = await this.prisma.booking.findUnique({
+      where: { id: bookingId },
+      select: {
+        id: true,
+        uid: true,
+        status: true,
+        startTime: true,
+        endTime: true,
+        metadata: true,
+        userId: true,
+        responses: true,
+        eventType: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+
+    if (!booking) {
+      throw new ErrorWithCode(ErrorCode.NotFound, `Booking ${bookingId} not found`);
+    }
+
+    // Verify ownership
+    this.verifySessionOwnership(booking, requester);
+
+    // Validate booking is not already cancelled
+    if (booking.status === "CANCELLED") {
+      // If it's already cancelled with no_show_auto, we're good
+      const metadata = booking.metadata as { cancellationReason?: string } | null;
+      if (metadata?.cancellationReason === "no_show_auto") return;
+
+      throw new ErrorWithCode(ErrorCode.BadRequest, "Booking is already cancelled");
+    }
+
+    // Get student profile ID from metadata
+    const metadata = booking.metadata as { studentProfileId?: string } | null;
+    const studentProfileId = metadata?.studentProfileId;
+
+    // Update booking status to CANCELLED with reason
+    await this.prisma.booking.update({
+      where: { id: bookingId },
+      data: {
+        status: "CANCELLED",
+        cancellationReason: "no_show_auto",
+        metadata: {
+          ...(booking.metadata as object),
+          noShowDetectedAt: new Date().toISOString(),
+          cancelledBy: requester.isSystem ? "system" : "student",
+        } as Prisma.InputJsonValue,
+      },
+    });
+
+    // Update student profile statistics and create incident
+    if (studentProfileId) {
+      const studentProfile = await this.prisma.studentProfile.findUnique({
+        where: { id: studentProfileId },
+        select: { userId: true },
+      });
+
+      if (studentProfile) {
+        await this.invalidateStudentCache(studentProfile.userId, studentProfileId);
+      }
+
+      // Increment cancelled sessions
+      await this.prisma.studentProfile.update({
+        where: { id: studentProfileId },
+        data: {
+          cancelledSessions: {
+            increment: 1,
+          },
+        },
+      });
+
+      // Automatically create a MentorQualityIncident for automated No-Show
+      await this.prisma.mentorQualityIncident.create({
+        data: {
+          studentProfileId,
+          bookingUid: booking.uid,
+          type: MentorIncidentType.NO_SHOW,
+          description: "Automated no-show detection by system lifecycle cron.",
+          reportedByUserId: null, // System report
+        },
+      });
+    }
+
+    // Trigger Webhook
+    try {
+      const { thotisWebhooks } = await import("../../../../apps/web/lib/webhooks/thotis");
+      await thotisWebhooks.onBookingCancelled(booking, "Automatically cancelled due to no-show");
+    } catch (e) {
+      console.warn("Failed to trigger thotisWebhooks.onBookingCancelled for no-show", e);
+    }
+
+    this.analytics.trackBookingCancelled(
+      {
+        id: booking.id,
+        userId: booking.userId,
         metadata: booking.metadata,
+      },
+      "no_show_auto",
+      requester.isSystem ? "system" : "student"
+    );
+
+    // Track Postgres Analytics
+    if (this.thotisAnalytics) {
+      await this.thotisAnalytics.track({
+        eventType: ThotisAnalyticsEventType.no_show,
+        userId: booking.userId || undefined,
+        profileId: studentProfileId,
+        bookingId: booking.id,
+        metadata: {
+          ...(booking.metadata as Record<string, any>),
+          autoDetected: true,
+        },
       });
     }
   }

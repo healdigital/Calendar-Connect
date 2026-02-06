@@ -1,4 +1,4 @@
-import { getBookerBaseUrlSync } from "@calcom/features/ee/organizations/lib/getBookerBaseUrlSync";
+import process from "node:process";
 import { useFlagMap } from "@calcom/features/flags/context/provider";
 import { ENABLE_PROFILE_SWITCHER, IS_VISUAL_REGRESSION_TESTING } from "@calcom/lib/constants";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
@@ -60,7 +60,7 @@ export function SideBar({ bannersHeight, user }: SideBarProps) {
   const isAdmin = session.data?.user.role === UserPermissionRole.ADMIN;
   const flags = useFlagMap();
 
-  const publicPageUrl = `${getBookerBaseUrlSync(user?.org?.slug ?? null)}/${user?.orgAwareUsername}`;
+  const publicPageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${user?.orgAwareUsername}`;
 
   const bottomNavItems = useBottomNavItems({
     publicPageUrl,

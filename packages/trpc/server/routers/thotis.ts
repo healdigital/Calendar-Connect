@@ -1,3 +1,4 @@
+import process from "node:process";
 import { AnalyticsRepository } from "@calcom/features/thotis/repositories/AnalyticsRepository";
 import { ProfileRepository } from "@calcom/features/thotis/repositories/ProfileRepository";
 import { SessionRatingRepository } from "@calcom/features/thotis/repositories/SessionRatingRepository";
@@ -6,11 +7,13 @@ import { StatisticsService } from "@calcom/features/thotis/services/StatisticsSe
 import { ThotisAdminService } from "@calcom/features/thotis/services/ThotisAdminService";
 import { ThotisAnalyticsService } from "@calcom/features/thotis/services/ThotisAnalyticsService";
 import { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBookingService";
+import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmailService";
 import { ThotisGuestService } from "@calcom/features/thotis/services/ThotisGuestService";
 import prisma from "@calcom/prisma";
 import {
   AcademicField,
   MentorIncidentType,
+  MentorModerationActionType,
   MentorStatus,
   ThotisAnalyticsEventType,
 } from "@calcom/prisma/enums";
@@ -25,10 +28,11 @@ const ratingRepository = new SessionRatingRepository();
 const analyticsRepository = new AnalyticsRepository();
 const analyticsService = new ThotisAnalyticsService(analyticsRepository);
 const profileService = new ProfileService(profileRepository);
-const bookingService = new ThotisBookingService(prisma);
+const bookingService = new ThotisBookingService(prisma, undefined, undefined, analyticsService);
 const statisticsService = new StatisticsService(profileRepository, ratingRepository, analyticsService);
 const adminService = new ThotisAdminService(profileService, profileRepository);
 const guestService = new ThotisGuestService();
+const emailService = new ThotisEmailService();
 const analyticsRouter = router({
   track: publicProcedure
     .input(
@@ -94,8 +98,10 @@ const guestRouter = router({
   requestInboxLink: publicProcedure
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ input }) => {
-      // Logic to generate and send link
-      return await guestService.requestInboxLink(input.email);
+      const { token } = await guestService.requestInboxLink(input.email);
+      const link = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/thotis/my-sessions?token=${token}`;
+      await emailService.sendMagicLink(input.email, link, "LOGIN");
+      return { success: true };
     }),
 
   getSessionsByToken: publicProcedure
@@ -116,10 +122,14 @@ const guestRouter = router({
       // Thotis bookings store the prospective student email in responses.email
       const bookings = await prisma.booking.findMany({
         where: {
-          responses: {
-            path: ["email"],
-            equals: email,
-          },
+          ...(magicLink.bookingId
+            ? { id: magicLink.bookingId }
+            : {
+                responses: {
+                  path: ["email"],
+                  equals: email,
+                },
+              }),
           eventType: {
             metadata: {
               path: ["isThotisSession"],
@@ -177,8 +187,6 @@ const guestRouter = router({
       // So passing correct email is key.
 
       const result = await bookingService.cancelSession(input.bookingId, input.reason, "student", requester);
-
-      // Invalidate token after sensitive action
       await guestService.invalidateToken(magicLink.id);
       await guestService.logAccess(
         magicLink.guestId,
@@ -204,7 +212,6 @@ const guestRouter = router({
       const requester = { id: 0, email: magicLink.guest.email };
 
       const result = await bookingService.rescheduleSession(input.bookingId, input.newDateTime, requester);
-
       await guestService.invalidateToken(magicLink.id);
       await guestService.logAccess(
         magicLink.guestId,
@@ -228,6 +235,9 @@ const guestRouter = router({
     )
     .mutation(async ({ input }) => {
       const magicLink = await guestService.verifyToken(input.token);
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
       const email = magicLink.guest.email;
 
       // Same logic as rating.submit but with verified email from token
@@ -291,7 +301,137 @@ const guestRouter = router({
         email
       );
 
+      // Track Postgres Analytics
+      await analyticsService.track({
+        eventType: ThotisAnalyticsEventType.rating_submitted,
+        userId: booking.userId,
+        profileId: studentProfileId,
+        bookingId: input.bookingId,
+        metadata: {
+          rating: input.rating,
+          hasFeedback: !!input.feedback,
+        },
+      });
+
+      await guestService.invalidateToken(magicLink.id);
       await guestService.logAccess(magicLink.guestId, "rateByToken", "RATE", String(input.bookingId), true);
+      return { success: true };
+    }),
+
+  getRatingByToken: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        bookingId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      const magicLink = await guestService.verifyToken(input.token);
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
+      const email = magicLink.guest.email;
+
+      const rating = await prisma.sessionRating.findUnique({
+        where: { bookingId: input.bookingId },
+        select: {
+          id: true,
+          rating: true,
+          feedback: true,
+          createdAt: true,
+        },
+      });
+
+      if (rating) {
+        // Verify it's their rating (via booking responses)
+        const booking = await prisma.booking.findUnique({
+          where: { id: input.bookingId },
+          select: { responses: true },
+        });
+        const responses = booking?.responses as { email?: string } | null;
+        if (responses?.email !== email) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized" });
+        }
+      }
+
+      return rating;
+    }),
+
+  reportByToken: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        bookingId: z.number(),
+        type: z.nativeEnum(MentorIncidentType),
+        description: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const magicLink = await guestService.verifyToken(input.token);
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
+      const email = magicLink.guest.email;
+
+      // Verify booking exists and matches email
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: {
+          uid: true,
+          metadata: true,
+          responses: true,
+        },
+      });
+
+      if (!booking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+      }
+
+      const responses = booking.responses as { email?: string } | null;
+      if (responses?.email !== email) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Email does not match booking" });
+      }
+
+      const metadata = booking.metadata as { studentProfileId?: string } | null;
+      if (!metadata?.studentProfileId) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Not a valid mentor session" });
+      }
+
+      await prisma.mentorQualityIncident.create({
+        data: {
+          studentProfileId: metadata.studentProfileId,
+          bookingUid: booking.uid,
+          reportedByUserId: null, // Guest report
+          type: input.type,
+          description: input.description || "",
+        },
+      });
+
+      // Track Postgres Analytics
+      await analyticsService.track({
+        eventType:
+          input.type === MentorIncidentType.NO_SHOW
+            ? ThotisAnalyticsEventType.no_show
+            : ThotisAnalyticsEventType.profile_viewed, // Fallback for other incidents for now, or use a custom property
+        userId: undefined,
+        profileId: metadata.studentProfileId,
+        bookingId: input.bookingId,
+        metadata: {
+          incidentType: input.type,
+          isGuestReport: true,
+          description: input.description,
+        },
+      });
+
+      await guestService.invalidateToken(magicLink.id);
+      await guestService.logAccess(
+        magicLink.guestId,
+        "reportByToken",
+        "REPORT",
+        String(input.bookingId),
+        true
+      );
+
       return { success: true };
     }),
 
@@ -334,8 +474,7 @@ const guestRouter = router({
 });
 
 const profileRouter = router({
-  /* Deprecated: Use admin.createAmbassador instead. This creates a profile for the logged-in admin, which is likely not intended.
-  create: authedAdminProcedure
+  create: authedProcedure
     .input(
       z.object({
         fieldOfStudy: z.string(),
@@ -347,12 +486,17 @@ const profileRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // Check if profile already exists
+      const existing = await profileService.getProfile(ctx.user.id);
+      if (existing) {
+        throw new TRPCError({ code: "CONFLICT", message: "Profile already exists" });
+      }
+
       return await profileService.createProfile({
         userId: ctx.user.id,
         ...input,
       });
     }),
-  */
 
   update: authedProcedure
     .input(
@@ -491,6 +635,89 @@ const bookingRouter = router({
         id: ctx.user.id,
         email: ctx.user.email,
       });
+    }),
+
+  submitPostSessionData: authedProcedure
+    .input(
+      z.object({
+        bookingId: z.number(),
+        content: z.string(),
+        nextSteps: z.string().optional(),
+        resources: z.array(
+          z.object({
+            type: z.string(),
+            title: z.string(),
+            url: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // 1. Verify ownership (Mentor)
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: { userId: true, status: true, endTime: true, metadata: true },
+      });
+
+      if (!booking || booking.userId !== ctx.user.id) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to edit this session" });
+      }
+
+      // 2. Verify session is finished
+      const now = new Date();
+      if (booking.endTime > now) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cannot submit post-session data for a session that hasn't ended yet",
+        });
+      }
+
+      if (booking.status !== "ACCEPTED") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Only completed sessions can have post-session data",
+        });
+      }
+
+      const metadata = booking.metadata as { completedAt?: string } | null;
+      if (!metadata?.completedAt) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Session must be marked as complete before adding a summary",
+        });
+      }
+
+      // 3. Upsert Summary
+      await prisma.thotisSessionSummary.upsert({
+        where: { bookingId: input.bookingId },
+        create: {
+          bookingId: input.bookingId,
+          content: input.content,
+          nextSteps: input.nextSteps,
+        },
+        update: {
+          content: input.content,
+          nextSteps: input.nextSteps,
+        },
+      });
+
+      // 3. Replace Resources
+      // Transaction to delete old and create new
+      await prisma.$transaction([
+        prisma.thotisSessionResource.deleteMany({
+          where: { bookingId: input.bookingId },
+        }),
+        prisma.thotisSessionResource.createMany({
+          data: input.resources.map((r) => ({
+            bookingId: input.bookingId,
+            type: r.type,
+            title: r.title,
+            url: r.url,
+          })),
+        }),
+      ]);
+
+      return { success: true };
     }),
 
   /** Get sessions for the authenticated mentor */
@@ -684,11 +911,14 @@ const ratingRouter = router({
         throw new TRPCError({ code: "CONFLICT", message: "Session has already been rated" });
       }
 
-      const metadata = booking.metadata as { studentProfileId?: string } | null;
+      const metadata = booking.metadata as { studentProfileId?: string; completedAt?: string } | null;
       const studentProfileId = metadata?.studentProfileId;
 
-      if (!studentProfileId) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid Thotis booking" });
+      if (!studentProfileId || !metadata?.completedAt) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Only completed Thotis sessions can be rated",
+        });
       }
 
       if (!booking.userId) {
@@ -706,7 +936,7 @@ const ratingRouter = router({
 
       // Track Postgres Analytics
       await analyticsService.track({
-        eventType: ThotisAnalyticsEventType.session_rated,
+        eventType: ThotisAnalyticsEventType.rating_submitted,
         userId: booking.userId,
         profileId: studentProfileId,
         bookingId: input.bookingId,
@@ -720,7 +950,25 @@ const ratingRouter = router({
     }),
 
   /** Get rating for a specific booking */
-  getByBooking: publicProcedure.input(z.object({ bookingId: z.number() })).query(async ({ input }) => {
+  getByBooking: authedProcedure.input(z.object({ bookingId: z.number() })).query(async ({ ctx, input }) => {
+    const booking = await prisma.booking.findUnique({
+      where: { id: input.bookingId },
+      select: { userId: true, responses: true },
+    });
+
+    if (!booking) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+    }
+
+    // Allow Mentor (owner) or Student (email match)
+    const isMentor = booking.userId === ctx.user.id;
+    const responses = booking.responses as { email?: string } | null;
+    const isStudent = responses?.email === ctx.user.email;
+
+    if (!isMentor && !isStudent) {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to view this rating" });
+    }
+
     const rating = await prisma.sessionRating.findUnique({
       where: { bookingId: input.bookingId },
       select: {
@@ -732,65 +980,6 @@ const ratingRouter = router({
     });
     return rating;
   }),
-
-  submitPostSessionData: authedProcedure
-    .input(
-      z.object({
-        bookingId: z.number(),
-        content: z.string(),
-        nextSteps: z.string().optional(),
-        resources: z.array(
-          z.object({
-            type: z.string(),
-            title: z.string(),
-            url: z.string(),
-          })
-        ),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      // 1. Verify ownership (Mentor)
-      const booking = await prisma.booking.findUnique({
-        where: { id: input.bookingId },
-        select: { userId: true },
-      });
-
-      if (!booking || booking.userId !== ctx.user.id) {
-        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to edit this session" });
-      }
-
-      // 2. Upsert Summary
-      await prisma.thotisSessionSummary.upsert({
-        where: { bookingId: input.bookingId },
-        create: {
-          bookingId: input.bookingId,
-          content: input.content,
-          nextSteps: input.nextSteps,
-        },
-        update: {
-          content: input.content,
-          nextSteps: input.nextSteps,
-        },
-      });
-
-      // 3. Replace Resources
-      // Transaction to delete old and create new
-      await prisma.$transaction([
-        prisma.thotisSessionResource.deleteMany({
-          where: { bookingId: input.bookingId },
-        }),
-        prisma.thotisSessionResource.createMany({
-          data: input.resources.map((r) => ({
-            bookingId: input.bookingId,
-            type: r.type,
-            title: r.title,
-            url: r.url,
-          })),
-        }),
-      ]);
-
-      return { success: true };
-    }),
 
   getPostSessionData: authedProcedure
     .input(z.object({ bookingId: z.number() }))
@@ -842,9 +1031,19 @@ const statisticsRouter = router({
       return await statisticsService.getStudentStats(input.studentId);
     }),
 
-  platformStats: authedAdminProcedure.query(async () => {
-    return await statisticsService.getPlatformStats();
-  }),
+  platformStats: authedAdminProcedure
+    .input(
+      z
+        .object({
+          period: z.enum(["daily", "weekly", "monthly"]).optional(),
+          field: z.string().optional(),
+          profileId: z.string().optional(),
+        })
+        .optional()
+    )
+    .query(async ({ input }) => {
+      return await statisticsService.getPlatformStats(input?.period, input?.field, input?.profileId);
+    }),
 });
 
 const adminRouter = router({
@@ -898,6 +1097,82 @@ const adminRouter = router({
     .mutation(async ({ input }) => {
       return await adminService.sendInitialPasswordSetup(input.userId);
     }),
+
+  listIncidents: authedAdminProcedure
+    .input(
+      z.object({
+        page: z.number().optional(),
+        pageSize: z.number().optional(),
+        studentProfileId: z.string().optional(),
+        type: z.nativeEnum(MentorIncidentType).optional(),
+        resolved: z.boolean().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await adminService.listIncidents(input);
+    }),
+
+  resolveIncident: authedAdminProcedure
+    .input(
+      z.object({
+        incidentId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await adminService.resolveIncident(input.incidentId);
+    }),
+
+  takeModerationAction: authedAdminProcedure
+    .input(
+      z.object({
+        studentProfileId: z.string(),
+        actionType: z.nativeEnum(MentorModerationActionType),
+        reason: z.string().optional(),
+        updateStatusTo: z.nativeEnum(MentorStatus).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await adminService.takeModerationAction({
+        ...input,
+        actionByUserId: ctx.user.id,
+      });
+    }),
+});
+
+const intentRouter = router({
+  upsert: authedProcedure
+    .input(
+      z.object({
+        targetFields: z.array(z.string()),
+        academicLevel: z.string(),
+        zone: z.string().optional().nullable(),
+        goals: z.array(z.string()).optional(),
+        scheduleConstraints: z.any().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await profileService.upsertOrientationIntent(ctx.user.id, input);
+    }),
+
+  get: authedProcedure.query(async ({ ctx }) => {
+    return await prisma.thotisOrientationIntent.findFirst({
+      where: { userId: ctx.user.id },
+    });
+  }),
+
+  getRecommended: publicProcedure
+    .input(
+      z.object({
+        targetFields: z.array(z.string()),
+        academicLevel: z.string(),
+        zone: z.string().optional().nullable(),
+        goals: z.array(z.string()).optional(),
+        scheduleConstraints: z.any().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await profileService.getRecommendedProfilesByIntent(input);
+    }),
 });
 
 export const thotisRouter = router({
@@ -909,4 +1184,5 @@ export const thotisRouter = router({
   guest: guestRouter,
   incident: incidentRouter,
   analytics: analyticsRouter,
+  intent: intentRouter,
 });

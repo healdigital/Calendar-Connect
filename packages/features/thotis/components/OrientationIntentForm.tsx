@@ -26,6 +26,9 @@ const fields = [
   "ECONOMICS",
   "ARTS",
   "LANGUAGES",
+  "EDUCATION",
+  "SCIENCES",
+  "OTHER",
 ] as const;
 
 interface OrientationIntentFormProps {
@@ -33,10 +36,35 @@ interface OrientationIntentFormProps {
   isLoading?: boolean;
 }
 
+const goalsOptions = [
+  "Parcoursup help",
+  "Career advice",
+  "University choice",
+  "Internship/Alternance",
+  "Student life",
+  "International mobility",
+] as const;
+
+const scheduleOptions = [
+  { id: "weekdays", label: "Weekdays" },
+  { id: "weekends", label: "Weekends" },
+  { id: "evenings", label: "Evenings" },
+] as const;
+
 export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntentFormProps) {
   const [field, setField] = useState<string>("");
   const [level, setLevel] = useState<string>("");
   const [zone, setZone] = useState<string>("");
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [selectedSchedules, setSelectedSchedules] = useState<string[]>([]);
+
+  const toggleGoal = (goal: string) => {
+    setSelectedGoals((prev) => (prev.includes(goal) ? prev.filter((g) => g !== goal) : [...prev, goal]));
+  };
+
+  const toggleSchedule = (id: string) => {
+    setSelectedSchedules((prev) => (prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +72,10 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
       targetFields: field ? [field] : [],
       academicLevel: level,
       zone: zone,
+      goals: selectedGoals,
+      scheduleConstraints: {
+        preferredTimes: selectedSchedules,
+      },
     });
   };
 
@@ -59,50 +91,89 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-        <div className="space-y-2">
-          <Label>Target Field</Label>
-          <Select onValueChange={setField} value={field}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select field..." />
-            </SelectTrigger>
-            <SelectContent>
-              {fields.map((f) => (
-                <SelectItem key={f} value={f}>
-                  {f.charAt(0) + f.slice(1).toLowerCase().replace("_", " ")}
-                </SelectItem>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <div className="space-y-2">
+            <Label>Target Field</Label>
+            <Select onValueChange={setField} value={field}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select field..." />
+              </SelectTrigger>
+              <SelectContent>
+                {fields.map((f) => (
+                  <SelectItem key={f} value={f}>
+                    {f.charAt(0) + f.slice(1).toLowerCase().replace("_", " ")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Academic Level</Label>
+            <Select onValueChange={setLevel} value={level}>
+              <SelectTrigger>
+                <SelectValue placeholder="Your level..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="TERMINALE">High School (Terminale)</SelectItem>
+                <SelectItem value="PREPA">Preparatory Class</SelectItem>
+                <SelectItem value="BACHELOR">Bachelor</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Zone / Region</Label>
+            <input
+              type="text"
+              className="flex h-9 w-full rounded-md border border-default bg-default px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="e.g. Paris, Remote"
+              value={zone}
+              onChange={(e) => setZone(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Goals</Label>
+            <div className="flex flex-wrap gap-2">
+              {goalsOptions.map((goal) => (
+                <button
+                  key={goal}
+                  type="button"
+                  onClick={() => toggleGoal(goal)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
+                    selectedGoals.includes(goal)
+                      ? "bg-blue-600 text-white border-blue-600"
+                      : "bg-gray-50 text-gray-600 border-gray-200 hover:border-blue-400"
+                  }`}>
+                  {goal}
+                </button>
               ))}
-            </SelectContent>
-          </Select>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Schedule Preference</Label>
+            <div className="flex gap-4">
+              {scheduleOptions.map((opt) => (
+                <label key={opt.id} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedSchedules.includes(opt.id)}
+                    onChange={() => toggleSchedule(opt.id)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-600">{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label>Academic Level</Label>
-          <Select onValueChange={setLevel} value={level}>
-            <SelectTrigger>
-              <SelectValue placeholder="Your level..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="TERMINALE">High School (Terminale)</SelectItem>
-              <SelectItem value="PREPA">Preparatory Class</SelectItem>
-              <SelectItem value="BACHELOR">Bachelor</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label>Zone / Region</Label>
-          {/* Using simple Input for now, could be a select later */}
-          <input
-            type="text"
-            className="flex h-9 w-full rounded-md border border-default bg-default px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder="e.g. Paris, Remote"
-            value={zone}
-            onChange={(e) => setZone(e.target.value)}
-          />
-        </div>
-
-        <Button type="submit" loading={isLoading} className="w-full" variant="default">
+        <Button type="submit" loading={isLoading} className="w-full" variant="default" size="lg">
           Find Mentors
         </Button>
       </form>

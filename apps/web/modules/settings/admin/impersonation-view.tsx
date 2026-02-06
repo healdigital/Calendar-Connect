@@ -1,6 +1,5 @@
 "use client";
 
-import process from "node:process";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { addRecentImpersonation } from "@calcom/lib/recentImpersonations";

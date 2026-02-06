@@ -1,4 +1,3 @@
-import { triggerDelegationCredentialErrorWebhook } from "@calcom/features/webhooks/lib/triggerDelegationCredentialErrorWebhook";
 import {
   CalendarAppDelegationCredentialClientIdNotAuthorizedError,
   CalendarAppDelegationCredentialError,
@@ -136,22 +135,6 @@ export class CalendarAuth {
       } else {
         // Catch all error
         delegationError = new CalendarAppDelegationCredentialError("Error authorizing delegation credential");
-      }
-
-      if (user && user.email && this.credential.appId && this.credential.delegatedToId) {
-        await triggerDelegationCredentialErrorWebhook({
-          error: delegationError,
-          credential: {
-            id: this.credential.id,
-            type: this.credential.type,
-            appId: this.credential.appId,
-          },
-          user: {
-            id: this.credential.userId ?? 0,
-            email: user.email,
-          },
-          delegationCredentialId: this.credential.delegatedToId,
-        });
       }
 
       throw delegationError;

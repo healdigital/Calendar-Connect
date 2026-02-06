@@ -1,6 +1,5 @@
 "use client";
 
-import { isCompanyEmail } from "@calcom/features/ee/organizations/lib/utils";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
@@ -121,23 +120,10 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
       icon: planIconByType.team,
       variant: "team" as const,
     },
-    {
-      id: "organization" as PlanType,
-      title: t("onboarding_plan_organization_title"),
-      badge: t("onboarding_plan_organization_badge"),
-      description: t("onboarding_plan_organization_description"),
-      icon: planIconByType.organization,
-      variant: "organization" as const,
-    },
   ];
 
-  // Only show organization plan for company emails
-  const plans = allPlans.filter((plan) => {
-    if (plan.id === "organization") {
-      return isCompanyEmail(userEmail);
-    }
-    return true;
-  });
+  // Only show personal and team plans
+  const plans = allPlans;
 
   const selectedPlanData = plans.find((plan) => plan.id === selectedPlan);
 

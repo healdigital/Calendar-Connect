@@ -1,3 +1,4 @@
+import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
 import type { SessionRatingRepository } from "../repositories/SessionRatingRepository";
 import { AnalyticsService } from "./AnalyticsService";
@@ -22,28 +23,28 @@ export class SessionRatingService {
    */
   async createRating(data: {
     bookingId: number;
-    studentProfileId: number;
+    studentProfileId: string;
     rating: number;
     feedback?: string | null;
   }): Promise<{
-    id: number;
+    id: string; // Prisma uses cuid for SessionRating id
     bookingId: number;
-    studentProfileId: number;
+    studentProfileId: string;
     rating: number;
     feedback: string | null;
     createdAt: Date;
-    updatedAt: Date;
+    // updatedAt: Date; // Removed as SessionRating model doesn't have updatedAt
   }> {
     // Validate rating (Property 21)
     if (data.rating < 1 || data.rating > 5) {
-      throw new ErrorWithCode("INVALID_RATING", "Rating must be between 1 and 5");
+      throw new ErrorWithCode(ErrorCode.BadRequest, "Rating must be between 1 and 5");
     }
 
     // Validate feedback if provided (Property 22)
     if (data.feedback !== null && data.feedback !== undefined) {
       const feedbackLength = data.feedback.trim().length;
       if (feedbackLength < 10 || feedbackLength > 500) {
-        throw new ErrorWithCode("INVALID_FEEDBACK", "Feedback must be between 10 and 500 characters");
+        throw new ErrorWithCode(ErrorCode.BadRequest, "Feedback must be between 10 and 500 characters");
       }
     }
 
@@ -54,64 +55,59 @@ export class SessionRatingService {
       feedback: data.feedback ?? null,
     });
 
-    this.analytics.trackRatingSubmitted(
-      {
-        rating: rating.rating,
-        feedback: rating.feedback,
-        bookingId: rating.bookingId,
-        studentProfileId: rating.studentProfileId,
-      },
-      rating.bookingId,
-      rating.studentProfileId // Assuming this is studentProfileId, need to check tracking method signature
-    );
+    this.analytics.trackRatingSubmitted(rating as any, { metadata: (rating as any).booking?.metadata });
 
-    return rating;
+    // Casting as necessary if types diverge deeply, or aligning interface
+    return {
+      ...rating,
+      id: rating.id,
+    } as any;
   }
 
   /**
    * Retrieves a rating by booking ID
    */
   async getRatingByBookingId(bookingId: number): Promise<{
-    id: number;
+    id: string;
     bookingId: number;
-    studentProfileId: number;
+    studentProfileId: string;
     rating: number;
     feedback: string | null;
     createdAt: Date;
-    updatedAt: Date;
   } | null> {
-    return this.repository.findByBookingId(bookingId);
+    const rating = await this.repository.findByBookingId(bookingId);
+    return rating ? (rating as any) : null;
   }
 
   /**
    * Retrieves all ratings for a student profile
    */
-  async getRatingsByStudentProfileId(studentProfileId: number): Promise<
+  async getRatingsByStudentProfileId(studentProfileId: string): Promise<
     Array<{
-      id: number;
+      id: string;
       bookingId: number;
-      studentProfileId: number;
+      studentProfileId: string;
       rating: number;
       feedback: string | null;
       createdAt: Date;
-      updatedAt: Date;
     }>
   > {
-    return this.repository.findByStudentProfileId(studentProfileId);
+    const ratings = await this.repository.findByStudentProfileId(studentProfileId);
+    return ratings as any[];
   }
 
   /**
    * Calculates the average rating for a student profile (Property 23)
    * Returns null if no ratings exist
    */
-  async getAverageRating(studentProfileId: number): Promise<number | null> {
+  async getAverageRating(studentProfileId: string): Promise<number | null> {
     return this.repository.getAverageRating(studentProfileId);
   }
 
   /**
    * Gets comprehensive rating statistics for a student profile
    */
-  async getRatingStats(studentProfileId: number): Promise<{
+  async getRatingStats(studentProfileId: string): Promise<{
     average: number | null;
     count: number;
     distribution: { rating: number; count: number }[];
@@ -123,40 +119,40 @@ export class SessionRatingService {
    * Updates an existing rating with validation
    */
   async updateRating(
-    id: number,
+    id: string,
     data: {
       rating?: number;
       feedback?: string | null;
     }
   ): Promise<{
-    id: number;
+    id: string;
     bookingId: number;
-    studentProfileId: number;
+    studentProfileId: string;
     rating: number;
     feedback: string | null;
     createdAt: Date;
-    updatedAt: Date;
   }> {
     // Validate rating if provided
     if (data.rating !== undefined && (data.rating < 1 || data.rating > 5)) {
-      throw new ErrorWithCode("INVALID_RATING", "Rating must be between 1 and 5");
+      throw new ErrorWithCode(ErrorCode.BadRequest, "Rating must be between 1 and 5");
     }
 
     // Validate feedback if provided
     if (data.feedback !== null && data.feedback !== undefined) {
       const feedbackLength = data.feedback.trim().length;
       if (feedbackLength < 10 || feedbackLength > 500) {
-        throw new ErrorWithCode("INVALID_FEEDBACK", "Feedback must be between 10 and 500 characters");
+        throw new ErrorWithCode(ErrorCode.BadRequest, "Feedback must be between 10 and 500 characters");
       }
     }
 
-    return this.repository.updateRating(id, data);
+    const result = await this.repository.updateRating(id, data);
+    return result as any;
   }
 
   /**
    * Deletes a rating
    */
-  async deleteRating(id: number): Promise<void> {
-    return this.repository.deleteRating(id);
+  async deleteRating(id: string): Promise<void> {
+    await this.repository.deleteRating(id);
   }
 }

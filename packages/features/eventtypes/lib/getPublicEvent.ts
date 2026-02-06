@@ -4,9 +4,9 @@ import { getAppFromSlug } from "@calcom/app-store/utils";
 import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
 import dayjs from "@calcom/dayjs";
 import { getBookingFieldsWithSystemFields } from "@calcom/features/bookings/lib/getBookingFields";
-import { getBookerBaseUrlSync } from "@calcom/features/ee/organizations/lib/getBookerBaseUrlSync";
-import { getSlugOrRequestedSlug } from "@calcom/features/ee/organizations/lib/orgDomains";
 import { getDefaultEvent, getUsernameList } from "@calcom/features/eventtypes/lib/defaultEvents";
+import { getBookerBaseUrlSync } from "@calcom/features/organizations/lib/getBookerBaseUrlSync";
+import { getSlugOrRequestedSlug } from "@calcom/features/organizations/lib/orgDomains";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import { getOrgOrTeamAvatar, getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
@@ -388,24 +388,25 @@ export const getPublicEvent = async (
   const usersOrTeamQuery = isTeamEvent
     ? {
         team: {
-          ...getSlugOrRequestedSlug(username),
-          parent: orgQuery,
+          slug: getSlugOrRequestedSlug(username),
+          parent: orgQuery ? { slug: orgQuery } : undefined,
         },
       }
     : {
         users: {
           some: {
+            username,
             ...(orgQuery
               ? {
                   profiles: {
                     some: {
-                      organization: orgQuery,
-                      username: username,
+                      organization: {
+                        slug: orgQuery,
+                      },
                     },
                   },
                 }
               : {
-                  username,
                   profiles: { none: {} },
                 }),
           },
@@ -414,7 +415,7 @@ export const getPublicEvent = async (
       };
 
   // In case it's not a group event, it's either a single user or a team, and we query that data.
-  let event = await prisma.eventType.findFirst({
+  let event: any = await prisma.eventType.findFirst({
     where: {
       slug: eventSlug,
       ...usersOrTeamQuery,
@@ -448,23 +449,23 @@ export const getPublicEvent = async (
   if (!event) return null;
 
   const eventMetaData = eventTypeMetaDataSchemaWithTypedApps.parse(event.metadata || {});
-  const teamMetadata = teamMetadataSchema.parse(event.team?.metadata || {});
-  const usersAsHosts = event.hosts.map((host) => host.user);
+  const teamMetadata = teamMetadataSchema.parse((event as any).team?.metadata || {});
+  const usersAsHosts = (event as any).hosts.map((host: any) => host.user);
 
   // Enrich users in a single batch call
   const enrichedUsers = await new UserRepository(prisma).enrichUsersWithTheirProfiles(usersAsHosts);
 
   // Map enriched users back to the hosts
-  const hosts = event.hosts.map((host, index) => ({
+  const hosts = (event as any).hosts.map((host: any, index: any) => ({
     ...host,
     user: enrichedUsers[index],
   }));
 
   const eventWithUserProfiles = {
     ...event,
-    owner: event.owner
+    owner: (event as any).owner
       ? await new UserRepository(prisma).enrichUserWithItsProfile({
-          user: event.owner,
+          user: (event as any).owner,
         })
       : null,
     subsetOfHosts: hosts,
@@ -472,14 +473,14 @@ export const getPublicEvent = async (
   };
 
   let users =
-    (await getUsersFromEvent(eventWithUserProfiles, prisma)) ||
+    (await getUsersFromEvent(eventWithUserProfiles as any, prisma)) ||
     (await getOwnerFromUsersArray(prisma, event.id));
 
   if (users === null) {
     throw new Error(`EventType ${event.id} has no owner or users.`);
   }
   //In case the event schedule is not defined ,use the event owner's default schedule
-  if (!eventWithUserProfiles.schedule && eventWithUserProfiles.owner?.defaultScheduleId) {
+  if (!(eventWithUserProfiles as any).schedule && eventWithUserProfiles.owner?.defaultScheduleId) {
     const eventOwnerDefaultSchedule = await prisma.schedule.findUnique({
       where: {
         id: eventWithUserProfiles.owner?.defaultScheduleId,
@@ -489,7 +490,7 @@ export const getPublicEvent = async (
         timeZone: true,
       },
     });
-    eventWithUserProfiles.schedule = eventOwnerDefaultSchedule;
+    (eventWithUserProfiles as any).schedule = eventOwnerDefaultSchedule;
   }
 
   let orgDetails: Pick<Team, "logoUrl" | "name"> | undefined | null;
@@ -506,16 +507,19 @@ export const getPublicEvent = async (
     });
   }
 
-  let showInstantEventConnectNowModal = eventWithUserProfiles.isInstantEvent;
+  let showInstantEventConnectNowModal = (eventWithUserProfiles as any).isInstantEvent;
 
-  if (eventWithUserProfiles.isInstantEvent && eventWithUserProfiles.instantMeetingSchedule?.id) {
-    const { id, timeZone } = eventWithUserProfiles.instantMeetingSchedule;
+  if (
+    (eventWithUserProfiles as any).isInstantEvent &&
+    (eventWithUserProfiles as any).instantMeetingSchedule?.id
+  ) {
+    const { id, timeZone } = (eventWithUserProfiles as any).instantMeetingSchedule;
 
     showInstantEventConnectNowModal = await isCurrentlyAvailable({
       prisma,
       instantMeetingScheduleId: id,
       availabilityTimezone: timeZone ?? "Europe/London",
-      length: eventWithUserProfiles.length,
+      length: (eventWithUserProfiles as any).length,
     });
   }
   let canViewPrivateTeamMembers = false;
@@ -528,17 +532,17 @@ export const getPublicEvent = async (
       fallbackRoles: [MembershipRole.ADMIN, MembershipRole.OWNER],
     });
 
-    if (!canViewPrivateTeamMembers && event.team?.parentId) {
+    if (!canViewPrivateTeamMembers && (event as any).team?.parentId) {
       canViewPrivateTeamMembers = await permissionCheckService.checkPermission({
         userId: currentUserId,
-        teamId: event.team.parentId,
+        teamId: (event as any).team.parentId,
         permission: "team.read",
         fallbackRoles: [MembershipRole.ADMIN, MembershipRole.OWNER],
       });
     }
   }
 
-  if (event.team?.isPrivate && !canViewPrivateTeamMembers) {
+  if ((event as any).team?.isPrivate && !canViewPrivateTeamMembers) {
     users = [];
   }
 
@@ -547,31 +551,31 @@ export const getPublicEvent = async (
     bookerLayouts: bookerLayoutsSchema.parse(eventMetaData?.bookerLayouts || null),
     description: markdownToSafeHTML(eventWithUserProfiles.description),
     metadata: eventMetaData,
-    customInputs: customInputSchema.array().parse(event.customInputs || []),
+    customInputs: customInputSchema.array().parse((event as any).customInputs || []),
     locations: privacyFilteredLocations((eventWithUserProfiles.locations || []) as LocationObject[]),
-    bookingFields: getBookingFieldsWithSystemFields(event),
+    bookingFields: getBookingFieldsWithSystemFields(event as any),
     recurringEvent: isRecurringEvent(eventWithUserProfiles.recurringEvent)
       ? parseRecurringEvent(event.recurringEvent)
       : null,
     // Sets user data on profile object for easier access
-    profile: getProfileFromEvent(eventWithUserProfiles),
+    profile: getProfileFromEvent(eventWithUserProfiles as any),
     subsetOfUsers: users,
     users: fetchAllUsers ? users : undefined,
     entity: {
       fromRedirectOfNonOrgLink,
       considerUnpublished:
         !fromRedirectOfNonOrgLink &&
-        (eventWithUserProfiles.team?.slug === null ||
-          eventWithUserProfiles.owner?.profile?.organization?.slug === null ||
-          eventWithUserProfiles.team?.parent?.slug === null),
+        ((eventWithUserProfiles as any).team?.slug === null ||
+          (eventWithUserProfiles as any).owner?.profile?.organization?.slug === null ||
+          (eventWithUserProfiles as any).team?.parent?.slug === null),
       orgSlug: org,
-      teamSlug: (eventWithUserProfiles.team?.slug || teamMetadata?.requestedSlug) ?? null,
+      teamSlug: ((eventWithUserProfiles as any).team?.slug || teamMetadata?.requestedSlug) ?? null,
       name:
-        (eventWithUserProfiles.owner?.profile?.organization?.name ||
-          eventWithUserProfiles.team?.parent?.name ||
-          eventWithUserProfiles.team?.name) ??
+        ((eventWithUserProfiles as any).owner?.profile?.organization?.name ||
+          (eventWithUserProfiles as any).team?.parent?.name ||
+          (eventWithUserProfiles as any).team?.name) ??
         null,
-      hideProfileLink: eventWithUserProfiles.team?.hideTeamProfileLink ?? false,
+      hideProfileLink: (eventWithUserProfiles as any).team?.hideTeamProfileLink ?? false,
       ...(orgDetails
         ? {
             logoUrl: getPlaceholderAvatar(orgDetails?.logoUrl, orgDetails?.name),
@@ -580,16 +584,16 @@ export const getPublicEvent = async (
         : {}),
     },
     isDynamic: false,
-    isInstantEvent: eventWithUserProfiles.isInstantEvent,
+    isInstantEvent: (eventWithUserProfiles as any).isInstantEvent,
     showInstantEventConnectNowModal,
-    instantMeetingParameters: eventWithUserProfiles.instantMeetingParameters,
-    aiPhoneCallConfig: eventWithUserProfiles.aiPhoneCallConfig,
-    assignAllTeamMembers: event.assignAllTeamMembers,
-    disableCancelling: event.disableCancelling,
-    disableRescheduling: event.disableRescheduling,
-    allowReschedulingCancelledBookings: event.allowReschedulingCancelledBookings,
-    interfaceLanguage: event.interfaceLanguage,
-  };
+    instantMeetingParameters: (eventWithUserProfiles as any).instantMeetingParameters,
+    aiPhoneCallConfig: (eventWithUserProfiles as any).aiPhoneCallConfig,
+    assignAllTeamMembers: (event as any).assignAllTeamMembers,
+    disableCancelling: (event as any).disableCancelling,
+    disableRescheduling: (event as any).disableRescheduling,
+    allowReschedulingCancelledBookings: (event as any).allowReschedulingCancelledBookings,
+    interfaceLanguage: (event as any).interfaceLanguage,
+  } as any;
 };
 
 const eventData = getPublicEventSelect(true);

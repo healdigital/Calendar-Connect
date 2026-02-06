@@ -1,7 +1,7 @@
 // import { cookies, headers } from "next/headers";
 // import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 // import { buildLegacyRequest } from "@lib/buildLegacyCtx";
-import LegacyPage from "@calcom/web/modules/ee/workflows/views/WorkflowPage";
+// import LegacyPage from "@calcom/web/modules/ee/workflows/views/WorkflowPage";
 import type { PageProps } from "app/_types";
 import { z } from "zod";
 
@@ -36,12 +36,7 @@ const Page = async ({ params }: PageProps) => {
   //   });
   // } catch (err) {}
 
-  return (
-    <LegacyPage
-      workflow={parsed.data.workflow}
-      //  workflowData={workflow} verifiedEmails={verifiedEmails} verifiedNumbers={verifiedNumbers}
-    />
-  );
+  return <div>Workflows are not available in Open Source edition.</div>;
 };
 
 export default Page;

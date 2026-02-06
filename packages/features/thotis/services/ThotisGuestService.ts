@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
+import process from "node:process";
 import prisma from "@calcom/prisma";
 import { TRPCError } from "@trpc/server";
 
@@ -8,7 +9,7 @@ export class ThotisGuestService {
   /**
    * Handles rate limiting and token generation.
    */
-  async requestInboxLink(email: string, ttlMinutes: number = this.TOKEN_TTL_MINUTES) {
+  async requestInboxLink(email: string, bookingId?: number, ttlMinutes: number = this.TOKEN_TTL_MINUTES) {
     const normalizedEmail = email.toLowerCase().trim();
 
     // 1. Find or create guest identity
@@ -58,6 +59,7 @@ export class ThotisGuestService {
       data: {
         tokenHash,
         guestId: guest.id,
+        bookingId, // Optional scope
         expiresAt,
       },
     });
@@ -65,16 +67,13 @@ export class ThotisGuestService {
     // 5. Audit Log
     await this.logAccess(guest.id, "requestInboxLink", "CREATE_TOKEN", null, true);
 
-    // 6. Return raw token (in real app, sending email via email service would happen here)
-    // For "Definition of Done", we might need to simulate email sending or return it for dev testing since
-    // user requirement implies UI needs to handle it or "UI update logic query email by session guest via token".
-    // I will return it for now so UI can grab it (dev mode) or assume it's sent.
-    // BUT the requirement Says "API créer un sous-router... pour requestInboxLink".
-    // Usually requestInboxLink returns success:true and sends email.
-    // However, without an email provider configured for Thotis, I probably need to simulate it.
-    // I'll return the token mostly for debugging/dev purposes if allowed, or just rely on console logs.
-    // Let's assume we return it for now to enable the flow in the frontend for testing.
-    return { success: true, debugToken: tokenRaw };
+    // 6. Return raw token for internal use (e.g. cron jobs)
+    // Security: This token MUST NOT be returned to the client in public TRPC routes.
+    if (process.env.NODE_ENV === "development") {
+      console.log(`[ThotisGuestService] Magic link token for ${normalizedEmail}: ${tokenRaw}`);
+    }
+
+    return { success: true, token: tokenRaw };
   }
 
   /**

@@ -1,4 +1,4 @@
-import { getOrgDomainConfig } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { getOrgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
 import {
   findMatchingHostsWithEventSegment,
   getNormalizedHosts,

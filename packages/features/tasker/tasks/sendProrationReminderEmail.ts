@@ -10,22 +10,5 @@ export const sendProrationReminderEmailPayloadSchema = z.object({
 });
 
 export async function sendProrationReminderEmail(payload: string): Promise<void> {
-  try {
-    const { prorationId, teamId } = sendProrationReminderEmailPayloadSchema.parse(JSON.parse(payload));
-
-    log.debug(`Processing sendProrationReminderEmail task for prorationId ${prorationId}, teamId ${teamId}`);
-
-    const { ProrationEmailService } = await import(
-      "@calcom/features/ee/billing/service/proration/ProrationEmailService"
-    );
-
-    const emailService = new ProrationEmailService();
-    await emailService.sendReminderEmail({ prorationId, teamId });
-  } catch (error) {
-    log.error(
-      `Failed to send proration reminder email`,
-      safeStringify({ payload, error: error instanceof Error ? error.message : String(error) })
-    );
-    throw error;
-  }
+  log.debug(`sendProrationReminderEmail disabled for Open Source edition. Payload: ${payload}`);
 }

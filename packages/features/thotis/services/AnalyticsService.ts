@@ -62,7 +62,7 @@ export class AnalyticsService {
       metadata: unknown;
     },
     reason: string,
-    cancelledBy: "mentor" | "student"
+    cancelledBy: "mentor" | "student" | "system"
   ) {
     const metadata = (booking.metadata as Record<string, unknown>) || {};
     const prospectiveStudentEmail = (metadata.prospectiveStudentEmail as string) || "unknown";

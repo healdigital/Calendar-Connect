@@ -7,8 +7,12 @@ import {
   useDataTable,
 } from "@calcom/features/data-table";
 import { useSegments } from "@calcom/features/data-table/hooks/useSegments";
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
-import type { CallDetailsAction, CallDetailsState } from "@calcom/features/ee/workflows/lib/types";
+
+// import { useOrgBranding } from "@calcom/features/organizations/context/provider";
+// import type { CallDetailsAction, CallDetailsState } from "@calcom/features/ee/workflows/lib/types";
+type CallDetailsAction = any;
+type CallDetailsState = any;
+
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { RouterOutputs } from "@calcom/trpc/react";
@@ -16,7 +20,7 @@ import { trpc } from "@calcom/trpc/react";
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
-import { CallDetailsSheet } from "@calcom/web/modules/ee/workflows/components/CallDetailsSheet";
+// import { CallDetailsSheet } from "@calcom/web/modules/ee/workflows/components/CallDetailsSheet";
 import { type ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { usePathname } from "next/navigation";
 import { useMemo, useReducer, useState } from "react";
@@ -72,8 +76,8 @@ function CallHistoryTable(props: CallHistoryProps) {
 }
 
 function CallHistoryContent({ org: _org }: CallHistoryProps) {
-  const orgBranding = useOrgBranding();
-  const _domain = orgBranding?.fullDomain ?? WEBAPP_URL;
+  // const orgBranding = useOrgBranding();
+  const _domain = WEBAPP_URL;
   const { t } = useLocale();
   const [rowSelection, setRowSelection] = useState({});
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -326,7 +330,7 @@ function CallHistoryContent({ org: _org }: CallHistoryProps) {
         }
       />
 
-      {state.callDetailsSheet.showModal && <CallDetailsSheet state={state} dispatch={dispatch} />}
+      {state.callDetailsSheet.showModal && <></>}
     </>
   );
 }

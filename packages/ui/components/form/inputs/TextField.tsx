@@ -53,7 +53,7 @@ export const inputStyles = cva(
 );
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { isFullWidth = true, size = "md", className, ...props },
+  { isFullWidth = true, size = "md", className, setValue: _setValue, ...props },
   ref
 ) {
   return (
@@ -129,6 +129,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(function
     t: __t,
     dataTestid,
     size,
+    setValue: _setValue,
     ...passThrough
   } = props;
 

@@ -4,8 +4,6 @@ import { prisma } from "@calcom/prisma";
 import type { Params } from "app/_types";
 import { _generateMetadata, getTranslate } from "app/_utils";
 import { z } from "zod";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
-import { UsersEditView } from "~/ee/users/views/users-edit-view";
 
 const userIdSchema = z.object({ id: z.coerce.number() });
 
@@ -38,16 +36,13 @@ const Page = async ({ params }: { params: Params }) => {
 
   if (!input.success) throw new Error("Invalid access");
 
-  const userRepo = new UserRepository(prisma);
-  const user = await userRepo.adminFindById(input.data.id);
-
   const t = await getTranslate();
 
   return (
     <SettingsHeader title={t("editing_user")} description={t("admin_users_edit_description")}>
-      <LicenseRequired>
-        <UsersEditView user={user} />
-      </LicenseRequired>
+      <div className="p-8 bg-white border border-dashed rounded-lg border-subtle text-center">
+        <p className="text-subtle">Editing users is currently unavailable in this version.</p>
+      </div>
     </SettingsHeader>
   );
 };

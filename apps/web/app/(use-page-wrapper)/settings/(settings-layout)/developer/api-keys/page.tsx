@@ -1,42 +1,25 @@
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-import { PrismaApiKeyRepository } from "@calcom/features/ee/api-keys/repositories/PrismaApiKeyRepository";
-import { APP_NAME } from "@calcom/lib/constants";
-import { buildLegacyRequest } from "@lib/buildLegacyCtx";
-import { _generateMetadata } from "app/_utils";
-import { unstable_cache } from "next/cache";
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
-import ApiKeysView from "~/settings/developer/api-keys-view";
+import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
+import { _generateMetadata, getTranslate } from "app/_utils";
 
 export const generateMetadata = async () =>
   await _generateMetadata(
     (t) => t("api_keys"),
-    (t) => t("create_first_api_key_description", { appName: APP_NAME }),
+    (t) => t("api_keys_description"),
     undefined,
     undefined,
     "/settings/developer/api-keys"
   );
 
-const getCachedApiKeys = unstable_cache(
-  async (userId: number) => {
-    const apiKeyRepository = await PrismaApiKeyRepository.withGlobalPrisma();
-    return await apiKeyRepository.findApiKeysFromUserId({ userId });
-  },
-  undefined,
-  { revalidate: 3600, tags: ["viewer.apiKeys.list"] } // Cache for 1 hour
-);
-
 const Page = async () => {
-  const session = await getServerSession({ req: buildLegacyRequest(await headers(), await cookies()) });
+  const t = await getTranslate();
 
-  if (!session) {
-    redirect("/auth/login?callbackUrl=/settings/developer/api-keys");
-  }
-
-  const userId = session.user.id;
-  const apiKeys = await getCachedApiKeys(userId);
-
-  return <ApiKeysView apiKeys={apiKeys} />;
+  return (
+    <SettingsHeader title={t("api_keys")} description={t("api_keys_description")}>
+      <div className="p-8 bg-white border border-dashed rounded-lg border-subtle text-center">
+        <p className="text-subtle">API keys are currently unavailable in this version.</p>
+      </div>
+    </SettingsHeader>
+  );
 };
 
 export default Page;

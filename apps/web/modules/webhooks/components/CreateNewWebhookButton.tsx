@@ -2,8 +2,8 @@
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { MembershipRole } from "@calcom/prisma/enums";
+import { Button } from "@calcom/ui/components/button";
 import { useRouter } from "next/navigation";
-import { CreateButtonWithTeamsList } from "~/ee/teams/components/createButton/CreateButtonWithTeamsList";
 
 export const CreateNewWebhookButton = () => {
   const router = useRouter();
@@ -17,17 +17,9 @@ export const CreateNewWebhookButton = () => {
   };
 
   return (
-    <CreateButtonWithTeamsList
-      color="secondary"
-      subtitle={t("create_for").toUpperCase()}
-      createFunction={createFunction}
-      data-testid="new_webhook"
-      includeOrg={true}
-      withPermission={{
-        permission: "webhook.create",
-        fallbackRoles: [MembershipRole.ADMIN, MembershipRole.OWNER],
-      }}
-    />
+    <Button color="secondary" onClick={() => createFunction()} data-testid="new_webhook">
+      {t("new_webhook")}
+    </Button>
   );
 };
 

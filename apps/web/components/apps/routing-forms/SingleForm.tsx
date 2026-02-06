@@ -13,7 +13,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { useFormContext } from "react-hook-form";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 import type { NewFormDialogState } from "./FormActions";
 import { FormActionsProvider } from "./FormActions";
 import { Header } from "./Header";
@@ -261,9 +260,5 @@ export default function SingleFormWrapper({ form: _form, ...props }: SingleFormC
   if (!form) {
     throw new Error(t("something_went_wrong"));
   }
-  return (
-    <LicenseRequired>
-      <SingleForm form={form} {...props} />
-    </LicenseRequired>
-  );
+  return <SingleForm form={form} {...props} />;
 }

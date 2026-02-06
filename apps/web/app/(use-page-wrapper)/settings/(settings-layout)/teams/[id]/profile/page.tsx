@@ -1,5 +1,5 @@
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
-import LegacyPage from "@calcom/web/modules/ee/teams/views/team-profile-view";
+// import LegacyPage from "@calcom/web/modules/ee/teams/views/team-profile-view";
 import { _generateMetadata, getTranslate } from "app/_utils";
 
 export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }) =>
@@ -19,7 +19,7 @@ const Page = async () => {
       title={t("profile")}
       description={t("profile_team_description")}
       borderInShellHeader={true}>
-      <LegacyPage />
+      <div>Team Profile is not available in Open Source.</div>
     </SettingsHeader>
   );
 };

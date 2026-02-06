@@ -3,12 +3,6 @@ import getAllUserBookings from "@calcom/features/bookings/lib/getAllUserBookings
 import { getBookingFieldsWithSystemFields } from "@calcom/features/bookings/lib/getBookingFields";
 import getBookingInfo from "@calcom/features/bookings/lib/getBookingInfo";
 import handleCancelBooking from "@calcom/features/bookings/lib/handleCancelBooking";
-import { getClientSecretFromPayment } from "@calcom/features/ee/payments/pages/getClientSecretFromPayment";
-import { getTeamMemberEmailForResponseOrContactUsingUrlQuery } from "@calcom/features/ee/teams/lib/getTeamMemberEmailFromCrm";
-import {
-  sendVerificationCode,
-  verifyPhoneNumber,
-} from "@calcom/features/ee/workflows/lib/reminders/verifyPhoneNumber";
 import { handleCreatePhoneCall } from "@calcom/features/handleCreatePhoneCall";
 import handleMarkNoShow from "@calcom/features/handleMarkNoShow";
 import { getRoutedUrl } from "@calcom/features/routing-forms/lib/getRoutedUrl";
@@ -72,8 +66,6 @@ export { symmetricEncrypt, symmetricDecrypt };
 
 export { getTranslation };
 
-export { roundRobinManualReassignment } from "@calcom/features/ee/round-robin/roundRobinManualReassignment";
-export { roundRobinReassignment } from "@calcom/features/ee/round-robin/roundRobinReassignment";
 export { validateCustomEventName } from "@calcom/features/eventtypes/lib/eventNaming";
 
 export type TeamQuery = Prisma.TeamGetPayload<{
@@ -94,7 +86,9 @@ export type TeamQuery = Prisma.TeamGetPayload<{
 
 export { credentialForCalendarServiceSelect };
 export { paymentDataSelect };
-export { getClientSecretFromPayment };
+export const getClientSecretFromPayment = () => {
+  throw new Error("EE feature 'getClientSecretFromPayment' removed for AGPL compliance");
+};
 
 export type { GroupedAttribute } from "@calcom/trpc/server/routers/viewer/attributes/getByUserId.handler";
 export { groupMembershipAttributes } from "@calcom/trpc/server/routers/viewer/attributes/getByUserId.handler";
@@ -103,7 +97,11 @@ export { getBookingFieldsWithSystemFields };
 
 export { getRoutedUrl };
 
-export { getTeamMemberEmailForResponseOrContactUsingUrlQuery };
+export const getTeamMemberEmailForResponseOrContactUsingUrlQuery = () => {
+  throw new Error(
+    "EE feature 'getTeamMemberEmailForResponseOrContactUsingUrlQuery' removed for AGPL compliance"
+  );
+};
 
 export { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
 export { getCalendarLinks } from "@calcom/features/bookings/lib/getCalendarLinks";
@@ -113,23 +111,49 @@ export { encryptServiceAccountKey } from "@calcom/lib/server/serviceAccountKey";
 export { createHandler as createApiKeyHandler } from "@calcom/trpc/server/routers/viewer/apiKeys/create.handler";
 export type { TFindTeamMembersMatchingAttributeLogicInputSchema } from "@calcom/trpc/server/routers/viewer/attributes/findTeamMembersMatchingAttributeLogic.schema";
 
-export { verifyPhoneNumber, sendVerificationCode };
+export const verifyPhoneNumber = () => {
+  throw new Error("EE feature 'verifyPhoneNumber' removed for AGPL compliance");
+};
+export const sendVerificationCode = () => {
+  throw new Error("EE feature 'sendVerificationCode' removed for AGPL compliance");
+};
 
 export { verifyCodeUnAuthenticated } from "@calcom/features/auth/lib/verifyCodeUnAuthenticated";
 export { sendEmailVerificationByCode } from "@calcom/features/auth/lib/verifyEmail";
 export { BookingAccessService } from "@calcom/features/bookings/services/BookingAccessService";
-export { StripeBillingService } from "@calcom/features/ee/billing/service/billingProvider/StripeBillingService";
-export { TeamService } from "@calcom/features/ee/teams/services/teamService";
+export class StripeBillingService {
+  constructor() {
+    throw new Error("EE service 'StripeBillingService' removed for AGPL compliance");
+  }
+}
+export class TeamService {
+  constructor() {
+    throw new Error("EE service 'TeamService' removed for AGPL compliance");
+  }
+  static async fetchTeamOrThrow() {
+    throw new Error("EE service 'TeamService.fetchTeamOrThrow' removed for AGPL compliance");
+  }
+}
+export class PermissionCheckService {
+  constructor() {
+    throw new Error("EE service 'PermissionCheckService' removed for AGPL compliance");
+  }
+  async checkPermission() {
+    return false;
+  }
+}
 export { OAuthService } from "@calcom/features/oauth/services/OAuthService";
 export { generateSecret } from "@calcom/features/oauth/utils/generateSecret";
 export { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
 export type { Tasker } from "@calcom/features/tasker/tasker";
 export { getTasker } from "@calcom/features/tasker/tasker-factory";
+export { AnalyticsRepository } from "@calcom/features/thotis/repositories/AnalyticsRepository";
 export { ProfileRepository as ThotisProfileRepository } from "@calcom/features/thotis/repositories/ProfileRepository";
 export { SessionRatingRepository } from "@calcom/features/thotis/repositories/SessionRatingRepository";
 export { ProfileService } from "@calcom/features/thotis/services/ProfileService";
 export { SessionRatingService } from "@calcom/features/thotis/services/SessionRatingService";
 export { StatisticsService } from "@calcom/features/thotis/services/StatisticsService";
+export { ThotisAnalyticsService } from "@calcom/features/thotis/services/ThotisAnalyticsService";
 export { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBookingService";
 export { verifyCodeChallenge } from "@calcom/lib/pkce";
 export { validateUrlForSSRFSync } from "@calcom/lib/ssrfProtection";

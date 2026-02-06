@@ -11,7 +11,8 @@ export type AddressInputProps = {
   className?: string;
 };
 
-function AddressInput({ value, onChange, ...rest }: AddressInputProps) {
+function AddressInput({ value, onChange, ...rest }: AddressInputProps & { setValue?: never }) {
+  const { setValue: _setValue, ...passThrough } = rest as any;
   return (
     <div className="relative flex items-center">
       <Icon
@@ -20,13 +21,13 @@ function AddressInput({ value, onChange, ...rest }: AddressInputProps) {
         style={{ top: "44%" }}
       />
       <Input
-        {...rest}
+        {...passThrough}
         autoComplete="address-line1"
         value={value}
         onChange={(e) => {
           onChange(e.target.value);
         }}
-        className={cx("pl-10", rest?.className)}
+        className={cx("pl-10", passThrough?.className)}
       />
     </div>
   );

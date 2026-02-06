@@ -1,11 +1,3 @@
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
-import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
-import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
-import logger from "@calcom/lib/logger";
-import { prisma } from "@calcom/prisma";
-
-const log = logger.getSubLogger({ name: "hideBranding" });
-const teamRepository = new TeamRepository(prisma);
 const userRepository = new UserRepository(prisma);
 type Team = {
   hideBranding: boolean | null;
@@ -47,6 +39,7 @@ function resolveHideBranding(options: {
 /**
  * Get hideBranding value for a user or team by their IDs
  */
+// Open Source stub: hideBranding is an Enterprise feature
 export async function getHideBranding({
   userId,
   teamId,
@@ -54,28 +47,6 @@ export async function getHideBranding({
   userId?: number;
   teamId?: number;
 }): Promise<boolean> {
-  if (teamId) {
-    // Get team data with parent organization
-    const team = await teamRepository.findTeamWithParentHideBranding({ teamId });
-
-    if (!team) return false;
-
-    return resolveHideBranding({
-      entityHideBranding: team.hideBranding,
-      organizationHideBranding: team.parent?.hideBranding ?? null,
-    });
-  } else if (userId) {
-    // Get user data with profile and organization
-    const user = await userRepository.findUserWithHideBranding({ userId });
-
-    if (!user) return false;
-
-    return resolveHideBranding({
-      entityHideBranding: user.hideBranding,
-      organizationHideBranding: user.profiles?.[0]?.organization?.hideBranding,
-    });
-  }
-
   return false;
 }
 

@@ -150,7 +150,7 @@ function _prepareAssignmentData({
         }),
       };
 
-      if (currentAttributeOptionValue instanceof Array) {
+      if (Array.isArray(currentAttributeOptionValue)) {
         attributes[attribute.id].attributeOption = [...currentAttributeOptionValue, newAttributeOptionValue];
       } else if (currentAttributeOptionValue) {
         attributes[attribute.id].attributeOption = [

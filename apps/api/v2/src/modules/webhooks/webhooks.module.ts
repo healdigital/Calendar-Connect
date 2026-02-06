@@ -10,8 +10,8 @@ import { TeamEventTypeWebhooksService } from "./services/team-event-type-webhook
 import { UserWebhooksService } from "./services/user-webhooks.service";
 import { WebhooksService } from "./services/webhooks.service";
 import { WebhooksRepository } from "./webhooks.repository";
-import { EventTypesModule_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.module";
 import { EventTypeWebhooksController } from "@/modules/event-types/controllers/event-types-webhooks.controller";
+import { EventTypesModule } from "@/modules/event-types/event-types.module";
 import { OAuthClientWebhooksController } from "@/modules/oauth-clients/controllers/oauth-client-webhooks/oauth-client-webhooks.controller";
 import { OAuthClientModule } from "@/modules/oauth-clients/oauth-client.module";
 import { RedisModule } from "@/modules/redis/redis.module";
@@ -23,7 +23,7 @@ import { TeamsEventTypesRepository } from "@/modules/teams/event-types/teams-eve
     PrismaModule,
     RedisModule,
     UsersModule,
-    EventTypesModule_2024_06_14,
+    EventTypesModule,
     OAuthClientModule,
     OrganizationsModule,
     MembershipsModule,

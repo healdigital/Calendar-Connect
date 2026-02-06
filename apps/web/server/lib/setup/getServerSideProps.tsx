@@ -1,4 +1,3 @@
-import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { LicenseKeySingleton } from "@calcom/features/ee/common/server/LicenseKeyService";
 import { getDeploymentKey } from "@calcom/features/ee/deployment/lib/getDeploymentKey";

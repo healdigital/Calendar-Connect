@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog } from "@calcom/features/components/controlled-dialog";
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
+// import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { APP_NAME, WEBSITE_URL } from "@calcom/lib/constants";
 import { extractHostTimezone, filterActiveLinks } from "@calcom/lib/hashedLinksUtils";
 import { useCopy } from "@calcom/lib/hooks/useCopy";
@@ -39,7 +39,7 @@ import { HorizontalTabs } from "@calcom/ui/components/navigation";
 import { Skeleton } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-import { CreateButton } from "@calcom/web/modules/ee/teams/components/createButton/CreateButton";
+// import { CreateButton } from "@calcom/web/modules/ee/teams/components/createButton/CreateButton";
 import {
   EventTypeEmbedButton,
   EventTypeEmbedDialog,

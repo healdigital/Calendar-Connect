@@ -1,4 +1,8 @@
-import { DueInvoiceService } from "@calcom/features/ee/billing/service/dueInvoice/DueInvoiceService";
+// import { DueInvoiceService } from "@calcom/features/ee/billing/service/dueInvoice/DueInvoiceService";
+const DueInvoiceService = class {
+  getBannerDataForUser = async () => null;
+};
+
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
 
 type Props = {
@@ -9,5 +13,5 @@ type Props = {
 
 export const getDueInvoiceBannerDataHandler = async ({ ctx }: Props) => {
   const dueInvoiceService = new DueInvoiceService();
-  return await dueInvoiceService.getBannerDataForUser(ctx.user.id);
+  return null; // await dueInvoiceService.getBannerDataForUser(ctx.user.id);
 };

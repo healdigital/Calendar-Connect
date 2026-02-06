@@ -33,7 +33,7 @@ vi.mock("react-sticky-box", () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="sticky-box">{children}</div>,
 }));
 
-vi.mock("@calcom/features/ee/organizations/context/provider", () => ({
+vi.mock("@calcom/features/organizations/context/provider", () => ({
   useOrgBranding() {
     return {};
   },

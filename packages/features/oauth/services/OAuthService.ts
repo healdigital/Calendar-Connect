@@ -1,9 +1,9 @@
 import { randomBytes } from "node:crypto";
 import process from "node:process";
-import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import type { AccessCodeRepository } from "@calcom/features/oauth/repositories/AccessCodeRepository";
 import type { OAuthClientRepository } from "@calcom/features/oauth/repositories/OAuthClientRepository";
 import { generateSecret } from "@calcom/features/oauth/utils/generateSecret";
+import type { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
 import { verifyCodeChallenge } from "@calcom/lib/pkce";

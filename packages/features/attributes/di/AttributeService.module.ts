@@ -3,9 +3,9 @@ import { AttributeService } from "../services/AttributeService";
 import { moduleLoader as attributeToUserRepositoryModuleLoader } from "./AttributeToUserRepository.module";
 import { ATTRIBUTE_DI_TOKENS } from "./tokens";
 
-export const attributeServiceModule = createModule();
 const token = ATTRIBUTE_DI_TOKENS.ATTRIBUTE_SERVICE;
 const moduleToken = ATTRIBUTE_DI_TOKENS.ATTRIBUTE_SERVICE_MODULE;
+const attributeServiceModule = createModule();
 const loadModule = bindModuleToClassOnToken({
   module: attributeServiceModule,
   moduleToken,
@@ -16,9 +16,10 @@ const loadModule = bindModuleToClassOnToken({
   },
 });
 
-export const moduleLoader: ModuleLoader = {
+const moduleLoader: ModuleLoader = {
   token,
   loadModule,
 };
 
+export { attributeServiceModule, moduleLoader };
 export type { AttributeService };

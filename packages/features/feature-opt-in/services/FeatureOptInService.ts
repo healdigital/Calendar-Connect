@@ -1,10 +1,10 @@
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import type { FeatureId, FeatureState } from "@calcom/features/flags/config";
 import type { IFeatureRepository } from "@calcom/features/flags/repositories/PrismaFeatureRepository";
 import type { ITeamFeatureRepository } from "@calcom/features/flags/repositories/PrismaTeamFeatureRepository";
 import type { IUserFeatureRepository } from "@calcom/features/flags/repositories/PrismaUserFeatureRepository";
 import { MembershipRepository } from "@calcom/features/membership/repositories/MembershipRepository";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
+import { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
 import type { TeamFeaturesDto } from "@calcom/lib/dto/TeamFeaturesDto";
 import type { UserFeaturesDto } from "@calcom/lib/dto/UserFeaturesDto";
 import { ErrorCode } from "@calcom/lib/errorCodes";

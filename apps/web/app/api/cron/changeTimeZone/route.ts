@@ -1,4 +1,3 @@
-import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { ScheduleRepository } from "@calcom/features/schedules/repositories/ScheduleRepository";
 import prisma from "@calcom/prisma";

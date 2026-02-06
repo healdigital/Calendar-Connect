@@ -1,9 +1,16 @@
+import { RatingForm } from "@calcom/features/thotis/components/RatingForm";
 import prisma from "@calcom/prisma";
 import { notFound } from "next/navigation";
-import { FeedbackForm } from "../../../feedback/[uid]/FeedbackForm";
 
-export default async function ThotisFeedbackPage({ params }: { params: { uid: string } }) {
+export default async function ThotisFeedbackPage({
+  params,
+  searchParams,
+}: {
+  params: { uid: string };
+  searchParams: { token?: string };
+}) {
   const { uid } = params;
+  const { token } = searchParams;
 
   const booking = await prisma.booking.findUnique({
     where: { uid },
@@ -11,14 +18,9 @@ export default async function ThotisFeedbackPage({ params }: { params: { uid: st
       id: true,
       status: true,
       startTime: true,
+      endTime: true,
       metadata: true,
       responses: true,
-      sessionRating: {
-        select: {
-          rating: true,
-          feedback: true,
-        },
-      },
       eventType: {
         select: {
           title: true,
@@ -37,17 +39,7 @@ export default async function ThotisFeedbackPage({ params }: { params: { uid: st
     return notFound();
   }
 
-  // If already rated, show thank you / summary
-  if (booking.sessionRating) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4">
-        <h1 className="text-2xl font-bold text-gray-900">Merci pour votre retour !</h1>
-        <p className="mt-2 text-gray-600">
-          Nous avons bien reçu votre évaluation pour votre session de mentorat Thotis.
-        </p>
-      </div>
-    );
-  }
+  // No longer checking sessionRating here, RatingForm handles it
 
   const responses = booking.responses as { email?: string; name?: string } | null;
   const studentEmail = responses?.email;
@@ -59,7 +51,11 @@ export default async function ThotisFeedbackPage({ params }: { params: { uid: st
         <p className="mb-6 text-center text-sm text-gray-600">
           Comment s'est passée votre session de mentorat avec le mentor Thotis ?
         </p>
-        <FeedbackForm bookingId={booking.id} email={studentEmail || ""} />
+        <RatingForm
+          bookingId={booking.id}
+          email={(booking.responses as { email?: string })?.email || ""}
+          token={token}
+        />
       </div>
     </div>
   );

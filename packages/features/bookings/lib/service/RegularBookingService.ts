@@ -17,7 +17,8 @@ import {
   eventTypeMetaDataSchemaWithTypedApps,
 } from "@calcom/app-store/zod-utils";
 import dayjs from "@calcom/dayjs";
-import { scheduleMandatoryReminder } from "@calcom/ee/workflows/lib/reminders/scheduleMandatoryReminder";
+// import { scheduleMandatoryReminder } from "@calcom/ee/workflows/lib/reminders/scheduleMandatoryReminder";
+
 import getICalUID from "@calcom/emails/lib/getICalUID";
 import { verifyCodeUnAuthenticated } from "@calcom/features/auth/lib/verifyCodeUnAuthenticated";
 import type { ActionSource } from "@calcom/features/booking-audit/lib/types/actionSource";
@@ -38,6 +39,7 @@ import type { BookingRescheduledPayload } from "@calcom/features/bookings/lib/on
 import type { BookingEmailAndSmsTasker } from "@calcom/features/bookings/lib/tasker/BookingEmailAndSmsTasker";
 import { CalendarEventBuilder } from "@calcom/features/CalendarEventBuilder";
 import { getSpamCheckService } from "@calcom/features/di/watchlist/containers/SpamCheckService.container";
+/*
 import { CreditService } from "@calcom/features/ee/billing/credit-service";
 import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
 import AssignmentReasonRecorder from "@calcom/features/ee/round-robin/assignmentReason/AssignmentReasonRecorder";
@@ -45,6 +47,7 @@ import { BookingLocationService } from "@calcom/features/ee/round-robin/lib/book
 import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
 import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
 import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
+*/
 import { getUsernameList } from "@calcom/features/eventtypes/lib/defaultEvents";
 import { getEventName, updateHostInEventName } from "@calcom/features/eventtypes/lib/eventNaming";
 import type { FeaturesRepository } from "@calcom/features/flags/features.repository";
@@ -1307,6 +1310,7 @@ async function handler(
   // Track credential ID for per-host locations
   let perHostCredentialId: number | undefined;
 
+  /*
   // Handle per-host custom locations for round-robin events
   if (
     eventType.enablePerHostLocations &&
@@ -1315,25 +1319,10 @@ async function handler(
   ) {
     const organizerHost = eventType.hosts.find((host) => host.user.id === organizerUser.id);
     if (organizerHost?.location) {
-      const result = await BookingLocationService.getPerHostLocation({
-        hostLocation: organizerHost.location,
-        allCredentials,
-        eventTypeId: eventType.id,
-        userId: organizerUser.id,
-        prismaClient: deps.prismaClient,
-      });
-
-      locationBodyString = result.locationBodyString;
-      organizerOrFirstDynamicGroupMemberDefaultLocationUrl = result.organizerDefaultLocationUrl;
-      perHostCredentialId = result.perHostCredentialId;
-
-      tracingLogger.info("Using per-host location", {
-        userId: organizerUser.id,
-        locationType: result.locationBodyString,
-        credentialId: result.perHostCredentialId,
-      });
+        // EE Logic removed
     }
   }
+  */
 
   // If location passed is empty , use default location of event
   // If location of event is not set , use host default
@@ -1479,9 +1468,10 @@ async function handler(
   });
 
   const organizerOrganizationId = organizerOrganizationProfile?.organizationId;
-  const bookerUrl = eventType.team
-    ? await getBookerBaseUrl(eventType.team.parentId)
-    : await getBookerBaseUrl(organizerOrganizationId ?? null);
+  const bookerUrl = "";
+  // eventType.team
+  // ? await getBookerBaseUrl(eventType.team.parentId)
+  // : await getBookerBaseUrl(organizerOrganizationId ?? null);
 
   const destinationCalendar = eventType.destinationCalendar
     ? [eventType.destinationCalendar]
@@ -1656,13 +1646,13 @@ async function handler(
     oAuthClientId: platformClientId,
   };
 
-  const workflows = await getAllWorkflowsFromEventType(
+  const workflows = []; /* await getAllWorkflowsFromEventType(
     {
       ...eventType,
       metadata: eventTypeMetaDataSchemaWithTypedApps.parse(eventType.metadata),
     },
     organizerUser.id
-  );
+  ); */
 
   const spamCheckResult = await spamCheckService.waitForCheck();
 
@@ -2084,7 +2074,7 @@ async function handler(
   if (!eventType.seatsPerTimeSlot && originalRescheduledBooking?.uid) {
     tracingLogger.silly("Rescheduling booking", originalRescheduledBooking.uid);
     // cancel workflow reminders from previous rescheduled booking
-    await WorkflowRepository.deleteAllWorkflowReminders(originalRescheduledBooking.workflowReminders);
+    // await WorkflowRepository.deleteAllWorkflowReminders(originalRescheduledBooking.workflowReminders);
 
     evt = addVideoCallDataToEvent(originalRescheduledBooking.references, evt);
     evt.rescheduledBy = reqBody.rescheduledBy;
@@ -2590,6 +2580,7 @@ async function handler(
       };
 
       if (isNormalBookingOrFirstRecurringSlot) {
+        /*
         const creditService = new CreditService();
 
         await WorkflowService.scheduleWorkflowsFilteredByTriggerEvent({
@@ -2602,6 +2593,7 @@ async function handler(
           triggers: [WorkflowTriggerEvents.BOOKING_PAYMENT_INITIATED],
           creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
         });
+        */
       }
     } catch (error) {
       tracingLogger.error(
@@ -2767,7 +2759,7 @@ async function handler(
   };
 
   if (!eventType.metadata?.disableStandardEmails?.all?.attendee) {
-    await scheduleMandatoryReminder({
+    /* await scheduleMandatoryReminder({
       evt: evtWithMetadata,
       workflows,
       requiresConfirmation: !isConfirmedByDefault,
@@ -2776,10 +2768,11 @@ async function handler(
       isPlatformNoEmail: noEmail && Boolean(platformClientId),
       isDryRun,
       traceContext,
-    });
+    }); */
   }
 
   try {
+    /*
     const creditService = new CreditService();
 
     await WorkflowService.scheduleWorkflowsForNewBooking({
@@ -2794,6 +2787,7 @@ async function handler(
       isRescheduleEvent: !!rescheduleUid,
       creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
     });
+    */
   } catch (error) {
     tracingLogger.error("Error while scheduling workflow reminders", JSON.stringify({ error }));
   }

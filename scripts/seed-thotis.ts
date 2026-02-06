@@ -224,5 +224,20 @@ export async function seedThotis() {
   });
   console.log(`👤 Created Student: ${studentEmail}`);
 
+  // 5. Create a default Admin User for testing
+  const adminEmail = "admin@thotis.com";
+  await createUserAndEventType({
+    user: {
+      email: adminEmail,
+      username: "thotis-admin",
+      name: "Admin Thotis",
+      password: "adminpassword",
+      completedOnboarding: true,
+      theme: "dark",
+      role: "ADMIN",
+    },
+  });
+  console.log(`👤 Created Admin: ${adminEmail} (password: adminpassword)`);
+
   console.log("✅ Thotis seeding completed.");
 }

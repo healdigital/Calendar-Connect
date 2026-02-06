@@ -17,7 +17,6 @@ import {
 import type { ActionType } from "@calcom/ui/components/table";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-import { MeetingSessionDetailsDialog } from "@calcom/web/modules/ee/video/components/MeetingSessionDetailsDialog";
 import { AddGuestsDialog } from "@components/dialog/AddGuestsDialog";
 import { CancelBookingDialog } from "@components/dialog/CancelBookingDialog";
 import { ChargeCardDialog } from "@components/dialog/ChargeCardDialog";
@@ -30,7 +29,6 @@ import { RescheduleDialog } from "@components/dialog/RescheduleDialog";
 import { WrongAssignmentDialog } from "@components/dialog/WrongAssignmentDialog";
 import { useState } from "react";
 import type { z } from "zod";
-import ViewRecordingsDialog from "~/ee/video/components/ViewRecordingsDialog";
 import { useBookingConfirmation } from "../hooks/useBookingConfirmation";
 import { RoutingTraceSheet } from "../RoutingTraceSheet";
 import type { BookingItemProps } from "../types";
@@ -479,22 +477,8 @@ export function BookingActionsDropdown({
           paymentCurrency={booking.payment[0].currency}
         />
       )}
-      {isCalVideoLocation && (
-        <ViewRecordingsDialog
-          booking={booking}
-          isOpenDialog={viewRecordingsDialogIsOpen}
-          setIsOpenDialog={setViewRecordingsDialogIsOpen}
-          timeFormat={booking.loggedInUser.userTimeFormat ?? null}
-        />
-      )}
-      {isCalVideoLocation && meetingSessionDetailsDialogIsOpen && (
-        <MeetingSessionDetailsDialog
-          booking={booking}
-          isOpenDialog={meetingSessionDetailsDialogIsOpen}
-          setIsOpenDialog={setMeetingSessionDetailsDialogIsOpen}
-          timeFormat={booking.loggedInUser.userTimeFormat ?? null}
-        />
-      )}
+      {isCalVideoLocation && <></>}
+      {isCalVideoLocation && meetingSessionDetailsDialogIsOpen && <></>}
       {isNoShowDialogOpen && (
         <NoShowAttendeesDialog
           bookingUid={booking.uid}

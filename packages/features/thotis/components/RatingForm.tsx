@@ -8,9 +8,10 @@ interface RatingFormProps {
   bookingId: number;
   email: string;
   onRatingSubmitted?: () => void;
+  token?: string;
 }
 
-export const RatingForm = ({ bookingId, email, onRatingSubmitted }: RatingFormProps) => {
+export const RatingForm = ({ bookingId, email, onRatingSubmitted, token }: RatingFormProps) => {
   const { t } = useLocale();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
@@ -19,14 +20,35 @@ export const RatingForm = ({ bookingId, email, onRatingSubmitted }: RatingFormPr
   const [error, setError] = useState<string | null>(null);
 
   // Check if already rated
-  const { data: existingRating } = trpc.thotis.rating.getByBooking.useQuery(
-    { bookingId },
-    { enabled: !!bookingId }
+  const guestRatingQuery = trpc.thotis.guest.getRatingByToken.useQuery(
+    { bookingId, token: token! },
+    { enabled: !!bookingId && !!token }
   );
+
+  const authRatingQuery = trpc.thotis.rating.getByBooking.useQuery(
+    { bookingId },
+    { enabled: !!bookingId && !token }
+  );
+
+  const existingRating = token ? guestRatingQuery.data : authRatingQuery.data;
+  const isExistingRatingLoading = token ? guestRatingQuery.isLoading : authRatingQuery.isLoading;
+
+  const utils = trpc.useUtils();
 
   const submitMutation = trpc.thotis.rating.submit.useMutation({
     onSuccess: () => {
       setSubmitted(true);
+      onRatingSubmitted?.();
+    },
+    onError: (err) => {
+      setError(err.message);
+    },
+  });
+
+  const guestSubmitMutation = trpc.thotis.guest.rateByToken.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      utils.thotis.guest.getSessionsByToken.invalidate();
       onRatingSubmitted?.();
     },
     onError: (err) => {
@@ -41,13 +63,31 @@ export const RatingForm = ({ bookingId, email, onRatingSubmitted }: RatingFormPr
     }
 
     setError(null);
-    submitMutation.mutate({
-      bookingId,
-      rating,
-      feedback: feedback.trim() || undefined,
-      email,
-    });
-  }, [bookingId, rating, feedback, email, submitMutation, t]);
+    if (token) {
+      guestSubmitMutation.mutate({
+        token,
+        bookingId,
+        rating,
+        feedback: feedback.trim() || undefined,
+      });
+    } else {
+      submitMutation.mutate({
+        bookingId,
+        rating,
+        feedback: feedback.trim() || undefined,
+        email,
+      });
+    }
+  }, [bookingId, rating, feedback, email, submitMutation, guestSubmitMutation, token, t]);
+
+  // If loading rating status
+  if (isExistingRatingLoading) {
+    return (
+      <div className="bg-default border-subtle flex h-24 items-center justify-center rounded-lg border p-4">
+        <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />
+      </div>
+    );
+  }
 
   // If already rated, show the existing rating
   if (existingRating) {
@@ -141,8 +181,8 @@ export const RatingForm = ({ bookingId, email, onRatingSubmitted }: RatingFormPr
         color="primary"
         size="sm"
         onClick={handleSubmit}
-        disabled={rating === 0 || submitMutation.isPending}
-        loading={submitMutation.isPending}
+        disabled={rating === 0 || submitMutation.isPending || guestSubmitMutation.isPending}
+        loading={submitMutation.isPending || guestSubmitMutation.isPending}
         className="w-full justify-center">
         {t("thotis_submit_rating")}
       </Button>

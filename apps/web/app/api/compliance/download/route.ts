@@ -1,4 +1,3 @@
-import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import B2 from "backblaze-b2";

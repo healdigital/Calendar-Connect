@@ -77,12 +77,10 @@ export function PostSessionForm({ bookingId, open, onOpenChange }: PostSessionFo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold">{t("thotis_post_session_summary")}</h2>
-          <p className="text-sm text-gray-500">{t("thotis_post_session_desc")}</p>
-        </div>
-
+      <DialogContent
+        className="max-w-2xl"
+        title={t("thotis_post_session_summary")}
+        description={t("thotis_post_session_desc")}>
         {isLoading ? (
           <div className="flex justify-center p-8">
             <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />

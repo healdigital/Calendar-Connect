@@ -1,6 +1,6 @@
 import type { Host } from "@calcom/features/bookings/lib/getHostsAndGuests";
 import { prisma } from "@calcom/prisma";
-import { WebhookTriggerEvents } from "@calcom/prisma/enums";
+import { type TimeUnit, WebhookTriggerEvents } from "@calcom/prisma/enums";
 import { calculateMaxStartTime, log, prepareNoShowTrigger, sendWebhookPayload } from "./common";
 
 const markGuestAsNoshowInBooking = async ({
@@ -57,7 +57,11 @@ export async function triggerGuestNoShow(payload: string): Promise<void> {
 
   const hostEmails = new Set(hosts.map((h) => h.email));
 
-  const maxStartTime = calculateMaxStartTime(booking.startTime, webhook.time, webhook.timeUnit);
+  const maxStartTime = calculateMaxStartTime(
+    booking.startTime,
+    webhook.time as number,
+    webhook.timeUnit as TimeUnit
+  );
 
   const requireEmailForGuests = booking.eventType?.calVideoSettings?.requireEmailForGuests ?? false;
 

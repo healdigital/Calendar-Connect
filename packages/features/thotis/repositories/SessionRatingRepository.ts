@@ -25,7 +25,10 @@ export class SessionRatingRepository {
         studentProfileId: data.studentProfileId,
         rating: data.rating,
         feedback: data.feedback,
-        prospectiveEmail: data.prospectiveEmail || "", // Fallback if required and not passed
+        prospectiveEmail: data.prospectiveEmail || "",
+      },
+      include: {
+        booking: true,
       },
     });
   }
@@ -41,5 +44,59 @@ export class SessionRatingRepository {
     });
 
     return aggregate._avg.rating;
+  }
+
+  async findByBookingId(bookingId: number) {
+    return this.prismaClient.sessionRating.findUnique({
+      where: { bookingId },
+      include: {
+        booking: true,
+      },
+    });
+  }
+
+  async findByStudentProfileId(studentProfileId: string) {
+    return this.prismaClient.sessionRating.findMany({
+      where: { studentProfileId },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async getRatingStats(studentProfileId: string) {
+    const [average, count, distribution] = await Promise.all([
+      this.getAverageRating(studentProfileId),
+      this.prismaClient.sessionRating.count({
+        where: { studentProfileId },
+      }),
+      this.prismaClient.sessionRating.groupBy({
+        by: ["rating"],
+        where: { studentProfileId },
+        _count: { rating: true },
+      }),
+    ]);
+
+    const formattedDistribution = [1, 2, 3, 4, 5].map((rating) => ({
+      rating,
+      count: distribution.find((d) => d.rating === rating)?._count.rating || 0,
+    }));
+
+    return {
+      average,
+      count,
+      distribution: formattedDistribution,
+    };
+  }
+
+  async updateRating(id: string, data: { rating?: number; feedback?: string | null }) {
+    return this.prismaClient.sessionRating.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async deleteRating(id: string) {
+    return this.prismaClient.sessionRating.delete({
+      where: { id },
+    });
   }
 }

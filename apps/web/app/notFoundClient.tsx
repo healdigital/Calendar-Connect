@@ -3,7 +3,7 @@
 import {
   getOrgDomainConfigFromHostname,
   subdomainSuffix,
-} from "@calcom/features/ee/organizations/lib/orgDomains";
+} from "@calcom/features/organizations/lib/orgDomains";
 import { DOCS_URL, IS_CALCOM, WEBSITE_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Icon } from "@calcom/ui/components/icon";

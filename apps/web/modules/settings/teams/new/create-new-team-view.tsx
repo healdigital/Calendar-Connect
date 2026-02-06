@@ -1,50 +1,17 @@
 "use client";
 
-import process from "node:process";
-import { HOSTED_CAL_FEATURES } from "@calcom/lib/constants";
-import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
-import { useParamsWithFallback } from "@calcom/lib/hooks/useParamsWithFallback";
-import type { RouterOutputs } from "@calcom/trpc/react";
+import { Button } from "@calcom/ui/components/button";
 import { WizardLayout } from "@calcom/ui/components/layout";
-import { CreateANewTeamForm } from "@calcom/web/modules/ee/teams/components/CreateANewTeamForm";
 import { useRouter } from "next/navigation";
-import type React from "react";
-import { z } from "zod";
-
-const querySchema = z.object({
-  returnTo: z.string().optional(),
-  slug: z.string().optional(),
-});
 
 const CreateNewTeamPage = () => {
-  const params = useParamsWithFallback();
-  const parsedQuery = querySchema.safeParse(params);
   const router = useRouter();
-
-  const isTeamBillingEnabledClient = !!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY && HOSTED_CAL_FEATURES;
-  const flag = isTeamBillingEnabledClient
-    ? {
-        submitLabel: "checkout",
-      }
-    : {
-        submitLabel: "continue",
-      };
-
-  const returnToParam =
-    (parsedQuery.success ? getSafeRedirectUrl(parsedQuery.data.returnTo) : "/teams") || "/teams";
-
-  const onSuccess = (data: RouterOutputs["viewer"]["teams"]["create"]) => {
-    // telemetry.event(flag.telemetryEvent);
-    router.push(data.url);
-  };
-
   return (
-    <CreateANewTeamForm
-      slug={parsedQuery.success ? parsedQuery.data.slug : ""}
-      onCancel={() => router.push(returnToParam)}
-      submitLabel={flag.submitLabel}
-      onSuccess={onSuccess}
-    />
+    <div className="flex flex-col items-center justify-center p-6 space-y-4">
+      <h1>Create Team</h1>
+      <p>Team creation is not available in the Open Source edition.</p>
+      <Button onClick={() => router.back()}>Go Back</Button>
+    </div>
   );
 };
 export const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {

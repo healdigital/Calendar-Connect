@@ -1,4 +1,3 @@
-import process from "node:process";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";
 import { IS_PREMIUM_USERNAME_ENABLED } from "@calcom/lib/constants";

@@ -1,7 +1,5 @@
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import { _generateMetadata, getTranslate } from "app/_utils";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
-import WorkspacePlatformsPage from "~/ee/organizations/admin/views/WorkspacePlatformPage";
 
 export const generateMetadata = async () =>
   await _generateMetadata(
@@ -16,9 +14,9 @@ const Page = async () => {
   const t = await getTranslate();
   return (
     <SettingsHeader title={t("workspace_platforms")} description={t("workspace_platforms_description")}>
-      <LicenseRequired>
-        <WorkspacePlatformsPage />
-      </LicenseRequired>
+      <div className="p-8 bg-white border border-dashed rounded-lg border-subtle text-center">
+        <p className="text-subtle">Workspace platforms view is currently unavailable in this version.</p>
+      </div>
     </SettingsHeader>
   );
 };

@@ -1,4 +1,3 @@
-import process from "node:process";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";

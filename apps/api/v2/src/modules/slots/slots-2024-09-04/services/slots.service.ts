@@ -17,8 +17,8 @@ import {
 } from "@nestjs/common";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { AvailableSlotsService } from "@/lib/services/available-slots.service";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 import { MembershipsService } from "@/modules/memberships/services/memberships.service";
 import { TimeSlots } from "@/modules/slots/slots-2024-04-15/services/slots-output.service";
@@ -43,7 +43,7 @@ type InternalSlotsQuery = InternalGetSlotsQuery | InternalGetSlotsQueryWithRouti
 @Injectable()
 export class SlotsService_2024_09_04 {
   constructor(
-    private readonly eventTypeRepository: EventTypesRepository_2024_06_14,
+    private readonly eventTypeRepository: EventTypesRepository,
     private readonly slotsRepository: SlotsRepository_2024_09_04,
     private readonly slotsOutputService: SlotsOutputService_2024_09_04,
     private readonly slotsInputService: SlotsInputService_2024_09_04,

@@ -52,6 +52,7 @@ export const adminRouter = router({
     const { default: handler } = await import("./setSMSLockState.handler");
     return handler(opts);
   }),
+  /*
   createSelfHostedLicense: authedAdminProcedure
     .input(ZCreateSelfHostedLicenseSchema)
     .mutation(async (opts) => {
@@ -115,4 +116,5 @@ export const adminRouter = router({
     }),
   }),
   watchlist: watchlistRouter,
+  */
 });

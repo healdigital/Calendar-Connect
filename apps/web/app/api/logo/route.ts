@@ -1,4 +1,4 @@
-import { orgDomainConfig } from "@calcom/features/ee/organizations/lib/orgDomains";
+import { orgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
 import {
   ANDROID_CHROME_ICON_192,
   ANDROID_CHROME_ICON_256,

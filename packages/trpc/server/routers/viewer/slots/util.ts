@@ -1,7 +1,13 @@
 import process from "node:process";
 import type { Dayjs } from "@calcom/dayjs";
 import dayjs from "@calcom/dayjs";
-import { orgDomainConfig } from "@calcom/ee/organizations/lib/orgDomains";
+
+// import { orgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
+const orgDomainConfig = (...args: any[]) => ({
+  currentOrgDomain: null,
+  isValidOrgDomain: false,
+});
+
 import { getAggregatedAvailability } from "@calcom/features/availability/lib/getAggregatedAvailability/getAggregatedAvailability";
 import type {
   CurrentSeats,
@@ -18,7 +24,10 @@ import { isEventTypeLoggingEnabled } from "@calcom/features/bookings/lib/isEvent
 import type { BookingRepository } from "@calcom/features/bookings/repositories/BookingRepository";
 import type { BusyTimesService } from "@calcom/features/busyTimes/services/getBusyTimes";
 import type { getBusyTimesService } from "@calcom/features/di/containers/BusyTimes";
-import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
+
+// import type { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
+type TeamRepository = any;
+
 import { getDefaultEvent } from "@calcom/features/eventtypes/lib/defaultEvents";
 import type { EventTypeRepository } from "@calcom/features/eventtypes/repositories/eventTypeRepository";
 import type { FeaturesRepository } from "@calcom/features/flags/features.repository";

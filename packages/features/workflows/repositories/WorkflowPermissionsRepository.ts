@@ -1,15 +1,15 @@
 import { isAuthorized } from "@calcom/features/ee/workflows/lib/isAuthorized";
 import type { Workflow } from "@calcom/prisma/client";
 
+interface TeamPermissionsCache {
+  [teamId: string]: WorkflowPermissions;
+}
+
 export interface WorkflowPermissions {
   canView: boolean;
   canUpdate: boolean;
   canDelete: boolean;
   readOnly: boolean; // Keep for backward compatibility
-}
-
-interface TeamPermissionsCache {
-  [teamId: string]: WorkflowPermissions;
 }
 
 export class WorkflowPermissionsBuilder {
@@ -89,13 +89,24 @@ export class WorkflowPermissionsBuilder {
   }
 
   /**
+   * Static factory method for convenience
+   */
+  static async buildPermissions(
+    workflow: Pick<Workflow, "id" | "teamId" | "userId"> | null,
+    currentUserId: number
+  ): Promise<WorkflowPermissions> {
+    const builder = new WorkflowPermissionsBuilder(currentUserId);
+    return await builder.buildPermissions(workflow);
+  }
+
+  /**
    * Batch build permissions for multiple workflows (optimized)
    */
   async buildPermissionsForWorkflows<T extends Pick<Workflow, "id" | "teamId" | "userId">>(
     workflows: T[]
   ): Promise<(T & { permissions: WorkflowPermissions; readOnly: boolean })[]> {
     // Pre-fetch permissions for all unique teams
-    const teamIds = workflows.filter((w) => w.teamId).map((w) => w.teamId!);
+    const teamIds = workflows.map((w) => w.teamId).filter((teamId): teamId is number => teamId !== null);
     const uniqueTeamIds = teamIds.filter((id, index) => teamIds.indexOf(id) === index);
     await Promise.all(uniqueTeamIds.map((teamId) => this.getTeamPermissions(teamId)));
 
@@ -112,17 +123,6 @@ export class WorkflowPermissionsBuilder {
     );
 
     return result;
-  }
-
-  /**
-   * Static factory method for convenience
-   */
-  static async buildPermissions(
-    workflow: Pick<Workflow, "id" | "teamId" | "userId"> | null,
-    currentUserId: number
-  ): Promise<WorkflowPermissions> {
-    const builder = new WorkflowPermissionsBuilder(currentUserId);
-    return await builder.buildPermissions(workflow);
   }
 
   /**

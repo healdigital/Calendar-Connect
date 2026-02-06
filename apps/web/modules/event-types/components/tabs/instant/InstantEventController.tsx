@@ -1,6 +1,6 @@
 import { Dialog } from "@calcom/features/components/controlled-dialog";
-import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
 import type { AvailabilityOption, EventTypeSetup, FormValues } from "@calcom/features/eventtypes/lib/types";
+import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
 import { subscriberUrlReserved } from "@calcom/features/webhooks/lib/subscriberUrlReserved";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { WebhookTriggerEvents } from "@calcom/prisma/enums";
@@ -18,7 +18,6 @@ import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import type { OptionProps, SingleValueProps } from "react-select";
 import { components } from "react-select";
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 import { WebhookForm } from "~/webhooks/components";
 import type { TWebhook, WebhookFormSubmitData } from "~/webhooks/components/WebhookForm";
 import WebhookListItem from "~/webhooks/components/WebhookListItem";
@@ -97,7 +96,7 @@ export default function InstantEventController({
   }));
 
   return (
-    <LicenseRequired>
+    <>
       <div className="block items-start sm:flex">
         {!isOrg || !isTeamEvent ? (
           <EmptyScreen
@@ -265,7 +264,7 @@ export default function InstantEventController({
           </div>
         )}
       </div>
-    </LicenseRequired>
+    </>
   );
 }
 

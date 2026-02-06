@@ -259,7 +259,8 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
                     onClick={() => handleSlotSelect(slotTime.toISOString())}
                     className="w-full justify-center"
                     style={{ borderColor: BRANDING.colors.primary, color: BRANDING.colors.primary }}
-                    color="secondary">
+                    color="secondary"
+                    data-testid="available-slot">
                     {slotTime.format("HH:mm")}
                   </Button>
                 );
@@ -328,7 +329,8 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
           <Button
             type="submit"
             className="w-full justify-center text-white"
-            style={{ backgroundColor: BRANDING.colors.secondary }}>
+            style={{ backgroundColor: BRANDING.colors.secondary }}
+            data-testid="confirm-booking">
             {t("thotis_confirm_booking")}
           </Button>
         </form>

@@ -1,14 +1,15 @@
 "use client";
 
 import { OrientationIntentForm } from "@calcom/features/thotis/components/OrientationIntentForm";
-import { Button } from "@calcom/ui/components/button";
-import { Icon } from "@calcom/ui/components/icon";
+import { trpc } from "@calcom/trpc/react";
+import { Button, Icon } from "@calcom/ui";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function ThotisLandingPage() {
   const router = useRouter();
   const { data: session } = useSession();
+  const upsertIntent = trpc.thotis.intent.upsert.useMutation();
 
   const handleFindMentors = () => {
     router.push("/thotis/mentors");
@@ -71,9 +72,31 @@ export default function ThotisLandingPage() {
           </div>
 
           <OrientationIntentForm
-            onSubmit={(data) => {
+            isLoading={upsertIntent.isPending}
+            onSubmit={async (data) => {
               console.log("Intent data:", data);
-              router.push(`/thotis/mentors?field=${data.targetFields[0]}&level=${data.academicLevel}`);
+
+              // 1. Save to localStorage for both guest and logged-in users
+              localStorage.setItem("thotis_orientation_intent", JSON.stringify(data));
+
+              // 2. Persist to DB if logged in
+              if (session) {
+                try {
+                  await upsertIntent.mutateAsync({
+                    targetFields: data.targetFields,
+                    academicLevel: data.academicLevel,
+                    zone: data.zone,
+                    goals: data.goals,
+                    scheduleConstraints: data.scheduleConstraints,
+                  });
+                } catch (error) {
+                  console.error("Failed to persist intent:", error);
+                }
+              }
+
+              // 3. Direct navigation after persistence
+              // We no longer pass field/level in params, the mentors page will use the intent
+              router.push("/thotis/mentors");
             }}
           />
 

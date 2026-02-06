@@ -1,4 +1,3 @@
-import process from "node:process";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import {
   APP_CREDENTIAL_SHARING_ENABLED,

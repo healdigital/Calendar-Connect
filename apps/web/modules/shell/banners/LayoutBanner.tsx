@@ -1,3 +1,4 @@
+/*
 import {
   DueInvoiceBanner,
   type DueInvoiceBannerProps,
@@ -13,6 +14,7 @@ import {
   TeamsUpgradeBanner,
   type TeamsUpgradeBannerProps,
 } from "@calcom/web/modules/ee/teams/components/TeamsUpgradeBanner";
+*/
 import AdminPasswordBanner, {
   type AdminPasswordBannerProps,
 } from "@calcom/web/modules/users/components/AdminPasswordBanner";
@@ -28,14 +30,14 @@ import VerifyEmailBanner, {
 } from "@calcom/web/modules/users/components/VerifyEmailBanner";
 
 type BannerTypeProps = {
-  teamUpgradeBanner: TeamsUpgradeBannerProps;
-  orgUpgradeBanner: OrgUpgradeBannerProps;
+  // teamUpgradeBanner: TeamsUpgradeBannerProps;
+  // orgUpgradeBanner: OrgUpgradeBannerProps;
   verifyEmailBanner: VerifyEmailBannerProps;
   adminPasswordBanner: AdminPasswordBannerProps;
-  impersonationBanner: ImpersonatingBannerProps;
+  // impersonationBanner: ImpersonatingBannerProps;
   calendarCredentialBanner: CalendarCredentialBannerProps;
   invalidAppCredentialBanners: InvalidAppCredentialBannersProps;
-  dueInvoiceBanner: DueInvoiceBannerProps;
+  // dueInvoiceBanner: DueInvoiceBannerProps;
 };
 
 type BannerType = keyof BannerTypeProps;
@@ -47,16 +49,16 @@ type BannerComponent = {
 export type AllBannerProps = { [Key in BannerType]: BannerTypeProps[Key]["data"] };
 
 export const BannerComponent: BannerComponent = {
-  teamUpgradeBanner: (props: TeamsUpgradeBannerProps) => <TeamsUpgradeBanner {...props} />,
-  orgUpgradeBanner: (props: OrgUpgradeBannerProps) => <OrgUpgradeBanner {...props} />,
+  // teamUpgradeBanner: (props: TeamsUpgradeBannerProps) => <TeamsUpgradeBanner {...props} />,
+  // orgUpgradeBanner: (props: OrgUpgradeBannerProps) => <OrgUpgradeBanner {...props} />,
   verifyEmailBanner: (props: VerifyEmailBannerProps) => <VerifyEmailBanner {...props} />,
   adminPasswordBanner: (props: AdminPasswordBannerProps) => <AdminPasswordBanner {...props} />,
-  impersonationBanner: (props: ImpersonatingBannerProps) => <ImpersonatingBanner {...props} />,
+  // impersonationBanner: (props: ImpersonatingBannerProps) => <ImpersonatingBanner {...props} />,
   calendarCredentialBanner: (props: CalendarCredentialBannerProps) => <CalendarCredentialBanner {...props} />,
   invalidAppCredentialBanners: (props: InvalidAppCredentialBannersProps) => (
     <InvalidAppCredentialBanners {...props} />
   ),
-  dueInvoiceBanner: (props: DueInvoiceBannerProps) => <DueInvoiceBanner {...props} />,
+  // dueInvoiceBanner: (props: DueInvoiceBannerProps) => <DueInvoiceBanner {...props} />,
 };
 
 interface BannerContainerProps {
@@ -67,8 +69,10 @@ export const BannerContainer: React.FC<BannerContainerProps> = ({ banners }) => 
   return (
     <div className="sticky top-0 z-10 w-full divide-y divide-black">
       {Object.keys(banners).map((key) => {
+        const Banner = BannerComponent[key as BannerType];
+        if (!Banner) return null;
+
         if (key === "teamUpgradeBanner") {
-          const Banner = BannerComponent[key];
           return <Banner data={banners[key]} key={key} />;
         } else if (key === "orgUpgradeBanner") {
           const Banner = BannerComponent[key];

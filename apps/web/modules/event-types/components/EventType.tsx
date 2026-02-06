@@ -1,6 +1,5 @@
 "use client";
 
-import type { Workflow } from "@calcom/features/ee/workflows/lib/types";
 import type { ChildrenEventType } from "@calcom/features/eventtypes/components/ChildrenEventTypeSelect";
 import type {
   EventTypeApps,
@@ -47,7 +46,7 @@ export type EventTypeSetup = RouterOutputs["viewer"]["eventTypes"]["get"]["event
 export type TeamMembers = RouterOutputs["viewer"]["eventTypes"]["get"]["teamMembers"];
 
 export type EventTypeComponentProps = EventTypeSetupProps & {
-  allActiveWorkflows?: Workflow[];
+  allActiveWorkflows?: unknown[];
   tabMap: TabMap;
   onDelete: (id: number) => void;
   isDeleting?: boolean;
@@ -91,8 +90,7 @@ export const EventType = ({
         team={team}
         isUpdateMutationLoading={isUpdating}
         formMethods={formMethods}
-        // disableBorder={tabName === "apps" || tabName === "workflows" || tabName === "webhooks"}
-        disableBorder={true}
+        disableBorder={tabName === "apps" || tabName === "workflows" || tabName === "webhooks"}
         currentUserMembership={currentUserMembership}
         bookerUrl={eventType.bookerUrl}
         isUserOrganizationAdmin={isUserOrganizationAdmin}

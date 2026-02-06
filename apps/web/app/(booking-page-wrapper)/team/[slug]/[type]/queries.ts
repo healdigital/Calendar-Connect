@@ -1,4 +1,3 @@
-import process from "node:process";
 import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
 import { getTeamData } from "@calcom/features/ee/teams/lib/getTeamData";
 import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";

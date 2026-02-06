@@ -2,7 +2,7 @@ import { useFlagMap } from "@calcom/features/flags/context/provider";
 import { CreationSource } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import { showToast } from "@calcom/ui/components/toast";
-import { setShowNewOrgModalFlag } from "@calcom/web/modules/ee/organizations/hooks/useWelcomeModal";
+// import { setShowNewOrgModalFlag } from "@calcom/web/modules/ee/organizations/hooks/useWelcomeModal";
 import { useState } from "react";
 import type { OnboardingState } from "../store/onboarding-store";
 
@@ -106,7 +106,7 @@ export const useSubmitOnboarding = () => {
       // Organization has already been created by the backend
       showToast("Organization created successfully!", "success");
       // Set flag to show welcome modal after redirect
-      setShowNewOrgModalFlag();
+      // setShowNewOrgModalFlag();
 
       // Check if this is a migration flow (user has already completed onboarding)
       const hasMigratedTeams = teams.some((team) => team.isBeingMigrated);

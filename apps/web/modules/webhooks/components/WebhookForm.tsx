@@ -11,7 +11,6 @@ import { Button } from "@calcom/ui/components/button";
 import { Form, Label, Select, Switch, TextArea, TextField, ToggleGroup } from "@calcom/ui/components/form";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TimeTimeUnitInput } from "~/ee/workflows/components/TimeTimeUnitInput";
 import WebhookTestDisclosure from "./WebhookTestDisclosure";
 
 export type TWebhook = RouterOutputs["viewer"]["webhook"]["list"][number];
@@ -449,7 +448,11 @@ const WebhookForm = (props: {
         {showTimeSection && (
           <div className="mt-5">
             <Label>{t("how_long_after_user_no_show_minutes")}</Label>
-            <TimeTimeUnitInput disabled={false} defaultTime={5} />
+            <TextField
+              type="number"
+              {...formMethods.register("time", { valueAsNumber: true })}
+              placeholder="5"
+            />
           </div>
         )}
 

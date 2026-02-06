@@ -1,6 +1,5 @@
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import { _generateMetadata, getTranslate } from "app/_utils";
-import UsersAddView from "~/ee/users/views/users-add-view";
 
 export const generateMetadata = async () =>
   await _generateMetadata(
@@ -16,7 +15,9 @@ const Page = async () => {
 
   return (
     <SettingsHeader title={t("add_new_user")} description={t("admin_users_add_description")}>
-      <UsersAddView />
+      <div className="p-8 bg-white border border-dashed rounded-lg border-subtle text-center">
+        <p className="text-subtle">Adding users is currently unavailable in this version.</p>
+      </div>
     </SettingsHeader>
   );
 };

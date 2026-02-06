@@ -269,10 +269,67 @@ const MentorList = ({ profiles }: { profiles: any[] }) => {
   );
 };
 
+const RecentIncidents = () => {
+  const { t } = useLocale();
+  const { data: incidentsData, isLoading } = trpc.thotis.admin.listIncidents.useQuery({
+    page: 1,
+    pageSize: 5,
+    resolved: false,
+  });
+
+  if (isLoading) return <Card className="p-4">Loading incidents...</Card>;
+
+  const incidents = incidentsData?.incidents || [];
+
+  return (
+    <Card className="p-4 h-full">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-emphasis text-lg font-semibold">{t("thotis_recent_incidents")}</h3>
+        <Button
+          variant="minimal"
+          size="sm"
+          color="secondary"
+          href="/thotis/admin/incidents"
+          className="text-xs">
+          {t("thotis_view_all")}
+        </Button>
+      </div>
+      <div className="space-y-3">
+        {incidents.length === 0 ? (
+          <p className="text-subtle text-sm text-center py-8">{t("thotis_no_recent_incidents")}</p>
+        ) : (
+          incidents.map((incident: any) => (
+            <div key={incident.id} className="p-3 bg-subtle rounded-md border border-subtle">
+              <div className="flex justify-between items-start mb-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-emphasis">
+                  {incident.type}
+                </span>
+                <span className="text-[10px] text-muted">
+                  {new Date(incident.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <p className="text-xs text-default line-clamp-2 mb-2 italic">
+                "{incident.description || t("thotis_no_description")}"
+              </p>
+              <div className="text-[10px] text-muted flex justify-between">
+                <span>{incident.studentProfile?.university}</span>
+                <span className="font-medium text-emphasis">{incident.studentProfile?.user?.name}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </Card>
+  );
+};
+
+import { AmbassadorManagement } from "./AmbassadorManagement";
+
 // --- Main Component ---
 
 export const AdminDashboard = () => {
   const { t } = useLocale();
+  const [activeTab, setActiveTab] = useState<"insights" | "ambassadors">("insights");
   const { data: stats, isLoading: isLoadingStats } = trpc.thotis.statistics.platformStats.useQuery();
   const { data: searchData, isLoading: isLoadingProfiles } = trpc.thotis.profile.search.useQuery({
     page: 1,
@@ -282,8 +339,6 @@ export const AdminDashboard = () => {
   const handleExportCSV = () => {
     if (!searchData?.profiles) return;
 
-    // In property test we can't test document.createElement easily without jsdom in browser env,
-    // but the critical logic is generateCSV which we test separately.
     const csvContent = "data:text/csv;charset=utf-8," + generateCSV(searchData.profiles as any);
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -302,20 +357,41 @@ export const AdminDashboard = () => {
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-emphasis text-2xl font-bold">{t("thotis_admin_dashboard")}</h1>
-        <Button color="secondary" onClick={handleExportCSV}>
-          {t("thotis_export_csv")}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            color={activeTab === "insights" ? "primary" : "minimal"}
+            onClick={() => setActiveTab("insights")}>
+            {t("thotis_tab_insights")}
+          </Button>
+          <Button
+            color={activeTab === "ambassadors" ? "primary" : "minimal"}
+            onClick={() => setActiveTab("ambassadors")}>
+            {t("thotis_tab_ambassadors")}
+          </Button>
+          <div className="ml-4 border-l pl-4">
+            <Button color="secondary" onClick={handleExportCSV}>
+              {t("thotis_export_csv")}
+            </Button>
+          </div>
+        </div>
       </div>
 
-      <StatsOverview stats={stats} />
+      {activeTab === "insights" ? (
+        <>
+          <StatsOverview stats={stats} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <SessionTrendsChart trends={stats?.trends} />
-        <FunnelChart funnel={stats?.funnel} />
-        <FieldDistributionChart distribution={stats} />
-      </div>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <SessionTrendsChart trends={stats?.trends} />
+            <RecentIncidents />
+            <FunnelChart funnel={stats?.funnel} />
+            <FieldDistributionChart distribution={stats} />
+          </div>
 
-      <MentorList profiles={searchData?.profiles || []} />
+          <MentorList profiles={searchData?.profiles || []} />
+        </>
+      ) : (
+        <AmbassadorManagement />
+      )}
     </div>
   );
 };

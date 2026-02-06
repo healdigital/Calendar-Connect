@@ -271,6 +271,21 @@ export class ProfileService {
     return this.mapProfile(profile);
   }
 
+  async getProfileById(profileId: string) {
+    if (this.redis) {
+      const cached = await this.redis.get(`profile:id:${profileId}`);
+      if (cached && Object.keys(cached).length > 0) return this.mapProfile(cached as any);
+    }
+
+    const profile = await this.repository.getProfile(profileId);
+
+    if (profile && this.redis) {
+      await this.redis.set(`profile:id:${profileId}`, profile, { ttl: this.PROFILE_CACHE_TTL });
+    }
+
+    return this.mapProfile(profile);
+  }
+
   async getProfileByUsername(username: string) {
     const cacheKey = `profile:username:${username}`;
     if (this.redis) {
@@ -339,6 +354,19 @@ export class ProfileService {
     }));
   }
 
+  async upsertOrientationIntent(
+    userId: number,
+    input: {
+      targetFields: string[];
+      academicLevel: string;
+      zone?: string | null;
+      goals?: string[];
+      scheduleConstraints?: any;
+    }
+  ) {
+    return this.repository.upsertOrientationIntent(userId, input);
+  }
+
   async getTopRatedProfiles() {
     const profiles = await this.repository.getTopRatedProfiles();
     return profiles.map((p) => this.mapProfile(p));
@@ -350,6 +378,11 @@ export class ProfileService {
 
   async deactivateProfile(userId: number) {
     return this.updateProfile(userId, { isActive: false });
+  }
+
+  async getProfilesByField(field: AcademicField) {
+    const result = (await this.repository.getProfilesByField(field)) as any;
+    return result.profiles.map((p: any) => this.mapProfile(p));
   }
 
   isProfileComplete(profile: StudentProfileWithUser): boolean {

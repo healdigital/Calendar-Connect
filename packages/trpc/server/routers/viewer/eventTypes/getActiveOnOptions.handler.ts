@@ -9,7 +9,10 @@ import { MembershipRole, SchedulingType } from "@calcom/prisma/enums";
 import { EventTypeMetaDataSchema, teamMetadataSchema } from "@calcom/prisma/zod-utils";
 import { TRPCError } from "@trpc/server";
 import type { TrpcSessionUser } from "../../../types";
-import { listOtherTeamHandler } from "../organizations/listOtherTeams.handler";
+
+// import { listOtherTeamHandler } from "../organizations/listOtherTeams.handler";
+const listOtherTeamHandler = async ({ ctx }: { ctx: any }) => [];
+
 import type { TGetActiveOnOptionsSchema } from "./getActiveOnOptions.schema";
 
 type GetActiveOnOptions = {
@@ -175,7 +178,7 @@ const fetchTeamOptions = async ({
 
   const otherTeams = await listOtherTeamHandler({ ctx });
   const otherTeamsOptions = otherTeams
-    ? otherTeams.map((team) => ({
+    ? otherTeams.map((team: any) => ({
         value: String(team.id),
         label: team.name || team.slug || "",
       }))

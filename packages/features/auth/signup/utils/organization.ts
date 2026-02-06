@@ -1,4 +1,8 @@
-import { updateNewTeamMemberEventTypes } from "@calcom/features/ee/teams/lib/queries";
+const updateNewTeamMemberEventTypes = async (userId: number, teamId: number) => {
+  // Stub for open-source: EE teams logic removed
+  return;
+};
+
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
 import { prisma } from "@calcom/prisma";
 import type { OrganizationSettings, Team } from "@calcom/prisma/client";

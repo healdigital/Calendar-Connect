@@ -1,7 +1,7 @@
 "use client";
 
 import { getPaymentAppData } from "@calcom/app-store/_utils/payments/getPaymentAppData";
-import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
+import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
 import type { EventTypeSetupProps, FormValues } from "@calcom/features/eventtypes/lib/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { VerticalTabItemProps } from "@calcom/ui/components/navigation";

@@ -2,7 +2,7 @@ import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import {
   type OrganizationBranding,
   useOrgBranding,
-} from "@calcom/features/ee/organizations/context/provider";
+} from "@calcom/features/organizations/context/provider";
 import { useIsStandalone } from "@calcom/lib/hooks/useIsStandalone";
 import classNames from "@calcom/ui/classNames";
 import { useHasPaidPlan } from "@calcom/web/modules/billing/hooks/useHasPaidPlan";

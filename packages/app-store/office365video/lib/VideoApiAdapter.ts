@@ -1,4 +1,3 @@
-import { triggerDelegationCredentialErrorWebhook } from "@calcom/features/webhooks/lib/triggerDelegationCredentialErrorWebhook";
 import {
   CalendarAppDelegationCredentialConfigurationError,
   CalendarAppDelegationCredentialInvalidGrantError,
@@ -40,24 +39,6 @@ const TeamsVideoApiAdapter = (credential: CredentialForCalendarServiceWithTenant
   let azureUserId: string | null;
   const tokenResponse = oAuthManagerHelper.getTokenObjectFromCredential(credential);
 
-  async function triggerDelegationCredentialError(error: Error): Promise<void> {
-    if (credential.userId && credential.user && credential.appId && credential.delegatedToId) {
-      await triggerDelegationCredentialErrorWebhook({
-        error,
-        credential: {
-          id: credential.id,
-          type: credential.type,
-          appId: credential.appId,
-        },
-        user: {
-          id: credential.userId ?? 0,
-          email: credential.user.email,
-        },
-        delegationCredentialId: credential.delegatedToId,
-      });
-    }
-  }
-
   const auth = new OAuthManager({
     credentialSyncVariables: oAuthManagerHelper.credentialSyncVariables,
     resourceOwner: {
@@ -83,8 +64,6 @@ const TeamsVideoApiAdapter = (credential: CredentialForCalendarServiceWithTenant
         const error = new CalendarAppDelegationCredentialConfigurationError(
           "Delegation credential without clientId or Secret"
         );
-
-        await triggerDelegationCredentialError(error);
 
         throw error;
       }
@@ -132,8 +111,6 @@ const TeamsVideoApiAdapter = (credential: CredentialForCalendarServiceWithTenant
           "Invalid DelegationCredential Settings: tenantId is missing"
         );
 
-        await triggerDelegationCredentialError(error);
-
         throw error;
       }
       return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
@@ -166,8 +143,6 @@ const TeamsVideoApiAdapter = (credential: CredentialForCalendarServiceWithTenant
       const error = new CalendarAppDelegationCredentialConfigurationError(
         "Delegation credential without clientId or Secret"
       );
-
-      await triggerDelegationCredentialError(error);
 
       throw error;
     }
@@ -204,8 +179,6 @@ const TeamsVideoApiAdapter = (credential: CredentialForCalendarServiceWithTenant
       const error = new CalendarAppDelegationCredentialInvalidGrantError(
         "User might not exist in Microsoft Azure Active Directory"
       );
-
-      await triggerDelegationCredentialError(error);
 
       throw error;
     }

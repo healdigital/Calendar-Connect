@@ -1,8 +1,6 @@
 "use client";
 
 import { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
-import type { OrganizationBranding } from "@calcom/features/ee/organizations/context/provider";
-import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
 import {
   HAS_ORG_OPT_IN_FEATURES,
   HAS_TEAM_OPT_IN_FEATURES,
@@ -35,7 +33,7 @@ import type { ComponentProps } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import Shell from "~/shell/Shell";
 
-const getTabs = (orgBranding: OrganizationBranding | null) => {
+const getTabs = () => {
   const tabs: VerticalTabItemProps[] = [
     {
       name: "my_account",
@@ -117,18 +115,7 @@ const getTabs = (orgBranding: OrganizationBranding | null) => {
         },
       ],
     },
-    {
-      name: "billing",
-      href: "/settings/billing",
-      icon: "credit-card",
-      children: [
-        {
-          name: "manage_billing",
-          href: "/settings/billing",
-          trackingMetadata: { section: "billing", page: "manage_billing" },
-        },
-      ],
-    },
+
     {
       name: "developer",
       href: "/settings/developer",
@@ -150,196 +137,19 @@ const getTabs = (orgBranding: OrganizationBranding | null) => {
           href: "/settings/developer/api-keys",
           trackingMetadata: { section: "developer", page: "api_keys" },
         },
-        {
-          name: "admin_api",
-          href: "/settings/organizations/admin-api",
-          trackingMetadata: { section: "developer", page: "admin_api" },
-        },
+        // {
+        //   name: "admin_api",
+        //   href: "/settings/organizations/admin-api",
+        //   trackingMetadata: { section: "developer", page: "admin_api" },
+        // },
         // TODO: Add profile level for embeds
         // { name: "embeds", href: "/v2/settings/developer/embeds" },
       ],
     },
-    {
-      name: "organization",
-      href: "/settings/organizations",
-      children: [
-        {
-          name: "profile",
-          href: "/settings/organizations/profile",
-          trackingMetadata: { section: "organization", page: "profile" },
-        },
-        {
-          name: "general",
-          href: "/settings/organizations/general",
-          trackingMetadata: { section: "organization", page: "general" },
-        },
-        {
-          name: "guest_notifications",
-          href: "/settings/organizations/guest-notifications",
-        },
-        ...(orgBranding
-          ? [
-              {
-                name: "members",
-                href: `${WEBAPP_URL}/settings/organizations/${orgBranding.slug}/members`,
-                isExternalLink: true,
-                trackingMetadata: { section: "organization", page: "members" },
-              },
-            ]
-          : []),
-        {
-          name: "privacy_and_security",
-          href: "/settings/organizations/privacy",
-          trackingMetadata: { section: "organization", page: "privacy_and_security" },
-        },
-        {
-          name: "SSO",
-          href: "/settings/organizations/sso",
-          trackingMetadata: { section: "organization", page: "sso" },
-        },
-        {
-          name: "directory_sync",
-          href: "/settings/organizations/dsync",
-          trackingMetadata: { section: "organization", page: "directory_sync" },
-        },
-        {
-          name: "admin_api",
-          href: "https://cal.com/docs/enterprise-features/api/api-reference/bookings#admin-access",
-          isExternalLink: true,
-          trackingMetadata: { section: "organization", page: "admin_api" },
-        },
-        ...(HAS_ORG_OPT_IN_FEATURES
-          ? [
-              {
-                name: "features",
-                href: "/settings/organizations/features",
-                trackingMetadata: { section: "organization", page: "features" },
-              },
-            ]
-          : []),
-      ],
-    },
-    {
-      name: "teams",
-      href: "/teams",
-      icon: "users",
-      children: [],
-    },
-    {
-      name: "other_teams",
-      href: "/settings/organizations/teams/other",
-      icon: "users",
-      children: [],
-    },
-    {
-      name: "admin",
-      href: "/settings/admin",
-      icon: "lock",
-      children: [
-        //
-        {
-          name: "features",
-          href: "/settings/admin/flags",
-          trackingMetadata: { section: "admin", page: "features" },
-        },
-        {
-          name: "license",
-          href: "/auth/setup?step=1",
-          trackingMetadata: { section: "admin", page: "license" },
-        },
-        {
-          name: "admin_billing",
-          href: "/settings/admin/billing",
-          trackingMetadata: { section: "admin", page: "billing" },
-        },
-        {
-          name: "impersonation",
-          href: "/settings/admin/impersonation",
-          trackingMetadata: { section: "admin", page: "impersonation" },
-        },
-        {
-          name: "apps",
-          href: "/settings/admin/apps/calendar",
-          trackingMetadata: { section: "admin", page: "apps" },
-        },
-        {
-          name: "users",
-          href: "/settings/admin/users",
-          trackingMetadata: { section: "admin", page: "users" },
-        },
-        {
-          name: "organizations",
-          href: "/settings/admin/organizations",
-          trackingMetadata: { section: "admin", page: "organizations" },
-        },
-        {
-          name: "lockedSMS",
-          href: "/settings/admin/lockedSMS",
-          trackingMetadata: { section: "admin", page: "locked_sms" },
-        },
-        {
-          name: "pbac_resource_blocklist",
-          href: "/settings/admin/blocklist",
-          trackingMetadata: { section: "admin", page: "blocklist" },
-        },
-        {
-          name: "oAuth",
-          href: "/settings/admin/oauth",
-          trackingMetadata: { section: "admin", page: "oauth" },
-        },
-        {
-          name: "Workspace Platforms",
-          href: "/settings/admin/workspace-platforms",
-          trackingMetadata: { section: "admin", page: "workspace_platforms" },
-        },
-        {
-          name: "Playground",
-          href: "/settings/admin/playground",
-          trackingMetadata: { section: "admin", page: "playground" },
-        },
-      ],
-    },
   ];
-
-  for (const tab of tabs) {
-    if (tab.name === "security" && !HOSTED_CAL_FEATURES) {
-      tab.children?.push({
-        name: "sso_configuration",
-        href: "/settings/security/sso",
-        trackingMetadata: { section: "security", page: "sso_configuration" },
-      });
-      // TODO: Enable dsync for self hosters
-      // tab.children?.push({ name: "directory_sync", href: "/settings/security/dsync" });
-    }
-
-    if (tab.name === "admin" && IS_CALCOM) {
-      tab.children?.push({
-        name: "create_org",
-        href: "/settings/organizations/new",
-        trackingMetadata: { section: "admin", page: "create_org" },
-      });
-
-      tab.children?.push({
-        name: "create_license_key",
-        href: "/settings/license-key/new",
-        trackingMetadata: { section: "admin", page: "create_license_key" },
-      });
-    }
-  }
 
   return tabs;
 };
-
-// The following keys are assigned to admin only
-const adminRequiredKeys = ["admin"];
-const organizationRequiredKeys = ["organization"];
-const organizationAdminKeys = [
-  "privacy",
-  "privacy_and_security",
-  "SSO",
-  "directory_sync",
-  "delegation_credential",
-];
 
 interface SettingsPermissions {
   canViewRoles?: boolean;
@@ -363,7 +173,7 @@ const useTabs = ({
   const isAdmin = session.data?.user.role === UserPermissionRole.ADMIN;
 
   const processTabsMemod = useMemo(() => {
-    const processedTabs = getTabs(orgBranding).map((tab) => {
+    const processedTabs = getTabs().map((tab) => {
       if (tab.href === "/settings/my-account") {
         return {
           ...tab,
@@ -371,98 +181,12 @@ const useTabs = ({
           icon: undefined,
           avatar: getUserAvatarUrl(user),
         };
-      } else if (tab.href === "/settings/organizations") {
-        const newArray = (tab?.children ?? []).filter(
-          (child) => permissions?.canUpdateOrganization || !organizationAdminKeys.includes(child.name)
-        );
-
-        if (permissions?.canViewAttributes) {
-          newArray.splice(4, 0, {
-            name: "attributes",
-            href: "/settings/organizations/attributes",
-            trackingMetadata: { section: "organization", page: "attributes" },
-          });
-        }
-
-        // Add delegation-credential menu item only if feature flag is enabled
-        if (isDelegationCredentialEnabled) {
-          newArray.push({
-            name: "delegation_credential",
-            href: "/settings/organizations/delegation-credential",
-            trackingMetadata: { section: "organization", page: "delegation_credential" },
-          });
-        }
-
-        // Add pbac menu item - show opt-in page if not enabled, regular page if enabled
-        if (isPbacEnabled) {
-          if (permissions?.canViewRoles) {
-            newArray.push({
-              name: "roles_and_permissions",
-              href: "/settings/organizations/roles",
-              trackingMetadata: { section: "organization", page: "roles_and_permissions" },
-            });
-          }
-
-          if (permissions?.canViewOrganizationBilling) {
-            newArray.push({
-              name: "billing",
-              href: "/settings/organizations/billing",
-              trackingMetadata: { section: "organization", page: "billing" },
-            });
-          }
-        } else {
-          if (permissions?.canUpdateOrganization) {
-            newArray.push({
-              name: "billing",
-              href: "/settings/organizations/billing",
-              trackingMetadata: { section: "organization", page: "billing" },
-            });
-          }
-          // Show roles page (modal will appear if PBAC not enabled)
-          if (permissions?.canUpdateOrganization) {
-            newArray.push({
-              name: "roles",
-              href: "/settings/organizations/roles",
-              isBadged: true, // Show "New" badge,
-              trackingMetadata: { section: "organization", page: "roles" },
-            });
-          }
-        }
-
-        return {
-          ...tab,
-          children: newArray,
-          name: orgBranding?.name || "organization",
-          avatar: getPlaceholderAvatar(orgBranding?.logoUrl, orgBranding?.name),
-        };
-      } else if (
-        tab.href === "/settings/security" &&
-        user?.identityProvider === IdentityProvider.GOOGLE &&
-        !user?.twoFactorEnabled &&
-        !user?.passwordAdded
-      ) {
-        const filtered = tab?.children?.filter(
-          (childTab) => childTab.href !== "/settings/security/two-factor-auth"
-        );
-        return { ...tab, children: filtered };
-      } else if (tab.href === "/settings/developer") {
-        const filtered = tab?.children?.filter(
-          (childTab) => permissions?.canUpdateOrganization || childTab.name !== "admin_api"
-        );
-        return { ...tab, children: filtered };
       }
       return tab;
     });
 
-    // check if name is in adminRequiredKeys
-    return processedTabs.filter((tab) => {
-      if (organizationRequiredKeys.includes(tab.name)) return !!orgBranding;
-      if (tab.name === "other_teams" && !permissions?.canUpdateOrganization) return false;
-
-      if (isAdmin) return true;
-      return !adminRequiredKeys.includes(tab.name);
-    });
-  }, [isAdmin, orgBranding, user, isDelegationCredentialEnabled, isPbacEnabled, permissions]);
+    return processedTabs;
+  }, [user]);
 
   return processTabsMemod;
 };
@@ -488,8 +212,6 @@ interface SettingsSidebarContainerProps {
   className?: string;
   navigationIsOpenedOnMobile?: boolean;
   bannersHeight?: number;
-  teamFeatures?: Record<number, TeamFeatures>;
-  permissions?: SettingsPermissions;
 }
 
 const TeamRolesNavItem = ({
@@ -675,6 +397,7 @@ const TeamListCollapsible = ({ teamFeatures }: { teamFeatures?: Record<number, T
                         />
                       )}
                       {/* Hide if there is a parent ID */}
+                      {/*
                       {!team.parentId ? (
                         <>
                           <VerticalTabItem
@@ -686,7 +409,7 @@ const TeamListCollapsible = ({ teamFeatures }: { teamFeatures?: Record<number, T
                             disableChevron
                           />
                         </>
-                      ) : null}
+                      ) : null}*/}
                       <VerticalTabItem
                         name={t("settings")}
                         href={`/settings/teams/${team.id}/settings`}
@@ -716,7 +439,6 @@ const SettingsSidebarContainer = ({
   permissions,
 }: SettingsSidebarContainerProps) => {
   const searchParams = useCompatSearchParams();
-  const orgBranding = useOrgBranding();
   const { t } = useLocale();
   const [otherTeamMenuState, setOtherTeamMenuState] =
     useState<
@@ -729,7 +451,7 @@ const SettingsSidebarContainer = ({
 
   const organizationId = session.data?.user?.org?.id;
 
-  const isDelegationCredentialEnabled = useIsFeatureEnabledForTeam({
+  /*const isDelegationCredentialEnabled = useIsFeatureEnabledForTeam({
     teamFeatures,
     teamId: organizationId,
     feature: "delegation-credential",
@@ -739,21 +461,18 @@ const SettingsSidebarContainer = ({
     teamFeatures,
     teamId: organizationId,
     feature: "pbac",
-  });
+  });*/
 
   const tabsWithPermissions = useTabs({
-    isDelegationCredentialEnabled,
-    isPbacEnabled,
+    isDelegationCredentialEnabled: false,
+    isPbacEnabled: false,
     permissions,
-  });
-
-  const { data: otherTeams } = trpc.viewer.organizations.listOtherTeams.useQuery(undefined, {
-    enabled: !!session.data?.user?.org,
   });
 
   const searchParamsId = searchParams?.get("id");
   // Same as above but for otherTeams
-  useEffect(() => {
+  // Same as above but for otherTeams
+  /*useEffect(() => {
     if (otherTeams) {
       const otherTeamStates = otherTeams?.map((team) => ({
         teamId: team.id,
@@ -768,7 +487,7 @@ const SettingsSidebarContainer = ({
         tabMembers?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
-  }, [searchParamsId, otherTeams]);
+  }, [searchParamsId, otherTeams]);*/
 
   return (
     <nav
@@ -836,175 +555,6 @@ const SettingsSidebarContainer = ({
                         )}
                       </div>
                     ))}
-                  </div>
-                </React.Fragment>
-              )}
-
-              {tab.name === "teams" && (
-                <React.Fragment key={tab.href}>
-                  <div data-testid="tab-teams" className={`${!tab.children?.length ? "mb-3" : ""}`}>
-                    <Link href={tab.href}>
-                      <div className="hover:bg-subtle [&[aria-current='page']]:bg-emphasis [&[aria-current='page']]:text-emphasis group-hover:text-default text-default group flex h-9 w-full flex-row items-center rounded-md px-2 py-[10px] text-sm font-medium leading-none transition">
-                        {tab && tab.icon && (
-                          <Icon
-                            name={tab.icon}
-                            className="text-subtle h-[16px] w-[16px] stroke-[2px] ltr:mr-3 rtl:ml-3 md:mt-0"
-                          />
-                        )}
-                        <Skeleton
-                          title={tab.name}
-                          as="p"
-                          className="text-subtle truncate text-sm font-medium leading-5"
-                          loadingClassName="ms-3">
-                          {t("my_teams")}
-                        </Skeleton>
-                      </div>
-                    </Link>
-                    <TeamListCollapsible teamFeatures={teamFeatures} />
-                    {(!orgBranding?.id || permissions?.canUpdateOrganization) && (
-                      <VerticalTabItem
-                        name={t("add_a_team")}
-                        href={`${WEBAPP_URL}/settings/teams/new`}
-                        trackingMetadata={{ section: "team", page: "add_a_team" }}
-                        textClassNames="px-3 items-center mt-2 text-emphasis font-medium text-sm"
-                        className="px-2! me-5 h-7 w-auto"
-                        icon="plus"
-                        disableChevron
-                      />
-                    )}
-                  </div>
-                </React.Fragment>
-              )}
-
-              {tab.name === "other_teams" && (
-                <React.Fragment key={tab.href}>
-                  <div className={`${!tab.children?.length ? "mb-3" : ""}`}>
-                    <Link href={tab.href}>
-                      <div className="hover:bg-subtle [&[aria-current='page']]:bg-emphasis [&[aria-current='page']]:text-emphasis group-hover:text-default text-default group flex h-9 w-full flex-row items-center rounded-md px-2 py-[10px] text-sm font-medium leading-none transition">
-                        {tab && tab.icon && (
-                          <Icon
-                            name={tab.icon}
-                            className="text-subtle h-[16px] w-[16px] stroke-[2px] ltr:mr-3 rtl:ml-3 md:mt-0"
-                          />
-                        )}
-                        <Skeleton
-                          title={t("org_admin_other_teams")}
-                          as="p"
-                          className="text-subtle truncate text-sm font-medium leading-5"
-                          loadingClassName="ms-3">
-                          {t("org_admin_other_teams")}
-                        </Skeleton>
-                      </div>
-                    </Link>
-                    {otherTeams &&
-                      otherTeamMenuState &&
-                      otherTeams.map((otherTeam, index: number) => {
-                        if (!otherTeamMenuState[index]) {
-                          return null;
-                        }
-                        if (otherTeamMenuState.some((teamState) => teamState.teamId === otherTeam.id))
-                          return (
-                            <Collapsible
-                              className="cursor-pointer"
-                              key={otherTeam.id}
-                              open={otherTeamMenuState[index].teamMenuOpen}
-                              onOpenChange={(open) => {
-                                const newOtherTeamMenuState = [...otherTeamMenuState];
-                                newOtherTeamMenuState[index] = {
-                                  ...newOtherTeamMenuState[index],
-                                  teamMenuOpen: open,
-                                };
-                                setOtherTeamMenuState(newOtherTeamMenuState);
-                              }}>
-                              <CollapsibleTrigger asChild>
-                                <button
-                                  className="hover:bg-subtle [&[aria-current='page']]:bg-emphasis [&[aria-current='page']]:text-emphasis text-default flex h-9 w-full flex-row items-center rounded-md px-2 py-[10px] text-left text-sm font-medium leading-none transition"
-                                  aria-controls={`other-team-content-${otherTeam.id}`}
-                                  aria-expanded={otherTeamMenuState[index].teamMenuOpen}
-                                  onClick={() => {
-                                    const newOtherTeamMenuState = [...otherTeamMenuState];
-                                    newOtherTeamMenuState[index] = {
-                                      ...newOtherTeamMenuState[index],
-                                      teamMenuOpen: !otherTeamMenuState[index].teamMenuOpen,
-                                    };
-                                    setOtherTeamMenuState(newOtherTeamMenuState);
-                                  }}
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter" || e.key === " ") {
-                                      e.preventDefault();
-                                      const newOtherTeamMenuState = [...otherTeamMenuState];
-                                      newOtherTeamMenuState[index] = {
-                                        ...newOtherTeamMenuState[index],
-                                        teamMenuOpen: !otherTeamMenuState[index].teamMenuOpen,
-                                      };
-                                      setOtherTeamMenuState(newOtherTeamMenuState);
-                                    }
-                                  }}
-                                  aria-label={`${otherTeam.name} ${
-                                    otherTeamMenuState[index].teamMenuOpen
-                                      ? t("collapse_menu")
-                                      : t("expand_menu")
-                                  }`}>
-                                  <div className="me-3">
-                                    {otherTeamMenuState[index].teamMenuOpen ? (
-                                      <Icon name="chevron-down" className="h-4 w-4" />
-                                    ) : (
-                                      <Icon name="chevron-right" className="h-4 w-4" />
-                                    )}
-                                  </div>
-                                  {}
-                                  {!otherTeam.parentId && (
-                                    <Image
-                                      src={getPlaceholderAvatar(otherTeam.logoUrl, otherTeam.name)}
-                                      width={16}
-                                      height={16}
-                                      className="self-start rounded-full stroke-[2px] ltr:mr-2 rtl:ml-2 md:mt-0"
-                                      alt={otherTeam.name || "Team logo"}
-                                    />
-                                  )}
-                                  <p className="w-1/2 truncate leading-normal">{otherTeam.name}</p>
-                                </button>
-                              </CollapsibleTrigger>
-                              <CollapsibleContent
-                                className="flex flex-col space-y-1"
-                                id={`other-team-content-${otherTeam.id}`}>
-                                <VerticalTabItem
-                                  name={t("profile")}
-                                  href={`/settings/organizations/teams/other/${otherTeam.id}/profile`}
-                                  trackingMetadata={{
-                                    section: "other_team",
-                                    page: "profile",
-                                    teamId: otherTeam.id,
-                                  }}
-                                  textClassNames="px-3 text-emphasis font-medium text-sm"
-                                  className="px-2! me-5 h-7 w-auto"
-                                  disableChevron
-                                />
-                                <VerticalTabItem
-                                  name={t("members")}
-                                  href={`/settings/organizations/teams/other/${otherTeam.id}/members`}
-                                  trackingMetadata={{
-                                    section: "other_team",
-                                    page: "members",
-                                    teamId: otherTeam.id,
-                                  }}
-                                  textClassNames="px-3 text-emphasis font-medium text-sm"
-                                  className="px-2! me-5 h-7 w-auto"
-                                  disableChevron
-                                />
-                                <>
-                                  {/* TODO: enable appearance edit */}
-                                  {/* <VerticalTabItem
-                                      name={t("appearance")}
-                                      href={`/settings/organizations/teams/other/${otherTeam.id}/appearance`}
-                                      textClassNames="px-3 text-emphasis font-medium text-sm"
-                                      disableChevron
-                                    /> */}
-                                </>
-                              </CollapsibleContent>
-                            </Collapsible>
-                          );
-                      })}
                   </div>
                 </React.Fragment>
               )}

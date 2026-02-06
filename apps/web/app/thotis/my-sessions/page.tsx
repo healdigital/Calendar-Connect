@@ -1,11 +1,9 @@
 "use client";
 
+import { GuestMagicLinkForm } from "@calcom/features/thotis/components/GuestMagicLinkForm";
 import { StudentDashboard } from "@calcom/features/thotis/components/StudentDashboard";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 export default function MySessionsPage() {
   const router = useRouter();
@@ -23,9 +21,15 @@ export default function MySessionsPage() {
   }
 
   // Allow access if user is authenticated OR if a valid guest token is present
-  if (!token && (status === "unauthenticated" || !displayEmail)) {
-    router.push(`/auth/signin?callbackUrl=${encodeURIComponent("/thotis/my-sessions")}`);
-    return null;
+  const isGuest = !displayEmail;
+  const hasToken = !!token;
+
+  if (isGuest && !hasToken) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <GuestMagicLinkForm />
+      </div>
+    );
   }
 
   return (

@@ -1,4 +1,3 @@
-import process from "node:process";
 import { CronJob } from "cron";
 import dotEnv from "dotenv";
 

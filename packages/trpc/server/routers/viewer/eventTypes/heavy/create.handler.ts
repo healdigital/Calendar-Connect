@@ -47,6 +47,11 @@ export const createHandler = async ({ ctx, input }: CreateOptions) => {
     ...rest
   } = input;
 
+  // Thotis: Enforce 15 minutes duration
+  if ((metadata as any)?.thotisEventType && rest.length !== 15) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "Thotis sessions must be 15 minutes long" });
+  }
+
   const userId = ctx.user.id;
   const isManagedEventType = schedulingType === SchedulingType.MANAGED;
   const isOrgAdmin = !!ctx.user?.organization?.isOrgAdmin;

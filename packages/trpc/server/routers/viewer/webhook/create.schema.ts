@@ -1,4 +1,6 @@
-import { TIME_UNIT } from "@calcom/features/ee/workflows/lib/constants";
+// import { TIME_UNIT } from "@calcom/features/ee/workflows/lib/constants";
+const TIME_UNIT = ["DAY", "HOUR", "MINUTE"] as const;
+
 import { WEBHOOK_TRIGGER_EVENTS } from "@calcom/features/webhooks/lib/constants";
 import { WebhookVersion } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import { z } from "zod";

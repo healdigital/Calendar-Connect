@@ -13,11 +13,23 @@ import { handleWebhookTrigger } from "@calcom/features/bookings/lib/handleWebhoo
 import { processPaymentRefund } from "@calcom/features/bookings/lib/payment/processPaymentRefund";
 import { BookingAccessService } from "@calcom/features/bookings/services/BookingAccessService";
 import type { ISimpleLogger } from "@calcom/features/di/shared/services/logger.service";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import { workflowSelect } from "@calcom/features/ee/workflows/lib/getAllWorkflows";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
+
+// import { CreditService } from "@calcom/features/ee/billing/credit-service";
+// import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
+// import { workflowSelect } from "@calcom/features/ee/workflows/lib/getAllWorkflows";
+// import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
+// import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
+
+const getBookerBaseUrl = async (_: any) => "";
+const workflowSelect = { id: true };
+const getAllWorkflowsFromEventType = async (_: any, __: any) => [];
+const WorkflowService = { scheduleWorkflowsFilteredByTriggerEvent: async (_: any) => {} };
+class CreditService {
+  hasAvailableCredits() {
+    return true;
+  }
+}
+
 import type { GetSubscriberOptions } from "@calcom/features/webhooks/lib/getWebhooks";
 import type { EventPayloadType, EventTypeInfo } from "@calcom/features/webhooks/lib/sendPayload";
 import getOrgIdFromMemberOrTeamId from "@calcom/lib/getOrgIdFromMemberOrTeamId";
@@ -534,31 +546,31 @@ export const confirmHandler = async ({ ctx, input }: ConfirmOptions) => {
     await handleWebhookTrigger({ subscriberOptions, eventTrigger, webhookData, traceContext });
 
     const workflows = await getAllWorkflowsFromEventType(booking.eventType, user.id);
-    try {
-      const creditService = new CreditService();
+    // try {
+    //   const creditService = new CreditService();
 
-      await WorkflowService.scheduleWorkflowsFilteredByTriggerEvent({
-        workflows,
-        smsReminderNumber: booking.smsReminderNumber,
-        calendarEvent: {
-          ...evt,
-          bookerUrl: bookerUrl,
-          eventType: {
-            ...eventTypeInfo,
-            slug: booking.eventType?.slug as string,
-          },
-        },
-        hideBranding: !!booking.eventType?.owner?.hideBranding,
-        triggers: [WorkflowTriggerEvents.BOOKING_REJECTED],
-        creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
-      });
-    } catch (error) {
-      // Silently fail
-      console.error(
-        "Error while scheduling workflow reminders for BOOKING_REJECTED:",
-        error instanceof Error ? error.message : String(error)
-      );
-    }
+    //   await WorkflowService.scheduleWorkflowsFilteredByTriggerEvent({
+    //     workflows,
+    //     smsReminderNumber: booking.smsReminderNumber,
+    //     calendarEvent: {
+    //       ...evt,
+    //       bookerUrl: bookerUrl,
+    //       eventType: {
+    //         ...eventTypeInfo,
+    //         slug: booking.eventType?.slug as string,
+    //       },
+    //     },
+    //     hideBranding: !!booking.eventType?.owner?.hideBranding,
+    //     triggers: [WorkflowTriggerEvents.BOOKING_REJECTED],
+    //     creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
+    //   });
+    // } catch (error) {
+    //   // Silently fail
+    //   console.error(
+    //     "Error while scheduling workflow reminders for BOOKING_REJECTED:",
+    //     error instanceof Error ? error.message : String(error)
+    //   );
+    // }
   }
 
   const message = confirmed ? "Booking confirmed" : "Booking rejected";

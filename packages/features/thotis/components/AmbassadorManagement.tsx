@@ -102,10 +102,78 @@ const ProvisionAmbassadorModal: React.FC<{ isOpen: boolean; onClose: () => void 
   );
 };
 
+const IncidentsModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  profileId: string | null;
+  name: string | null;
+}> = ({ isOpen, onClose, profileId, name }) => {
+  const { t } = useLocale();
+  const { data, isLoading } = trpc.thotis.admin.listIncidents.useQuery(
+    {
+      studentProfileId: profileId || undefined,
+      resolved: undefined, // Show all
+    },
+    { enabled: !!profileId && isOpen }
+  );
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {t("thotis_admin_incidents_for")} {name}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+          {isLoading ? (
+            <p className="text-center py-4">{t("loading")}</p>
+          ) : !data?.incidents || data.incidents.length === 0 ? (
+            <p className="text-center text-subtle py-4">{t("thotis_admin_no_incidents_found")}</p>
+          ) : (
+            data.incidents.map((incident: any) => (
+              <div key={incident.id} className="p-3 bg-subtle rounded-md border border-subtle">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emphasis">
+                    {incident.type}
+                  </span>
+                  <span className="text-[10px] text-muted">
+                    {new Date(incident.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <p className="text-sm text-default mb-2">
+                  {incident.description || t("thotis_no_description")}
+                </p>
+                <div className="flex justify-between items-center text-xs">
+                  <span
+                    className={`px-2 py-0.5 rounded-full ${
+                      incident.resolved ? "bg-success-subtle text-success" : "bg-warning-subtle text-warning"
+                    }`}>
+                    {incident.resolved ? t("thotis_admin_resolved") : t("thotis_admin_pending")}
+                  </span>
+                  {incident.bookingUid && (
+                    <span className="text-muted text-[10px]">Booking: {incident.bookingUid}</span>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <DialogFooter>
+          <Button onClick={onClose} variant="outlined">
+            {t("close")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const AmbassadorManagement: React.FC = () => {
   const { t } = useLocale();
   const [fieldOfStudy, setFieldOfStudy] = useState<string | undefined>(undefined);
   const [isProvisionModalOpen, setIsProvisionModalOpen] = useState(false);
+  const [selectedAmbassador, setSelectedAmbassador] = useState<{ id: string; name: string } | null>(null);
 
   const utils = trpc.useContext();
 
@@ -193,6 +261,13 @@ export const AmbassadorManagement: React.FC = () => {
                     onClick={() => resetPasswordMutation.mutate({ userId: profile.userId })}>
                     {t("thotis_admin_reset_password")}
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => setSelectedAmbassador({ id: profile.id, name: profile.user.name || "" })}>
+                    {t("thotis_admin_view_incidents")}
+                  </Button>
                 </div>
               </Table.Cell>
             </Table.Row>
@@ -203,6 +278,13 @@ export const AmbassadorManagement: React.FC = () => {
       <ProvisionAmbassadorModal
         isOpen={isProvisionModalOpen}
         onClose={() => setIsProvisionModalOpen(false)}
+      />
+
+      <IncidentsModal
+        isOpen={!!selectedAmbassador}
+        onClose={() => setSelectedAmbassador(null)}
+        profileId={selectedAmbassador?.id || null}
+        name={selectedAmbassador?.name || null}
       />
     </div>
   );

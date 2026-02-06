@@ -1,9 +1,7 @@
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import logger from "@calcom/lib/logger";
-import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 import { teamMetadataSchema } from "@calcom/prisma/zod-utils";
 import type { NextApiResponse } from "next";
@@ -23,31 +21,16 @@ export interface BillingPortalResult {
 
 export abstract class BillingPortalService {
   protected permissionService: PermissionCheckService;
-  protected teamRepository: TeamRepository;
   protected contextName = "Team"; // Can be overridden by subclasses
-
   constructor() {
     this.permissionService = new PermissionCheckService();
-    this.teamRepository = new TeamRepository(prisma);
   }
 
   /**
    * Creates a billing portal URL for a Stripe customer
    */
   protected async createBillingPortalUrl(customerId: string, returnUrl: string): Promise<string> {
-    const log = logger.getSubLogger({ prefix: ["createBillingPortalUrl"] });
-
-    try {
-      const portalSession = await stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: returnUrl,
-      });
-
-      return portalSession.url;
-    } catch (e) {
-      log.error(`Failed to create billing portal session for ${customerId}: ${e}`);
-      throw new Error("Failed to create billing portal session");
-    }
+    throw new Error("Billing portal not supported in Open Source");
   }
 
   /**
@@ -115,7 +98,11 @@ export abstract class BillingPortalService {
     }
 
     // Create portal URL and redirect
-    const billingPortalUrl = await this.createBillingPortalUrl(customerId, returnUrl);
-    res.redirect(302, billingPortalUrl);
+    try {
+      const billingPortalUrl = await this.createBillingPortalUrl(customerId, returnUrl);
+      res.redirect(302, billingPortalUrl);
+    } catch (e) {
+      res.status(500).json({ message: "Billing portal not available" });
+    }
   }
 }

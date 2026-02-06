@@ -1,5 +1,4 @@
 import dayjs from "@calcom/dayjs";
-import type { TimeUnit } from "@calcom/prisma/enums";
 import { WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type {
   BookingCancelledDTO,
@@ -364,7 +363,15 @@ export class BookingWebhookService implements IBookingWebhookService {
               {
                 triggerEvent: WebhookTriggerEvents.AFTER_HOSTS_CAL_VIDEO_NO_SHOW,
                 bookingId: params.booking.id,
-                webhook: { ...webhook, time: webhook.time, timeUnit: webhook.timeUnit as TimeUnit },
+                webhook: {
+                  ...webhook,
+                  time: webhook.time,
+                  timeUnit: (webhook.timeUnit.toLowerCase() === "day"
+                    ? "d"
+                    : webhook.timeUnit.toLowerCase() === "hour"
+                      ? "h"
+                      : "m") as any,
+                },
               },
               { scheduledAt }
             );
@@ -395,7 +402,15 @@ export class BookingWebhookService implements IBookingWebhookService {
               {
                 triggerEvent: WebhookTriggerEvents.AFTER_GUESTS_CAL_VIDEO_NO_SHOW,
                 bookingId: params.booking.id,
-                webhook: { ...webhook, time: webhook.time, timeUnit: webhook.timeUnit as TimeUnit },
+                webhook: {
+                  ...webhook,
+                  time: webhook.time,
+                  timeUnit: (webhook.timeUnit.toLowerCase() === "day"
+                    ? "d"
+                    : webhook.timeUnit.toLowerCase() === "hour"
+                      ? "h"
+                      : "m") as any,
+                },
               },
               { scheduledAt }
             );

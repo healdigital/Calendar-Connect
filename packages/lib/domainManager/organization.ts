@@ -1,5 +1,5 @@
 import process from "node:process";
-import { subdomainSuffix } from "@calcom/ee/organizations/lib/orgDomains";
+import { subdomainSuffix } from "@calcom/features/organizations/lib/orgDomains";
 import logger from "@calcom/lib/logger";
 import { addDnsRecord, deleteDnsRecord } from "./deploymentServices/cloudflare";
 import {
