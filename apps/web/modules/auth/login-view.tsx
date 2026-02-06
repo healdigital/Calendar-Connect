@@ -1,16 +1,15 @@
 "use client";
 
+import process from "node:process";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
-import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
+import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBAPP_URL, WEBSITE_URL, WEBSITE_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { trpc } from "@calcom/trpc/react";
 import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
 import { EmailField, PasswordField } from "@calcom/ui/components/form";
-import { SAMLLogin } from "@calcom/web/modules/auth/components/SAMLLogin";
 import { LastUsed, useLastUsed } from "@calcom/web/modules/auth/hooks/useLastUsed";
 import AddToHomescreen from "@components/AddToHomescreen";
 import BackupCode from "@components/auth/BackupCode";
@@ -23,7 +22,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -39,14 +38,7 @@ const GoogleIcon = () => (
   <img className="mr-2 w-4 h-4 text-subtle" src="/google-icon-colored.svg" alt="Continue with Google Icon" />
 );
 export type PageProps = inferSSRProps<typeof getServerSideProps>;
-export default function Login({
-  csrfToken,
-  isGoogleLoginEnabled,
-  isSAMLLoginEnabled,
-  samlTenantID,
-  samlProductID,
-  totpEmail,
-}: PageProps) {
+export default function Login({ csrfToken, isGoogleLoginEnabled, totpEmail }: PageProps) {
   const searchParams = useCompatSearchParams();
   const { t } = useLocale();
   const router = useRouter();
@@ -161,21 +153,6 @@ export default function Login({
     else setErrorMessage(errorMessages[res.error] || t("something_went_wrong"));
   };
 
-  const { data, isPending, error } = trpc.viewer.public.ssoConnections.useQuery();
-
-  useEffect(
-    function refactorMeWithoutEffect() {
-      if (error) {
-        setErrorMessage(error.message);
-      }
-    },
-    [error]
-  );
-
-  const displaySSOLogin = HOSTED_CAL_FEATURES
-    ? true
-    : isSAMLLoginEnabled && !isPending && data?.connectionExists;
-
   return (
     <div className="text-emphasis min-h-screen [--cal-brand-emphasis:#101010] [--cal-brand-subtle:#9CA3AF] [--cal-brand-text:white] [--cal-brand:#111827] dark:[--cal-brand-emphasis:#e1e1e1] dark:[--cal-brand-text:black] dark:[--cal-brand:white]">
       <AuthContainer
@@ -212,16 +189,9 @@ export default function Login({
                     {lastUsed === "google" && <LastUsed />}
                   </Button>
                 )}
-                {displaySSOLogin && (
-                  <SAMLLogin
-                    disabled={formState.isSubmitting}
-                    samlTenantID={samlTenantID}
-                    samlProductID={samlProductID}
-                    setErrorMessage={setErrorMessage}
-                  />
-                )}
+                {displaySSOLogin && <></>}
               </div>
-              {(isGoogleLoginEnabled || displaySSOLogin) && (
+              {isGoogleLoginEnabled && (
                 <div className="my-8">
                   <div className="flex relative items-center">
                     <div className="border-t border-subtle grow" />

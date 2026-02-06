@@ -1,5 +1,4 @@
 import { eventTypeAppMetadataOptionalSchema } from "@calcom/app-store/zod-utils";
-import { scheduleMandatoryReminder } from "@calcom/ee/workflows/lib/reminders/scheduleMandatoryReminder";
 import { sendScheduledEmailsAndSMS } from "@calcom/emails/email-manager";
 import type { Actor } from "@calcom/features/booking-audit/lib/dto/types";
 import type { ActionSource } from "@calcom/features/booking-audit/lib/types/actionSource";
@@ -7,15 +6,6 @@ import { getBookingEventHandlerService } from "@calcom/features/bookings/di/Book
 import type { EventManagerUser } from "@calcom/features/bookings/lib/EventManager";
 import EventManager, { placeholderCreatedEvent } from "@calcom/features/bookings/lib/EventManager";
 import type { ISimpleLogger } from "@calcom/features/di/shared/services/logger.service";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import {
-  allowDisablingAttendeeConfirmationEmails,
-  allowDisablingHostConfirmationEmails,
-} from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
-import type { Workflow } from "@calcom/features/ee/workflows/lib/types";
 import getWebhooks from "@calcom/features/webhooks/lib/getWebhooks";
 import { scheduleTrigger } from "@calcom/features/webhooks/lib/scheduleTrigger";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
@@ -113,9 +103,6 @@ export async function handleConfirmation(args: {
       parent?: {
         teamId: number | null;
       } | null;
-      workflows?: {
-        workflow: Workflow;
-      }[];
     } | null;
     metadata?: Prisma.JsonValue;
     eventTypeId: number | null;
@@ -153,7 +140,8 @@ export async function handleConfirmation(args: {
   const scheduleResult = await eventManager.create(evt, { skipCalendarEvent: !areCalendarEventsEnabled });
   const results = scheduleResult.results;
   const metadata: AdditionalInformation = {};
-  const workflows = await getAllWorkflowsFromEventType(eventType, booking.userId);
+
+  // Workflows Logic Removed for OSS
 
   const spanContext = distributedTracing.createSpan(traceContext, "handle_confirmation");
 
@@ -174,23 +162,10 @@ export async function handleConfirmation(args: {
       metadata.entryPoints = results[0].createdEvent?.entryPoints;
     }
     try {
-      let isHostConfirmationEmailsDisabled = false;
-      let isAttendeeConfirmationEmailDisabled = false;
-
-      if (workflows) {
-        isHostConfirmationEmailsDisabled =
-          eventTypeMetadata?.disableStandardEmails?.confirmation?.host || false;
-        isAttendeeConfirmationEmailDisabled =
-          eventTypeMetadata?.disableStandardEmails?.confirmation?.attendee || false;
-
-        if (isHostConfirmationEmailsDisabled) {
-          isHostConfirmationEmailsDisabled = allowDisablingHostConfirmationEmails(workflows);
-        }
-
-        if (isAttendeeConfirmationEmailDisabled) {
-          isAttendeeConfirmationEmailDisabled = allowDisablingAttendeeConfirmationEmails(workflows);
-        }
-      }
+      const isHostConfirmationEmailsDisabled =
+        eventTypeMetadata?.disableStandardEmails?.confirmation?.host || false;
+      const isAttendeeConfirmationEmailDisabled =
+        eventTypeMetadata?.disableStandardEmails?.confirmation?.attendee || false;
 
       if (emailsEnabled) {
         await sendScheduledEmailsAndSMS(
@@ -409,7 +384,7 @@ export async function handleConfirmation(args: {
 
   const orgId = await getOrgIdFromMemberOrTeamId({ memberId: userId, teamId });
 
-  const bookerUrl = await getBookerBaseUrl(orgId ?? null);
+  // const bookerUrl = await getBookerBaseUrl(orgId ?? null); // EE Function removed.
 
   await fireBookingAcceptedEvent({
     actor,
@@ -419,55 +394,7 @@ export async function handleConfirmation(args: {
     tracingLogger,
   });
 
-  //Workflows - set reminders for confirmed events
-  try {
-    for (let index = 0; index < updatedBookings.length; index++) {
-      const eventTypeSlug = updatedBookings[index].eventType?.slug || "";
-      const evtOfBooking = {
-        ...evt,
-        rescheduleReason: updatedBookings[index].cancellationReason || null,
-        metadata: { videoCallUrl: meetingUrl },
-        eventType: {
-          slug: eventTypeSlug,
-          schedulingType: updatedBookings[index].eventType?.schedulingType,
-          hosts: updatedBookings[index].eventType?.hosts,
-        },
-        bookerUrl,
-      };
-      evtOfBooking.startTime = updatedBookings[index].startTime.toISOString();
-      evtOfBooking.endTime = updatedBookings[index].endTime.toISOString();
-      evtOfBooking.uid = updatedBookings[index].uid;
-      const isFirstBooking = index === 0;
-
-      if (!eventTypeMetadata?.disableStandardEmails?.all?.attendee) {
-        await scheduleMandatoryReminder({
-          evt: evtOfBooking,
-          workflows,
-          requiresConfirmation: false,
-          hideBranding: !!updatedBookings[index].eventType?.owner?.hideBranding,
-          seatReferenceUid: evt.attendeeSeatId,
-          isPlatformNoEmail: !emailsEnabled && Boolean(platformClientParams?.platformClientId),
-          traceContext: spanContext,
-        });
-      }
-
-      const creditService = new CreditService();
-
-      await WorkflowService.scheduleWorkflowsForNewBooking({
-        workflows,
-        smsReminderNumber: updatedBookings[index].smsReminderNumber,
-        calendarEvent: evtOfBooking,
-        hideBranding: !!updatedBookings[index].eventType?.owner?.hideBranding,
-        isConfirmedByDefault: true,
-        isNormalBookingOrFirstRecurringSlot: isFirstBooking,
-        isRescheduleEvent: false,
-        creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
-      });
-    }
-  } catch (error) {
-    // Silently fail
-    console.error(error);
-  }
+  //Workflows - set reminders for confirmed events REMOVED for OSS
 
   try {
     const subscribersBookingCreated = await getWebhooks({
