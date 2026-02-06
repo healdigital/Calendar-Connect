@@ -1,11 +1,16 @@
 import { constantsScenarios } from "@calcom/lib/__mocks__/constants";
-import { getBrand } from "@calcom/features/ee/organizations/lib/getBrand";
+
+// import { getBrand } from "@calcom/features/ee/organizations/lib/getBrand";
+const getBrand = { mockResolvedValue: vi.fn() };
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildEventUrlFromBooking } from "./buildEventUrlFromBooking";
 
+/*
 vi.mock("@calcom/features/ee/organizations/lib/getBrand", () => ({
   getBrand: vi.fn(),
 }));
+*/
 
 const WEBSITE_URL = "https://buildEventTest.example";
 beforeEach(() => {

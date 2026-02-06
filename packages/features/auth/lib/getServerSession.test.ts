@@ -9,8 +9,6 @@ const {
   resetPrismaMock,
   createLoggerMock,
   createPrismaMock,
-  createLicenseKeyMock,
-  createDeploymentRepositoryMock,
   createUserRepositoryMock,
   createAvatarUrlMock,
   createSafeStringifyMock,
@@ -23,8 +21,6 @@ const {
 
 vi.mock("@calcom/lib/logger", createLoggerMock);
 vi.mock("@calcom/prisma", createPrismaMock);
-vi.mock("@calcom/ee/common/server/LicenseKeyService", createLicenseKeyMock);
-vi.mock("@calcom/features/ee/deployment/repositories/DeploymentRepository", createDeploymentRepositoryMock);
 vi.mock("@calcom/features/users/repositories/UserRepository", createUserRepositoryMock);
 vi.mock("@calcom/lib/getAvatarUrl", createAvatarUrlMock);
 vi.mock("@calcom/lib/safeStringify", createSafeStringifyMock);

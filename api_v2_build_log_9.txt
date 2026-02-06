@@ -1,0 +1,490 @@
+[96msrc/api-v2-ee-removal.property.test.ts[0m:[93m75[0m:[93m6[0m - [91merror[0m[90m TS2554: [0mExpected 1-3 arguments, but got 4.
+
+[7m75[0m   }, { timeout: 30000 });
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m9[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m9[0m     // @ts-expect-error
+[7m [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m16[0m:[93m15[0m - [91merror[0m[90m TS2345: [0mArgument of type 'INestApplication<any>' is not assignable to parameter of type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>'.
+  Type 'INestApplication<any>' is missing the following properties from type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>': set, engine, enable, disable, and 5 more.
+
+[7m16[0m     bootstrap(app);
+[7m  [0m [91m              ~~~[0m
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m182[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m182[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m205[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m205[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.verification.controller.ts[0m:[93m106[0m:[93m15[0m - [91merror[0m[90m TS2322: [0mType '{ ok: boolean; }' is not assignable to type 'boolean'.
+
+[7m106[0m       data: { verified },
+[7m   [0m [91m              ~~~~~~~~[0m
+
+  [96msrc/modules/atoms/outputs/verify-email-code.output.ts[0m:[93m10[0m:[93m12[0m
+    [7m10[0m   readonly verified!: boolean;
+    [7m  [0m [96m           ~~~~~~~~[0m
+    The expected type comes from property 'verified' which is declared here on type 'VerifyEmailCodeData'
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m18[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'teamMembersMatchingAttributeLogic' does not exist on type 'any[]'.
+
+[7m18[0m       teamMembersMatchingAttributeLogic: matchingTeamMembersWithResult,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m19[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'mainAttributeLogicBuildingWarnings' does not exist on type 'any[]'.
+
+[7m19[0m       mainAttributeLogicBuildingWarnings: mainWarnings,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m20[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'fallbackAttributeLogicBuildingWarnings' does not exist on type 'any[]'.
+
+[7m20[0m       fallbackAttributeLogicBuildingWarnings: fallbackWarnings,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m21[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'troubleshooter' does not exist on type 'any[]'.
+
+[7m21[0m       troubleshooter,
+[7m  [0m [91m      ~~~~~~~~~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m457[0m:[93m64[0m - [91merror[0m[90m TS2554: [0mExpected 1 arguments, but got 2.
+
+[7m457[0m           idempotencyKey: getIncrementUsageIdempotencyKey(uid, userId),
+[7m   [0m [91m                                                               ~~~~~~[0m
+[96msrc/modules/conferencing/services/office365-video.service.ts[0m:[93m20[0m:[93m33[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m20[0m   private redirectUri = `${this.config.get("api.url")}/conferencing/${OFFICE_365_VIDEO}/oauth/callback`;
+[7m  [0m [91m                                ~~~~~~[0m
+
+  [96msrc/modules/conferencing/services/office365-video.service.ts[0m:[93m24[0m:[93m5[0m
+    [7m24[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/conferencing/services/zoom-video.service.ts[0m:[93m26[0m:[93m33[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m26[0m   private redirectUri = `${this.config.get("api.url")}/conferencing/${ZOOM}/oauth/callback`;
+[7m  [0m [91m                                ~~~~~~[0m
+
+  [96msrc/modules/conferencing/services/zoom-video.service.ts[0m:[93m29[0m:[93m5[0m
+    [7m29[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/destination-calendars/services/destination-calendars.service.ts[0m:[93m38[0m:[93m13[0m - [91merror[0m[90m TS2367: [0mThis comparison appears to be unintentional because the types 'null | undefined' and 'string' have no overlap.
+
+[7m38[0m             cal.delegationCredentialId === delegationCredentialId
+[7m  [0m [91m            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/email/email.service.ts[0m:[93m22[0m:[93m41[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 22[0m     await sendSignupToOrganizationEmail({
+[7m   [0m [91m                                        ~[0m
+[7m 23[0m       usernameOrEmail,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 28[0m       translation,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~[0m
+[7m 29[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/organizations/event-types/services/organizations-event-types.service.ts[0m:[93m46[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m46[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/services/organizations-membership-output.service.ts[0m:[93m24[0m:[93m11[0m - [91merror[0m[90m TS2740: [0mType 'Promise<any[]>' is missing the following properties from type 'any[]': length, pop, push, concat, and 29 more.
+
+[7m24[0m     const groupedMembershipAttributes: GroupedAttribute[] = groupMembershipAttributes(AttributeToUser);
+[7m  [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/stripe/services/organizations-stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m50[0m       data["default_currency"] = account.default_currency;
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/invite/organizations-teams-invite.controller.ts[0m:[93m39[0m:[93m38[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type 'InviteDataDto'.
+
+[7m39[0m     return { status: SUCCESS_STATUS, data: result };
+[7m  [0m [91m                                     ~~~~[0m
+
+  [96msrc/modules/organizations/teams/invite/outputs/invite.output.ts[0m:[93m25[0m:[93m3[0m
+    [7m25[0m   data!: InviteDataDto;
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreateInviteOutputDto'
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m87[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'email' does not exist on type 'String'.
+
+[7m87[0m       email: teamMemberEmail,
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m88[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'recordType' does not exist on type 'String'.
+
+[7m88[0m       recordType: crmOwnerRecordType,
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m89[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'crmAppSlug' does not exist on type 'String'.
+
+[7m89[0m       crmAppSlug,
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m16[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'getEventTypeWithSeats' does not exist on type 'EventTypesRepository_2024_04_15'.
+
+[7m16[0m     const eventType = await this.eventTypeRepo.getEventTypeWithSeats(input.eventTypeId);
+[7m  [0m [91m                                               ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m37[0m:[93m30[0m - [91merror[0m[90m TS7006: [0mParameter 'user' implicitly has an 'any' type.
+
+[7m37[0m         eventType.users.map((user) =>
+[7m  [0m [91m                             ~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m60[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'teamId' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'teamId' does not exist on type '(...args: any[]) => Promise<any>'.
+
+[7m60[0m     const isTeamEvent = !!eventType?.teamId;
+[7m  [0m [91m                                     ~~~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m65[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'id' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'id' does not exist on type '(...args: any[]) => Promise<any>'.
+
+[7m65[0m     const eventTypeId = eventType.id;
+[7m  [0m [91m                                  ~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m66[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'slug' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'slug' does not exist on type '(...args: any[]) => Promise<any>'.
+
+[7m66[0m     const eventTypeSlug = eventType.slug;
+[7m  [0m [91m                                    ~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m36[0m:[93m33[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m36[0m   private redirectUri = `${this.config.get("api.url")}/stripe/save`;
+[7m  [0m [91m                                ~~~~~~[0m
+
+  [96msrc/modules/stripe/stripe.service.ts[0m:[93m43[0m:[93m5[0m
+    [7m43[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m37[0m:[93m28[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m37[0m   private webAppUrl = this.config.get("app.baseUrl");
+[7m  [0m [91m                           ~~~~~~[0m
+
+  [96msrc/modules/stripe/stripe.service.ts[0m:[93m43[0m:[93m5[0m
+    [7m43[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m38[0m:[93m30[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m38[0m   private environment = this.config.get("env.type");
+[7m  [0m [91m                             ~~~~~~[0m
+
+  [96msrc/modules/stripe/stripe.service.ts[0m:[93m43[0m:[93m5[0m
+    [7m43[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m39[0m:[93m37[0m - [91merror[0m[90m TS2729: [0mProperty 'config' is used before its initialization.
+
+[7m39[0m   private teamMonthlyPriceId = this.config.get("stripe.teamMonthlyPriceId");
+[7m  [0m [91m                                    ~~~~~~[0m
+
+  [96msrc/modules/stripe/stripe.service.ts[0m:[93m43[0m:[93m5[0m
+    [7m43[0m     private readonly config: ConfigService,
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'config' is declared here.
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m50[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m111[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m111[0m       data["default_currency"] = account.default_currency;
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/stripe/utils/newStripeInstance.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m5[0m   apiVersion: "2020-08-27",
+[7m [0m [91m  ~~~~~~~~~~[0m
+[96msrc/modules/students/students.controller.ts[0m:[93m43[0m:[93m69[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'AcademicField'.
+
+[7m43[0m       const profiles = await this.profileService.getProfilesByField(field);
+[7m  [0m [91m                                                                    ~~~~~[0m
+[96msrc/modules/teams/event-types/controllers/teams-event-types.controller.ts[0m:[93m132[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ id: number; uid: string; title: string; startTime: string; endTime: string; }'.
+
+[7m132[0m       data,
+[7m   [0m [91m      ~~~~[0m
+
+  [96m../../../packages/features/event-types/outputs/CreatePhoneCallOutput.ts[0m:[93m19[0m:[93m3[0m
+    [7m19[0m   data!: {
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreatePhoneCallOutput'
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m45[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m45[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m127[0m:[93m9[0m - [91merror[0m[90m TS2739: [0mType '{ id: number; role: UserPermissionRole; organizationId: null; organization: { id: null; isOrgAdmin: boolean; metadata: {}; requestedSlug: null; }; profile: { id: number | null; }; metadata: JsonValue; email: string; }' is missing the following properties from type 'User': username, userLevelSelectedCalendars, locale
+
+[7m127[0m         user: eventTypeUser,
+[7m   [0m [91m        ~~~~[0m
+
+  [96m../../../packages/trpc/server/routers/viewer/eventTypes/heavy/update.handler.ts[0m:[93m64[0m:[93m5[0m
+    [7m64[0m     user: User;
+    [7m  [0m [96m    ~~~~[0m
+    The expected type comes from property 'user' which is declared here on type '{ user: User; res?: NextApiResponse | ServerResponse<IncomingMessage> | undefined; prisma: PrismaClient; }'
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m129[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m129[0m         // @ts-expect-error
+[7m   [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/invite/controllers/teams-invite.controller.ts[0m:[93m27[0m:[93m38[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type 'InviteDataDto'.
+
+[7m27[0m     return { status: SUCCESS_STATUS, data: result };
+[7m  [0m [91m                                     ~~~~[0m
+
+  [96msrc/modules/teams/invite/outputs/invite.output.ts[0m:[93m37[0m:[93m3[0m
+    [7m37[0m   data!: InviteDataDto;
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreateInviteOutputDto'
+[96msrc/modules/teams/teams/services/teams.service.ts[0m:[93m12[0m:[93m39[0m - [91merror[0m[90m TS2729: [0mProperty 'configService' is used before its initialization.
+
+[7m12[0m   private isTeamBillingEnabled = this.configService.get("stripe.isTeamBillingEnabled");
+[7m  [0m [91m                                      ~~~~~~~~~~~~~[0m
+
+  [96msrc/modules/teams/teams/services/teams.service.ts[0m:[93m18[0m:[93m5[0m
+    [7m18[0m     private readonly configService: ConfigService
+    [7m  [0m [96m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'configService' is declared here.
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m18[0m:[93m51[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 18[0m     const res = await sendEmailVerificationByCode({
+[7m   [0m [91m                                                  ~[0m
+[7m 19[0m       email: email,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 22[0m       isVerifyingEmail: true,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 23[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m            ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m                       ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m29[0m:[93m14[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m29[0m     if (!res.ok) {
+[7m  [0m [91m             ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m33[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m33[0m     if (res.skipped) {
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m63[0m:[93m55[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m63[0m     const isValidToken = await verifyEmailCodeHandler({
+[7m  [0m [91m                                                      ~[0m
+[7m64[0m       ctx: { user: { id: userId } },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m65[0m       input: { email, code, teamId },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m66[0m     });
+[7m  [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m67[0m:[93m9[0m - [91merror[0m[90m TS1345: [0mAn expression of type 'void' cannot be tested for truthiness.
+
+[7m67[0m     if (isValidToken) {
+[7m  [0m [91m        ~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/inputs/workflow-step.input.ts[0m:[93m142[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'action' will overwrite the base property in 'BaseWorkflowStepDto'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m142[0m   action!: FormAllowedStepAction;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/PaymentService.ts[0m:[93m42[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m42[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/server.ts[0m:[93m34[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m34[0m   apiVersion: "2020-08-27",
+[7m  [0m [91m  ~~~~~~~~~~[0m
+[96m../../../packages/features/routing-forms/lib/getUrlSearchParamsToForward.ts[0m:[93m91[0m:[93m3[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m91[0m   // @ts-expect-error
+[7m  [0m [91m  ~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m13[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m13[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m15[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m15[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/bookings/2024-08-13/outputs/booking.output.ts[0m:[93m335[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'bookingFieldsResponses' will overwrite the base property in 'BookingOutput_2024_08_13'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m335[0m   bookingFieldsResponses!: Record<string, unknown>;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m54[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'type' will overwrite the base property in 'NameDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m54[0m   type!: "name";
+[7m  [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m80[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'type' will overwrite the base property in 'SplitNameDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m80[0m   type!: "splitName";
+[7m  [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m102[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'type' will overwrite the base property in 'EmailDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m102[0m   type!: "email";
+[7m   [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m106[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'required' will overwrite the base property in 'EmailDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m106[0m   required!: boolean;
+[7m   [0m [91m  ~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m113[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'EmailDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m113[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m169[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'slug' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m169[0m   slug!: "rescheduleReason";
+[7m   [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m179[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'required' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m179[0m   required!: boolean;
+[7m   [0m [91m  ~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m186[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m186[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m191[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'label' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m191[0m   label?: string;
+[7m   [0m [91m  ~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m196[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'placeholder' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m196[0m   placeholder?: string;
+[7m   [0m [91m  ~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m206[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'disableOnPrefill' will overwrite the base property in 'RescheduleReasonDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m206[0m   disableOnPrefill!: boolean;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m222[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'slug' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m222[0m   slug!: "title";
+[7m   [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m232[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'required' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m232[0m   required!: boolean;
+[7m   [0m [91m  ~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m239[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m239[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m244[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'label' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m244[0m   label?: string;
+[7m   [0m [91m  ~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m249[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'placeholder' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m249[0m   placeholder?: string;
+[7m   [0m [91m  ~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m259[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'disableOnPrefill' will overwrite the base property in 'TitleDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m259[0m   disableOnPrefill!: boolean;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m275[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'slug' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m275[0m   slug!: "notes";
+[7m   [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m285[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'required' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m285[0m   required!: boolean;
+[7m   [0m [91m  ~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m292[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m292[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m297[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'label' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m297[0m   label?: string;
+[7m   [0m [91m  ~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m302[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'placeholder' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m302[0m   placeholder?: string;
+[7m   [0m [91m  ~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m312[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'disableOnPrefill' will overwrite the base property in 'NotesDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m312[0m   disableOnPrefill!: boolean;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m328[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'slug' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m328[0m   slug!: "guests";
+[7m   [0m [91m  ~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m338[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'required' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m338[0m   required!: boolean;
+[7m   [0m [91m  ~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m345[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m345[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m350[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'label' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m350[0m   label?: string;
+[7m   [0m [91m  ~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m355[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'placeholder' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m355[0m   placeholder?: string;
+[7m   [0m [91m  ~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m365[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'disableOnPrefill' will overwrite the base property in 'GuestsDefaultFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m365[0m   disableOnPrefill!: boolean;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m435[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'PhoneFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m435[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m452[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'AddressFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m452[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m469[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'TextFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m469[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m486[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'UrlFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m486[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m503[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'NumberFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m503[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m520[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'TextAreaFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m520[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m537[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'SelectFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m537[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m554[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'MultiSelectFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m554[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m571[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'MultiEmailFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m571[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m588[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'CheckboxGroupFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m588[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m605[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'RadioGroupFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m605[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/booking-fields.output.ts[0m:[93m622[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hidden' will overwrite the base property in 'BooleanFieldInput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m622[0m   hidden!: boolean;
+[7m   [0m [91m  ~~~~~~[0m
+[96m../../../packages/platform/types/event-types/event-types_2024_06_14/outputs/event-type.output.ts[0m:[93m595[0m:[93m3[0m - [91merror[0m[90m TS2612: [0mProperty 'hideCalendarEventDetails' will overwrite the base property in 'BaseEventTypeOutput_2024_06_14'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m595[0m   hideCalendarEventDetails?: boolean;
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/platform/types/organizations/teams/outputs/team.output.ts[0m:[93m11[0m:[93m12[0m - [91merror[0m[90m TS2612: [0mProperty 'parentId' will overwrite the base property in 'TeamOutputDto'. If this is intentional, add an initializer. Otherwise, add a 'declare' modifier or remove the redundant declaration.
+
+[7m11[0m   readonly parentId?: number;
+[7m  [0m [91m           ~~~~~~~~[0m
+[96m../../../packages/trpc/server/routers/viewer/slots/util.ts[0m:[93m1073[0m:[93m25[0m - [91merror[0m[90m TS2729: [0mProperty 'dependencies' is used before its initialization.
+
+[7m1073[0m     withSlotsCache(this.dependencies.redisClient, this._getAvailableSlots.bind(this)),
+[7m    [0m [91m                        ~~~~~~~~~~~~[0m
+
+  [96m../../../packages/trpc/server/routers/viewer/slots/util.ts[0m:[93m169[0m:[93m15[0m
+    [7m169[0m   constructor(public readonly dependencies: IAvailableSlotsService) {}
+    [7m   [0m [96m              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    'dependencies' is declared here.
+
+Found 99 error(s).
+

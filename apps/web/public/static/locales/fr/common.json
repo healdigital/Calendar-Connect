@@ -4717,5 +4717,7 @@
   "last_6_months": "6 derniers mois",
   "last_12_months": "12 derniers mois",
   "calendar_events_disabled_video_limitation": "Lorsque les événements de calendrier sont désactivés, les liens de réunion ne peuvent pas être générés pour les applications dont la génération de liens est liée à la création d'événements de calendrier, par exemple Google Meet et Microsoft Teams. Les autres applications vidéo comme Cal Video continueront de fonctionner.",
-  "ADD_NEW_STRINGS_ABOVE_THIS_LINE_TO_PREVENT_MERGE_CONFLICTS": "↑↑↑↑↑↑↑↑↑↑↑↑↑ Ajoutez vos nouvelles chaînes ci-dessus ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑"
+  "thotis_token_expired_error": "Votre lien a expiré ou a déjà été utilisé.",
+  "thotis_request_new_link": "Demander un nouveau lien",
+  "ADD_NEW_STRINGS_ABOVE_THIS_LINE_TO_PREVENT_MERGE_CONFLICTS": "↑↑↑↑↑↑↑↑↑↑↑↑↑ Add your new strings above here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑"
 }

@@ -10,7 +10,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator";
-import { ScheduleOutput } from "@/ee/schedules/schedules_2024_04_15/outputs/schedule.output";
 
 export class UserVerifiedPhoneOutputData {
   @Expose()
@@ -83,7 +82,7 @@ export class UserVerifiedPhoneOutput {
   status!: typeof SUCCESS_STATUS | typeof ERROR_STATUS;
 
   @ApiProperty({
-    type: ScheduleOutput,
+    type: UserVerifiedPhoneOutputData,
   })
   @IsNotEmptyObject()
   @Type(() => UserVerifiedPhoneOutputData)
@@ -96,7 +95,7 @@ export class TeamVerifiedPhoneOutput {
   status!: typeof SUCCESS_STATUS | typeof ERROR_STATUS;
 
   @ApiProperty({
-    type: ScheduleOutput,
+    type: TeamVerifiedPhoneOutputData,
   })
   @IsNotEmptyObject()
   @Type(() => TeamVerifiedPhoneOutputData)
@@ -109,7 +108,7 @@ export class UserVerifiedPhonesOutput {
   status!: typeof SUCCESS_STATUS | typeof ERROR_STATUS;
 
   @ApiProperty({
-    type: ScheduleOutput,
+    type: [UserVerifiedPhoneOutputData],
   })
   @IsNotEmptyObject()
   @IsArray()
@@ -124,7 +123,7 @@ export class TeamVerifiedPhonesOutput {
   status!: typeof SUCCESS_STATUS | typeof ERROR_STATUS;
 
   @ApiProperty({
-    type: ScheduleOutput,
+    type: [TeamVerifiedPhoneOutputData],
   })
   @IsNotEmptyObject()
   @IsArray()

@@ -1,0 +1,676 @@
+[96msrc/api-v2-ee-removal.property.test.ts[0m:[93m75[0m:[93m6[0m - [91merror[0m[90m TS2554: [0mExpected 1-3 arguments, but got 4.
+
+[7m75[0m   }, { timeout: 30000 });
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m9[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m9[0m     // @ts-expect-error
+[7m [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m16[0m:[93m15[0m - [91merror[0m[90m TS2345: [0mArgument of type 'INestApplication<any>' is not assignable to parameter of type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>'.
+  Type 'INestApplication<any>' is missing the following properties from type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>': set, engine, enable, disable, and 5 more.
+
+[7m16[0m     bootstrap(app);
+[7m  [0m [91m              ~~~[0m
+[96msrc/filters/trpc-exception.filter.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TRPCError'.
+
+[7m2[0m import { TRPCError } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~[0m
+[96msrc/lib/repositories/prisma-platform-billing.repository.ts[0m:[93m9[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m9[0m     super(dbWrite.prisma as unknown as PrismaClient);
+[7m [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/lib/roles/constants.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/lib/services/organization-membership.service.ts[0m:[93m8[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m8[0m     super({ organizationRepository: organizationsRepository });
+[7m [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/lib/services/stripe-billing-provider.service.ts[0m:[93m7[0m:[93m14[0m - [91merror[0m[90m TS2420: [0mClass 'StripeBillingProviderService' incorrectly implements interface 'Pick<IBillingProviderService, "createSubscriptionUsageRecord">'.
+  Property 'createSubscriptionUsageRecord' is missing in type 'StripeBillingProviderService' but required in type 'Pick<IBillingProviderService, "createSubscriptionUsageRecord">'.
+
+[7m7[0m export class StripeBillingProviderService
+[7m [0m [91m             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/lib/services/stripe-billing-provider.service.ts[0m:[93m9[0m:[93m44[0m - [91merror[0m[90m TS2344: [0mType '"createSubscriptionUsageRecord"' does not satisfy the constraint 'never'.
+
+[7m9[0m   implements Pick<IBillingProviderService, "createSubscriptionUsageRecord">
+[7m [0m [91m                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/lib/services/stripe-billing-provider.service.ts[0m:[93m12[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m12[0m     super(stripeService.getStripe());
+[7m  [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/lib/services/tasker/platform-billing-sync-tasker.service.ts[0m:[93m9[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 9[0m     super({
+[7m  [0m [91m          ~[0m
+[7m10[0m       logger,
+[7m  [0m [91m~~~~~~~~~~~~~[0m
+[7m11[0m       billingTaskService,
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m12[0m     });
+[7m  [0m [91m~~~~~[0m
+[96msrc/lib/services/tasker/platform-billing-task.service.ts[0m:[93m16[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 16[0m     super({
+[7m   [0m [91m          ~[0m
+[7m 17[0m       logger,
+[7m   [0m [91m~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 20[0m       billingProviderService,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 21[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/lib/services/tasker/platform-billing-tasker.service.ts[0m:[93m14[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 14[0m     super({
+[7m   [0m [91m          ~[0m
+[7m 15[0m       logger,
+[7m   [0m [91m~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 17[0m       syncTasker: syncTasker,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 18[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/lib/services/tasker/platform-billing-trigger-tasker.service.ts[0m:[93m8[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 8[0m     super({
+[7m  [0m [91m          ~[0m
+[7m 9[0m       logger,
+[7m  [0m [91m~~~~~~~~~~~~~[0m
+[7m10[0m     });
+[7m  [0m [91m~~~~~[0m
+[96msrc/modules/api-keys/services/api-keys.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'createApiKeyHandler'.
+
+[7m1[0m import { createApiKeyHandler } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/atoms.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'credentialForCalendarServiceSelect'.
+
+[7m1[0m import { credentialForCalendarServiceSelect, paymentDataSelect } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/atoms.repository.ts[0m:[93m1[0m:[93m46[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'paymentDataSelect'.
+
+[7m1[0m import { credentialForCalendarServiceSelect, paymentDataSelect } from "@calcom/platform-libraries";
+[7m [0m [91m                                             ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m182[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m182[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m205[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m205[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/inputs/find-team-members-matching-attribute.input.ts[0m:[93m1[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TFindTeamMembersMatchingAttributeLogicInputSchema'.
+
+[7m1[0m import type { TFindTeamMembersMatchingAttributeLogicInputSchema } from "@calcom/platform-libraries";
+[7m [0m [91m              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'findTeamMembersMatchingAttributeLogic'.
+
+[7m1[0m import { findTeamMembersMatchingAttributeLogic } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/event-types-atom.service.ts[0m:[93m1[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TeamQuery'.
+
+[7m1[0m import type { TeamQuery } from "@calcom/platform-libraries";
+[7m [0m [91m              ~~~~~~~~~[0m
+[96msrc/modules/atoms/services/event-types-atom.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'checkAdminOrOwner'.
+
+[7m2[0m import { checkAdminOrOwner, getClientSecretFromPayment } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/event-types-atom.service.ts[0m:[93m2[0m:[93m29[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getClientSecretFromPayment'.
+
+[7m2[0m import { checkAdminOrOwner, getClientSecretFromPayment } from "@calcom/platform-libraries";
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/event-types-atom.service.ts[0m:[93m238[0m:[93m15[0m - [91merror[0m[90m TS2322: [0mType '{ [x: string]: any; }[]' is not assignable to type 'CredentialPayload[]'.
+  Type '{ [x: string]: any; }' is not assignable to type 'CredentialPayload'.
+    Type '{ [x: string]: any; }' is missing the following properties from type '{ id: number; type: string; userId: number | null; teamId: number | null; key: JsonValue; encryptedKey: string | null; appId: string | null; invalid: boolean | null; user: { ...; } | null; }': id, type, userId, teamId, and 5 more.
+
+[7m238[0m               credentials,
+[7m   [0m [91m              ~~~~~~~~~~~[0m
+
+  [96m../../../packages/app-store/delegationCredential.ts[0m:[93m136[0m:[93m46[0m
+    [7m136[0m   TUser extends { id: number; email: string; credentials: CredentialPayload[] },
+    [7m   [0m [96m                                             ~~~~~~~~~~~[0m
+    The expected type comes from property 'credentials' which is declared here on type '{ id: number; email: string; credentials: CredentialPayload[]; }'
+[96msrc/modules/atoms/services/verification-atom.service.ts[0m:[93m4[0m:[93m3[0m - [91merror[0m[90m TS2724: [0m'"@calcom/platform-libraries"' has no exported member named 'verifyCodeAuthenticated'. Did you mean 'verifyCodeUnAuthenticated'?
+
+[7m4[0m   verifyCodeAuthenticated,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/auth/decorators/roles/membership-roles.decorator.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/auth/guards/organization-roles/organization-roles.guard.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m447[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'rescheduleUsageIncrement' does not exist on type 'PlatformBillingTasker'.
+
+[7m447[0m         this.platformBillingTasker.rescheduleUsageIncrement({
+[7m   [0m [91m                                   ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m452[0m:[93m34[0m - [91merror[0m[90m TS2339: [0mProperty 'incrementUsage' does not exist on type 'PlatformBillingTasker'.
+
+[7m452[0m       this.platformBillingTasker.incrementUsage({
+[7m   [0m [91m                                 ~~~~~~~~~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m457[0m:[93m64[0m - [91merror[0m[90m TS2554: [0mExpected 1 arguments, but got 2.
+
+[7m457[0m           idempotencyKey: getIncrementUsageIdempotencyKey(uid, userId),
+[7m   [0m [91m                                                               ~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m495[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'cancelUsageIncrement' does not exist on type 'PlatformBillingTasker'.
+
+[7m495[0m       await this.platformBillingTasker.cancelUsageIncrement({ payload: { bookingUid } });
+[7m   [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/conferencing/services/conferencing.service.ts[0m:[93m8[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'userMetadata'.
+
+[7m8[0m import { userMetadata } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+[96msrc/modules/credentials/credentials.repository.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'credentialForCalendarServiceSelect'.
+
+[7m2[0m import { credentialForCalendarServiceSelect } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/destination-calendars/services/destination-calendars.service.ts[0m:[93m38[0m:[93m13[0m - [91merror[0m[90m TS2367: [0mThis comparison appears to be unintentional because the types 'null | undefined' and 'string' have no overlap.
+
+[7m38[0m             cal.delegationCredentialId === delegationCredentialId
+[7m  [0m [91m            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/email/email.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getTranslation'.
+
+[7m1[0m import { getTranslation } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/email/email.service.ts[0m:[93m22[0m:[93m41[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 22[0m     await sendSignupToOrganizationEmail({
+[7m   [0m [91m                                        ~[0m
+[7m 23[0m       usernameOrEmail,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 28[0m       translation,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~[0m
+[7m 29[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/event-types/event-types.module.ts[0m:[93m1[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module './modules/action-codes/action-codes.module' or its corresponding type declarations.
+
+[7m1[0m import { ActionCodesModule } from "./modules/action-codes/action-codes.module";
+[7m [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/event-types/event-types.module.ts[0m:[93m10[0m:[93m2[0m - [91merror[0m[90m TS2304: [0mCannot find name 'Module'.
+
+[7m10[0m @Module({
+[7m  [0m [91m ~~~~~~[0m
+[96msrc/modules/memberships/memberships.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/controllers/oauth-client-users/oauth-client-users.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m2[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/controllers/oauth-client-webhooks/oauth-client-webhooks.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m2[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/controllers/oauth-clients/oauth-clients.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m2[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/services/oauth-clients-users.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'CreationSource'.
+
+[7m1[0m import { CreationSource, createNewUsersConnectToOrgIfExists, slugify } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/services/oauth-clients-users.service.ts[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'createNewUsersConnectToOrgIfExists'.
+
+[7m1[0m import { CreationSource, createNewUsersConnectToOrgIfExists, slugify } from "@calcom/platform-libraries";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/oauth-clients/services/oauth-clients-users.service.ts[0m:[93m1[0m:[93m62[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugify'.
+
+[7m1[0m import { CreationSource, createNewUsersConnectToOrgIfExists, slugify } from "@calcom/platform-libraries";
+[7m [0m [91m                                                             ~~~~~~~[0m
+[96msrc/modules/organizations/attributes/index/inputs/create-organization-attribute.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'AttributeType'.
+
+[7m1[0m import { AttributeType } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/attributes/index/inputs/update-organization-attribute.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'AttributeType'.
+
+[7m1[0m import { AttributeType } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/attributes/options/organization-attribute-options.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugify'.
+
+[7m1[0m import { slugify } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~[0m
+[96msrc/modules/organizations/conferencing/services/organizations-conferencing.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'teamMetadataSchema'.
+
+[7m2[0m import { teamMetadataSchema } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'encryptServiceAccountKey'.
+
+[7m1[0m import { encryptServiceAccountKey } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service.ts[0m:[93m3[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/app-store"' has no exported member 'addDelegationCredential'.
+
+[7m3[0m   addDelegationCredential,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/app-store"' has no exported member 'toggleDelegationCredentialEnabled'.
+
+[7m5[0m   toggleDelegationCredentialEnabled,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/event-types/services/input.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugifyLenient'.
+
+[7m1[0m import { slugifyLenient } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/event-types/services/organizations-event-types.service.ts[0m:[93m46[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m46[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/event-types/services/output.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'SchedulingType'.
+
+[7m1[0m import { SchedulingType } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/index/organizations.repository.ts[0m:[93m16[0m:[93m11[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m16[0m     super({ prismaClient: dbWrite.prisma });
+[7m  [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/index/organizations.repository.ts[0m:[93m19[0m:[93m9[0m - [91merror[0m[90m TS2416: [0mProperty 'findById' in type 'OrganizationsRepository' is not assignable to the same property in base type 'OrganizationRepository'.
+  Type '(orgId: { id: number; }) => Promise<{ id: number; name: string; createdAt: Date; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; } | null>' is not assignable to type '() => Promise<null>'.
+    Target signature provides too few arguments. Expected 1 or more, but got 0.
+
+[7m19[0m   async findById(orgId: { id: number }) {
+[7m  [0m [91m        ~~~~~~~~[0m
+[96msrc/modules/organizations/index/organizations.repository.ts[0m:[93m28[0m:[93m9[0m - [91merror[0m[90m TS2416: [0mProperty 'findByIds' in type 'OrganizationsRepository' is not assignable to the same property in base type 'OrganizationRepository'.
+  Type '(organizationIds: number[]) => Promise<{ id: number; name: string; createdAt: Date; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; }[]>' is not assignable to type '() => Promise<never[]>'.
+    Target signature provides too few arguments. Expected 1 or more, but got 0.
+
+[7m28[0m   async findByIds(organizationIds: number[]) {
+[7m  [0m [91m        ~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/inputs/create-organization-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/inputs/update-organization-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/services/organizations-membership-output.service.ts[0m:[93m1[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'GroupedAttribute'.
+
+[7m1[0m import type { GroupedAttribute } from "@calcom/platform-libraries";
+[7m [0m [91m              ~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/services/organizations-membership-output.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'groupMembershipAttributes'.
+
+[7m2[0m import { groupMembershipAttributes } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/services/organizations-membership.service.ts[0m:[93m99[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'removeMembers' does not exist on type 'typeof TeamService'.
+
+[7m99[0m     await TeamService.removeMembers({
+[7m  [0m [91m                      ~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/organizations/services/managed-organizations.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugify'.
+
+[7m1[0m import { slugify } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~[0m
+[96msrc/modules/organizations/routing-forms/services/shared-routing-form-response.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getRoutedUrl'.
+
+[7m1[0m import { getRoutedUrl } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/stripe/services/organizations-stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m50[0m       data["default_currency"] = account.default_currency;
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/index/outputs/organization-team.output.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m2[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/index/services/organizations-teams.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugify'.
+
+[7m1[0m import { slugify } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~[0m
+[96msrc/modules/organizations/teams/invite/organizations-teams-invite.controller.ts[0m:[93m38[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'createInvite' does not exist on type 'typeof TeamService'.
+
+[7m38[0m     const result = await TeamService.createInvite(teamId);
+[7m  [0m [91m                                     ~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/memberships/inputs/create-organization-team-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/memberships/inputs/update-organization-team-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/memberships/organizations-teams-memberships.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/memberships/organizations-teams-memberships.controller.ts[0m:[93m190[0m:[93m62[0m - [91merror[0m[90m TS2339: [0mProperty 'shouldAutoAccept' does not exist on type 'OrganizationMembershipService'.
+
+[7m190[0m     const shouldAutoAccept = await this.orgMembershipService.shouldAutoAccept({
+[7m   [0m [91m                                                             ~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/memberships/services/organizations-teams-memberships.service.ts[0m:[93m78[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'removeMembers' does not exist on type 'typeof TeamService'.
+
+[7m78[0m     await TeamService.removeMembers({ teamIds: [teamId], userIds: [teamMembership.userId], isOrg: false });
+[7m  [0m [91m                      ~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/users/index/inputs/create-organization-user.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/users/index/services/organizations-users-service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'CreationSource'.
+
+[7m1[0m import { CreationSource, createNewUsersConnectToOrgIfExists } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/users/index/services/organizations-users-service.ts[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'createNewUsersConnectToOrgIfExists'.
+
+[7m1[0m import { CreationSource, createNewUsersConnectToOrgIfExists } from "@calcom/platform-libraries";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m2[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getRoutedUrl'.
+
+[7m2[0m   getRoutedUrl,
+[7m [0m [91m  ~~~~~~~~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m3[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getTeamMemberEmailForResponseOrContactUsingUrlQuery'.
+
+[7m3[0m   getTeamMemberEmailForResponseOrContactUsingUrlQuery,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/routing-forms/services/routing-forms.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'getRoutedUrl'.
+
+[7m1[0m import { getRoutedUrl } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/controllers/slots.controller.ts[0m:[93m8[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TRPCError'.
+
+[7m8[0m import { TRPCError } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m16[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'getEventTypeWithSeats' does not exist on type 'EventTypesRepository_2024_04_15'.
+
+[7m16[0m     const eventType = await this.eventTypeRepo.getEventTypeWithSeats(input.eventTypeId);
+[7m  [0m [91m                                               ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m37[0m:[93m30[0m - [91merror[0m[90m TS7006: [0mParameter 'user' implicitly has an 'any' type.
+
+[7m37[0m         eventType.users.map((user) =>
+[7m  [0m [91m                             ~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/slots.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MINUTES_TO_BOOK'.
+
+[7m1[0m import { MINUTES_TO_BOOK } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'dynamicEvent'.
+
+[7m1[0m import { dynamicEvent } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'SchedulingType'.
+
+[7m2[0m import { SchedulingType } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m50[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m111[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m111[0m       data["default_currency"] = account.default_currency;
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/stripe/utils/newStripeInstance.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m5[0m   apiVersion: "2020-08-27",
+[7m [0m [91m  ~~~~~~~~~~[0m
+[96msrc/modules/students/students.controller.ts[0m:[93m43[0m:[93m69[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'AcademicField'.
+
+[7m43[0m       const profiles = await this.profileService.getProfilesByField(field);
+[7m  [0m [91m                                                                    ~~~~~[0m
+[96msrc/modules/teams/event-types/controllers/teams-event-types.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'handleCreatePhoneCall'.
+
+[7m2[0m import { handleCreatePhoneCall } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m45[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m45[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m127[0m:[93m9[0m - [91merror[0m[90m TS2739: [0mType '{ id: number; role: UserPermissionRole; organizationId: null; organization: { id: null; isOrgAdmin: boolean; metadata: {}; requestedSlug: null; }; profile: { id: number | null; }; metadata: JsonValue; email: string; }' is missing the following properties from type 'User': username, userLevelSelectedCalendars, locale
+
+[7m127[0m         user: eventTypeUser,
+[7m   [0m [91m        ~~~~[0m
+
+  [96m../../../packages/trpc/server/routers/viewer/eventTypes/heavy/update.handler.ts[0m:[93m64[0m:[93m5[0m
+    [7m64[0m     user: User;
+    [7m  [0m [96m    ~~~~[0m
+    The expected type comes from property 'user' which is declared here on type '{ user: User; res?: ServerResponse<IncomingMessage> | NextApiResponse | undefined; prisma: PrismaClient; }'
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m129[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m129[0m         // @ts-expect-error
+[7m   [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/invite/controllers/teams-invite.controller.ts[0m:[93m26[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'createInvite' does not exist on type 'typeof TeamService'.
+
+[7m26[0m     const result = await TeamService.createInvite(teamId);
+[7m  [0m [91m                                     ~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/controllers/teams-memberships.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/inputs/create-team-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/inputs/update-team-membership.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/outputs/team-membership.output.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'MembershipRole'.
+
+[7m1[0m import { MembershipRole } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/services/teams-memberships.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/services/teams-memberships.service.ts[0m:[93m33[0m:[93m66[0m - [91merror[0m[90m TS2339: [0mProperty 'shouldAutoAccept' does not exist on type 'OrganizationMembershipService'.
+
+[7m33[0m         const shouldAutoAccept = await this.orgMembershipService.shouldAutoAccept({
+[7m  [0m [91m                                                                 ~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/services/teams-memberships.service.ts[0m:[93m100[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'removeMembers' does not exist on type 'typeof TeamService'.
+
+[7m100[0m     await TeamService.removeMembers({ teamIds: [teamId], userIds: [teamMembership.userId], isOrg: false });
+[7m   [0m [91m                      ~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/teams/services/teams.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'slugify'.
+
+[7m1[0m import { slugify } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~[0m
+[96msrc/modules/teams/teams/teams.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'teamMetadataSchema'.
+
+[7m1[0m import { teamMetadataSchema } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/timezones/controllers/timezones.controller.ts[0m:[93m2[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'CityTimezones'.
+
+[7m2[0m import type { CityTimezones } from "@calcom/platform-libraries";
+[7m [0m [91m              ~~~~~~~~~~~~~[0m
+[96msrc/modules/timezones/services/timezones.service.ts[0m:[93m1[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'CityTimezones'.
+
+[7m1[0m import type { CityTimezones } from "@calcom/platform-libraries";
+[7m [0m [91m              ~~~~~~~~~~~~~[0m
+[96msrc/modules/timezones/services/timezones.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'cityTimezonesHandler'.
+
+[7m2[0m import { cityTimezonesHandler } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/users/users.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'CreationSource'.
+
+[7m1[0m import { CreationSource } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m2[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'sendVerificationCode'.
+
+[7m2[0m   sendVerificationCode as sendPhoneVerificationCode,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m3[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'verifyPhoneNumber'.
+
+[7m3[0m   verifyPhoneNumber,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m18[0m:[93m51[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 18[0m     const res = await sendEmailVerificationByCode({
+[7m   [0m [91m                                                  ~[0m
+[7m 19[0m       email: email,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 22[0m       isVerifyingEmail: true,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 23[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m            ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m                       ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m29[0m:[93m14[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m29[0m     if (!res.ok) {
+[7m  [0m [91m             ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m33[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m33[0m     if (res.skipped) {
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m63[0m:[93m55[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m63[0m     const isValidToken = await verifyEmailCodeHandler({
+[7m  [0m [91m                                                      ~[0m
+[7m64[0m       ctx: { user: { id: userId } },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m65[0m       input: { email, code, teamId },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m66[0m     });
+[7m  [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m67[0m:[93m9[0m - [91merror[0m[90m TS1345: [0mAn expression of type 'void' cannot be tested for truthiness.
+
+[7m67[0m     if (isValidToken) {
+[7m  [0m [91m        ~~~~~~~~~~~~[0m
+[96msrc/modules/webhooks/inputs/webhook.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WebhookTriggerEvents'.
+
+[7m1[0m import { WebhookTriggerEvents, WebhookVersion } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/webhooks/inputs/webhook.input.ts[0m:[93m1[0m:[93m32[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WebhookVersion'.
+
+[7m1[0m import { WebhookTriggerEvents, WebhookVersion } from "@calcom/platform-libraries";
+[7m [0m [91m                               ~~~~~~~~~~~~~~[0m
+[96msrc/modules/webhooks/outputs/webhook.output.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WebhookTriggerEvents'.
+
+[7m2[0m import { WebhookTriggerEvents } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/inputs/workflow-step.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WorkflowActions'.
+
+[7m1[0m import { WorkflowActions, WorkflowTemplates } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/inputs/workflow-step.input.ts[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WorkflowTemplates'.
+
+[7m1[0m import { WorkflowActions, WorkflowTemplates } from "@calcom/platform-libraries";
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/inputs/workflow-trigger.input.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TimeUnit'.
+
+[7m1[0m import { TimeUnit, WorkflowTriggerEvents } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~[0m
+[96msrc/modules/workflows/inputs/workflow-trigger.input.ts[0m:[93m1[0m:[93m20[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WorkflowTriggerEvents'.
+
+[7m1[0m import { TimeUnit, WorkflowTriggerEvents } from "@calcom/platform-libraries";
+[7m [0m [91m                   ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.input.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'TUpdateInputSchema'.
+
+[7m1[0m import { TUpdateInputSchema } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m173[0m:[93m41[0m - [91merror[0m[90m TS7015: [0mElement implicitly has an 'any' type because index expression is not of type 'number'.
+
+[7m173[0m     const action = ENUM_TO_STEP_ACTIONS[step.action];
+[7m   [0m [91m                                        ~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m174[0m:[93m20[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ email_host: { recipient: string; messageKey: "html"; setsCustomRecipient: false; requiresPhone: false; }; email_attendee: { recipient: string; messageKey: "html"; setsCustomRecipient: false; requiresPhone: false; }; ... 5 more ...; cal_ai_phone_call: { ...; }; }'.
+
+[7m174[0m     const config = ACTION_CONFIG_MAP[action] || {
+[7m   [0m [91m                   ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m186[0m:[93m35[0m - [91merror[0m[90m TS7015: [0mElement implicitly has an 'any' type because index expression is not of type 'number'.
+
+[7m186[0m       template: ENUM_TO_TEMPLATES[step.template],
+[7m   [0m [91m                                  ~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m219[0m:[93m13[0m - [91merror[0m[90m TS2322: [0mType '{ type: any; offset: { value: number; unit: any; }; } | { type: "beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | ... 6 more ... | "bookingNoShowUpdated"; }' is not assignable to type 'TriggerDtoType'.
+  Type '{ type: "beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "formSubmitted" | "formSubmittedNoEvent" | ... 4 more ... | "bookingNoShowUpdated"; }' is not assignable to type 'TriggerDtoType'.
+    Property 'offset' is missing in type '{ type: "beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "formSubmitted" | "formSubmittedNoEvent" | ... 4 more ... | "bookingNoShowUpdated"; }' but required in type 'OnFormSubmittedNoEventTriggerDto'.
+
+[7m219[0m       const trigger: TriggerDtoType = this._isOffsetTrigger(workflow.trigger)
+[7m   [0m [91m            ~~~~~~~[0m
+
+  [96msrc/modules/workflows/inputs/workflow-trigger.input.ts[0m:[93m230[0m:[93m3[0m
+    [7m230[0m   offset!: WorkflowTriggerOffsetDto;
+    [7m   [0m [96m  ~~~~~~[0m
+    'offset' is declared here.
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m221[0m:[93m44[0m - [91merror[0m[90m TS7015: [0mElement implicitly has an 'any' type because index expression is not of type 'number'.
+
+[7m221[0m             type: ENUM_TO_WORKFLOW_TRIGGER[workflow.trigger],
+[7m   [0m [91m                                           ~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m224[0m:[93m59[0m - [91merror[0m[90m TS7015: [0mElement implicitly has an 'any' type because index expression is not of type 'number'.
+
+[7m224[0m               unit: workflow.timeUnit ? ENUM_TO_TIME_UNIT[workflow.timeUnit] : HOUR,
+[7m   [0m [91m                                                          ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m237[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType 'TriggerDtoType' is not assignable to type 'RoutingFormWorkflowTriggerOutputDto'.
+  Type 'OnCreationTriggerDto' is not assignable to type 'RoutingFormWorkflowTriggerOutputDto'.
+    Types of property 'type' are incompatible.
+      Type '"newEvent"' is not assignable to type '"formSubmitted" | "formSubmittedNoEvent"'.
+
+[7m237[0m         trigger: trigger,
+[7m   [0m [91m        ~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m251[0m:[93m13[0m - [91merror[0m[90m TS2322: [0mType '{ type: "beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "formSubmitted" | "formSubmittedNoEvent" | ... 4 more ... | "bookingNoShowUpdated"; offset: { ...; }; }' is not assignable to type 'TriggerEventTypeDtoType'.
+  Types of property 'type' are incompatible.
+    Type '"beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "formSubmitted" | "formSubmittedNoEvent" | ... 4 more ... | "bookingNoShowUpdated"' is not assignable to type '"beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "bookingRejected" | "bookingRequested" | "bookingPaymentInitiated" | "bookingPaid" | "bookingNoShowUpdated"'.
+      Type '"formSubmitted"' is not assignable to type '"beforeEvent" | "eventCancelled" | "newEvent" | "afterEvent" | "rescheduleEvent" | "afterHostsCalVideoNoShow" | "afterGuestsCalVideoNoShow" | "bookingRejected" | "bookingRequested" | "bookingPaymentInitiated" | "bookingPaid" | "bookingNoShowUpdated"'.
+
+[7m251[0m       const trigger: TriggerEventTypeDtoType = this._isOffsetTrigger(workflow.trigger)
+[7m   [0m [91m            ~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.output.service.ts[0m:[93m256[0m:[93m59[0m - [91merror[0m[90m TS7015: [0mElement implicitly has an 'any' type because index expression is not of type 'number'.
+
+[7m256[0m               unit: workflow.timeUnit ? ENUM_TO_TIME_UNIT[workflow.timeUnit] : HOUR,
+[7m   [0m [91m                                                          ~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'TimeUnit'.
+
+[7m1[0m import { TimeUnit, WorkflowTriggerEvents } from "@calcom/platform-libraries";
+[7m [0m [91m         ~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m1[0m:[93m20[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries"' has no exported member 'WorkflowTriggerEvents'.
+
+[7m1[0m import { TimeUnit, WorkflowTriggerEvents } from "@calcom/platform-libraries";
+[7m [0m [91m                   ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'TUpdateInputSchema'.
+
+[7m2[0m import { TUpdateInputSchema, updateWorkflow } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m2[0m:[93m30[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'updateWorkflow'.
+
+[7m2[0m import { TUpdateInputSchema, updateWorkflow } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m                             ~~~~~~~~~~~~~~[0m
+[96m../../../packages/app-store/googlecalendar/lib/CalendarService.ts[0m:[93m72[0m:[93m50[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m72[0m   typeof error === "object" && !!error && Object.hasOwn(error, "config");
+[7m  [0m [91m                                                 ~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/PaymentService.ts[0m:[93m42[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m42[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/server.ts[0m:[93m34[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m34[0m   apiVersion: "2020-08-27",
+[7m  [0m [91m  ~~~~~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/checkBookingAndDurationLimits.ts[0m:[93m29[0m:[93m16[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m29[0m     if (Object.hasOwn(eventType, "bookingLimits") || Object.hasOwn(eventType, "durationLimits")) {
+[7m  [0m [91m               ~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/checkBookingAndDurationLimits.ts[0m:[93m29[0m:[93m61[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m29[0m     if (Object.hasOwn(eventType, "bookingLimits") || Object.hasOwn(eventType, "durationLimits")) {
+[7m  [0m [91m                                                            ~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/getBookingData.ts[0m:[93m28[0m:[93m17[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m28[0m     if (!Object.hasOwn(body, "end")) {
+[7m  [0m [91m                ~~~~~~[0m
+[96m../../../packages/lib/errors.ts[0m:[93m50[0m:[93m29[0m - [91merror[0m[90m TS2554: [0mExpected 0-1 arguments, but got 2.
+
+[7m50[0m     return new Error(cause, { cause });
+[7m  [0m [91m                            ~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m13[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m13[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m15[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m15[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/prisma/extensions/disallow-undefined-delete-update-many.ts[0m:[93m19[0m:[93m18[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m19[0m       if (Object.hasOwn(whereInput, "in") && typeof whereInput.in === "undefined") {
+[7m  [0m [91m                 ~~~~~~[0m
+
+Found 149 error(s).
+

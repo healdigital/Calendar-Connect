@@ -18,23 +18,14 @@ $ cd packages/emails && yarn dx
 ```
 Note: make sure that the value of `NEXTAUTH_SECRET` is the same in both the root `.env` and in the api v2 `.env`.
 ```
-5. Setup license key. In the Deployment table in database create the following entry:
-```
-id, logo, theme, licenseKey, agreedLicenseAt:-
-1, null, null, '00000000-0000-0000-0000-000000000000', '2023-05-15 21:39:47.611'
-```
-Then in the `apps/api/v2/.env` set the license key environment variable:
-```
-CALCOM_LICENSE_KEY="00000000-0000-0000-0000-000000000000"
-```
-6. (optional) Prisma setup and database seeding - if you need to setup and seed database you can do it:
+5. (optional) Prisma setup and database seeding - if you need to setup and seed database you can do it:
 ```bash
 $ cd packages/prisma
 $ yarn prisma generate
 $ yarn prisma migrate dev
 $ yarn db-seed
 ```
-7. Proceed to the next section to start api v2
+6. Proceed to the next section to start api v2
 
 # Running api v2
 

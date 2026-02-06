@@ -61,7 +61,7 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
   }, [selectedDate]);
 
   // Fetch real availability from backend
-  const { data: availabilityData, isLoading: isLoadingSlots } = trpc.thotis.booking.getAvailability.useQuery(
+  const { data: availabilityData, isPending: isPendingSlots } = trpc.thotis.booking.getAvailability.useQuery(
     {
       studentProfileId: studentProfileId || "",
       start: dateRange?.start || new Date(),
@@ -130,6 +130,7 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
   });
 
   const trackEvent = trpc.thotis.analytics.track.useMutation();
+  const isPendingBooking = createBookingMutation.isPending;
 
   const onSubmit = (data: { name: string; email: string; notes: string }) => {
     if (!selectedSlot || !studentProfileId) return;
@@ -238,7 +239,7 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
             </p>
           )}
 
-          {isLoadingSlots ? (
+          {isPendingSlots ? (
             <div className="flex items-center justify-center py-10">
               <div
                 className="h-8 w-8 animate-spin rounded-full border-b-2"
@@ -362,7 +363,8 @@ export const BookingWidget = ({ studentProfileId, initialStep = "date" }: Bookin
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-              style={{ backgroundColor: BRANDING.colors.primary }}>
+              style={{ backgroundColor: BRANDING.colors.primary }}
+              data-testid="meet-link">
               {t("thotis_join_google_meet")}
             </a>
           )}

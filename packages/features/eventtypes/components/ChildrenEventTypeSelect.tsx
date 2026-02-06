@@ -1,6 +1,6 @@
-import { getBookerBaseUrlSync } from "@calcom/features/ee/organizations/lib/getBookerBaseUrlSync";
 import type { ChildrenEventType } from "@calcom/features/eventtypes/lib/childrenEventType";
 import type { SelectClassNames } from "@calcom/features/eventtypes/lib/types";
+import { getBookerBaseUrlSync } from "@calcom/features/organizations/lib/getBookerBaseUrlSync";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { MembershipRole } from "@calcom/prisma/enums";
 import classNames from "@calcom/ui/classNames";

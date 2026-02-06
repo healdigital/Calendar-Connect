@@ -1,3 +1,4 @@
+import process from "node:process";
 import PageWrapper from "@components/PageWrapperAppDir";
 import { headers } from "next/headers";
 import Script from "next/script";
@@ -21,7 +22,7 @@ export default async function PageWrapperLayout({ children }: { children: React.
 
   return (
     <>
-      <PageWrapper requiresLicense={false} nonce={nonce}>
+      <PageWrapper nonce={nonce}>
         {children}
         {scripts.map((script) => (
           // biome-ignore lint/security/noDangerouslySetInnerHtml: Injected scripts from env vars

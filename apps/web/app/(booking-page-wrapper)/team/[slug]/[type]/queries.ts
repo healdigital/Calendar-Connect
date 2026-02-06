@@ -1,6 +1,5 @@
+import process from "node:process";
 import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
-import { getTeamData } from "@calcom/features/ee/teams/lib/getTeamData";
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import {
   getEventTypeHosts,
   getProfileFromEvent,
@@ -9,6 +8,8 @@ import {
 } from "@calcom/features/eventtypes/lib/getPublicEvent";
 import { getTeamEventType } from "@calcom/features/eventtypes/lib/getTeamEventType";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
+// import { getTeamData } from "@calcom/features/ee/teams/lib/getTeamData";
+import { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import { NEXTJS_CACHE_TTL } from "@calcom/lib/constants";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
@@ -17,6 +18,33 @@ import type { Prisma } from "@calcom/prisma/client";
 import type { SchedulingType } from "@calcom/prisma/enums";
 import type { GetServerSidePropsContext } from "next";
 import { unstable_cache } from "next/cache";
+
+// Basic Stub for getTeamData since EE is removed
+export async function getTeamData(teamSlug: string, orgSlug: string | null) {
+  const teamRepository = new TeamRepository(prisma);
+  const team = await teamRepository.findFirstBySlugAndParentSlug({
+    slug: teamSlug,
+    parentSlug: orgSlug,
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      logoUrl: true,
+      bannerUrl: true,
+      isPrivate: true,
+      parent: {
+        select: {
+          name: true,
+          slug: true,
+          logoUrl: true,
+        },
+      },
+    },
+  });
+  return team;
+}
+
+export type TeamData = Awaited<ReturnType<typeof getTeamData>> | null;
 
 export async function getCachedTeamData(teamSlug: string, orgSlug: string | null) {
   return unstable_cache(async () => getTeamData(teamSlug, orgSlug), ["team-data", teamSlug, orgSlug ?? ""], {
@@ -70,6 +98,7 @@ export async function getEnrichedEventType({
     (await getUsersFromEvent({ ...eventType, owner: enrichedOwner, subsetOfHosts, hosts }, prisma)) ?? [];
   const name = teamData.parent?.name ?? teamData.name ?? null;
   const isUnpublished = teamData.parent ? !teamData.parent.slug : !teamData.slug;
+  const logoUrl = teamData.logoUrl;
 
   const eventMetaData = eventTypeMetaDataSchemaWithTypedApps.parse(eventType.metadata);
 
@@ -125,18 +154,22 @@ export async function getCRMData(
   const crmRecordIdParam = query["cal.crmRecordId"];
   const crmLookupDoneParam = query["cal.crmLookupDone"];
 
-  let teamMemberEmail = Array.isArray(crmContactOwnerEmail) ? crmContactOwnerEmail[0] : crmContactOwnerEmail;
-  let crmOwnerRecordType = Array.isArray(crmContactOwnerRecordType)
+  const teamMemberEmail = Array.isArray(crmContactOwnerEmail)
+    ? crmContactOwnerEmail[0]
+    : crmContactOwnerEmail;
+  const crmOwnerRecordType = Array.isArray(crmContactOwnerRecordType)
     ? crmContactOwnerRecordType[0]
     : crmContactOwnerRecordType;
-  let crmAppSlug = Array.isArray(crmAppSlugParam) ? crmAppSlugParam[0] : crmAppSlugParam;
-  let crmRecordId = Array.isArray(crmRecordIdParam) ? crmRecordIdParam[0] : crmRecordIdParam;
+  const crmAppSlug = Array.isArray(crmAppSlugParam) ? crmAppSlugParam[0] : crmAppSlugParam;
+  const crmRecordId = Array.isArray(crmRecordIdParam) ? crmRecordIdParam[0] : crmRecordIdParam;
 
   // If crmLookupDone is true, the router already performed the CRM lookup, so skip it here
   const crmLookupDone =
     (Array.isArray(crmLookupDoneParam) ? crmLookupDoneParam[0] : crmLookupDoneParam) === "true";
 
   if (!crmLookupDone && (!teamMemberEmail || !crmOwnerRecordType || !crmAppSlug)) {
+    // Stub out CRM dynamic import
+    /*
     const { getTeamMemberEmailForResponseOrContactUsingUrlQuery } = await import(
       "@calcom/features/ee/teams/lib/getTeamMemberEmailFromCrm"
     );
@@ -154,6 +187,7 @@ export async function getCRMData(
     crmOwnerRecordType = recordType ?? undefined;
     crmAppSlug = crmAppSlugQuery ?? undefined;
     crmRecordId = crmRecordIdQuery ?? undefined;
+    */
   }
 
   return {

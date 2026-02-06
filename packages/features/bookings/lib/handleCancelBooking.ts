@@ -17,11 +17,6 @@ import EventManager from "@calcom/features/bookings/lib/EventManager";
 import { getCalEventResponses } from "@calcom/features/bookings/lib/getCalEventResponses";
 import { processNoShowFeeOnCancellation } from "@calcom/features/bookings/lib/payment/processNoShowFeeOnCancellation";
 import { processPaymentRefund } from "@calcom/features/bookings/lib/payment/processPaymentRefund";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { sendCancelledReminders } from "@calcom/features/ee/workflows/lib/reminders/reminderScheduler";
-import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
 import { PrismaOrgMembershipRepository } from "@calcom/features/membership/repositories/PrismaOrgMembershipRepository";
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
@@ -33,6 +28,7 @@ import {
 } from "@calcom/features/webhooks/lib/scheduleTrigger";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
 import type { EventTypeInfo } from "@calcom/features/webhooks/lib/sendPayload";
+import { WEBAPP_URL } from "@calcom/lib/constants";
 import getOrgIdFromMemberOrTeamId from "@calcom/lib/getOrgIdFromMemberOrTeamId";
 import { getTeamIdFromEventType } from "@calcom/lib/getTeamIdFromEventType";
 import { HttpError } from "@calcom/lib/http-error";
@@ -337,9 +333,7 @@ async function handler(input: CancelBookingInput, dependencies?: Dependencies) {
     userId: bookingToDelete.userId,
   });
 
-  const bookerUrl = await getBookerBaseUrl(
-    bookingToDelete.eventType?.team?.parentId ?? ownerProfile?.organizationId ?? null
-  );
+  const bookerUrl = WEBAPP_URL;
 
   const evt: CalendarEvent = {
     bookerUrl,
@@ -440,31 +434,7 @@ async function handler(input: CancelBookingInput, dependencies?: Dependencies) {
   );
   await Promise.all(promises);
 
-  const workflows = await getAllWorkflowsFromEventType(bookingToDelete.eventType, bookingToDelete.userId);
-  const parsedMetadata = bookingMetadataSchema.safeParse(bookingToDelete.metadata || {});
-
-  const creditService = new CreditService();
-
-  await sendCancelledReminders({
-    workflows,
-    smsReminderNumber: bookingToDelete.smsReminderNumber,
-    evt: {
-      ...evt,
-      ...(parsedMetadata.success && parsedMetadata.data?.videoCallUrl
-        ? { metadata: { videoCallUrl: parsedMetadata.data.videoCallUrl } }
-        : {}),
-      bookerUrl,
-      ...{
-        eventType: {
-          slug: bookingToDelete.eventType?.slug as string,
-          schedulingType: bookingToDelete.eventType?.schedulingType,
-          hosts: bookingToDelete.eventType?.hosts,
-        },
-      },
-    },
-    hideBranding: !!bookingToDelete.eventType?.owner?.hideBranding,
-    creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
-  });
+  // EE Billing and Workflows removed as dependencies are missing in OS version
 
   let updatedBookings: {
     id: number;
@@ -629,7 +599,7 @@ async function handler(input: CancelBookingInput, dependencies?: Dependencies) {
     });
 
     const eventManager = new EventManager(
-      { ...bookingToDelete.user, credentials },
+      { ...bookingToDelete.user, credentials: credentials as any },
       bookingToDeleteEventTypeMetadata?.apps
     );
 
@@ -642,7 +612,7 @@ async function handler(input: CancelBookingInput, dependencies?: Dependencies) {
 
   try {
     const webhookTriggerPromises = [];
-    const workflowReminderPromises = [];
+    const workflowReminderPromises: Promise<any>[] = [];
 
     for (const booking of updatedBookings) {
       // delete scheduled webhook triggers of cancelled bookings
@@ -650,7 +620,7 @@ async function handler(input: CancelBookingInput, dependencies?: Dependencies) {
       webhookTriggerPromises.push(cancelNoShowTasksForBooking({ bookingUid: booking.uid }));
 
       //Workflows - cancel all reminders for cancelled bookings
-      workflowReminderPromises.push(WorkflowRepository.deleteAllWorkflowReminders(booking.workflowReminders));
+      // workflowReminderPromises.push(WorkflowRepository.deleteAllWorkflowReminders(booking.workflowReminders));
     }
 
     await Promise.allSettled([...webhookTriggerPromises, ...workflowReminderPromises]).then((results) => {

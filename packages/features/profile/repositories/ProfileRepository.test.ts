@@ -4,7 +4,7 @@ import { MembershipRole } from "@calcom/prisma/enums";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { LookupTarget, ProfileRepository } from "./ProfileRepository";
 
-vi.mock("@calcom/features/ee/teams/lib/getParsedTeam", () => ({
+vi.mock("@calcom/features/teams/lib/getParsedTeam", () => ({
   getParsedTeam: <T>(org: T) => org,
 }));
 

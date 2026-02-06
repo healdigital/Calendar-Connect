@@ -29,11 +29,9 @@ const _ensureNoConflictingNonDelegatedConnectedCalendar = <
   T extends {
     integration: { slug: string };
     primary?: { email?: string | null | undefined } | undefined;
-    delegationCredentialId?: string | null | undefined;
   },
 >({
   connectedCalendars,
-  loggedInUser,
 }: {
   connectedCalendars: T[];
   loggedInUser: { email: string };
@@ -46,23 +44,7 @@ const _ensureNoConflictingNonDelegatedConnectedCalendar = <
     // If no other calendar with this slug, keep it
     if (allCalendarsWithSameAppSlug.length === 1) return true;
 
-    const delegatedCalendarsWithSameAppSlug = allCalendarsWithSameAppSlug.filter(
-      (cal) => cal.delegationCredentialId
-    );
-    if (!delegatedCalendarsWithSameAppSlug.length) {
-      return true;
-    }
-
-    if (connectedCalendar.delegationCredentialId) {
-      return true;
-    }
-
-    // DelegationCredential Credential is always of the loggedInUser
-    if (!connectedCalendar.primary?.email || connectedCalendar.primary.email !== loggedInUser.email) {
-      return true;
-    }
-
-    return false;
+    return true;
   });
 };
 
@@ -111,7 +93,6 @@ async function handleNoDestinationCalendar({
     integration = "",
     externalId = "",
     credentialId,
-    delegationCredentialId,
     email: primaryEmail,
   } = connectedCalendars[0].primary ?? {};
 
@@ -138,9 +119,7 @@ async function handleNoDestinationCalendar({
       ? {
           credentialId,
         }
-      : {
-          delegationCredentialId,
-        }),
+      : {}),
   });
 
   return {
@@ -400,7 +379,6 @@ export async function getConnectedDestinationCalendarsAndEnsureDefaultsInDb({
       connectedCalendars.push({
         integration: safeToSendIntegration,
         credentialId: credential.id,
-        delegationCredentialId: credential.delegationCredentialId,
         calendars: selectedCalendars
           .filter((cal) =>
             credential.selectedCalendars.some((appSelectedCal) => appSelectedCal.id === cal.id)
@@ -411,7 +389,6 @@ export async function getConnectedDestinationCalendarsAndEnsureDefaultsInDb({
             readOnly: false,
             primary: null,
             credentialId: credential.id,
-            delegationCredentialId: credential.delegationCredentialId,
           })),
       });
     });

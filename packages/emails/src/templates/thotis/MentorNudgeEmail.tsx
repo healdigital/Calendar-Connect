@@ -17,16 +17,27 @@ export const MentorNudgeEmail = (props: {
       subtitle={t("thotis_mentor_nudge_subtitle", "Votre session avec {name} est terminée.", {
         name: attendee.name,
       })}
-      body={t(
+      callToAction={
+        <a
+          href={addSummaryLink}
+          style={{
+            backgroundColor: "#FF6B35", // Thotis Orange
+            color: "#FFFFFF",
+            padding: "12px 24px",
+            borderRadius: "6px",
+            textDecoration: "none",
+            fontWeight: "bold",
+            display: "inline-block",
+          }}>
+          {t("thotis_add_summary", "Rédiger le résumé")}
+        </a>
+      }>
+      {t(
         "thotis_mentor_nudge_body",
         "Merci d'avoir partagé votre expérience avec {name}. Prenez 2 minutes pour rédiger un court résumé et partager des ressources utiles. Cela aide énormément l'étudiant à avancer.",
         { name: attendee.name }
       )}
-      callToAction={{
-        label: t("thotis_add_summary", "Rédiger le résumé"),
-        href: addSummaryLink,
-      }}
-    />
+    </ThotisBaseEmail>
   );
 };
 

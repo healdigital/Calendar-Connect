@@ -36,7 +36,7 @@ export const phoneNumberRouter = router({
     });
   }),
 
-  cancel: authedProcedure.input(ZCancelInputSchema).mutation(async ({ ctx, input }) => {
+  deactivate: authedProcedure.input(ZCancelInputSchema).mutation(async ({ ctx, input }) => {
     const { cancelHandler } = await import("./cancel.handler");
 
     return cancelHandler({

@@ -14,29 +14,28 @@ export default function MentorsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [localIntent, setLocalIntent] = useState<any>(null);
   const [filters, setFilters] = useState<MentorSearchFiltersState>({
     fieldOfStudy: searchParams.get("field") || "",
     university: searchParams.get("university") || "",
     minRating: searchParams.get("minRating") ? Number(searchParams.get("minRating")) : 0,
   });
 
-  useState(() => {
-    // Basic initialization of localIntent if available
+  const [localIntent, setLocalIntent] = useState<any>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("thotis_orientation_intent");
       if (saved) {
         try {
-          setLocalIntent(JSON.parse(saved));
+          return JSON.parse(saved);
         } catch (e) {
           console.error("Failed to parse local intent", e);
         }
       }
     }
+    return null;
   });
 
   const { data: intentData } = trpc.thotis.intent.get.useQuery(undefined, {
-    enabled: !!searchParams.get("field") === false, // Only fetch intent if not searching by field explicitly
+    enabled: !!searchParams.get("field") === false && typeof window !== "undefined", // Only fetch intent if not searching by field explicitly
   });
 
   // Effective intent (DB or localStorage fallback)

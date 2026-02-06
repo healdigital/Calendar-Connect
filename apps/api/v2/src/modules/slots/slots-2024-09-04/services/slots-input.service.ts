@@ -10,7 +10,7 @@ import {
 } from "@calcom/platform-types";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { DateTime } from "luxon";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import { OrganizationsRepository } from "@/modules/organizations/index/organizations.repository";
 import { OrganizationsTeamsRepository } from "@/modules/organizations/teams/index/organizations-teams.repository";
 import { OrganizationsUsersRepository } from "@/modules/organizations/users/index/organizations-users.repository";
@@ -42,7 +42,7 @@ export type InternalGetSlotsQueryWithRouting = InternalGetSlotsQuery & {
 @Injectable()
 export class SlotsInputService_2024_09_04 {
   constructor(
-    private readonly eventTypeRepository: EventTypesRepository_2024_06_14,
+    private readonly eventTypeRepository: EventTypesRepository,
     private readonly usersRepository: UsersRepository,
     private readonly organizationsUsersRepository: OrganizationsUsersRepository,
     private readonly organizationsTeamsRepository: OrganizationsTeamsRepository,
@@ -50,6 +50,7 @@ export class SlotsInputService_2024_09_04 {
     private readonly teamsRepository: TeamsRepository,
     private readonly teamsEventTypesRepository: TeamsEventTypesRepository
   ) {}
+  // ... rest of the file
 
   async transformGetSlotsQuery(query: GetSlotsInput_2024_09_04): Promise<InternalGetSlotsQuery> {
     const eventType = await this.getEventType(query);

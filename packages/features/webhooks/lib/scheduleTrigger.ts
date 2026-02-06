@@ -541,7 +541,7 @@ export async function updateTriggerForExistingBookings(
 }
 
 export async function listOOOEntries(
-  appApiKey?: ApiKey,
+  appApiKey?: Pick<ApiKey, "userId" | "teamId">,
   account?: {
     id: number;
     name: string | null;

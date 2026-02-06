@@ -16,7 +16,7 @@ export default function ThotisLandingPage() {
   };
 
   const handleBecomeMentor = () => {
-    const signupUrl = "/signup?userType=MENTOR";
+    const signupUrl = "/thotis/mentor/signup";
     if (session) {
       router.push(signupUrl);
     } else {
@@ -38,10 +38,19 @@ export default function ThotisLandingPage() {
             </div>
             <div className="flex gap-3">
               {session ? (
-                <Button onClick={() => router.push("/thotis/dashboard")} className="gap-2">
-                  <Icon name="dashboard" className="h-4 w-4" />
-                  Dashboard
-                </Button>
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => router.push("/thotis/my-sessions")}
+                    className="gap-2">
+                    <Icon name="calendar" className="h-4 w-4" />
+                    Mes Sessions
+                  </Button>
+                  <Button onClick={() => router.push("/thotis/dashboard")} className="gap-2">
+                    <Icon name="users" className="h-4 w-4" />
+                    Dashboard Mentor
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button variant="ghost" onClick={() => router.push("/auth/signin")}>

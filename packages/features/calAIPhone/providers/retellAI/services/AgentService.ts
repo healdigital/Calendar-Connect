@@ -1,5 +1,6 @@
+import { createHash, randomBytes } from "node:crypto";
 import process from "node:process";
-import { PrismaApiKeyRepository } from "@calcom/features/ee/api-keys/repositories/PrismaApiKeyRepository";
+// import { PrismaApiKeyRepository } from "@calcom/features/ee/api-keys/repositories/PrismaApiKeyRepository";
 import { EventTypeRepository } from "@calcom/features/eventtypes/repositories/eventTypeRepository";
 import { RETELL_AI_TEST_EVENT_TYPE_MAP, RETELL_AI_TEST_MODE } from "@calcom/lib/constants";
 import { timeZoneSchema } from "@calcom/lib/dayjs/timeZone.schema";
@@ -33,13 +34,23 @@ export class AgentService {
   constructor(private deps: Dependencies) {}
 
   private async createApiKey({ userId, teamId }: { userId: number; teamId?: number }) {
-    const apiKeyRepository = await PrismaApiKeyRepository.withGlobalPrisma();
-    return await apiKeyRepository.createApiKey({
-      userId,
-      teamId,
-      expiresAt: null,
-      note: `Cal.ai Phone API Key for agent ${userId} ${teamId ? `for team ${teamId}` : ""}`,
+    const apiKey = randomBytes(32).toString("hex");
+    const hashedKey = createHash("sha256").update(apiKey).digest("hex");
+    const prefix = process.env.API_KEY_PREFIX ?? "cal_";
+    const prefixedApiKey = `${prefix}${apiKey}`;
+
+    await prisma.apiKey.create({
+      data: {
+        id: uuidv4(),
+        userId,
+        teamId,
+        hashedKey,
+        expiresAt: null,
+        note: `Cal.ai Phone API Key for agent ${userId} ${teamId ? `for team ${teamId}` : ""}`,
+      },
     });
+
+    return prefixedApiKey;
   }
 
   async getAgent(agentId: string): Promise<AIPhoneServiceAgent<AIPhoneServiceProviderType.RETELL_AI>> {
@@ -131,10 +142,11 @@ export class AgentService {
         RETELL_AI_TEST_MODE && process.env.RETELL_AI_TEST_CAL_API_KEY
           ? process.env.RETELL_AI_TEST_CAL_API_KEY
           : (reusableKey ??
-            (await this.createApiKey({
-              userId: data.userId,
-              teamId: data.teamId || undefined,
-            })));
+              (await this.createApiKey({
+                userId: data.userId,
+                teamId: data.teamId || undefined,
+              }))) ||
+            "";
 
       const newEventTools: NonNullable<AIPhoneServiceTools<AIPhoneServiceProviderType.RETELL_AI>> = [];
       if (!hasCheck) {

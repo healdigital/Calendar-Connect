@@ -16,23 +16,13 @@ vi.mock("@calcom/features/flags/context/provider", () => ({
   useFlagMap: vi.fn(() => ({})),
 }));
 
-vi.mock("@calcom/features/ee/organizations/hooks/useWelcomeModal", () => ({
-  setShowNewOrgModalFlag: vi.fn(),
-}));
-
 vi.mock("@calcom/ui/components/toast", () => ({
   showToast: vi.fn(),
 }));
 
 vi.mock("@calcom/trpc/react", () => ({
   trpc: {
-    viewer: {
-      organizations: {
-        intentToCreateOrg: {
-          useMutation: vi.fn(),
-        },
-      },
-    },
+    viewer: {},
   },
 }));
 
@@ -54,11 +44,6 @@ describe("useSubmitOnboarding", () => {
         href: "",
       },
     } as any;
-
-    const { trpc } = await import("@calcom/trpc/react");
-    vi.mocked(trpc.viewer.organizations.intentToCreateOrg.useMutation).mockImplementation(
-      mockUseMutation as any
-    );
   });
 
   it("should submit teams with migration data correctly", async () => {

@@ -1,68 +1,10 @@
+import process from "node:process";
 import { PrismaAgentRepository } from "@calcom/features/calAIPhone/repositories/PrismaAgentRepository";
 import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/repositories/PrismaPhoneNumberRepository";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
+// import { CreditService } from "@calcom/features/ee/billing/credit-service";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
-import { CreditUsageType } from "@calcom/prisma/enums";
-import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { Retell } from "retell-sdk";
-import { z } from "zod";
-
-const log = logger.getSubLogger({ prefix: ["retell-ai-webhook"] });
-
-const RetellWebhookSchema = z.object({
-  event: z.enum(["call_started", "call_ended", "call_analyzed"]),
-  call: z
-    .object({
-      call_id: z.string(),
-      agent_id: z.string().optional(),
-      // Make phone fields optional for web calls
-      from_number: z.string().optional(),
-      to_number: z.string().optional(),
-      direction: z.enum(["inbound", "outbound"]).optional(),
-      call_type: z.string().optional(),
-      call_status: z.string(),
-      start_timestamp: z.number(),
-      end_timestamp: z.number().optional(),
-      disconnection_reason: z.string().optional(),
-      metadata: z.record(z.any()).optional(),
-      retell_llm_dynamic_variables: z.record(z.any()).optional(),
-      transcript: z.string().optional(),
-      opt_out_sensitive_data_storage: z.boolean().optional(),
-      call_cost: z
-        .object({
-          product_costs: z
-            .array(
-              z.object({
-                product: z.string(),
-                unitPrice: z.number().optional(),
-                cost: z.number().optional(),
-              })
-            )
-            .optional(),
-          total_duration_seconds: z.number().optional(),
-          total_duration_unit_price: z.number().optional(),
-          total_one_time_price: z.number().optional(),
-          combined_cost: z.number().optional(),
-        })
-        .optional(),
-      call_analysis: z
-        .object({
-          call_summary: z.string().optional(),
-          in_voicemail: z.boolean().optional(),
-          user_sentiment: z.string().optional(),
-          call_successful: z.boolean().optional(),
-          custom_analysis_data: z.record(z.any()).optional(),
-        })
-        .optional(),
-    })
-    .passthrough(),
-});
-
-type RetellCallData = z.infer<typeof RetellWebhookSchema>["call"];
 
 async function chargeCreditsForCall({
   userId,
@@ -77,48 +19,17 @@ async function chargeCreditsForCall({
   callId: string;
   callDuration: number;
 }) {
-  const rawRatePerMinute = process.env.CAL_AI_CALL_RATE_PER_MINUTE ?? "0.29";
-  const ratePerMinute = Number.parseFloat(rawRatePerMinute);
-  const safeRatePerMinute = Number.isFinite(ratePerMinute) && ratePerMinute > 0 ? ratePerMinute : 0.29;
-
-  const durationInMinutes = callDuration / 60;
-  const calculatedCallCost = durationInMinutes * safeRatePerMinute;
-  // Convert to cents and round up to ensure we don't undercharge
-  const creditsToDeduct = Math.ceil(calculatedCallCost * 100);
-
-  const creditService = new CreditService();
-
-  try {
-    await creditService.chargeCredits({
-      userId: userId ?? undefined,
-      teamId: teamId ?? undefined,
-      credits: creditsToDeduct,
-      callDuration: callDuration,
-      creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-      externalRef: `retell:${callId}`,
-    });
-
-    return {
-      success: true,
-      message: `Successfully charged ${creditsToDeduct} credits (${callDuration}s at $${safeRatePerMinute}/min) for ${
-        teamId ? `team:${teamId}` : ""
-      } ${userId ? `user:${userId}` : ""}, call ${callId}`,
-    };
-  } catch (e) {
-    log.error("Error charging credits for Retell AI call", {
-      error: e,
-      call_id: callId,
-      call_cost: callCost,
-      userId,
-      teamId,
-    });
-    return {
-      success: false,
-      message: `Error charging credits for Retell AI call: ${
-        e instanceof Error ? e.message : "Unknown error"
-      }`,
-    };
-  }
+  log.info("Credits charging is disabled in this version.", {
+    userId,
+    teamId,
+    callCost,
+    callId,
+    duration: callDuration,
+  });
+  return {
+    success: true,
+    message: "Credits charging skipped (disabled)",
+  };
 }
 
 async function handleCallAnalyzed(callData: RetellCallData) {

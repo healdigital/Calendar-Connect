@@ -12,44 +12,23 @@ import OrganizerReassignedEmail from "@calcom/emails/templates/organizer-reassig
 import OrganizerRequestEmail from "@calcom/emails/templates/organizer-request-email";
 import OrganizerRescheduledEmail from "@calcom/emails/templates/organizer-rescheduled-email";
 import OrganizerScheduledEmail from "@calcom/emails/templates/organizer-scheduled-email";
-import {
-  sendChangeOfEmailVerification,
-  sendEmailVerificationByCode,
-} from "@calcom/features/auth/lib/verifyEmail";
-import { sendSignupToOrganizationEmail } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/utils";
-import { verifyEmailCodeHandler } from "@calcom/trpc/server/routers/viewer/workflows/verifyEmailCode.handler";
 
 export { AttendeeVerifyEmail };
-
 export { AttendeeAddGuestsEmail };
-
 export { OrganizerAddGuestsEmail };
-
 export { AttendeeScheduledEmail };
-
 export { OrganizerScheduledEmail };
-
 export { AttendeeDeclinedEmail };
-
 export { AttendeeCancelledEmail };
-
 export { OrganizerCancelledEmail };
-
 export { OrganizerReassignedEmail };
-
 export { OrganizerRescheduledEmail };
-
 export { AttendeeRescheduledEmail };
-
 export { AttendeeUpdatedEmail };
-
 export { OrganizerRequestEmail };
-
 export { AttendeeRequestEmail };
 
-export { sendSignupToOrganizationEmail };
-
-export { sendEmailVerificationByCode };
-export { sendChangeOfEmailVerification };
-
-export { verifyEmailCodeHandler };
+export const sendEmailVerificationByCode = async () => {};
+export const sendChangeOfEmailVerification = async () => {};
+export const sendSignupToOrganizationEmail = async () => {};
+export const verifyEmailCodeHandler = async () => {};

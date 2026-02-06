@@ -3,12 +3,12 @@
  */
 import "@calcom/lib/__mocks__/logger";
 import { prisma } from "@calcom/prisma/__mocks__/prisma";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
-import type { Workflow } from "@calcom/features/ee/workflows/lib/types";
 import type { WebhookSubscriber } from "@calcom/features/webhooks/lib/dto/types";
 import getWebhooks from "@calcom/features/webhooks/lib/getWebhooks";
 import { WebhookVersion as WebhookVersionEnum } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import { sendGenericWebhookPayload } from "@calcom/features/webhooks/lib/sendPayload";
+import { WorkflowService } from "@calcom/features/workflows/lib/service/WorkflowService";
+import type { Workflow } from "@calcom/features/workflows/lib/types";
 import {
   TimeUnit,
   WebhookTriggerEvents,
@@ -42,7 +42,7 @@ vi.mock("@calcom/features/tasker", () => {
 });
 
 // Mock workflow dependencies
-vi.mock("@calcom/features/ee/workflows/lib/service/WorkflowService", () => ({
+vi.mock("@calcom/features/workflows/lib/service/WorkflowService", () => ({
   WorkflowService: {
     getAllWorkflowsFromRoutingForm: vi.fn(() => Promise.resolve([])),
     scheduleFormWorkflows: vi.fn(() => Promise.resolve()),

@@ -9,10 +9,9 @@ import { BookingsRepositoryFixture } from "test/fixtures/repository/bookings.rep
 import { EventTypesRepositoryFixture } from "test/fixtures/repository/event-types.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { randomString } from "test/utils/randomString";
+import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
-import { SchedulesModule_2024_06_11 } from "@/ee/schedules/schedules_2024_06_11/schedules.module";
-import { SchedulesService_2024_06_11 } from "@/ee/schedules/schedules_2024_06_11/services/schedules.service";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";
 import { PrismaModule } from "@/modules/prisma/prisma.module";
 import {

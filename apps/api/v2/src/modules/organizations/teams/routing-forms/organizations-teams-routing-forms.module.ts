@@ -1,3 +1,4 @@
+import { EventTypesRepository_2024_06_14 } from "@calcom/platform-libraries";
 import { Module } from "@nestjs/common";
 import { OrganizationsTeamsRoutingFormsController } from "./controllers/organizations-teams-routing-forms.controller";
 import { OrganizationsTeamsRoutingFormsResponsesController } from "./controllers/organizations-teams-routing-forms-responses.controller";
@@ -6,7 +7,6 @@ import { OrganizationsTeamsRoutingFormsResponsesRepository } from "./repositorie
 import { OrganizationsTeamsRoutingFormsService } from "./services/organizations-teams-routing-forms.service";
 import { OrganizationsTeamsRoutingFormsResponsesService } from "./services/organizations-teams-routing-forms-responses.service";
 import { OrganizationsTeamsRoutingFormsResponsesOutputService } from "./services/organizations-teams-routing-forms-responses-output.service";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 import { OrganizationsRepository } from "@/modules/organizations/index/organizations.repository";
 import { OrganizationsRoutingFormsRepository } from "@/modules/organizations/routing-forms/organizations-routing-forms.repository";

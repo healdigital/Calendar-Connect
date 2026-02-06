@@ -130,6 +130,23 @@ describe("thotisRouter - Public Sessions", () => {
         );
         expect(result).toEqual({ success: true });
       });
+
+      it("should deny access if token is scoped to a different booking", async () => {
+        const token = "wrong-scoped-token";
+        const email = "guest@example.com";
+        const input = {
+          bookingId: 123,
+          reason: "Can't make it",
+          token,
+        };
+
+        vi.mocked(ThotisGuestService.prototype.verifyToken).mockResolvedValue({
+          guest: { email },
+          bookingId: 456, // Different booking
+        } as any);
+
+        await expect(caller.guest.cancelByToken(input)).rejects.toThrow("Token not valid for this booking");
+      });
     });
 
     describe("rescheduleByToken", () => {
@@ -160,6 +177,80 @@ describe("thotisRouter - Public Sessions", () => {
           expect.objectContaining({ email })
         );
         expect(result).toEqual(mockResponse);
+      });
+
+      it("should deny access if token is scoped to a different booking", async () => {
+        const token = "wrong-scoped-token";
+        const email = "guest@example.com";
+        const input = {
+          bookingId: 123,
+          newDateTime: new Date(),
+          token,
+        };
+
+        vi.mocked(ThotisGuestService.prototype.verifyToken).mockResolvedValue({
+          guest: { email },
+          bookingId: 456, // Different booking
+        } as any);
+
+        await expect(caller.guest.rescheduleByToken(input)).rejects.toThrow(
+          "Token not valid for this booking"
+        );
+      });
+    });
+
+    describe("getPostSessionDataByToken", () => {
+      it("should allow getting post-session data with valid token", async () => {
+        const token = "mock-token";
+        const bookingId = 123;
+        const email = "guest@example.com";
+        const mockSummary = { id: 1, content: "Summary" };
+        const mockResources = [{ id: 1, title: "Resource" }];
+
+        vi.mocked(ThotisGuestService.prototype.verifyToken).mockResolvedValue({ guest: { email } } as any);
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue({ responses: { email } } as any);
+        // @ts-expect-error
+        prisma.thotisSessionSummary = { findUnique: vi.fn().mockResolvedValue(mockSummary) };
+        // @ts-expect-error
+        prisma.thotisSessionResource = { findMany: vi.fn().mockResolvedValue(mockResources) };
+
+        const result = await caller.guest.getPostSessionDataByToken({ token, bookingId });
+
+        expect(result).toEqual({ summary: mockSummary, resources: mockResources });
+      });
+
+      it("should deny access if token is scoped to a different booking", async () => {
+        const token = "wrong-scoped-token";
+        const bookingId = 123;
+        const email = "guest@example.com";
+
+        vi.mocked(ThotisGuestService.prototype.verifyToken).mockResolvedValue({
+          guest: { email },
+          bookingId: 456, // Different booking
+        } as any);
+
+        await expect(caller.guest.getPostSessionDataByToken({ token, bookingId })).rejects.toThrow(
+          "Token not valid for this booking"
+        );
+      });
+
+      it("should deny access if email doesn't match booking", async () => {
+        const token = "mock-token";
+        const bookingId = 123;
+        const email = "guest@example.com";
+
+        vi.mocked(ThotisGuestService.prototype.verifyToken).mockResolvedValue({ guest: { email } } as any);
+
+        const prisma = (await import("@calcom/prisma")).default;
+        vi.mocked(prisma.booking.findUnique).mockResolvedValue({
+          responses: { email: "other@test.com" },
+        } as any);
+
+        await expect(caller.guest.getPostSessionDataByToken({ token, bookingId })).rejects.toThrow(
+          "Not authorized"
+        );
       });
     });
   });

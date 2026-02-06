@@ -2,8 +2,6 @@ import dayjs from "@calcom/dayjs";
 import type { ActionSource } from "@calcom/features/booking-audit/lib/types/actionSource";
 import { handleWebhookTrigger } from "@calcom/features/bookings/lib/handleWebhookTrigger";
 import type { ISimpleLogger } from "@calcom/features/di/shared/services/logger.service";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
 import type { EventPayloadType } from "@calcom/features/webhooks/lib/sendPayload";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { HttpError } from "@calcom/lib/http-error";
@@ -240,36 +238,6 @@ const handleSeats = async (newSeatedBookingObject: NewSeatedBookingObject) => {
     };
     // For seated events, use the phone number from the specific attendee being added
     const attendeePhoneNumber = invitee[0]?.phoneNumber || smsReminderNumber || null;
-    try {
-      const creditService = new CreditService();
-
-      await WorkflowService.scheduleWorkflowsForNewBooking({
-        workflows: workflows,
-        smsReminderNumber: attendeePhoneNumber,
-        calendarEvent: {
-          ...evt,
-          uid: seatedBooking.uid,
-          rescheduleReason,
-          ...{
-            metadata,
-            eventType: {
-              slug: eventType.slug,
-              schedulingType: eventType.schedulingType,
-              hosts: eventType.hosts,
-            },
-          },
-        },
-        emailAttendeeSendToOverride: bookerEmail,
-        seatReferenceUid: resultBooking?.seatReferenceUid,
-        isDryRun,
-        isConfirmedByDefault: !evt.requiresConfirmation,
-        isRescheduleEvent: !!rescheduleUid,
-        isNormalBookingOrFirstRecurringSlot: true,
-        creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
-      });
-    } catch (error) {
-      loggerWithEventDetails.error("Error while scheduling workflow reminders", JSON.stringify({ error }));
-    }
 
     const webhookData: EventPayloadType = {
       ...evt,

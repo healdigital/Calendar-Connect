@@ -1,7 +1,6 @@
 import { enrichUserWithDelegationCredentials } from "@calcom/app-store/delegationCredential";
-import { workflowSelect } from "@calcom/ee/workflows/lib/getAllWorkflows";
 import { getCalEventResponses } from "@calcom/features/bookings/lib/getCalEventResponses";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
+import { WEBAPP_URL } from "@calcom/lib/constants";
 import { HttpError as HttpCode } from "@calcom/lib/http-error";
 import { isPrismaObjOrUndefined } from "@calcom/lib/isPrismaObj";
 import { parseRecurringEvent } from "@calcom/lib/isRecurringEvent";
@@ -73,13 +72,7 @@ export async function getBooking(bookingId: number) {
           },
           slug: true,
           schedulingType: true,
-          workflows: {
-            select: {
-              workflow: {
-                select: workflowSelect,
-              },
-            },
-          },
+
           bookingFields: true,
           team: {
             select: {
@@ -90,6 +83,11 @@ export async function getBooking(bookingId: number) {
           },
           seatsPerTimeSlot: true,
           seatsShowAttendees: true,
+          workflows: {
+            select: {
+              workflow: true,
+            },
+          },
         },
       },
       metadata: true,
@@ -156,9 +154,7 @@ export async function getBooking(bookingId: number) {
 
   const organizerOrganizationId = organizerOrganizationProfile?.organizationId;
 
-  const bookerUrl = await getBookerBaseUrl(
-    booking.eventType?.team?.parentId ?? organizerOrganizationId ?? null
-  );
+  const bookerUrl = WEBAPP_URL;
 
   const attendeesList = await Promise.all(attendeesListPromises);
   const selectedDestinationCalendar = booking.destinationCalendar || user.destinationCalendar;

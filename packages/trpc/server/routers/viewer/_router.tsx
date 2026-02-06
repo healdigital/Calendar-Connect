@@ -16,7 +16,6 @@ import { calendarsRouter } from "./calendars/_router";
 import { calVideoRouter } from "./calVideo/_router";
 import { credentialsRouter } from "./credentials/_router";
 import { creditsRouter } from "./credits/_router";
-import { deploymentSetupRouter } from "./deploymentSetup/_router";
 import { eventTypesRouter } from "./eventTypes/_router";
 import { eventTypesRouter as heavyEventTypesRouter } from "./eventTypes/heavy/_router";
 import { featureOptInRouter } from "./featureOptIn/_router";
@@ -41,7 +40,6 @@ export const viewerRouter = router({
   me: meRouter,
   public: publicViewerRouter,
   auth: authRouter,
-  deploymentSetup: deploymentSetupRouter,
   bookings: bookingsRouter,
   calendars: calendarsRouter,
   calVideo: calVideoRouter,

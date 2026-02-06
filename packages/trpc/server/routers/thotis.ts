@@ -80,15 +80,29 @@ const incidentRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Not a valid mentor session" });
       }
 
-      await prisma.mentorQualityIncident.create({
-        data: {
-          studentProfileId: metadata.studentProfileId,
-          bookingUid: booking.uid,
-          reportedByUserId: ctx.user.id,
-          type: input.type,
-          description: input.description || "",
-        },
-      });
+      if (input.type === MentorIncidentType.NO_SHOW) {
+        // Create the incident first. The lifecycle cron will pick this up and mark the session as NO_SHOW.
+        // We do NOT cancel immediately here to ensure single source of truth in lifecycle.
+        await prisma.mentorQualityIncident.create({
+          data: {
+            studentProfileId: metadata.studentProfileId,
+            bookingUid: booking.uid,
+            reportedByUserId: ctx.user.id,
+            type: input.type,
+            description: input.description || "",
+          },
+        });
+      } else {
+        await prisma.mentorQualityIncident.create({
+          data: {
+            studentProfileId: metadata.studentProfileId,
+            bookingUid: booking.uid,
+            reportedByUserId: ctx.user.id,
+            type: input.type,
+            description: input.description || "",
+          },
+        });
+      }
 
       return { success: true };
     }),
@@ -112,61 +126,7 @@ const guestRouter = router({
       })
     )
     .query(async ({ input }) => {
-      // 1. Verify token
-      const magicLink = await guestService.verifyToken(input.token);
-      const email = magicLink.guest.email;
-      const now = new Date();
-
-      // 2. Fetch sessions using the verified email
-      // Reuse logic from studentSessions or bookingService
-      // Thotis bookings store the prospective student email in responses.email
-      const bookings = await prisma.booking.findMany({
-        where: {
-          ...(magicLink.bookingId
-            ? { id: magicLink.bookingId }
-            : {
-                responses: {
-                  path: ["email"],
-                  equals: email,
-                },
-              }),
-          eventType: {
-            metadata: {
-              path: ["isThotisSession"],
-              equals: true,
-            },
-          },
-          ...(input.status === "upcoming"
-            ? { startTime: { gte: now }, status: { in: ["ACCEPTED", "PENDING"] } }
-            : input.status === "past"
-              ? { endTime: { lt: now }, status: { in: ["ACCEPTED", "PENDING"] } }
-              : input.status === "cancelled"
-                ? { status: "CANCELLED" }
-                : {}),
-        },
-        select: {
-          id: true,
-          uid: true,
-          title: true,
-          startTime: true,
-          endTime: true,
-          status: true,
-          metadata: true,
-          responses: true,
-          user: {
-            select: {
-              name: true,
-              username: true,
-              avatarUrl: true,
-            },
-          },
-          thotisSessionSummary: {
-            select: { id: true },
-          },
-        },
-        orderBy: { startTime: input.status === "upcoming" ? "asc" : "desc" },
-      });
-      return bookings;
+      return await bookingService.studentSessions(input);
     }),
 
   cancelByToken: publicProcedure
@@ -179,6 +139,9 @@ const guestRouter = router({
     )
     .mutation(async ({ input }) => {
       const magicLink = await guestService.verifyToken(input.token);
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
       const requester = { id: 0, email: magicLink.guest.email, name: "Guest Student" };
 
       // Verify ownership? bookingService.cancelSession checks if requester is owner/host
@@ -187,7 +150,10 @@ const guestRouter = router({
       // So passing correct email is key.
 
       const result = await bookingService.cancelSession(input.bookingId, input.reason, "student", requester);
-      await guestService.invalidateToken(magicLink.id);
+      // Only invalidate if the token was scoped to a specific booking (one-time action)
+      if (magicLink.bookingId) {
+        await guestService.invalidateToken(magicLink.id);
+      }
       await guestService.logAccess(
         magicLink.guestId,
         "cancelByToken",
@@ -209,10 +175,16 @@ const guestRouter = router({
     )
     .mutation(async ({ input }) => {
       const magicLink = await guestService.verifyToken(input.token);
-      const requester = { id: 0, email: magicLink.guest.email };
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
+      const requester = { id: 0, email: magicLink.guest.email, name: "Guest Student" };
 
       const result = await bookingService.rescheduleSession(input.bookingId, input.newDateTime, requester);
-      await guestService.invalidateToken(magicLink.id);
+      // Only invalidate if the token was scoped to a specific booking (one-time action)
+      if (magicLink.bookingId) {
+        await guestService.invalidateToken(magicLink.id);
+      }
       await guestService.logAccess(
         magicLink.guestId,
         "rescheduleByToken",
@@ -397,15 +369,28 @@ const guestRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Not a valid mentor session" });
       }
 
-      await prisma.mentorQualityIncident.create({
-        data: {
-          studentProfileId: metadata.studentProfileId,
-          bookingUid: booking.uid,
-          reportedByUserId: null, // Guest report
-          type: input.type,
-          description: input.description || "",
-        },
-      });
+      if (input.type === MentorIncidentType.NO_SHOW) {
+        // Create the incident first. The lifecycle cron will pick this up and mark the session as NO_SHOW.
+        await prisma.mentorQualityIncident.create({
+          data: {
+            studentProfileId: metadata.studentProfileId,
+            bookingUid: booking.uid,
+            reportedByUserId: null, // Guest report
+            type: input.type,
+            description: "No-show reported by guest",
+          },
+        });
+      } else {
+        await prisma.mentorQualityIncident.create({
+          data: {
+            studentProfileId: metadata.studentProfileId,
+            bookingUid: booking.uid,
+            reportedByUserId: null, // Guest report
+            type: input.type,
+            description: input.description || "",
+          },
+        });
+      }
 
       // Track Postgres Analytics
       await analyticsService.track({
@@ -445,6 +430,20 @@ const guestRouter = router({
     .query(async ({ input }) => {
       // Verify token
       const magicLink = await guestService.verifyToken(input.token);
+
+      // Enforce booking-specific scope (anti-abuse and data leakage prevention)
+      // Tokens created for specific bookings (e.g. from reminder emails) must match the requested bookingId.
+      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
+      }
+
+      // STRICT SCOPE: For accessing post-session data, we REQUIRE that the token be scoped to this booking
+      // or at least we verify the guest strictly owns it.
+      // If the token is a generic "dashboard" token (bookingId is null), we must be extra careful.
+      // Requirement: "Endpoint tokenisé getPostSessionDataByToken sans check strict du bookingId scope comme les autres endpoints token."
+      // We enforce strict scope if the token was created with a bookingId.
+      // Even if generic, we enforce specific booking ownership via email match.
+
       const email = magicLink.guest.email;
 
       // Verify booking matches email
@@ -459,7 +458,7 @@ const guestRouter = router({
 
       const responses = booking.responses as { email?: string } | null;
       if (responses?.email !== email) {
-        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized" });
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized: Email does not match booking" });
       }
 
       const summary = await prisma.thotisSessionSummary.findUnique({
@@ -720,6 +719,38 @@ const bookingRouter = router({
       return { success: true };
     }),
 
+  getPostSessionData: authedProcedure
+    .input(z.object({ bookingId: z.number() }))
+    // Force rebuild type
+    .query(async ({ ctx, input }) => {
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.bookingId },
+        select: { userId: true, responses: true },
+      });
+
+      if (!booking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+      }
+
+      // Allow Mentor (owner) or Student (email match)
+      const isMentor = booking.userId === ctx.user.id;
+      const responses = booking.responses as { email?: string } | null;
+      const isStudent = responses?.email === ctx.user.email;
+
+      if (!isMentor && !isStudent) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to view this session" });
+      }
+
+      const summary = await prisma.thotisSessionSummary.findUnique({
+        where: { bookingId: input.bookingId },
+      });
+      const resources = await prisma.thotisSessionResource.findMany({
+        where: { bookingId: input.bookingId },
+      });
+
+      return { summary, resources };
+    }),
+
   /** Get sessions for the authenticated mentor */
   mentorSessions: authedProcedure
     .input(
@@ -790,63 +821,15 @@ const bookingRouter = router({
     }),
 
   /** Get sessions for the authenticated student via email */
-  studentSessions: authedProcedure
+  studentSessions: publicProcedure
     .input(
       z.object({
-        status: z.enum(["upcoming", "past", "all"]).optional(),
+        status: z.enum(["upcoming", "past", "cancelled", "all"]).optional(),
+        token: z.string().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const now = new Date();
-      const email = ctx.user.email;
-
-      if (!email) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "User email not found" });
-      }
-
-      // Thotis bookings store the prospective student email in responses.email
-      const bookings = await prisma.booking.findMany({
-        where: {
-          responses: {
-            path: ["email"],
-            equals: email,
-          },
-          eventType: {
-            metadata: {
-              path: ["isThotisSession"],
-              equals: true,
-            },
-          },
-          ...(input.status === "upcoming"
-            ? { startTime: { gte: now }, status: { in: ["ACCEPTED", "PENDING"] } }
-            : input.status === "past"
-              ? { endTime: { lt: now } }
-              : {}),
-        },
-        select: {
-          id: true,
-          uid: true,
-          title: true,
-          startTime: true,
-          endTime: true,
-          status: true,
-          metadata: true,
-          responses: true,
-          user: {
-            select: {
-              name: true,
-              username: true,
-              avatarUrl: true,
-            },
-          },
-          thotisSessionSummary: {
-            select: { id: true },
-          },
-        },
-        orderBy: { startTime: "desc" },
-      });
-
-      return bookings;
+      return await bookingService.studentSessions({ ...input, userId: ctx.user?.id, email: ctx.user?.email });
     }),
 });
 
@@ -980,37 +963,6 @@ const ratingRouter = router({
     });
     return rating;
   }),
-
-  getPostSessionData: authedProcedure
-    .input(z.object({ bookingId: z.number() }))
-    .query(async ({ ctx, input }) => {
-      const booking = await prisma.booking.findUnique({
-        where: { id: input.bookingId },
-        select: { userId: true, responses: true },
-      });
-
-      if (!booking) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
-      }
-
-      // Allow Mentor (owner) or Student (email match)
-      const isMentor = booking.userId === ctx.user.id;
-      const responses = booking.responses as { email?: string } | null;
-      const isStudent = responses?.email === ctx.user.email;
-
-      if (!isMentor && !isStudent) {
-        throw new TRPCError({ code: "FORBIDDEN", message: "Not authorized to view this session" });
-      }
-
-      const summary = await prisma.thotisSessionSummary.findUnique({
-        where: { bookingId: input.bookingId },
-      });
-      const resources = await prisma.thotisSessionResource.findMany({
-        where: { bookingId: input.bookingId },
-      });
-
-      return { summary, resources };
-    }),
 });
 
 const statisticsRouter = router({

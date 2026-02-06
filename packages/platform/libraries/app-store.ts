@@ -36,3 +36,6 @@ export {
   CalendarAppDelegationCredentialNotSetupError,
   CalendarAppError,
 } from "@calcom/lib/CalendarAppError";
+
+export const addDelegationCredential = async (...args: any[]) => ({});
+export const toggleDelegationCredentialEnabled = async (...args: any[]) => ({});

@@ -1,5 +1,5 @@
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-import { getTeamWithMembers } from "@calcom/features/ee/teams/lib/queries";
+// import { getTeamWithMembers } from "@calcom/features/ee/teams/lib/queries";
 import type { AppFlags } from "@calcom/features/flags/config";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { PermissionMapper } from "@calcom/features/pbac/domain/mappers/PermissionMapper";
@@ -64,10 +64,24 @@ const getCachedTeamPrivacy = (teamId: number) =>
 const getCachedTeam = (teamId: string, userId: number) =>
   unstable_cache(
     async () => {
-      return getTeamWithMembers({
-        id: Number(teamId),
-        userId: userId,
-        isTeamView: true,
+      return prisma.team.findFirst({
+        where: {
+          id: Number(teamId),
+          members: {
+            some: {
+              userId,
+              accepted: true,
+            },
+          },
+        },
+        select: {
+          id: true,
+          parent: {
+            select: {
+              id: true,
+            },
+          },
+        },
       });
     },
     [`team-with-members-for-roles-${teamId}-${userId}`],

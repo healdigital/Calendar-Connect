@@ -1,8 +1,7 @@
 import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
+import { CALENDARS_QUEUE } from "@calcom/platform-libraries";
 import { OrganizationsDelegationCredentialService } from "./services/organizations-delegation-credential.service";
-import { CalendarsModule } from "@/ee/calendars/calendars.module";
-import { CALENDARS_QUEUE, CalendarsProcessor } from "@/ee/calendars/processors/calendars.processor";
 import { CalendarsTaskerModule } from "@/lib/modules/calendars-tasker.module";
 import { MembershipsModule } from "@/modules/memberships/memberships.module";
 import { OrganizationsDelegationCredentialController } from "@/modules/organizations/delegation-credentials/organizations-delegation-credential.controller";
@@ -17,7 +16,6 @@ import { StripeModule } from "@/modules/stripe/stripe.module";
     PrismaModule,
     StripeModule,
     RedisModule,
-    CalendarsModule,
     MembershipsModule,
     BullModule.registerQueue({
       name: CALENDARS_QUEUE,
@@ -32,7 +30,6 @@ import { StripeModule } from "@/modules/stripe/stripe.module";
     OrganizationsDelegationCredentialService,
     OrganizationsDelegationCredentialRepository,
     OrganizationsRepository,
-    CalendarsProcessor,
   ],
   controllers: [OrganizationsDelegationCredentialController],
   exports: [

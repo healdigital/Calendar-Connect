@@ -1,11 +1,8 @@
-import { purchaseTeamOrOrgSubscription } from "@calcom/features/ee/teams/lib/payments";
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
-import { IS_TEAM_BILLING_ENABLED } from "@calcom/lib/constants";
+import { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
 import { HttpError } from "@calcom/lib/http-error";
 import { defaultResponder } from "@calcom/lib/server/defaultResponder";
 import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
-import { TRPCError } from "@trpc/server";
 import type { NextApiRequest } from "next";
 import { schemaQueryTeamId } from "~/lib/validations/shared/queryTeamId";
 import { schemaTeamReadPublic, schemaTeamUpdateBodyParams } from "~/lib/validations/team";
@@ -96,27 +93,10 @@ export async function patchHandler(req: NextApiRequest) {
       });
   }
 
-  let paymentUrl;
+  // OSS: Allow free slug updates without payment
   if (team.slug === null && data.slug) {
-    data.metadata = {
-      ...(team.metadata as Prisma.JsonObject),
-      requestedSlug: data.slug,
-    };
-    delete data.slug;
-    if (IS_TEAM_BILLING_ENABLED) {
-      const checkoutSession = await purchaseTeamOrOrgSubscription({
-        teamId: team.id,
-        seatsUsed: team.members.length,
-        userId,
-        pricePerSeat: null,
-      });
-      if (!checkoutSession.url)
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed retrieving a checkout session URL.",
-        });
-      paymentUrl = checkoutSession.url;
-    }
+    // For OSS deployments, directly set the slug without payment requirement
+    // No need to store in metadata or require payment
   }
 
   // TODO: Perhaps there is a better fix for this?
@@ -130,14 +110,9 @@ export async function patchHandler(req: NextApiRequest) {
     metadata: data.metadata === null ? {} : data.metadata || undefined,
   };
   const updatedTeam = await prisma.team.update({ where: { id: teamId }, data: cloneData });
-  const result = {
+  return {
     team: schemaTeamReadPublic.parse(updatedTeam),
-    paymentUrl,
   };
-  if (!paymentUrl) {
-    delete result.paymentUrl;
-  }
-  return result;
 }
 
 export default defaultResponder(patchHandler);

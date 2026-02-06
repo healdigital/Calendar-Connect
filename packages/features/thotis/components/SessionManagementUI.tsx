@@ -1,8 +1,9 @@
 import dayjs from "@calcom/dayjs";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import type { BookingStatus } from "@calcom/prisma/enums";
 import { MentorIncidentType } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
-import classNames from "@calcom/ui/classNames";
+import { DatePicker } from "@calcom/ui";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { useCallback, useState } from "react";
@@ -16,9 +17,9 @@ interface SessionBooking {
   title: string;
   startTime: Date | string;
   endTime: Date | string;
-  status: string;
-  metadata: Record<string, unknown> | null;
-  responses: Record<string, unknown> | null;
+  status: BookingStatus | string;
+  metadata: any;
+  responses: any;
   cancellationReason?: string | null;
   thotisSessionSummary?: { id: number } | null;
 }
@@ -45,11 +46,27 @@ export const SessionManagementUI = ({
   const [showSummary, setShowSummary] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [newDateTime, setNewDateTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [incidentType, setIncidentType] = useState<MentorIncidentType>(MentorIncidentType.OTHER);
   const [incidentDescription, setIncidentDescription] = useState("");
   const utils = trpc.useUtils();
+
+  const { data: availability, isPending: isAvailabilityLoading } =
+    trpc.thotis.booking.getAvailability.useQuery(
+      {
+        // @ts-expect-error
+        studentProfileId: booking.metadata?.studentProfileId,
+        start: selectedDate ? dayjs(selectedDate).startOf("day").toDate() : new Date(),
+        end: selectedDate ? dayjs(selectedDate).endOf("day").toDate() : new Date(),
+      },
+      {
+        // @ts-expect-error
+        enabled: !!selectedDate && !!booking.metadata?.studentProfileId && modalState === "reschedule",
+      }
+    );
 
   const startTime = dayjs(booking.startTime);
   const endTime = dayjs(booking.endTime);
@@ -170,21 +187,31 @@ export const SessionManagementUI = ({
     }
   }, [booking.id, cancelReason, cancelMutation, guestCancelMutation, isMentor, token]);
 
-  const handleReschedule = useCallback(() => {
-    if (!newDateTime) return;
-    if (token) {
-      guestRescheduleMutation.mutate({
-        token,
-        bookingId: booking.id,
-        newDateTime: new Date(newDateTime),
-      });
-    } else {
-      rescheduleMutation.mutate({
-        bookingId: booking.id,
-        newDateTime: new Date(newDateTime),
-      });
-    }
-  }, [booking.id, newDateTime, rescheduleMutation, guestRescheduleMutation, token]);
+  const handleReschedule = useCallback(
+    (dateTime?: Date) => {
+      // Strictly prefer the selected slot from the UI grid if no specific date passed
+      const targetDate = dateTime || (selectedSlot ? new Date(selectedSlot) : null);
+
+      if (!targetDate) {
+        setErrorMessage(t("thotis_select_slot_error")); // "Please select a time slot"
+        return;
+      }
+
+      if (token) {
+        guestRescheduleMutation.mutate({
+          token,
+          bookingId: booking.id,
+          newDateTime: targetDate,
+        });
+      } else {
+        rescheduleMutation.mutate({
+          bookingId: booking.id,
+          newDateTime: targetDate,
+        });
+      }
+    },
+    [booking.id, selectedSlot, rescheduleMutation, guestRescheduleMutation, token, t]
+  );
 
   const handleComplete = useCallback(() => {
     completeMutation.mutate({ bookingId: booking.id });
@@ -431,25 +458,76 @@ export const SessionManagementUI = ({
       {modalState === "reschedule" && (
         <div className="mt-3 rounded-md border border-blue-200 bg-blue-50 p-3">
           <h4 className="mb-2 text-sm font-medium text-blue-800">{t("thotis_reschedule_session")}</h4>
-          <label className="mb-1 block text-xs text-blue-700">{t("thotis_select_new_time")}</label>
-          <input
-            type="datetime-local"
-            value={newDateTime}
-            onChange={(e) => setNewDateTime(e.target.value)}
-            min={dayjs().add(3, "hour").format("YYYY-MM-DDTHH:mm")}
-            className="mb-2 w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
-          />
-          <div className="flex gap-2">
+          <p className="mb-3 text-xs text-blue-700">{t("thotis_reschedule_description")}</p>
+
+          <div className="space-y-3">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-blue-700">
+                {t("thotis_select_date")}
+              </label>
+              <DatePicker
+                date={selectedDate}
+                onDateChange={setSelectedDate}
+                minDate={new Date()}
+                className="w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
+              />
+            </div>
+
+            {selectedDate && (
+              <div className="mt-2">
+                <label className="mb-1 block text-xs font-medium text-blue-700">
+                  {t("thotis_available_slots")}
+                </label>
+                {isAvailabilityLoading ? (
+                  <div className="flex justify-center py-4">
+                    <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />
+                  </div>
+                ) : !availability || availability.length === 0 ? (
+                  <p className="text-xs text-blue-600 italic">No slots available for this date.</p>
+                ) : (
+                  <div className="grid grid-cols-3 gap-2">
+                    {availability.map((slot: any) => {
+                      const slotDate = new Date(slot.time);
+                      const isSelected = selectedSlot === slot.time;
+                      return (
+                        <button
+                          key={slot.time}
+                          type="button"
+                          onClick={() => setSelectedSlot(slot.time)}
+                          className={`rounded-md border px-2 py-1 text-xs transition-colors ${
+                            isSelected
+                              ? "border-blue-600 bg-blue-600 text-white"
+                              : "border-blue-200 bg-white text-blue-700 hover:border-blue-400"
+                          }`}>
+                          {dayjs(slotDate).format("HH:mm")}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
             <Button
               color="primary"
               size="sm"
-              onClick={handleReschedule}
-              disabled={!newDateTime || rescheduleMutation.isPending || guestRescheduleMutation.isPending}
-              loading={rescheduleMutation.isPending || guestRescheduleMutation.isPending}
-              data-testid="confirm-reschedule">
+              className="w-full justify-center"
+              onClick={() => handleReschedule()}
+              disabled={!selectedSlot || rescheduleMutation.isPending || guestRescheduleMutation.isPending}
+              loading={rescheduleMutation.isPending || guestRescheduleMutation.isPending}>
               {t("thotis_confirm_reschedule")}
             </Button>
-            <Button color="minimal" size="sm" onClick={() => setModalState("none")}>
+          </div>
+
+          <div className="mt-4 flex gap-2">
+            <Button
+              color="minimal"
+              size="sm"
+              onClick={() => {
+                setModalState("none");
+                setSelectedDate(null);
+                setSelectedSlot(null);
+              }}>
               {t("thotis_back")}
             </Button>
           </div>

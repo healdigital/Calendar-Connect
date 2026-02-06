@@ -4,18 +4,9 @@ import classNames from "@calcom/ui/classNames";
 import { UserAvatar } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
+import type { StudentProfileWithUser as BaseStudentProfileWithUser } from "../repositories/ProfileRepository";
 
-export type StudentProfileWithUser = StudentProfile & {
-  user: Pick<User, "name" | "username" | "avatarUrl"> & {
-    profile?: {
-      organization?: {
-        id: number;
-        slug: string | null;
-        requestedSlug: string | null;
-        logoUrl?: string;
-      } | null;
-    } | null;
-  };
+export type StudentProfileWithUser = BaseStudentProfileWithUser & {
   matchScore?: number;
   matchReasons?: string[];
 };
@@ -50,7 +41,7 @@ export const ProfileCard = ({
       )}
       data-testid="mentor-card">
       <div className="mb-4 flex items-start justify-between">
-        <UserAvatar size="lg" user={user} className="h-16 w-16" />
+        <UserAvatar size="lg" user={user as any} className="h-16 w-16" />
         <div className="flex flex-col items-end gap-2">
           <div className="flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-1 dark:bg-green-900/20">
             <div className="h-2 w-2 rounded-full bg-green-500" />

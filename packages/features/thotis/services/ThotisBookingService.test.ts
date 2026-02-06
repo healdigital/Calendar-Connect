@@ -1,6 +1,17 @@
 import { ErrorCode } from "@calcom/lib/errorCodes";
+import { ErrorWithCode } from "@calcom/lib/errors";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ThotisBookingService } from "./ThotisBookingService";
+
+// Pre-create the mock service
+const mockAvailableSlotsService = {
+  getAvailableSlots: vi.fn(),
+};
+
+// Mock the AvailableSlots container
+vi.mock("@calcom/features/di/containers/AvailableSlots", () => ({
+  getAvailableSlotsService: vi.fn(() => mockAvailableSlotsService),
+}));
 
 // Mock dependencies
 const prismaMock = {
@@ -128,6 +139,56 @@ describe("ThotisBookingService Unit Tests", () => {
             cancelledSessions: { increment: 1 },
           }),
         })
+      );
+    });
+  });
+
+  describe("createStudentSession availability", () => {
+    it("should throw conflict if mentor is not available in engine", async () => {
+      const dateTime = new Date(Date.now() + 4 * 60 * 60 * 1000); // 4 hours from now
+      prismaMock.studentProfile.findUnique.mockResolvedValue({
+        id: "sp1",
+        userId: 1,
+        status: "VERIFIED",
+        user: { studentProfile: { field: "math" } },
+      });
+      prismaMock.user.findUnique.mockResolvedValue({ id: 1, username: "mentor" });
+      prismaMock.eventType.findFirst.mockResolvedValue({ id: 101, length: 15 });
+
+      // Mock engine reporting slot as unavailable (empty slots)
+      mockAvailableSlotsService.getAvailableSlots.mockResolvedValue({ slots: {} });
+
+      await expect(
+        service.createStudentSession({
+          studentProfileId: "sp1",
+          dateTime,
+          prospectiveStudent: { name: "Student", email: "student@example.com" },
+        })
+      ).rejects.toThrow(/Mentor is not available/);
+    });
+  });
+
+  describe("rescheduleSession availability", () => {
+    it("should throw conflict if new slot is unavailable in engine", async () => {
+      const now = new Date();
+      const newDateTime = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+      const booking = {
+        id: 1,
+        userId: 1,
+        startTime: now,
+        status: "PENDING",
+        eventType: { userId: 1 },
+      };
+      prismaMock.booking.findUnique.mockResolvedValue(booking);
+      prismaMock.user.findUnique.mockResolvedValue({ id: 1, username: "mentor" });
+      prismaMock.eventType.findFirst.mockResolvedValue({ id: 101, length: 15 });
+      prismaMock.booking.findFirst.mockResolvedValue(null); // No internal conflicts
+
+      // Mock engine reporting slot as unavailable
+      mockAvailableSlotsService.getAvailableSlots.mockResolvedValue({ slots: {} });
+
+      await expect(service.rescheduleSession(1, newDateTime, { id: 1 })).rejects.toThrow(
+        /Mentor is not available/
       );
     });
   });

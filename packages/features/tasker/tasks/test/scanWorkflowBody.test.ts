@@ -10,7 +10,7 @@ vi.mock("../scanWorkflowUrls", () => ({
 }));
 
 // Mock the scheduleWorkflowNotifications function
-vi.mock("@calcom/features/ee/workflows/lib/scheduleWorkflowNotifications", () => ({
+vi.mock("@calcom/features/workflows/lib/scheduleWorkflowNotifications", () => ({
   scheduleWorkflowNotifications: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -27,7 +27,7 @@ vi.mock("@calcom/features/ee/workflows/lib/actionHelperFunctions", () => ({
 }));
 
 // Mock the compareReminderBodyToTemplate
-vi.mock("@calcom/features/ee/workflows/lib/compareReminderBodyToTemplate", () => ({
+vi.mock("@calcom/features/workflows/lib/compareReminderBodyToTemplate", () => ({
   default: vi.fn().mockReturnValue(false),
 }));
 
@@ -50,8 +50,8 @@ vi.mock("@calcom/lib/constants", async () => {
   };
 });
 
-import compareReminderBodyToTemplate from "@calcom/features/ee/workflows/lib/compareReminderBodyToTemplate";
-import { scheduleWorkflowNotifications } from "@calcom/features/ee/workflows/lib/scheduleWorkflowNotifications";
+import compareReminderBodyToTemplate from "@calcom/features/workflows/lib/compareReminderBodyToTemplate";
+import { scheduleWorkflowNotifications } from "@calcom/features/workflows/lib/scheduleWorkflowNotifications";
 import { Task } from "@calcom/features/tasker/repository";
 // Import mocked modules for assertions
 import { submitWorkflowStepForUrlScanning } from "../scanWorkflowUrls";

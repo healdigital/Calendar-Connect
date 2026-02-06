@@ -16,6 +16,15 @@ export class OrganizationsRepository extends OrganizationRepository {
     super({ prismaClient: dbWrite.prisma });
   }
 
+  async findById(orgId: { id: number }) {
+    return this.dbRead.prisma.team.findUnique({
+      where: {
+        id: orgId.id,
+        isOrganization: true,
+      },
+    });
+  }
+
   async findByIds(organizationIds: number[]) {
     return this.dbRead.prisma.team.findMany({
       where: {

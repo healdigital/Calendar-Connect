@@ -39,15 +39,6 @@ import type { BookingRescheduledPayload } from "@calcom/features/bookings/lib/on
 import type { BookingEmailAndSmsTasker } from "@calcom/features/bookings/lib/tasker/BookingEmailAndSmsTasker";
 import { CalendarEventBuilder } from "@calcom/features/CalendarEventBuilder";
 import { getSpamCheckService } from "@calcom/features/di/watchlist/containers/SpamCheckService.container";
-/*
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import AssignmentReasonRecorder from "@calcom/features/ee/round-robin/assignmentReason/AssignmentReasonRecorder";
-import { BookingLocationService } from "@calcom/features/ee/round-robin/lib/bookingLocationService";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
-import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
-*/
 import { getUsernameList } from "@calcom/features/eventtypes/lib/defaultEvents";
 import { getEventName, updateHostInEventName } from "@calcom/features/eventtypes/lib/eventNaming";
 import type { FeaturesRepository } from "@calcom/features/flags/features.repository";
@@ -69,7 +60,7 @@ import type { EventPayloadType, EventTypeInfo } from "@calcom/features/webhooks/
 import { groupHostsByGroupId } from "@calcom/lib/bookings/hostGroupUtils";
 import { shouldIgnoreContactOwner } from "@calcom/lib/bookings/routing/utils";
 import { getVideoCallUrlFromCalEvent } from "@calcom/lib/CalEventParser";
-import { DEFAULT_GROUP_ID, ENABLE_ASYNC_TASKER } from "@calcom/lib/constants";
+import { DEFAULT_GROUP_ID, ENABLE_ASYNC_TASKER, WEBAPP_URL } from "@calcom/lib/constants";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
 import { extractBaseEmail } from "@calcom/lib/extract-base-email";
@@ -1173,7 +1164,7 @@ async function handler(
                 !host.isFixed &&
                 userIdsSet.has(host.user.id) &&
                 (host.groupId === groupId || (!host.groupId && groupId === DEFAULT_GROUP_ID))
-            ),
+            ) as any,
             eventType,
             routingFormResponse,
             meetingStartTime: new Date(reqBody.start),
@@ -1468,7 +1459,7 @@ async function handler(
   });
 
   const organizerOrganizationId = organizerOrganizationProfile?.organizationId;
-  const bookerUrl = "";
+  const bookerUrl = WEBAPP_URL;
   // eventType.team
   // ? await getBookerBaseUrl(eventType.team.parentId)
   // : await getBookerBaseUrl(organizerOrganizationId ?? null);
@@ -1646,13 +1637,7 @@ async function handler(
     oAuthClientId: platformClientId,
   };
 
-  const workflows = []; /* await getAllWorkflowsFromEventType(
-    {
-      ...eventType,
-      metadata: eventTypeMetaDataSchemaWithTypedApps.parse(eventType.metadata),
-    },
-    organizerUser.id
-  ); */
+  const workflows: any[] = [];
 
   const spamCheckResult = await spamCheckService.waitForCheck();
 
@@ -1785,7 +1770,7 @@ async function handler(
       subscriberOptions,
       eventTrigger,
       responses,
-      workflows,
+      workflows: workflows as any,
       rescheduledBy: reqBody.rescheduledBy,
       isDryRun,
       organizationId: eventOrganizationId,
@@ -2061,11 +2046,11 @@ async function handler(
   }
 
   // After polling videoBusyTimes, credentials might have been changed due to refreshment, so query them again.
-  const credentials = await refreshCredentials(allCredentials);
+  const credentials = await refreshCredentials(allCredentials as any);
   const apps = eventTypeAppMetadataOptionalSchema.parse(eventType?.metadata?.apps);
   const eventManager =
     !isDryRun && !skipCalendarSyncTaskCreation
-      ? new EventManager({ ...organizerUser, credentials }, apps)
+      ? new EventManager({ ...organizerUser, credentials: credentials as any }, apps)
       : buildDryRunEventManager();
 
   let videoCallUrl;
@@ -2073,8 +2058,7 @@ async function handler(
   // this is the actual rescheduling logic
   if (!eventType.seatsPerTimeSlot && originalRescheduledBooking?.uid) {
     tracingLogger.silly("Rescheduling booking", originalRescheduledBooking.uid);
-    // cancel workflow reminders from previous rescheduled booking
-    // await WorkflowRepository.deleteAllWorkflowReminders(originalRescheduledBooking.workflowReminders);
+    // cancel workflow reminders skipped in OS version
 
     evt = addVideoCallDataToEvent(originalRescheduledBooking.references, evt);
     evt.rescheduledBy = reqBody.rescheduledBy;
@@ -2097,11 +2081,11 @@ async function handler(
         originalRescheduledBooking.user,
         eventType
       );
-      const refreshedOriginalHostCredentials = await refreshCredentials(originalHostCredentials);
+      const refreshedOriginalHostCredentials = await refreshCredentials(originalHostCredentials as any);
 
       // Create EventManager with original host's credentials for deletion operations
       const originalHostEventManager = new EventManager(
-        { ...originalRescheduledBooking.user, credentials: refreshedOriginalHostCredentials },
+        { ...originalRescheduledBooking.user, credentials: refreshedOriginalHostCredentials as any },
         apps
       );
       tracingLogger.debug("RescheduleOrganizerChanged: Deleting Event and Meeting for previous booking");
@@ -2392,7 +2376,7 @@ async function handler(
                 schedulingType: eventType.schedulingType,
               },
               eventNameObject,
-              workflows,
+              workflows: workflows as any,
               evt,
               additionalInformation,
               additionalNotes,
@@ -2815,12 +2799,12 @@ async function handler(
 
   if (!isDryRun) {
     await handleAnalyticsEvents({
-      credentials: allCredentials,
+      credentials: allCredentials as any,
       rawBookingData,
       bookingInfo: {
         name: fullName,
         email: bookerEmail,
-        eventName: "Cal.com lead",
+        eventName: "Lead",
       },
       isTeamEventType,
     });

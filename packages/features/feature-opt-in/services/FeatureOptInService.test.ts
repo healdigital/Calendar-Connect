@@ -81,7 +81,7 @@ vi.mock("@calcom/features/pbac/services/permission-check.service", () => ({
 
 // Mock TeamRepository - needs to be a class that can be instantiated
 let mockFindOwnedTeamsByUserId: Mock = vi.fn();
-vi.mock("@calcom/features/ee/teams/repositories/TeamRepository", () => ({
+vi.mock("@calcom/features/teams/repositories/TeamRepository", () => ({
   TeamRepository: class {
     findOwnedTeamsByUserId(...args: unknown[]): unknown {
       return mockFindOwnedTeamsByUserId(...args);
@@ -717,7 +717,7 @@ describe("FeatureOptInService", () => {
       vi.doMock("@calcom/features/pbac/services/permission-check.service", () => ({
         PermissionCheckService: vi.fn(() => mockPermissionCheckService),
       }));
-      vi.doMock("@calcom/features/ee/teams/repositories/TeamRepository", () => ({
+      vi.doMock("@calcom/features/teams/repositories/TeamRepository", () => ({
         TeamRepository: vi.fn(() => mockTeamRepository),
       }));
     });

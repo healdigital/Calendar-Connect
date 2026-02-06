@@ -2,7 +2,7 @@
 
 import process from "node:process";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
-import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBAPP_URL, WEBSITE_URL, WEBSITE_URL } from "@calcom/lib/constants";
+import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
@@ -189,7 +189,6 @@ export default function Login({ csrfToken, isGoogleLoginEnabled, totpEmail }: Pa
                     {lastUsed === "google" && <LastUsed />}
                   </Button>
                 )}
-                {displaySSOLogin && <></>}
               </div>
               {isGoogleLoginEnabled && (
                 <div className="my-8">

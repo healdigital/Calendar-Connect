@@ -13,7 +13,6 @@ export const ENDPOINTS = [
   "calendars",
   "calVideo",
   "credentials",
-  "deploymentSetup",
   "dsync",
   "eventTypes",
   "eventTypesHeavy",

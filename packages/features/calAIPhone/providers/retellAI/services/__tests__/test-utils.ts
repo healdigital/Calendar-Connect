@@ -175,7 +175,7 @@ export const setupCreditMocks = () => {
     }),
   };
 
-  vi.mock("@calcom/features/ee/billing/credit-service", () => ({
+  vi.mock("@calcom/features/billing/credit-service", () => ({
     CreditService: vi.fn().mockImplementation(() => mockCreditService),
   }));
 

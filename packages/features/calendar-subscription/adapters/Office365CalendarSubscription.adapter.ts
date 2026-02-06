@@ -221,7 +221,7 @@ export class Office365CalendarSubscriptionAdapter implements ICalendarSubscripti
   }
 
   private async getGraphClient(credential: CalendarCredential): Promise<GraphClient> {
-    const accessToken = credential.delegatedTo?.serviceAccountKey?.private_key ?? (credential.key as string);
+    const accessToken = credential.key as string;
     if (!accessToken) throw new Error("Missing Microsoft access token");
     return { accessToken };
   }

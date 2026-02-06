@@ -12,48 +12,13 @@ export type CredentialPayload = Prisma.CredentialGetPayload<{
   appName?: string;
 };
 
-export type CredentialForCalendarService = CredentialPayload & {
-  delegatedTo: {
-    serviceAccountKey: {
-      client_email?: string;
-      tenant_id?: string;
-      client_id: string;
-      private_key: string;
-    };
-  } | null;
-};
+export type CredentialForCalendarService = CredentialPayload;
 
-export type CredentialForCalendarServiceWithEmail = CredentialPayload & {
-  delegatedTo: {
-    serviceAccountKey: {
-      client_email: string;
-      tenant_id?: undefined;
-      client_id: string;
-      private_key: string;
-    };
-  } | null;
-};
+export type CredentialForCalendarServiceWithEmail = CredentialPayload;
 
-export type CredentialForCalendarServiceWithTenantId = CredentialPayload & {
-  delegatedTo: {
-    serviceAccountKey: {
-      client_email?: undefined;
-      tenant_id: string;
-      client_id: string;
-      private_key: string;
-    };
-  } | null;
-};
+export type CredentialForCalendarServiceWithTenantId = CredentialPayload;
 
-export type Office365CredentialPayload = CredentialPayload & {
-  delegatedTo: {
-    serviceAccountKey: {
-      tenant_id: string;
-      client_id: string;
-      private_key: string;
-    };
-  } | null;
-};
+export type Office365CredentialPayload = CredentialPayload;
 
 export type CredentialFrontendPayload = Omit<CredentialPayload, "key" | "encryptedKey"> & {
   /** We should type error if keys are leaked to the frontend */

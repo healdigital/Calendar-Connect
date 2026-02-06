@@ -12,7 +12,7 @@ import type {
 import type { SelectedSlots } from "@calcom/prisma/client";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { DateTime } from "luxon";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 
 type GetAvailableSlots = {
   slots: Record<string, { time: string; attendees?: number; bookingUid?: string; away?: boolean }[]>;
@@ -20,7 +20,7 @@ type GetAvailableSlots = {
 
 @Injectable()
 export class SlotsOutputService_2024_09_04 {
-  constructor(private readonly eventTypesRepository: EventTypesRepository_2024_06_14) {}
+  constructor(private readonly eventTypesRepository: EventTypesRepository) {}
 
   async getAvailableSlots(
     availableSlots: GetAvailableSlots,

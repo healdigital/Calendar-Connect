@@ -19,7 +19,7 @@ export const oAuthRouter = router({
       });
     }),
 
-  createClient: authedAdminProcedure.input(ZCreateClientInputSchema).mutation(async ({ ctx, input }) => {
+  create: authedAdminProcedure.input(ZCreateClientInputSchema).mutation(async ({ ctx, input }) => {
     const { createClientHandler } = await import("./createClient.handler");
 
     return createClientHandler({

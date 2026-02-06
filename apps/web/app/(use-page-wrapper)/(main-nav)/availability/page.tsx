@@ -1,5 +1,4 @@
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-import { getOrganizationRepository } from "@calcom/features/ee/organizations/di/OrganizationRepository.container";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
 import { getScheduleListItemData } from "@calcom/lib/schedules/transformers/getScheduleListItemData";
 import { MembershipRole } from "@calcom/prisma/enums";
@@ -57,13 +56,15 @@ const Page = async ({ searchParams: _searchParams }: PageProps) => {
   };
 
   const organizationId = session?.user?.profile?.organizationId ?? session?.user.org?.id;
+  /*
   const organizationRepository = getOrganizationRepository();
   const isOrgPrivate = organizationId
     ? await organizationRepository.checkIfPrivate({
         orgId: organizationId,
       })
     : false;
-
+  */
+  const isOrgPrivate = false;
   const permissionService = new PermissionCheckService();
   const teamIdsWithPermission = await permissionService.getTeamIdsWithPermission({
     userId: session.user.id,

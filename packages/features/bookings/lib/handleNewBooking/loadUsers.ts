@@ -45,7 +45,7 @@ export const loadUsers = async ({
   isPlatform: boolean;
 }) => {
   try {
-    const { currentOrgDomain } = getOrgDomainConfig({
+    const { currentOrgDomain } = await getOrgDomainConfig({
       hostname,
       forcedSlug,
       isPlatform,

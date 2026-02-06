@@ -12,12 +12,12 @@ type SortOption = "recommended" | "rating" | "sessions" | "recent";
 
 interface MentorListViewProps {
   profiles: StudentProfileWithUser[];
-  isLoading: boolean;
+  isPending: boolean;
   total: number;
   onBookSession: (username: string) => void;
 }
 
-export const MentorListView = ({ profiles, isLoading, total, onBookSession }: MentorListViewProps) => {
+export const MentorListView = ({ profiles, isPending, total, onBookSession }: MentorListViewProps) => {
   const { t } = useLocale();
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const hasRecommendations = profiles.some((p) => p.matchScore !== undefined);
@@ -46,7 +46,7 @@ export const MentorListView = ({ profiles, isLoading, total, onBookSession }: Me
     return sorted;
   }, [profiles, sortBy]);
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="border-emphasis h-12 w-12 animate-spin rounded-full border-b-2 border-t-2" />
@@ -100,7 +100,7 @@ export const MentorListView = ({ profiles, isLoading, total, onBookSession }: Me
                 viewMode === "grid" ? "bg-emphasis text-inverted" : "text-subtle hover:bg-muted"
               )}
               title={t("thotis_grid_view")}>
-              <Icon name="layout-grid" className="h-4 w-4" />
+              <Icon name={"grid" as any} className="h-4 w-4" />
             </button>
             <button
               type="button"
@@ -110,7 +110,7 @@ export const MentorListView = ({ profiles, isLoading, total, onBookSession }: Me
                 viewMode === "list" ? "bg-emphasis text-inverted" : "text-subtle hover:bg-muted"
               )}
               title={t("thotis_list_view")}>
-              <Icon name="list" className="h-4 w-4" />
+              <Icon name="menu" className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -182,7 +182,7 @@ const MentorListItem = ({
           </div>
           {student.matchReasons && student.matchReasons.length > 0 && (
             <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-              {student.matchReasons.slice(0, 2).map((reason) => (
+              {student.matchReasons.slice(0, 2).map((reason: string) => (
                 <span
                   key={reason}
                   className="text-blue-600 dark:text-blue-400 text-[10px] font-medium flex items-center">

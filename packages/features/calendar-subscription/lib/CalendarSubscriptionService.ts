@@ -440,8 +440,6 @@ export class CalendarSubscriptionService {
     if (!credential) return null;
     return {
       ...credential,
-      // biome-ignore lint/nursery/noTernary: conditional delegation credential mapping
-      delegatedTo: null,
     };
   }
 }

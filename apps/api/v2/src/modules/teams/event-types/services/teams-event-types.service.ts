@@ -1,8 +1,7 @@
 import { createEventType, updateEventType } from "@calcom/platform-libraries/event-types";
 import type { SortOrderType } from "@calcom/platform-types";
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
-import { EventTypesService_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/services/event-types.service";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import {
   TransformedCreateTeamEventTypeInput,
   TransformedUpdateTeamEventTypeInput,
@@ -18,10 +17,9 @@ export class TeamsEventTypesService {
   private readonly logger = new Logger("TeamsEventTypesService");
 
   constructor(
-    private readonly eventTypesService: EventTypesService_2024_06_14,
     private readonly dbWrite: PrismaWriteService,
     private readonly teamsEventTypesRepository: TeamsEventTypesRepository,
-    private readonly eventTypesRepository: EventTypesRepository_2024_06_14,
+    private readonly eventTypesRepository: EventTypesRepository,
     private readonly usersService: UsersService
   ) {}
 
@@ -31,9 +29,10 @@ export class TeamsEventTypesService {
     body: TransformedCreateTeamEventTypeInput
   ): Promise<DatabaseTeamEventType | DatabaseTeamEventType[]> {
     // note(Lauris): once phone only event types / bookings are enabled for simple users remove checkHasUserAccessibleEmailBookingField check
-    if (body.bookingFields) {
+    // This feature is skipped in open source version
+    /* if (body.bookingFields) {
       this.eventTypesService.checkHasUserAccessibleEmailBookingField(body.bookingFields);
-    }
+    } */
     const eventTypeUser = await this.getUserToCreateTeamEvent(user);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { hosts, children, destinationCalendar, ...rest } = body;
@@ -111,14 +110,14 @@ export class TeamsEventTypesService {
     body: TransformedUpdateTeamEventTypeInput,
     user: UserWithProfile,
     // note(Lauris): once phone only event types / bookings are enabled for simple users remove isOrg parameter (right now only organization team event types support hidden / non-required email field)
-    isOrg: boolean
+    _isOrg: boolean
   ): Promise<DatabaseTeamEventType | DatabaseTeamEventType[]> {
-    if (!isOrg && body.bookingFields) {
+    /* if (!isOrg && body.bookingFields) {
       // note(Lauris): once phone only event types / bookings are enabled for simple users remove checkHasUserAccessibleEmailBookingField check
       this.eventTypesService.checkHasUserAccessibleEmailBookingField(body.bookingFields);
-    }
+    } */
     await this.validateEventTypeExists(teamId, eventTypeId);
-    const eventTypeUser = await this.eventTypesService.getUserToUpdateEvent(user);
+    const eventTypeUser = await this.getUserToUpdateEvent(user);
     await updateEventType({
       input: {
         id: eventTypeId,
@@ -145,6 +144,20 @@ export class TeamsEventTypesService {
     const childrenEventTypes = await this.teamsEventTypesRepository.getEventTypeChildren(eventType.id);
 
     return [eventType, ...childrenEventTypes];
+  }
+
+  async getUserToUpdateEvent(user: UserWithProfile) {
+    const profileId = this.usersService.getUserMainProfile(user)?.id;
+
+    return {
+      id: user.id,
+      role: user.role,
+      organizationId: null,
+      organization: { id: null, isOrgAdmin: false, metadata: {}, requestedSlug: null },
+      profile: { id: profileId || null },
+      metadata: user.metadata,
+      email: user.email,
+    };
   }
 
   async deleteTeamEventType(teamId: number, eventTypeId: number) {

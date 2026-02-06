@@ -1,4 +1,5 @@
 import { APPLE_CALENDAR_ID, APPLE_CALENDAR_TYPE, SUCCESS_STATUS } from "@calcom/platform-constants";
+import { CalendarsService } from "@calcom/platform-libraries";
 import type { Credential, PlatformOAuthClient, Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -12,7 +13,6 @@ import { UserRepositoryFixture } from "test/fixtures/repository/users.repository
 import { CalendarsServiceMock } from "test/mocks/calendars-service-mock";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
-import { CalendarsService } from "@/ee/calendars/services/calendars.service";
 import { HttpExceptionFilter } from "@/filters/http-exception.filter";
 import { PrismaExceptionFilter } from "@/filters/prisma-exception.filter";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";

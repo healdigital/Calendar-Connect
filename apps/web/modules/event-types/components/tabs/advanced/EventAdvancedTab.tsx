@@ -5,10 +5,10 @@ import { Timezone as PlatformTimzoneSelect } from "@calcom/atoms/timezone";
 import getLocationsOptionsForSelect from "@calcom/features/bookings/lib/getLocationOptionsForSelect";
 import DestinationCalendarSelector from "@calcom/features/calendars/components/DestinationCalendarSelector";
 import useLockedFieldsManager from "@calcom/features/managed-event-types/hooks/useLockedFieldsManager";
-import {
-  allowDisablingAttendeeConfirmationEmails,
-  allowDisablingHostConfirmationEmails,
-} from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
+
+const allowDisablingAttendeeConfirmationEmails = (workflow: any) => false;
+const allowDisablingHostConfirmationEmails = (workflow: any) => false;
+
 import { LearnMoreLink } from "@calcom/features/eventtypes/components/LearnMoreLink";
 import type { EventNameObjectType } from "@calcom/features/eventtypes/lib/eventNaming";
 import { getEventName } from "@calcom/features/eventtypes/lib/eventNaming";
@@ -170,7 +170,7 @@ const destinationCalendarComponents = {
   }) {
     const { t } = useLocale();
     const formMethods = useFormContext<FormValues>();
-    const [useEventTypeDestinationCalendarEmail, setUseEventTypeDestinationCalendarEmail] = useState(
+    const [useEventTypeDestinationCalendarEmail, setUseEventTypeDestinationCalendarEmail] = useState<boolean>(
       formMethods.getValues("useEventTypeDestinationCalendarEmail")
     );
     const selectedSecondaryEmailId = formMethods.getValues("secondaryEmailId") || -1;
@@ -246,7 +246,7 @@ const destinationCalendarComponents = {
                 checked={useEventTypeDestinationCalendarEmail}
                 onCheckedChange={(val) => {
                   setUseEventTypeDestinationCalendarEmail(val);
-                  formMethods.setValue("useEventTypeDestinationCalendarEmail", val, {
+                  formMethods.setValue("useEventTypeDestinationCalendarEmail", val as any, {
                     shouldDirty: true,
                   });
                   if (val) {
@@ -276,7 +276,7 @@ const destinationCalendarComponents = {
                   className={customClassNames?.addToCalendarEmailOrganizer?.emailSelect?.select}
                   containerClassName={customClassNames?.addToCalendarEmailOrganizer?.emailSelect?.container}
                   onChange={(option) =>
-                    formMethods.setValue("secondaryEmailId", option?.value, { shouldDirty: true })
+                    formMethods.setValue("secondaryEmailId", option?.value as any, { shouldDirty: true })
                   }
                   value={verifiedSecondaryEmails.find(
                     (secondaryEmail) =>
@@ -393,7 +393,7 @@ const calendarComponents = {
                         destinationCalendarId={destinationCalendar?.externalId}
                         setScope={(scope) => {
                           const chosenScopeIsEventLevel = scope === SelectedCalendarSettingsScope.EventType;
-                          formMethods.setValue("useEventLevelSelectedCalendars", chosenScopeIsEventLevel, {
+                          formMethods.setValue("useEventLevelSelectedCalendars", chosenScopeIsEventLevel as any, {
                             shouldDirty: true,
                           });
                         }}
@@ -424,17 +424,17 @@ export const EventAdvancedTab = ({
 }: EventAdvancedTabProps) => {
   const isPlatform = useIsPlatform();
   const platformContext = useAtomsContext();
-  const formMethods = useFormContext<FormValues>();
+  const formMethods = useFormContext<FormValues>() as any;
   const { t } = useLocale();
   const [showEventNameTip, setShowEventNameTip] = useState(false);
   const [darkModeError, setDarkModeError] = useState(false);
   const [lightModeError, setLightModeError] = useState(false);
-  const [multiplePrivateLinksVisible, setMultiplePrivateLinksVisible] = useState(
-    !!formMethods.getValues("multiplePrivateLinks") &&
-      formMethods.getValues("multiplePrivateLinks")?.length !== 0
+  const [multiplePrivateLinksVisible, setMultiplePrivateLinksVisible] = useState<boolean>(
+    !!(formMethods.getValues("multiplePrivateLinks") as any) &&
+      (formMethods.getValues("multiplePrivateLinks") as any)?.length !== 0
   );
   const watchedInterfaceLanguage = formMethods.watch("interfaceLanguage");
-  const [interfaceLanguageVisible, setInterfaceLanguageVisible] = useState(
+  const [interfaceLanguageVisible, setInterfaceLanguageVisible] = useState<boolean>(
     watchedInterfaceLanguage !== null && watchedInterfaceLanguage !== undefined
   );
 
@@ -447,16 +447,16 @@ export const EventAdvancedTab = ({
   );
 
   const bookingFields: Prisma.JsonObject = {};
-  const workflows = eventType.workflows.map((workflowOnEventType) => workflowOnEventType.workflow);
+  const workflows = (eventType.workflows as any[]).map((workflowOnEventType) => workflowOnEventType.workflow);
   const selectedThemeIsDark =
     user?.theme === "dark" ||
     (!user?.theme && typeof document !== "undefined" && document.documentElement.classList.contains("dark"));
-  formMethods.getValues().bookingFields.forEach(({ name }) => {
+  (formMethods.getValues() as any).bookingFields.forEach(({ name }: any) => {
     bookingFields[name] = `${name} input`;
   });
 
-  const nameBookingField = formMethods.getValues().bookingFields.find((field) => field.name === "name");
-  const isSplit = (nameBookingField && nameBookingField.variant === "firstAndLastName") ?? false;
+  const nameBookingField = (formMethods.getValues() as any).bookingFields.find((field: any) => field.name === "name");
+  const isSplit = (nameBookingField && (nameBookingField as any).variant === "firstAndLastName") ?? false;
 
   const eventNameObject: EventNameObjectType = {
     attendeeName: t("scheduler"),
@@ -465,17 +465,16 @@ export const EventAdvancedTab = ({
     host: formMethods.getValues("users")[0]?.name || "Nameless",
     bookingFields: bookingFields,
     eventDuration: formMethods.getValues("length"),
-    t,
-  };
+  } as any;
 
-  const [requiresConfirmation, setRequiresConfirmation] = useState(
+  const [requiresConfirmation, setRequiresConfirmation] = useState<boolean>(
     formMethods.getValues("requiresConfirmation")
   );
   const seatsEnabled = formMethods.watch("seatsPerTimeSlotEnabled");
   const multiLocation = (formMethods.getValues("locations") || []).length > 1;
   const noShowFeeEnabled =
-    formMethods.getValues("metadata")?.apps?.stripe?.enabled === true &&
-    formMethods.getValues("metadata")?.apps?.stripe?.paymentOption === "HOLD";
+    (formMethods.getValues("metadata") as any)?.apps?.stripe?.enabled === true &&
+    (formMethods.getValues("metadata") as any)?.apps?.stripe?.paymentOption === "HOLD";
 
   const isRecurringEvent = !!formMethods.getValues("recurringEvent");
   const interfaceLanguageOptions =
@@ -490,7 +489,7 @@ export const EventAdvancedTab = ({
     const bookingFields = formMethods.getValues("bookingFields");
     formMethods.setValue(
       "bookingFields",
-      bookingFields.map((field) => {
+      bookingFields.map((field: any) => {
         if (field.name === "guests") {
           return {
             ...field,
@@ -541,9 +540,9 @@ export const EventAdvancedTab = ({
     multiplePrivateLinksLocked.disabled = true;
   }
 
-  const [disableRescheduling, setDisableRescheduling] = useState(eventType.disableRescheduling || false);
+  const [disableRescheduling, setDisableRescheduling] = useState<boolean>(eventType.disableRescheduling || false);
 
-  const [allowReschedulingCancelledBookings, setallowReschedulingCancelledBookings] = useState(
+  const [allowReschedulingCancelledBookings, setallowReschedulingCancelledBookings] = useState<boolean>(
     eventType.allowReschedulingCancelledBookings ?? false
   );
 
@@ -551,11 +550,11 @@ export const EventAdvancedTab = ({
 
   const closeEventNameTip = () => setShowEventNameTip(false);
 
-  const [isEventTypeColorChecked, setIsEventTypeColorChecked] = useState(!!eventType.eventTypeColor);
+  const [isEventTypeColorChecked, setIsEventTypeColorChecked] = useState<boolean>(!!eventType.eventTypeColor);
 
   const customReplyToEmail = formMethods.watch("customReplyToEmail");
 
-  const [eventTypeColorState, setEventTypeColorState] = useState(
+  const [eventTypeColorState, setEventTypeColorState] = useState<any>(
     eventType.eventTypeColor || {
       lightEventTypeColor: DEFAULT_LIGHT_BRAND_COLOR,
       darkEventTypeColor: DEFAULT_DARK_BRAND_COLOR,
@@ -576,8 +575,8 @@ export const EventAdvancedTab = ({
       value: -1,
     },
     ...(user?.secondaryEmails || [])
-      .filter((secondaryEmail) => !!secondaryEmail.emailVerified)
-      .map((secondaryEmail) => ({ label: secondaryEmail.email, value: secondaryEmail.id })),
+      .filter((secondaryEmail: any) => !!secondaryEmail.emailVerified)
+      .map((secondaryEmail: any) => ({ label: secondaryEmail.email, value: secondaryEmail.id })),
   ];
 
   const removePlatformClientIdFromEmail = (email: string, clientId: string) =>
@@ -1021,11 +1020,11 @@ export const EventAdvancedTab = ({
                 checked={multiplePrivateLinksVisible}
                 onCheckedChange={(e) => {
                   if (!e) {
-                    formMethods.setValue("multiplePrivateLinks", [], { shouldDirty: true });
+                    formMethods.setValue("multiplePrivateLinks", [] as any, { shouldDirty: true });
                   } else {
                     formMethods.setValue(
                       "multiplePrivateLinks",
-                      [generateHashedLink(formMethods.getValues("users")[0]?.id ?? team?.id)],
+                      [generateHashedLink(formMethods.getValues("users")[0]?.id ?? team?.id)] as any,
                       { shouldDirty: true }
                     );
                   }

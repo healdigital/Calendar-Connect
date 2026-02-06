@@ -1,4 +1,3 @@
-import { handleAutoLock } from "@calcom/features/ee/api-keys/lib/autoLock";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";
 import { HttpError } from "@calcom/lib/http-error";
 import type { NextMiddleware } from "next-api-middleware";
@@ -17,23 +16,6 @@ export const rateLimitApiKey: NextMiddleware = async (req, res, next) => {
         res.setHeader("X-RateLimit-Limit", response.limit);
         res.setHeader("X-RateLimit-Remaining", response.remaining);
         res.setHeader("X-RateLimit-Reset", response.reset);
-
-        try {
-          const didLock = await handleAutoLock({
-            identifier,
-            identifierType: "userId",
-            rateLimitResponse: response,
-          });
-
-          if (didLock) {
-            return res.status(429).json({ message: "Too many requests" });
-          }
-        } catch (error) {
-          if (error instanceof Error && error.message === "No user found for this API key.") {
-            return res.status(401).json({ message: error.message });
-          }
-          throw error;
-        }
       },
     });
   } catch (error) {

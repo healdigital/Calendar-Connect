@@ -2,6 +2,8 @@ import {
   SessionRatingRepository,
   StatisticsService,
   ThotisProfileRepository,
+  AnalyticsRepository,
+  ThotisAnalyticsService,
 } from "@calcom/platform-libraries";
 import { Module } from "@nestjs/common";
 import { PlatformController } from "./platform.controller";
@@ -25,10 +27,23 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
       inject: [PrismaWriteService],
     },
     {
+      provide: AnalyticsRepository,
+      useFactory: (prisma: PrismaWriteService) =>
+        new AnalyticsRepository({ prismaClient: prisma as any }),
+      inject: [PrismaWriteService],
+    },
+    {
+      provide: ThotisAnalyticsService,
+      useClass: ThotisAnalyticsService,
+    },
+    {
       provide: StatisticsService,
-      useFactory: (profileRepo: ThotisProfileRepository, ratingRepo: SessionRatingRepository) =>
-        new StatisticsService(profileRepo, ratingRepo),
-      inject: [ThotisProfileRepository, SessionRatingRepository],
+      useFactory: (
+        profileRepo: ThotisProfileRepository,
+        ratingRepo: SessionRatingRepository,
+        analyticsService: ThotisAnalyticsService
+      ) => new StatisticsService(profileRepo, ratingRepo, analyticsService),
+      inject: [ThotisProfileRepository, SessionRatingRepository, ThotisAnalyticsService],
     },
   ],
 })

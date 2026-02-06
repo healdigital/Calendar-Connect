@@ -255,14 +255,24 @@ export class CallService {
     }
   }
 
+  async listCalls(params: {
+    limit?: number;
+    offset?: number;
+    filters: {
+      fromNumber: string[];
+      toNumber?: string[];
+      startTimestamp?: { lower_threshold?: number; upper_threshold?: number };
+    };
+  }) {
+    // This method is required by the interface but implemented via repository
+    return await this.deps.retellRepository.listCalls(params);
+  }
+
   private async validateCreditsForTestCall({ userId, teamId }: { userId: number; teamId?: number }) {
-    try {
     // Credit check removed for open-source version
     // Logic was: import CreditService from ee/billing and check credits.
     // For now we allow bypassing this check or we can throw an error if strictly needed.
     // Assuming OS version does not enforce credits for AI phone (or feature is disabled elsewhere).
     return;
-
   }
-
-
+}

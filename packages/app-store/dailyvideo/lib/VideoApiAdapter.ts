@@ -91,8 +91,6 @@ export const FAKE_DAILY_CREDENTIAL: CredentialForCalendarService & { invalid: bo
   invalid: false,
   teamId: null,
   encryptedKey: null,
-  delegatedToId: null,
-  delegatedTo: null,
   delegationCredentialId: null,
 };
 

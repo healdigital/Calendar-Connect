@@ -126,6 +126,7 @@ export const getHostsWithLocationOptionsHandler = async ({
       ...cred,
       key: {} as Prisma.JsonValue,
       encryptedKey: null,
+      delegationCredentialId: null,
     })),
   }));
 

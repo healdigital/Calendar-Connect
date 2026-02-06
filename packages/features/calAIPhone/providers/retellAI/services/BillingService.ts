@@ -1,4 +1,5 @@
-import { getStripeCustomerIdFromUserId } from "@calcom/app-store/stripepayment/lib/customer";
+// import { getStripeCustomerIdFromUserId } from "@calcom/app-store/stripepayment/lib/customer";
+import stripe from "@calcom/app-store/stripepayment/lib/server";
 import { getPhoneNumberMonthlyPriceId } from "@calcom/app-store/stripepayment/lib/utils";
 import { IS_PRODUCTION, WEBAPP_URL } from "@calcom/lib/constants";
 import { HttpError } from "@calcom/lib/http-error";
@@ -8,6 +9,10 @@ import { PhoneNumberSubscriptionStatus } from "@calcom/prisma/enums";
 import { z } from "zod";
 import type { PhoneNumberRepositoryInterface } from "../../interfaces/PhoneNumberRepositoryInterface";
 import type { RetellAIRepository } from "../types";
+
+const CHECKOUT_SESSION_TYPES = {
+  PHONE_NUMBER_SUBSCRIPTION: "PHONE_NUMBER_SUBSCRIPTION",
+};
 
 const stripeErrorSchema = z.object({
   raw: z.object({
@@ -36,77 +41,12 @@ export class BillingService {
     agentId?: string | null;
     workflowId?: string;
     tracking?: TrackingData;
-  }) {
-    const phoneNumberPriceId = getPhoneNumberMonthlyPriceId();
-
-    if (!phoneNumberPriceId) {
-      throw new HttpError({
-        statusCode: 500,
-        message: "Phone number price ID not configured",
-      });
-    }
-
-    const stripeCustomerId = await getStripeCustomerIdFromUserId(userId);
-    if (!stripeCustomerId) {
-      throw new HttpError({
-        statusCode: 500,
-        message: "Failed to create Stripe customer.",
-      });
-    }
-
-    // Create Stripe checkout session for phone number subscription
-    const checkoutSession = await stripe.checkout.sessions.create({
-      customer: stripeCustomerId,
-      mode: "subscription",
-      line_items: [
-        {
-          price: phoneNumberPriceId,
-          quantity: 1,
-        },
-      ],
-      success_url: `${WEBAPP_URL}/api/calAIPhone/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${WEBAPP_URL}/workflows/${workflowId}`,
-      allow_promotion_codes: true,
-      customer_update: {
-        address: "auto",
-      },
-      automatic_tax: {
-        enabled: IS_PRODUCTION,
-      },
-      metadata: {
-        userId: userId.toString(),
-        teamId: teamId?.toString() || "",
-        agentId: agentId || "",
-        workflowId: workflowId || "",
-        type: CHECKOUT_SESSION_TYPES.PHONE_NUMBER_SUBSCRIPTION,
-        ...(tracking?.googleAds?.gclid && {
-          gclid: tracking.googleAds.gclid,
-          campaignId: tracking.googleAds.campaignId,
-        }),
-        ...(tracking?.linkedInAds?.liFatId && {
-          liFatId: tracking.linkedInAds.liFatId,
-          linkedInCampaignId: tracking.linkedInAds?.campaignId,
-        }),
-      },
-      subscription_data: {
-        metadata: {
-          userId: userId.toString(),
-          teamId: teamId?.toString() || "",
-          agentId: agentId || "",
-          workflowId: workflowId || "",
-          type: CHECKOUT_SESSION_TYPES.PHONE_NUMBER_SUBSCRIPTION,
-        },
-      },
+  }): Promise<{ url: string; message: string }> {
+    this.logger.warn("generatePhoneNumberCheckoutSession called but Stripe integration is disabled in OS.");
+    throw new HttpError({
+      statusCode: 501,
+      message: "Phone number subscription is not supported in this version.",
     });
-
-    if (!checkoutSession.url) {
-      throw new HttpError({
-        statusCode: 500,
-        message: "Failed to create checkout session.",
-      });
-    }
-
-    return { url: checkoutSession.url, message: "Payment required to purchase phone number" };
   }
 
   async cancelPhoneNumberSubscription({
@@ -117,7 +57,10 @@ export class BillingService {
     phoneNumberId: number;
     userId: number;
     teamId?: number;
-  }) {
+  }): Promise<{ success: boolean; message: string }> {
+    this.logger.warn("cancelPhoneNumberSubscription called but Stripe integration is disabled in OS.");
+    // We can still try to delete the phone number from Retell/DB if needed, but subscription part is skipped
+
     // Find phone number with proper team authorization
     const phoneNumber = teamId
       ? await this.deps.phoneNumberRepository.findByIdWithTeamAccess({
@@ -137,40 +80,8 @@ export class BillingService {
       });
     }
 
-    if (!phoneNumber.stripeSubscriptionId) {
-      throw new HttpError({
-        statusCode: 400,
-        message: "Phone number doesn't have an active subscription.",
-      });
-    }
-
+    // Logic to just release the number without stripe
     try {
-      await this.deps.phoneNumberRepository.updateSubscriptionStatus({
-        id: phoneNumberId,
-        subscriptionStatus: PhoneNumberSubscriptionStatus.CANCELLED,
-        disconnectAgents: false,
-      });
-
-      try {
-        await stripe.subscriptions.cancel(phoneNumber.stripeSubscriptionId);
-      } catch (error) {
-        const parsedError = stripeErrorSchema.safeParse(error);
-        if (parsedError.success && parsedError.data.raw.code === "resource_missing") {
-          this.logger.info("Subscription not found in Stripe (already cancelled or deleted):", {
-            subscriptionId: phoneNumber.stripeSubscriptionId,
-            phoneNumberId,
-            stripeMessage: "Subscription resource not found",
-          });
-        } else {
-          await this.deps.phoneNumberRepository.updateSubscriptionStatus({
-            id: phoneNumberId,
-            subscriptionStatus: PhoneNumberSubscriptionStatus.ACTIVE,
-          });
-          throw error;
-        }
-      }
-
-      // Disconnnect agent after cancelling from stripe
       await this.deps.phoneNumberRepository.updateSubscriptionStatus({
         id: phoneNumberId,
         subscriptionStatus: PhoneNumberSubscriptionStatus.CANCELLED,
@@ -181,17 +92,17 @@ export class BillingService {
       try {
         await this.deps.retellRepository.deletePhoneNumber(phoneNumber.phoneNumber);
       } catch (error) {
-        this.logger.error("Failed to delete phone number from AI service, but subscription was cancelled:", {
+        this.logger.error("Failed to delete phone number from AI service:", {
           error,
         });
       }
 
-      return { success: true, message: "Phone number subscription cancelled successfully." };
+      return { success: true, message: "Phone number released successfully." };
     } catch (error) {
-      this.logger.error("Error cancelling phone number subscription:", { error });
+      this.logger.error("Error releasing phone number:", { error });
       throw new HttpError({
         statusCode: 500,
-        message: "Failed to cancel subscription. Please try again or contact support.",
+        message: "Failed to release number.",
       });
     }
   }

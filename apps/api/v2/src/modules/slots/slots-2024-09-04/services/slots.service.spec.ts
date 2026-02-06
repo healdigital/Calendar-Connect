@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { SlotsService_2024_09_04 } from "./slots.service";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { AvailableSlotsService } from "@/lib/services/available-slots.service";
+import { EventTypesRepository } from "@/modules/event-types/event-types.repository";
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 import { MembershipsService } from "@/modules/memberships/services/memberships.service";
 import { SlotsInputService_2024_09_04 } from "@/modules/slots/slots-2024-09-04/services/slots-input.service";
@@ -12,7 +12,7 @@ import { TeamsRepository } from "@/modules/teams/teams/teams.repository";
 
 describe("SlotsService_2024_09_04", () => {
   let service: SlotsService_2024_09_04;
-  let eventTypesRepository: EventTypesRepository_2024_06_14;
+  let eventTypesRepository: EventTypesRepository;
   let availableSlotsService: AvailableSlotsService;
   let slotsInputService: SlotsInputService_2024_09_04;
 
@@ -28,7 +28,7 @@ describe("SlotsService_2024_09_04", () => {
           },
         },
         {
-          provide: EventTypesRepository_2024_06_14,
+          provide: EventTypesRepository,
           useValue: {
             getEventTypeById: jest.fn(),
           },
@@ -70,11 +70,12 @@ describe("SlotsService_2024_09_04", () => {
 
     service = module.get<SlotsService_2024_09_04>(SlotsService_2024_09_04);
     slotsInputService = module.get<SlotsInputService_2024_09_04>(SlotsInputService_2024_09_04);
-    eventTypesRepository = module.get<EventTypesRepository_2024_06_14>(EventTypesRepository_2024_06_14);
+    eventTypesRepository = module.get<EventTypesRepository>(EventTypesRepository);
     availableSlotsService = module.get<AvailableSlotsService>(AvailableSlotsService);
 
     jest.clearAllMocks();
   });
+  // ... rest of the file
 
   describe("getAvailableSlotsWithRouting", () => {
     const sharedTestData = {

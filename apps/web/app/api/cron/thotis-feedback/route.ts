@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
 
       // 1. Nudge Mentor if no summary exists
       if (!booking.thotisSessionSummary && !metadata.mentorNudgeSent) {
-        const { MentorNudgeEmail } = await import("@calcom/emails");
+        const { default: MentorNudgeEmail } = await import("@calcom/emails/templates/thotis/mentor-nudge");
         const addSummaryLink = `${webAppUrl}/thotis/mentor-dashboard`;
         const email = new MentorNudgeEmail({ calEvent, attendee, addSummaryLink });
         await email.sendEmail();
@@ -118,10 +118,13 @@ export async function GET(req: NextRequest) {
         });
       }
 
-      // 2. Send feedback email to student ONLY if summary exists (Nudge Student)
-      if (booking.thotisSessionSummary && !metadata.feedbackEmailSent) {
+      // 2. Send feedback email to student (Property 38)
+      // Coupled: Only send feedback request if mentor summary exists
+      // "Dépendance feedback élève au résumé mentor: si pas de résumé, pas de feedback élève envoyé."
+      if (!metadata.feedbackEmailSent && booking.thotisSessionSummary) {
         const { ThotisGuestService } = await import("@calcom/features/thotis/services/ThotisGuestService");
         const guestService = new ThotisGuestService();
+        // Token for dashboard access (1 day validity)
         const { token } = await guestService.requestInboxLink(attendeeEmail, undefined, 1440);
         const feedbackLink = `${webAppUrl}/thotis/my-sessions?token=${token}`;
 
@@ -138,6 +141,9 @@ export async function GET(req: NextRequest) {
             },
           },
         });
+      } else if (!metadata.feedbackEmailSent && !booking.thotisSessionSummary) {
+        // Log/Track that we skipped feedback email due to missing summary?
+        // Optional: Maybe nudge mentor again? (Already handled above)
       }
 
       results.processed++;

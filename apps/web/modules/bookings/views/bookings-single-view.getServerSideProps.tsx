@@ -1,10 +1,9 @@
 import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
-import { orgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import getBookingInfo from "@calcom/features/bookings/lib/getBookingInfo";
 import { BookingRepository } from "@calcom/features/bookings/repositories/BookingRepository";
-import { isTeamMember } from "@calcom/features/ee/teams/lib/queries";
 import { getDefaultEvent } from "@calcom/features/eventtypes/lib/defaultEvents";
+import { orgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
 import { getBrandingForEventType } from "@calcom/features/profile/lib/getBranding";
 import { shouldHideBrandingForEvent } from "@calcom/features/profile/lib/hideBranding";
 import { parseRecurringEvent } from "@calcom/lib/isRecurringEvent";
@@ -183,7 +182,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const isLoggedInUserHost = checkIfUserIsHost(userId);
   const eventTeamId = eventType.team?.id ?? eventType.parent?.teamId;
-  const isLoggedInUserTeamMember = !!(userId && eventTeamId && (await isTeamMember(userId, eventTeamId)));
+  const isLoggedInUserTeamMember = false;
 
   const canViewHiddenData = isLoggedInUserHost || isLoggedInUserTeamMember;
 

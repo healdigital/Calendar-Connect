@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { EventTypesService_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/services/event-types.service";
+import { EventTypesService_2024_06_14 } from "@calcom/platform-libraries";
 import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
 
 @Injectable()

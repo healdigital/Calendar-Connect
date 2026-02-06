@@ -1,8 +1,8 @@
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { type GetBookingType, getBookingForReschedule } from "@calcom/features/bookings/lib/get-booking";
+// import { getOrganizationSEOSettings } from "@calcom/features/ee/organizations/lib/orgSettings";
+// import type { TeamData } from "@calcom/features/ee/teams/lib/getTeamData";
 import { getOrgFullOrigin, orgDomainConfig } from "@calcom/features/organizations/lib/orgDomains";
-import { getOrganizationSEOSettings } from "@calcom/features/ee/organizations/lib/orgSettings";
-import type { TeamData } from "@calcom/features/ee/teams/lib/getTeamData";
 import { shouldHideBrandingForTeamEvent } from "@calcom/features/profile/lib/hideBranding";
 import { loadTranslations } from "@calcom/lib/server/i18n";
 import slugify from "@calcom/lib/slugify";
@@ -16,7 +16,13 @@ import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 import CachedClientView, { type TeamBookingPageProps } from "~/team/type-view-cached";
-import { getCachedTeamData, getCRMData, getEnrichedEventType, shouldUseApiV2ForTeamSlots } from "./queries";
+import {
+  getCachedTeamData,
+  getCRMData,
+  getEnrichedEventType,
+  shouldUseApiV2ForTeamSlots,
+  type TeamData,
+} from "./queries";
 
 const paramsSchema = z.object({
   slug: z.string().transform((s) => slugify(s)),
@@ -24,8 +30,8 @@ const paramsSchema = z.object({
 });
 
 const _getTeamMetadataForBooking = (teamData: NonNullable<TeamData>, eventTypeId: number) => {
-  const organizationSettings = getOrganizationSEOSettings(teamData);
-  const allowSEOIndexing = organizationSettings?.allowSEOIndexing ?? false;
+  // const organizationSettings = getOrganizationSEOSettings(teamData);
+  const allowSEOIndexing = false; // organizationSettings?.allowSEOIndexing ?? false;
 
   return {
     orgBannerUrl: teamData.parent?.bannerUrl ?? "",

@@ -1,7 +1,6 @@
+import type { Calendar, ConnectedCalendar } from "@calcom/platform-libraries";
+import { CalendarsCacheService, CalendarsService } from "@calcom/platform-libraries";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Calendar, ConnectedCalendar } from "@/ee/calendars/outputs/connected-calendars.output";
-import { CalendarsService } from "@/ee/calendars/services/calendars.service";
-import { CalendarsCacheService } from "@/ee/calendars/services/calendars-cache.service";
 import { DestinationCalendarsRepository } from "@/modules/destination-calendars/destination-calendars.repository";
 
 @Injectable()

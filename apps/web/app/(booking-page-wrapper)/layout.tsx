@@ -7,7 +7,7 @@ export default async function BookingPageWrapperLayout({ children }: { children:
 
   return (
     <>
-      <PageWrapper isBookingPage={true} requiresLicense={false} nonce={nonce}>
+      <PageWrapper isBookingPage={true} nonce={nonce}>
         {children}
       </PageWrapper>
     </>

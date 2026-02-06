@@ -41,11 +41,11 @@ vi.mock("../teamAccessUseCase", () => ({
   }),
 }));
 
-vi.mock("@calcom/features/ee/organizations/lib/getBookerUrlServer", () => ({
+vi.mock("@calcom/features/organizations/lib/getBookerUrlServer", () => ({
   getBookerBaseUrl: vi.fn().mockResolvedValue("https://cal.com"),
 }));
 
-vi.mock("@calcom/features/ee/organizations/lib/getBookerBaseUrlSync", () => ({
+vi.mock("@calcom/features/organizations/lib/getBookerBaseUrlSync", () => ({
   getBookerBaseUrlSync: vi.fn().mockReturnValue("https://cal.com"),
 }));
 

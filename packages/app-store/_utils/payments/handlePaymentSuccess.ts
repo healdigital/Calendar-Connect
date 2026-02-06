@@ -1,21 +1,21 @@
 import { eventTypeAppMetadataOptionalSchema } from "@calcom/app-store/zod-utils";
 import { sendScheduledEmailsAndSMS } from "@calcom/emails/email-manager";
+// import { CreditService } from "@calcom/features/billing/credit-service";
 import { doesBookingRequireConfirmation } from "@calcom/features/bookings/lib/doesBookingRequireConfirmation";
 import EventManager, { placeholderCreatedEvent } from "@calcom/features/bookings/lib/EventManager";
 import { getAllCredentialsIncludeServiceAccountKey } from "@calcom/features/bookings/lib/getAllCredentialsForUsersOnEvent/getAllCredentials";
 import { handleBookingRequested } from "@calcom/features/bookings/lib/handleBookingRequested";
 import { handleConfirmation } from "@calcom/features/bookings/lib/handleConfirmation";
 import { getBooking } from "@calcom/features/bookings/lib/payment/getBooking";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
+import { getBookerBaseUrl } from "@calcom/features/organizations/lib/getBookerUrlServer";
 import { getPlatformParams } from "@calcom/features/platform-oauth-client/get-platform-params";
 import { PlatformOAuthClientRepository } from "@calcom/features/platform-oauth-client/platform-oauth-client.repository";
 import tasker from "@calcom/features/tasker";
 import getWebhooks from "@calcom/features/webhooks/lib/getWebhooks";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
 import type { EventPayloadType, EventTypeInfo } from "@calcom/features/webhooks/lib/sendPayload";
+// import { getAllWorkflowsFromEventType } from "@calcom/features/workflows/lib/getAllWorkflowsFromEventType";
+// import { WorkflowService } from "@calcom/features/workflows/lib/service/WorkflowService";
 import { getVideoCallUrlFromCalEvent } from "@calcom/lib/CalEventParser";
 import getOrgIdFromMemberOrTeamId from "@calcom/lib/getOrgIdFromMemberOrTeamId";
 import { getTeamIdFromEventType } from "@calcom/lib/getTeamIdFromEventType";
@@ -137,7 +137,7 @@ export async function handlePaymentSuccess(params: {
 
   try {
     // Get workflows for BOOKING_PAID trigger
-    const workflows = await getAllWorkflowsFromEventType(booking.eventType, booking.userId);
+    // const workflows = await getAllWorkflowsFromEventType(booking.eventType, booking.userId);
 
     const paymentExternalId = payment.externalId;
 
@@ -220,16 +220,16 @@ export async function handlePaymentSuccess(params: {
         metadata: meetingUrl ? { videoCallUrl: meetingUrl } : undefined,
       };
 
-      const creditService = new CreditService();
-
-      await WorkflowService.scheduleWorkflowsFilteredByTriggerEvent({
-        workflows,
-        smsReminderNumber: booking.smsReminderNumber,
-        calendarEvent: calendarEventForWorkflow,
-        hideBranding: !!booking.eventType?.owner?.hideBranding,
-        triggers: [WorkflowTriggerEvents.BOOKING_PAID],
-        creditCheckFn: creditService.hasAvailableCredits.bind(creditService),
-      });
+      // WorkflowService.scheduleWorkflowsFilteredByTriggerEvent is a no-op in OSS
+      // await WorkflowService.scheduleWorkflowsFilteredByTriggerEvent({
+      //   workflows,
+      //   smsReminderNumber: booking.smsReminderNumber,
+      //   calendarEvent: calendarEventForWorkflow,
+      //   hideBranding: !!booking.eventType?.owner?.hideBranding,
+      //   triggers: [WorkflowTriggerEvents.BOOKING_PAID],
+      //   // creditCheckFn: creditService.hasAvailableCredits.bind(creditService), // EE feature removed
+      //   creditCheckFn: async () => true, // Always allow in OSS
+      // });
     } catch (error) {
       log.error("Error while scheduling workflow reminders for booking paid", safeStringify(error));
     }
@@ -259,7 +259,7 @@ export async function handlePaymentSuccess(params: {
       log.debug(`handling booking request for eventId ${eventType.id}`);
     }
   } else if (areEmailsEnabled) {
-    await sendScheduledEmailsAndSMS({ ...evt }, undefined, undefined, undefined, eventType.metadata);
+    await sendScheduledEmailsAndSMS(evt, undefined, undefined, undefined, eventType.metadata);
   }
 
   throw new HttpCode({

@@ -31,7 +31,7 @@ export const RatingForm = ({ bookingId, email, onRatingSubmitted, token }: Ratin
   );
 
   const existingRating = token ? guestRatingQuery.data : authRatingQuery.data;
-  const isExistingRatingLoading = token ? guestRatingQuery.isLoading : authRatingQuery.isLoading;
+  const isExistingRatingPending = token ? guestRatingQuery.isPending : authRatingQuery.isPending;
 
   const utils = trpc.useUtils();
 
@@ -81,7 +81,7 @@ export const RatingForm = ({ bookingId, email, onRatingSubmitted, token }: Ratin
   }, [bookingId, rating, feedback, email, submitMutation, guestSubmitMutation, token, t]);
 
   // If loading rating status
-  if (isExistingRatingLoading) {
+  if (isExistingRatingPending) {
     return (
       <div className="bg-default border-subtle flex h-24 items-center justify-center rounded-lg border p-4">
         <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />

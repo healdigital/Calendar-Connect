@@ -9,6 +9,14 @@ type EventDetails = {
   visitorUid?: string;
 };
 
+export interface INoSlotsNotificationService {
+  handleNotificationWhenNoSlots(args: {
+    eventDetails: EventDetails;
+    orgDetails: { currentOrgDomain: string | null };
+    teamId?: number;
+  }): Promise<void>;
+}
+
 export class NoSlotsNotificationService {
   constructor(public readonly dependencies: any) {}
 

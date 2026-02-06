@@ -1,10 +1,4 @@
 import { Logger, Module } from "@nestjs/common";
-import { EventTypesModule_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.module";
-import { OrganizationsEventTypesPrivateLinksController } from "@/ee/event-types-private-links/controllers/organizations-event-types-private-links.controller";
-import { EventTypesPrivateLinksModule } from "@/ee/event-types-private-links/event-types-private-links.module";
-import { SchedulesModule_2024_06_11 } from "@/ee/schedules/schedules_2024_06_11/schedules.module";
-import { InputSchedulesService_2024_06_11 } from "@/ee/schedules/schedules_2024_06_11/services/input-schedules.service";
-import { SchedulesService_2024_06_11 } from "@/ee/schedules/schedules_2024_06_11/services/schedules.service";
 import { OrganizationMembershipService } from "@/lib/services/organization-membership.service";
 import { AppsRepository } from "@/modules/apps/apps.repository";
 import { ConferencingRepository } from "@/modules/conferencing/repositories/conferencing.repository";
@@ -28,7 +22,6 @@ import { OrganizationAttributeOptionService } from "@/modules/organizations/attr
 import { OrganizationsConferencingModule } from "@/modules/organizations/conferencing/organizations-conferencing.module";
 import { OrganizationsConferencingService } from "@/modules/organizations/conferencing/services/organizations-conferencing.service";
 import { OrganizationsDelegationCredentialModule } from "@/modules/organizations/delegation-credentials/organizations-delegation-credential.module";
-import { OrganizationsEventTypesController } from "@/modules/organizations/event-types/organizations-event-types.controller";
 import { OrganizationsEventTypesRepository } from "@/modules/organizations/event-types/organizations-event-types.repository";
 import { OutputTeamEventTypesResponsePipe } from "@/modules/organizations/event-types/pipes/team-event-types-response.transformer";
 import { InputOrganizationsEventTypesService } from "@/modules/organizations/event-types/services/input.service";
@@ -42,7 +35,6 @@ import { OrganizationsMembershipService } from "@/modules/organizations/membersh
 import { OrganizationsMembershipOutputService } from "@/modules/organizations/memberships/services/organizations-membership-output.service";
 import { OrganizationsOrganizationsModule } from "@/modules/organizations/organizations/organizations-organizations.module";
 import { OrganizationsRolesModule } from "@/modules/organizations/roles/organizations-roles.module";
-import { OrganizationsSchedulesController } from "@/modules/organizations/schedules/organizations-schedules.controller";
 import { OrganizationsSchedulesService } from "@/modules/organizations/schedules/services/organizations-schedules.service";
 import { OrganizationsStripeModule } from "@/modules/organizations/stripe/organizations-stripe.module";
 import { OrganizationsStripeService } from "@/modules/organizations/stripe/services/organizations-stripe.service";
@@ -55,7 +47,6 @@ import { OrganizationsTeamsMembershipsRepository } from "@/modules/organizations
 import { OrganizationsTeamsMembershipsService } from "@/modules/organizations/teams/memberships/services/organizations-teams-memberships.service";
 import { OrganizationsTeamsRolesModule } from "@/modules/organizations/teams/roles/organizations-teams-roles.module";
 import { OrganizationsTeamsRoutingFormsModule } from "@/modules/organizations/teams/routing-forms/organizations-teams-routing-forms.module";
-import { OrganizationsTeamsSchedulesController } from "@/modules/organizations/teams/schedules/organizations-teams-schedules.controller";
 import { OrganizationTeamWorkflowsController } from "@/modules/organizations/teams/workflows/controllers/org-team-workflows.controller";
 import { OrganizationsUsersController } from "@/modules/organizations/users/index/controllers/organizations-users.controller";
 import { OrganizationsUsersRepository } from "@/modules/organizations/users/index/organizations-users.repository";
@@ -90,11 +81,11 @@ import { WorkflowsRepository } from "@/modules/workflows/workflows.repository";
   imports: [
     PrismaModule,
     StripeModule,
-    SchedulesModule_2024_06_11,
+
     UsersModule,
     RedisModule,
     EmailModule,
-    EventTypesModule_2024_06_14,
+
     TeamsEventTypesModule,
     TeamsModule,
     OrganizationsDelegationCredentialModule,
@@ -105,7 +96,6 @@ import { WorkflowsRepository } from "@/modules/workflows/workflows.repository";
     OrganizationsTeamsRoutingFormsModule,
     MembershipsModule,
     OrganizationsConferencingModule,
-    EventTypesPrivateLinksModule,
   ],
   providers: [
     OrganizationsRepository,
@@ -157,8 +147,7 @@ import { WorkflowsRepository } from "@/modules/workflows/workflows.repository";
     WorkflowsInputService,
     WorkflowsOutputService,
     TeamsSchedulesService,
-    SchedulesService_2024_06_11,
-    InputSchedulesService_2024_06_11,
+
     TeamsMembershipsService,
     TeamsMembershipsRepository,
     OAuthClientRepository,
@@ -189,19 +178,18 @@ import { WorkflowsRepository } from "@/modules/workflows/workflows.repository";
   ],
   controllers: [
     OrganizationsTeamsController,
-    OrganizationsSchedulesController,
+
     OrganizationsUsersController,
     OrganizationsMembershipsController,
-    OrganizationsEventTypesController,
+
     OrganizationsTeamsMembershipsController,
     OrganizationsTeamsInviteController,
     OrganizationsAttributesController,
     OrganizationsAttributesOptionsController,
     OrganizationsWebhooksController,
-    OrganizationsTeamsSchedulesController,
+
     OrganizationsUsersOOOController,
     OrganizationTeamWorkflowsController,
-    OrganizationsEventTypesPrivateLinksController,
   ],
 })
 export class OrganizationsModule {}

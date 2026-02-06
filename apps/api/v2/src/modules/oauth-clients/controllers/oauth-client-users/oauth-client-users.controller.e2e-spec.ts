@@ -1,5 +1,5 @@
 import { SUCCESS_STATUS } from "@calcom/platform-constants";
-import { slugify } from "@calcom/platform-libraries";
+import { slugify, DEFAULT_EVENT_TYPES } from "@calcom/platform-libraries";
 import type { ApiSuccessResponse } from "@calcom/platform-types";
 import type { PlatformOAuthClient, Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
@@ -17,7 +17,6 @@ import { UserRepositoryFixture } from "test/fixtures/repository/users.repository
 import { randomString } from "test/utils/randomString";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
-import { DEFAULT_EVENT_TYPES } from "@/ee/event-types/event-types_2024_04_15/constants/constants";
 import { HttpExceptionFilter } from "@/filters/http-exception.filter";
 import { PrismaExceptionFilter } from "@/filters/prisma-exception.filter";
 import { Locales } from "@/lib/enums/locales";

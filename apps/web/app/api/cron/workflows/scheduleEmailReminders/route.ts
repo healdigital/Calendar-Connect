@@ -1,4 +1,17 @@
-import { handler } from "@calcom/features/ee/workflows/api/scheduleEmailReminders";
+import process from "node:process";
 import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-export const POST = defaultResponderForAppDir(handler);
+async function postHandler(req: NextRequest) {
+  const apiKey = req.headers.get("authorization") || req.nextUrl.searchParams.get("apiKey");
+
+  if (process.env.CRON_API_KEY !== apiKey) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
+  // Workflows feature is stubbed in open source version.
+  return NextResponse.json({ ok: true, message: "Stubbed in open source" });
+}
+
+export const POST = defaultResponderForAppDir(postHandler);

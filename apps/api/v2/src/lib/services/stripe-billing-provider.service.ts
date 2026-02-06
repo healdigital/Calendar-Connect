@@ -11,4 +11,9 @@ export class StripeBillingProviderService
   constructor(readonly stripeService: StripeService) {
     super(stripeService.getStripe());
   }
+
+  async createSubscriptionUsageRecord(...args: any[]) {
+    return null;
+  }
 }
+

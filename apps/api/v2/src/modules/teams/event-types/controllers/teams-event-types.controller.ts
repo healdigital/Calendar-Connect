@@ -1,5 +1,6 @@
 import { ERROR_STATUS, SUCCESS_STATUS } from "@calcom/platform-constants";
 import { handleCreatePhoneCall } from "@calcom/platform-libraries";
+import type { CreatePhoneCallInput, CreatePhoneCallOutput } from "@calcom/platform-libraries";
 import {
   CreateTeamEventTypeInput_2024_06_14,
   GetTeamEventTypesQuery_2024_06_14,
@@ -23,8 +24,6 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ApiHeader, ApiOperation, ApiTags as DocsTags } from "@nestjs/swagger";
-import { CreatePhoneCallInput } from "@/ee/event-types/event-types_2024_06_14/inputs/create-phone-call.input";
-import { CreatePhoneCallOutput } from "@/ee/event-types/event-types_2024_06_14/outputs/create-phone-call.output";
 import { API_VERSIONS_VALUES } from "@/lib/api-versions";
 import { API_KEY_HEADER } from "@/lib/docs/headers";
 import { PlatformPlan } from "@/modules/auth/decorators/billing/platform-plan.decorator";

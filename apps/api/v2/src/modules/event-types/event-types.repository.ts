@@ -48,4 +48,19 @@ export class EventTypesRepository {
 
     return this.isUserHostOfEventType(userId, eventTypeId);
   }
+
+  async getUserEventTypeBySlug(userId: number, slug: string) {
+    return this.prisma.prisma.eventType.findFirst({
+      where: {
+        userId,
+        slug,
+      },
+    });
+  }
+
+  async deleteEventType(id: number) {
+    return this.prisma.prisma.eventType.delete({
+      where: { id },
+    });
+  }
 }

@@ -240,7 +240,6 @@ const BookerWebWrapperComponent = (props: BookerWebWrapperAtomProps): JSX.Elemen
       rescheduledBy={rescheduledBy}
       bookingUid={bookingUid}
       hasSession={hasSession}
-      hasValidLicense={session?.hasValidLicense ?? false}
       extraOptions={routerQuery}
       bookings={bookings}
       calendars={calendars}

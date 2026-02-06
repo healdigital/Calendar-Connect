@@ -52,8 +52,6 @@ const config: Config = {
     "^@calcom/ui$": path.join(packagesDir, "ui/index"),
     "^@calcom/types/(.*)$": path.join(packagesDir, "types/$1"),
     "^@calcom/types$": path.join(packagesDir, "types/index"),
-    "^@calcom/ee/(.*)$": path.join(packagesDir, "features/ee/$1"),
-    "^@calcom/ee$": path.join(packagesDir, "features/ee/index"),
   },
   roots: ["<rootDir>", packagesDir],
   testEnvironment: "node",

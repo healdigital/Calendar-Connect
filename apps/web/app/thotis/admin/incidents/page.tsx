@@ -4,6 +4,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import { Button } from "@calcom/ui";
 import { Icon } from "@calcom/ui/components/icon";
+import { showToast } from "@calcom/ui/components/toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -12,13 +13,14 @@ export default function IncidentsPage() {
   const { t } = useLocale();
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const pageSize = 20;
 
   const {
     data: incidentsData,
     isLoading: isLoadingIncidents,
     error,
+    refetch,
   } = trpc.thotis.admin.listIncidents.useQuery(
     {
       page,
@@ -29,6 +31,26 @@ export default function IncidentsPage() {
       retry: false,
     }
   );
+
+  const moderationMutation = trpc.thotis.admin.takeModerationAction.useMutation({
+    onSuccess: () => {
+      showToast(t("thotis_moderation_action_success"), "success");
+      refetch();
+    },
+    onError: (err) => {
+      showToast(err.message, "error");
+    },
+  });
+
+  const resolveMutation = trpc.thotis.admin.resolveIncident.useMutation({
+    onSuccess: () => {
+      showToast(t("thotis_incident_resolved_success"), "success");
+      refetch();
+    },
+    onError: (err) => {
+      showToast(err.message, "error");
+    },
+  });
 
   const isLoading = sessionStatus === "loading" || (sessionStatus === "authenticated" && isLoadingIncidents);
 
@@ -46,7 +68,7 @@ export default function IncidentsPage() {
   ) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-        <h1 className="text-2xl font-bold text-emphasis mb-2">{t("unauthorized")}</h1>
+        <h1 className="text-emphasis mb-2 text-2xl font-bold">{t("unauthorized")}</h1>
         <p className="text-subtle mb-6">{t("unauthorized_admin_only")}</p>
         <Button onClick={() => router.push("/")}>{t("back_to_home")}</Button>
       </div>
@@ -56,7 +78,7 @@ export default function IncidentsPage() {
   if (error) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-        <h1 className="text-2xl font-bold text-emphasis mb-2">{t("error")}</h1>
+        <h1 className="text-emphasis mb-2 text-2xl font-bold">{t("error")}</h1>
         <p className="text-subtle mb-6">{error.message}</p>
         <Button onClick={() => router.back()}>{t("back")}</Button>
       </div>
@@ -71,7 +93,7 @@ export default function IncidentsPage() {
         <div>
           <button
             onClick={() => router.back()}
-            className="mb-2 flex items-center text-sm text-subtle hover:text-emphasis">
+            className="text-subtle hover:text-emphasis mb-2 flex items-center text-sm">
             <Icon name="arrow-left" className="mr-1 h-4 w-4" />
             {t("back")}
           </button>
@@ -82,12 +104,13 @@ export default function IncidentsPage() {
       <div className="bg-default border-subtle rounded-lg border">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-subtle border-subtle border-b text-xs uppercase text-subtle">
+            <thead className="bg-subtle border-subtle text-subtle border-b text-xs uppercase">
               <tr>
                 <th className="px-6 py-3 font-semibold">{t("type")}</th>
                 <th className="px-6 py-3 font-semibold">{t("description")}</th>
                 <th className="px-6 py-3 font-semibold">{t("status")}</th>
                 <th className="px-6 py-3 font-semibold">{t("date")}</th>
+                <th className="px-6 py-3 font-semibold">{t("actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-subtle divide-y">
@@ -118,6 +141,60 @@ export default function IncidentsPage() {
                     </td>
                     <td className="px-6 py-4 text-subtle">
                       {new Date(incident.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex justify-end gap-2">
+                        {!incident.resolved && (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            loading={
+                              resolveMutation.isPending &&
+                              resolveMutation.variables?.incidentId === incident.id
+                            }
+                            onClick={() => resolveMutation.mutate({ incidentId: incident.id })}>
+                            {t("thotis_resolve")}
+                          </Button>
+                        )}
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          color="secondary"
+                          loading={
+                            moderationMutation.isPending &&
+                            moderationMutation.variables?.studentProfileId === incident.studentProfileId &&
+                            moderationMutation.variables?.actionType === "WARNING"
+                          }
+                          onClick={() =>
+                            moderationMutation.mutate({
+                              studentProfileId: incident.studentProfileId,
+                              actionType: "WARNING",
+                              reason: "Moderation action from incident report",
+                            })
+                          }>
+                          {t("thotis_warn")}
+                        </Button>
+                        <Button
+                          size="sm"
+                          color="destructive"
+                          loading={
+                            moderationMutation.isPending &&
+                            moderationMutation.variables?.studentProfileId === incident.studentProfileId &&
+                            moderationMutation.variables?.actionType === "SUSPENSION"
+                          }
+                          onClick={() => {
+                            if (confirm(t("thotis_confirm_suspend_mentor"))) {
+                              moderationMutation.mutate({
+                                studentProfileId: incident.studentProfileId,
+                                actionType: "SUSPENSION",
+                                updateStatusTo: "SUSPENDED",
+                                reason: "Suspended due to incident report",
+                              });
+                            }
+                          }}>
+                          {t("thotis_suspend")}
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))

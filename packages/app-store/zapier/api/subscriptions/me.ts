@@ -1,4 +1,4 @@
-import findValidApiKey from "@calcom/features/ee/api-keys/lib/findValidApiKey";
+import { findValidApiKey } from "@calcom/features/api-keys/lib/findValidApiKey";
 import prisma from "@calcom/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
 

@@ -5,5 +5,5 @@ export const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function AddNewTeamMembers() {
-  return <div>Team onboarding is an Enterprise feature.</div>;
+  return <div>Team onboarding is not available in this build.</div>;
 }

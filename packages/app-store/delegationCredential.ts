@@ -190,11 +190,13 @@ export async function findUniqueDelegationCalendarCredential({
   return null;
 }
 
-export async function getUsersCredentialsIncludeServiceAccountKey(user: Pick<User, "id" | "email">) {
+export async function getUsersCredentialsIncludeServiceAccountKey(
+  user: Pick<User, "id" | "email">
+): Promise<CredentialForCalendarService[]> {
   return [];
 }
 
-export async function getUsersCredentials(user: User) {
+export async function getUsersCredentials(user: User): Promise<CredentialForCalendarService[]> {
   return [];
 }
 

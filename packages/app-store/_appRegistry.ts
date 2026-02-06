@@ -102,7 +102,7 @@ export async function getAppRegistryWithCredentials(userId: number, userAdminTea
   })[];
   const installCountPerApp = await getInstallCountPerApp();
   for await (const dbapp of dbApps) {
-    const delegationCredentialsForApp = delegationCredentials.filter(
+    const delegationCredentialsForApp = (delegationCredentials as any[]).filter(
       (credential) => credential.appId === dbapp.slug
     );
     const nonDelegationCredentialsForApp = dbapp.credentials;

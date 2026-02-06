@@ -1,9 +1,6 @@
 import { CreationSource, createNewUsersConnectToOrgIfExists, slugify } from "@calcom/platform-libraries";
 import type { PlatformOAuthClient, User } from "@calcom/prisma/client";
 import { BadRequestException, ConflictException, Injectable, Logger } from "@nestjs/common";
-import { CalendarsService } from "@/ee/calendars/services/calendars.service";
-import { EventTypesService_2024_04_15 } from "@/ee/event-types/event-types_2024_04_15/services/event-types.service";
-import { SchedulesService_2024_04_15 } from "@/ee/schedules/schedules_2024_04_15/services/schedules.service";
 import { Locales } from "@/lib/enums/locales";
 import { GetManagedUsersInput } from "@/modules/oauth-clients/controllers/oauth-client-users/inputs/get-managed-users.input";
 import { ProfilesRepository } from "@/modules/profiles/profiles.repository";
@@ -19,9 +16,6 @@ export class OAuthClientUsersService {
   constructor(
     private readonly userRepository: UsersRepository,
     private readonly tokensRepository: TokensRepository,
-    private readonly eventTypesService: EventTypesService_2024_04_15,
-    private readonly schedulesService: SchedulesService_2024_04_15,
-    private readonly calendarsService: CalendarsService,
     private readonly profilesRepository: ProfilesRepository
   ) {}
 
@@ -82,21 +76,7 @@ export class OAuthClientUsersService {
     const { accessToken, refreshToken, accessTokenExpiresAt, refreshTokenExpiresAt } =
       await this.tokensRepository.createOAuthTokens(oAuthClientId, user.id);
 
-    if (oAuthClient.areDefaultEventTypesEnabled) {
-      await this.eventTypesService.createUserDefaultEventTypes(user.id);
-    }
-
-    if (body.timeZone) {
-      const defaultSchedule = await this.schedulesService.createUserDefaultSchedule(user.id, body.timeZone);
-      user.defaultScheduleId = defaultSchedule.id;
-    }
-
-    try {
-      this.logger.log(`Setting default calendars in db for user with id ${user.id}`);
-      await this.calendarsService.getCalendars(user.id);
-    } catch (err) {
-      this.logger.error(`Could not get calendars of new managed user with id ${user.id}`);
-    }
+    // Default event types, schedules and calendars are not included in this build and are skipped here.
 
     return {
       user,

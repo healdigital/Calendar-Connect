@@ -1,5 +1,5 @@
 import process from "node:process";
-import { generateUniqueAPIKey } from "@calcom/features/ee/api-keys/lib/apiKeys";
+import { generateUniqueAPIKey } from "@calcom/features/api-keys/lib/apiKeys";
 import { HttpError } from "@calcom/lib/http-error";
 import { defaultResponder } from "@calcom/lib/server/defaultResponder";
 import prisma from "@calcom/prisma";

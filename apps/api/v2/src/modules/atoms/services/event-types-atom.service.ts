@@ -23,12 +23,9 @@ import {
   getPublicEvent,
   type PublicEventType,
   TUpdateEventTypeInputSchema,
-  updateEventType,
 } from "@calcom/platform-libraries/event-types";
 import type { PrismaClient } from "@calcom/prisma";
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-import { EventTypesService_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/services/event-types.service";
-import { systemBeforeFieldEmail } from "@/ee/event-types/event-types_2024_06_14/transformers";
 import { AtomsRepository } from "@/modules/atoms/atoms.repository";
 import { CredentialsRepository } from "@/modules/credentials/credentials.repository";
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
@@ -73,7 +70,6 @@ export class EventTypesAtomService {
     private readonly usersService: UsersService,
     private readonly dbWrite: PrismaWriteService,
     private readonly dbRead: PrismaReadService,
-    private readonly eventTypeService: EventTypesService_2024_06_14,
     private readonly teamEventTypeService: TeamsEventTypesService,
     private readonly organizationsTeamsRepository: OrganizationsTeamsRepository,
     private readonly usersRepository: UsersRepository
@@ -116,7 +112,10 @@ export class EventTypesAtomService {
       if (eventType?.team?.id) {
         await this.checkTeamOwnsEventType(user.id, eventType.eventType.id, eventType.team.id);
       } else {
-        this.eventTypeService.checkUserOwnsEventType(user.id, eventType.eventType);
+        // Stubbed check since EE service is removed
+        if (eventType.eventType.userId !== user.id) {
+          throw new ForbiddenException("You do not own this event type");
+        }
       }
     }
 
@@ -141,86 +140,11 @@ export class EventTypesAtomService {
     user: UserWithProfile,
     teamId: number
   ) {
-    await this.checkCanUpdateTeamEventType(user, eventTypeId, teamId, body.scheduleId);
-
-    const eventTypeUser = await this.eventTypeService.getUserToUpdateEvent(user);
-    const bookingFields = body.bookingFields ? [...body.bookingFields] : undefined;
-
-    if (
-      bookingFields?.length &&
-      !bookingFields.find((field) => field.type === "email") &&
-      !bookingFields.find((field) => field.type === "phone")
-    ) {
-      bookingFields.push(systemBeforeFieldEmail);
-    }
-
-    // Normalize period dates to UTC midnight (only if provided)
-    const periodDates =
-      body.periodStartDate !== undefined || body.periodEndDate !== undefined
-        ? {
-            ...(body.periodStartDate !== undefined
-              ? { periodStartDate: normalizePeriodDate(body.periodStartDate) }
-              : {}),
-            ...(body.periodEndDate !== undefined
-              ? { periodEndDate: normalizePeriodDate(body.periodEndDate) }
-              : {}),
-          }
-        : {};
-
-    const eventType = await updateEventType({
-      input: { ...body, id: eventTypeId, bookingFields, ...periodDates },
-      ctx: {
-        user: eventTypeUser,
-        prisma: this.dbWrite.prisma,
-      },
-    });
-
-    if (!eventType) {
-      throw new NotFoundException(`Event type with id ${eventTypeId} not found`);
-    }
-
-    return eventType;
+    throw new NotFoundException("updateTeamEventType is disabled in OSS");
   }
 
   async updateEventType(eventTypeId: number, body: TUpdateEventTypeInputSchema, user: UserWithProfile) {
-    await this.eventTypeService.checkCanUpdateEventType(user.id, eventTypeId, body.scheduleId);
-    const eventTypeUser = await this.eventTypeService.getUserToUpdateEvent(user);
-    const bookingFields = body.bookingFields ? [...body.bookingFields] : undefined;
-
-    if (
-      bookingFields?.length &&
-      !bookingFields.find((field) => field.type === "email") &&
-      !bookingFields.find((field) => field.type === "phone")
-    ) {
-      bookingFields.push(systemBeforeFieldEmail);
-    }
-
-    // Normalize period dates to UTC midnight (only if provided)
-    const periodDates =
-      body.periodStartDate !== undefined || body.periodEndDate !== undefined
-        ? {
-            ...(body.periodStartDate !== undefined
-              ? { periodStartDate: normalizePeriodDate(body.periodStartDate) }
-              : {}),
-            ...(body.periodEndDate !== undefined
-              ? { periodEndDate: normalizePeriodDate(body.periodEndDate) }
-              : {}),
-          }
-        : {};
-
-    const eventType = await updateEventType({
-      input: { ...body, id: eventTypeId, bookingFields, ...periodDates },
-      ctx: {
-        user: eventTypeUser,
-        prisma: this.dbWrite.prisma,
-      },
-    });
-
-    if (!eventType) {
-      throw new NotFoundException(`Event type with id ${eventTypeId} not found`);
-    }
-
-    return eventType;
+    throw new NotFoundException("updateEventType is disabled in OSS");
   }
 
   async checkCanUpdateTeamEventType(
@@ -248,7 +172,6 @@ export class EventTypesAtomService {
 
     await this.checkTeamOwnsEventType(user.id, eventTypeId, teamId);
     await this.teamEventTypeService.validateEventTypeExists(teamId, eventTypeId);
-    await this.eventTypeService.checkUserOwnsSchedule(user.id, scheduleId);
   }
 
   async checkTeamOwnsEventType(userId: number, eventTypeId: number, teamId: number) {

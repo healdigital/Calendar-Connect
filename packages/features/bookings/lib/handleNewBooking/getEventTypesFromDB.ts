@@ -1,12 +1,17 @@
 import type { LocationObject } from "@calcom/app-store/locations";
-import { workflowSelect } from "@calcom/ee/workflows/lib/getAllWorkflows";
+import type { Prisma } from "@calcom/prisma/client";
+
+const workflowSelect = {
+  id: true,
+  name: true,
+} satisfies Prisma.WorkflowSelect;
+
 import { getBookingFieldsWithSystemFields } from "@calcom/features/bookings/lib/getBookingFields";
 import type { DefaultEvent } from "@calcom/features/eventtypes/lib/defaultEvents";
 import { withSelectedCalendars } from "@calcom/features/users/repositories/UserRepository";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { parseRecurringEvent } from "@calcom/lib/isRecurringEvent";
 import { prisma } from "@calcom/prisma";
-import type { Prisma } from "@calcom/prisma/client";
 import { credentialForCalendarServiceSelect } from "@calcom/prisma/selects/credential";
 import { userSelect } from "@calcom/prisma/selects/user";
 import {
@@ -228,7 +233,7 @@ export const getEventTypesFromDB = async (eventTypeId: number) => {
     metadata: EventTypeMetaDataSchema.parse(eventType?.metadata || {}),
     recurringEvent: parseRecurringEvent(eventType?.recurringEvent),
     customInputs: customInputSchema.array().parse(eventType?.customInputs || []),
-    locations: (eventType?.locations ?? []) as LocationObject[],
+    locations: (eventType?.locations ?? []) as unknown as LocationObject[],
     bookingFields: getBookingFieldsWithSystemFields({ ...restEventType, isOrgTeamEvent }),
     rrSegmentQueryValue: rrSegmentQueryValueSchema.parse(eventType.rrSegmentQueryValue) ?? null,
     isDynamic: false,

@@ -19,10 +19,12 @@ import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { withApiAuth } from "test/utils/withApiAuth";
 import { AppModule } from "@/app.module";
+import type {
+  CreateBookingOutput_2024_08_13,
+  CreateScheduleInput_2024_04_15,
+  SchedulesService_2024_04_15,
+} from "@calcom/platform-libraries";
 import { bootstrap } from "@/bootstrap";
-import type { CreateBookingOutput_2024_08_13 } from "@/ee/bookings/2024-08-13/outputs/create-booking.output";
-import type { CreateScheduleInput_2024_04_15 } from "@/ee/schedules/schedules_2024_04_15/inputs/create-schedule.input";
-import { SchedulesService_2024_04_15 } from "@/ee/schedules/schedules_2024_04_15/services/schedules.service";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";
 import { TeamsBookingsModule } from "@/modules/teams/bookings/teams-bookings.module";
 

@@ -8,6 +8,7 @@
 //    ts-node packages/app-store/dailyvideo/lib/scripts/deleteRecordings.ts delete
 
 import process from "node:process";
+
 interface Recording {
   id: string;
   room_name: string;

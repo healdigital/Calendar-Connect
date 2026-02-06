@@ -1,5 +1,5 @@
+import { EventTypesModule_2024_06_14 } from "@calcom/platform-libraries";
 import { Module } from "@nestjs/common";
-import { EventTypesModule_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.module";
 import { AtomsRepository } from "@/modules/atoms/atoms.repository";
 import { AtomsSecondaryEmailsRepository } from "@/modules/atoms/atoms-secondary-emails.repository";
 import { AtomsConferencingAppsController } from "@/modules/atoms/controllers/atoms.conferencing-apps.controller";

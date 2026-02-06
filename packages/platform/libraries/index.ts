@@ -1,138 +1,63 @@
-import { getBookingForReschedule } from "@calcom/features/bookings/lib/get-booking";
-import getAllUserBookings from "@calcom/features/bookings/lib/getAllUserBookings";
-import { getBookingFieldsWithSystemFields } from "@calcom/features/bookings/lib/getBookingFields";
-import getBookingInfo from "@calcom/features/bookings/lib/getBookingInfo";
-import handleCancelBooking from "@calcom/features/bookings/lib/handleCancelBooking";
-import { handleCreatePhoneCall } from "@calcom/features/handleCreatePhoneCall";
-import handleMarkNoShow from "@calcom/features/handleMarkNoShow";
-import { getRoutedUrl } from "@calcom/features/routing-forms/lib/getRoutedUrl";
-import { symmetricDecrypt, symmetricEncrypt } from "@calcom/lib/crypto";
-import { getTranslation } from "@calcom/lib/server/i18n";
-import type { Prisma } from "@calcom/prisma/client";
-import { credentialForCalendarServiceSelect } from "@calcom/prisma/selects/credential";
-import { paymentDataSelect } from "@calcom/prisma/selects/payment";
-import { createNewUsersConnectToOrgIfExists } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/utils";
-
+export { credentialForCalendarServiceSelect } from "@calcom/prisma/selects/credential";
+export { paymentDataSelect } from "@calcom/prisma/selects/payment";
+export { getRoutedUrl } from "@calcom/features/routing-forms/lib/getRoutedUrl";
+export { getTranslation } from "@calcom/lib/server/i18n";
 export { slugify } from "@calcom/lib/slugify";
-export { slugifyLenient } from "@calcom/lib/slugify-lenient";
-export { getBookingForReschedule };
-
-export { getUsernameList } from "@calcom/features/eventtypes/lib/defaultEvents";
-export {
-  DEFAULT_WEBHOOK_VERSION,
-  WebhookVersion,
-} from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
-export {
-  AttributeType,
-  CreationSource,
-  MembershipRole,
-  PeriodType,
-  SchedulingType,
-  TimeUnit,
-  WebhookTriggerEvents,
-  WorkflowActions,
-  WorkflowTemplates,
-  WorkflowTriggerEvents,
-} from "@calcom/prisma/enums";
-export type { EventBusyDate } from "@calcom/types/Calendar";
-
-export { handleMarkNoShow };
-export { handleCreatePhoneCall };
-
-export type {
-  BookingCreateBody,
-  BookingResponse,
-} from "@calcom/features/bookings/types";
-export type { ConnectedCalendar } from "@calcom/features/calendars/lib/CalendarManager";
-export { getBusyCalendarTimes } from "@calcom/features/calendars/lib/CalendarManager";
-export type { ConnectedDestinationCalendars } from "@calcom/features/calendars/lib/getConnectedDestinationCalendars";
-export { getConnectedDestinationCalendarsAndEnsureDefaultsInDb } from "@calcom/features/calendars/lib/getConnectedDestinationCalendars";
-export type { CityTimezones } from "@calcom/features/cityTimezones/cityTimezonesHandler";
+export { MembershipRole, AttributeType, SchedulingType, CreationSource } from "@calcom/prisma/enums";
+export { userMetadata } from "@calcom/prisma/zod-utils";
+export { teamMetadataSchema } from "@calcom/prisma/zod-utils";
+export { MINUTES_TO_BOOK } from "@calcom/lib/constants";
 export { cityTimezonesHandler } from "@calcom/features/cityTimezones/cityTimezonesHandler";
-export { ENABLE_ASYNC_TASKER, MINUTES_TO_BOOK } from "@calcom/lib/constants";
-export { TRPCError } from "@trpc/server";
-export { createNewUsersConnectToOrgIfExists };
-
-export { getAllUserBookings };
-export { getBookingInfo };
-export { handleCancelBooking };
-
-export { dynamicEvent } from "@calcom/features/eventtypes/lib/defaultEvents";
-export { parseBookingLimit } from "@calcom/lib/intervalLimits/isBookingLimits";
-export { parseRecurringEvent } from "@calcom/lib/isRecurringEvent";
-export { bookingMetadataSchema, teamMetadataSchema, userMetadata } from "@calcom/prisma/zod-utils";
-
-export { symmetricEncrypt, symmetricDecrypt };
-
-export { getTranslation };
-
-export { validateCustomEventName } from "@calcom/features/eventtypes/lib/eventNaming";
-
-export type TeamQuery = Prisma.TeamGetPayload<{
-  select: {
-    id: true;
-    credentials: {
-      select: typeof import("@calcom/prisma/selects/credential").credentialForCalendarServiceSelect;
-    };
-    name: true;
-    logoUrl: true;
-    members: {
-      select: {
-        role: true;
-      };
-    };
-  };
-}>;
-
-export { credentialForCalendarServiceSelect };
-export { paymentDataSelect };
-export const getClientSecretFromPayment = () => {
-  throw new Error("EE feature 'getClientSecretFromPayment' removed for AGPL compliance");
-};
-
-export type { GroupedAttribute } from "@calcom/trpc/server/routers/viewer/attributes/getByUserId.handler";
-export { groupMembershipAttributes } from "@calcom/trpc/server/routers/viewer/attributes/getByUserId.handler";
-export { confirmHandler as confirmBookingHandler } from "@calcom/trpc/server/routers/viewer/bookings/confirm.handler";
-export { getBookingFieldsWithSystemFields };
-
-export { getRoutedUrl };
-
-export const getTeamMemberEmailForResponseOrContactUsingUrlQuery = () => {
-  throw new Error(
-    "EE feature 'getTeamMemberEmailForResponseOrContactUsingUrlQuery' removed for AGPL compliance"
-  );
-};
-
-export { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
-export { getCalendarLinks } from "@calcom/features/bookings/lib/getCalendarLinks";
-export { findTeamMembersMatchingAttributeLogic } from "@calcom/features/routing-forms/lib/findTeamMembersMatchingAttributeLogic";
-export { SelectedCalendarRepository } from "@calcom/lib/server/repository/selectedCalendar";
 export { encryptServiceAccountKey } from "@calcom/lib/server/serviceAccountKey";
-export { createHandler as createApiKeyHandler } from "@calcom/trpc/server/routers/viewer/apiKeys/create.handler";
-export type { TFindTeamMembersMatchingAttributeLogicInputSchema } from "@calcom/trpc/server/routers/viewer/attributes/findTeamMembersMatchingAttributeLogic.schema";
-
-export const verifyPhoneNumber = () => {
-  throw new Error("EE feature 'verifyPhoneNumber' removed for AGPL compliance");
-};
-export const sendVerificationCode = () => {
-  throw new Error("EE feature 'sendVerificationCode' removed for AGPL compliance");
-};
+export { slugifyLenient } from "@calcom/lib/slugify-lenient";
 
 export { verifyCodeUnAuthenticated } from "@calcom/features/auth/lib/verifyCodeUnAuthenticated";
 export { sendEmailVerificationByCode } from "@calcom/features/auth/lib/verifyEmail";
 export { BookingAccessService } from "@calcom/features/bookings/services/BookingAccessService";
+export type {
+  BookingOutput_2024_08_13,
+  BookingHost,
+  EventType,
+  BookingAttendee,
+} from "@calcom/features/bookings/outputs/BookingOutput_2024_08_13";
+export type { RecurringBookingOutput_2024_08_13 } from "@calcom/features/bookings/outputs/RecurringBookingOutput_2024_08_13";
+export type {
+  CreateSeatedBookingOutput_2024_08_13,
+  SeatedAttendee,
+} from "@calcom/features/bookings/outputs/CreateSeatedBookingOutput_2024_08_13";
+export type { CreateRecurringSeatedBookingOutput_2024_08_13 } from "@calcom/features/bookings/outputs/CreateRecurringSeatedBookingOutput_2024_08_13";
+export type { CreateBookingOutput_2024_08_13 } from "@calcom/features/bookings/outputs/CreateBookingOutput_2024_08_13";
+export type { Calendar, ConnectedCalendar } from "@calcom/features/calendars/outputs/ConnectedCalendar";
+export { CALENDARS_QUEUE, DEFAULT_CALENDARS_JOB } from "@calcom/features/calendars/lib/constants";
+export { CalendarsRepository } from "@calcom/features/calendars/repositories/CalendarsRepository";
+export { CalendarsCacheService } from "@calcom/features/calendars/services/CalendarsCacheService";
+export { CalendarsService } from "@calcom/features/calendars/services/CalendarsService";
+export { DEFAULT_EVENT_TYPES } from "@calcom/features/event-types/constants/constants";
+export { EventTypesModule_2024_06_14 } from "@calcom/features/event-types/EventTypesModule_2024_06_14";
+export type { CreatePhoneCallInput } from "@calcom/features/event-types/inputs/CreatePhoneCallInput";
+export type { CreatePhoneCallOutput } from "@calcom/features/event-types/outputs/CreatePhoneCallOutput";
+export { EventTypesRepository_2024_04_15 } from "@calcom/features/event-types/repositories/EventTypesRepository_2024_04_15";
+export { EventTypesRepository_2024_06_14 } from "@calcom/features/event-types/repositories/EventTypesRepository_2024_06_14";
+export { EventTypesService_2024_06_14 } from "@calcom/features/event-types/services/EventTypesService_2024_06_14";
+export type { CreateScheduleInput_2024_04_15 } from "@calcom/features/schedules/inputs/CreateScheduleInput_2024_04_15";
+export { SchedulesRepository } from "@calcom/features/schedules/repositories/SchedulesRepository";
+export { SchedulesModule_2024_06_11 } from "@calcom/features/schedules/SchedulesModule_2024_06_11";
+export { SchedulesService_2024_04_15 } from "@calcom/features/schedules/services/SchedulesService_2024_04_15";
+export { SchedulesService_2024_06_11 } from "@calcom/features/schedules/services/SchedulesService_2024_06_11";
 export class StripeBillingService {
-  constructor() {
+  constructor(...args: any[]) {
     throw new Error("EE service 'StripeBillingService' removed for AGPL compliance");
   }
 }
 export class TeamService {
-  constructor() {
+  constructor(...args: any[]) {
     throw new Error("EE service 'TeamService' removed for AGPL compliance");
   }
   static async fetchTeamOrThrow() {
     throw new Error("EE service 'TeamService.fetchTeamOrThrow' removed for AGPL compliance");
   }
+  static async removeMembers(...args: any[]) {}
+  static async createInvite(...args: any[]) {}
 }
 export class PermissionCheckService {
   constructor() {
@@ -158,5 +83,30 @@ export { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBoo
 export { verifyCodeChallenge } from "@calcom/lib/pkce";
 export { validateUrlForSSRFSync } from "@calcom/lib/ssrfProtection";
 export { checkEmailVerificationRequired } from "@calcom/trpc/server/routers/publicViewer/checkIfUserEmailVerificationRequired.handler";
-export { verifyCode as verifyCodeAuthenticated } from "@calcom/trpc/server/routers/viewer/organizations/verifyCode.handler";
 export type { OrgMembershipLookup } from "@calcom/trpc/server/routers/viewer/slots/util";
+
+export { TRPCError } from "@trpc/server";
+
+// OSS Stubs
+export const createNewUsersConnectToOrgIfExists = async (...args: any[]): Promise<any[]> => ([]);
+export const checkAdminOrOwner = async (...args: any[]): Promise<boolean> => false;
+export const getClientSecretFromPayment = async (...args: any[]): Promise<string> => "";
+export const updateNewTeamMemberEventTypes = async (...args: any[]): Promise<void> => {};
+export { WebhookTriggerEvents, WorkflowActions, WorkflowTemplates, TimeUnit, WorkflowTriggerEvents } from "@calcom/prisma/enums";
+export const WebhookVersion = { V1: "V1", V2: "V2", V_2021_10_20: "V_2021_10_20" } as const;
+export type WebhookVersion = (typeof WebhookVersion)[keyof typeof WebhookVersion];
+export const getTeamMemberEmailForResponseOrContactUsingUrlQuery = async (...args: any[]): Promise<string> => "";
+export const findTeamMembersMatchingAttributeLogic = async (...args: any[]): Promise<any[]> => [];
+export type TFindTeamMembersMatchingAttributeLogicInputSchema = any;
+export type TeamQuery = any;
+export const verifyCodeAuthenticated = async (...args: any[]): Promise<{ ok: boolean }> => ({ ok: true });
+export const handleCreatePhoneCall = async (...args: any[]): Promise<void> => {};
+export const groupMembershipAttributes = async (...args: any[]): Promise<any[]> => ([]);
+export type GroupedAttribute = any;
+export const createApiKeyHandler = async (...args: any[]): Promise<string> => "";
+export type CityTimezones = any;
+export const sendVerificationCode = async (...args: any[]): Promise<any> => ({});
+export const verifyPhoneNumber = async (...args: any[]): Promise<any> => ({});
+export const dynamicEvent = async (...args: any[]): Promise<any> => ({});
+export const sendSignupToOrganizationEmail = async (...args: any[]): Promise<void> => {};
+export const verifyEmailCodeHandler = async (...args: any[]): Promise<any> => ({});

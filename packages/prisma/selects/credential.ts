@@ -32,5 +32,4 @@ export const safeCredentialSelect = {
   teamId: true,
   appId: true,
   invalid: true,
-  delegationCredentialId: true,
 } satisfies Prisma.CredentialSelect;

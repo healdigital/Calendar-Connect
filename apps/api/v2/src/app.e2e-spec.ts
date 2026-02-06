@@ -10,9 +10,9 @@ import { OrganizationRepositoryFixture } from "test/fixtures/repository/organiza
 import { ProfileRepositoryFixture } from "test/fixtures/repository/profiles.repository.fixture";
 import { RateLimitRepositoryFixture } from "test/fixtures/repository/rate-limit.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
+import { SchedulesModule_2024_04_15 } from "@calcom/platform-libraries";
 import { randomString } from "test/utils/randomString";
 import { AppModule } from "@/app.module";
-import { SchedulesModule_2024_04_15 } from "@/ee/schedules/schedules_2024_04_15/schedules.module";
 import { CustomThrottlerGuard } from "@/lib/throttler-guard";
 import { PrismaModule } from "@/modules/prisma/prisma.module";
 import { TokensModule } from "@/modules/tokens/tokens.module";

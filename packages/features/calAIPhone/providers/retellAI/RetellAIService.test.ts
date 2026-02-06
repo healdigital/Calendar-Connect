@@ -17,7 +17,7 @@ vi.mock("@calcom/app-store/stripepayment/lib/utils", () => ({
   getPhoneNumberMonthlyPriceId: vi.fn(),
 }));
 
-vi.mock("@calcom/features/ee/payments/server/stripe", () => ({
+vi.mock("@calcom/app-store/stripepayment/lib/server", () => ({
   default: {
     checkout: {
       sessions: {
@@ -39,7 +39,7 @@ const mockCreditService = vi.fn().mockImplementation(function () {
   };
 });
 
-vi.mock("@calcom/features/ee/billing/credit-service", () => ({
+vi.mock("@calcom/features/billing/credit-service", () => ({
   CreditService: mockCreditService,
 }));
 
@@ -643,7 +643,7 @@ describe("RetellAIService", () => {
     it("should generate checkout session successfully", async () => {
       const { getStripeCustomerIdFromUserId } = await import("@calcom/app-store/stripepayment/lib/customer");
       const { getPhoneNumberMonthlyPriceId } = await import("@calcom/app-store/stripepayment/lib/utils");
-      const stripe = (await import("@calcom/features/ee/payments/server/stripe")).default;
+      const stripe = (await import("@calcom/app-store/stripepayment/lib/server")).default;
 
       (getPhoneNumberMonthlyPriceId as any).mockReturnValue("price_123");
       (getStripeCustomerIdFromUserId as any).mockResolvedValue("cus_123");
@@ -677,7 +677,7 @@ describe("RetellAIService", () => {
 
   describe("cancelPhoneNumberSubscription", () => {
     it("should cancel subscription successfully", async () => {
-      const stripe = (await import("@calcom/features/ee/payments/server/stripe")).default;
+      const stripe = (await import("@calcom/app-store/stripepayment/lib/server")).default;
 
       mockPhoneNumberRepository.findByIdAndUserId.mockResolvedValue({
         id: 1,
@@ -846,7 +846,7 @@ describe("RetellAIService", () => {
 
   describe("createTestCall", () => {
     it("should create test call successfully with sufficient credits", async () => {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
+      const { CreditService } = await import("@calcom/features/billing/credit-service");
 
       const mockHasAvailableCredits = vi.fn().mockResolvedValue(true);
       (CreditService as any).mockImplementation(function () {
@@ -929,7 +929,7 @@ describe("RetellAIService", () => {
     });
 
     it("should handle null/undefined credits gracefully", async () => {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
+      const { CreditService } = await import("@calcom/features/billing/credit-service");
 
       // Mock credit service to return false (no credits)
       const mockHasAvailableCredits = vi.fn().mockResolvedValue(false);
@@ -951,7 +951,7 @@ describe("RetellAIService", () => {
     });
 
     it("should throw error if no phone number provided", async () => {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
+      const { CreditService } = await import("@calcom/features/billing/credit-service");
       const { checkRateLimitAndThrowError } = await import("@calcom/lib/checkRateLimitAndThrowError");
 
       // Mock sufficient credits to get past credit check
@@ -975,7 +975,7 @@ describe("RetellAIService", () => {
     });
 
     it("should throw error if agent not found", async () => {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
+      const { CreditService } = await import("@calcom/features/billing/credit-service");
       const { checkRateLimitAndThrowError } = await import("@calcom/lib/checkRateLimitAndThrowError");
 
       // Mock sufficient credits
@@ -1001,7 +1001,7 @@ describe("RetellAIService", () => {
     });
 
     it("should throw error if agent has no phone numbers", async () => {
-      const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
+      const { CreditService } = await import("@calcom/features/billing/credit-service");
       const { checkRateLimitAndThrowError } = await import("@calcom/lib/checkRateLimitAndThrowError");
 
       // Mock sufficient credits

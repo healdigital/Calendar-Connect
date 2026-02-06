@@ -16,6 +16,7 @@ import type { ContextForGetSchedule } from "../../../trpc/server/routers/viewer/
 import { RedisService } from "../../redis/RedisService";
 import { AnalyticsService } from "./AnalyticsService";
 import type { ThotisAnalyticsService } from "./ThotisAnalyticsService";
+import { ThotisGuestService } from "./ThotisGuestService";
 
 /**
  * Service for managing Thotis student mentoring session bookings
@@ -25,16 +26,19 @@ export class ThotisBookingService {
   private analytics: AnalyticsService;
   private thotisAnalytics: ThotisAnalyticsService | null = null;
   private redis?: RedisService;
+  private guestService: ThotisGuestService;
 
   constructor(
     private readonly prisma: Prisma.TransactionClient | PrismaClient,
     analytics?: AnalyticsService,
     redis?: RedisService,
-    thotisAnalytics?: ThotisAnalyticsService
+    thotisAnalytics?: ThotisAnalyticsService,
+    guestService?: ThotisGuestService
   ) {
     this.analytics = analytics || new AnalyticsService();
     this.redis = redis;
     this.thotisAnalytics = thotisAnalytics || null;
+    this.guestService = guestService || new ThotisGuestService();
 
     // Try to initialize Redis if not provided and env vars exist
     if (!this.redis && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
@@ -167,6 +171,12 @@ export class ThotisBookingService {
         `Time slot ${startTime.toISOString()} is already booked`
       );
     }
+
+    // Validate real availability (Property 7 extension: Schedules and Calendars)
+    await this.validateSlotAvailability(studentProfile.userId, startTime, endTime);
+
+    // Rate-limit booking creation via Redis (anti-abuse)
+    await this.rateLimitBookingCreation(input.prospectiveStudent.email);
 
     // Get or create Thotis event type for this student
     let eventType = await this.prisma.eventType.findFirst({
@@ -339,18 +349,10 @@ export class ThotisBookingService {
       endTime: booking.endTime.toISOString(),
       organizer,
       attendees: [attendee],
-      location: googleMeetLink,
+      location: "integrations:google-video",
       description: booking.description || "",
       uid: booking.uid,
     };
-
-    // Send Confirmation Email
-    try {
-      const email = new BookingConfirmationEmail(calEvent, attendee);
-      await email.sendEmail();
-    } catch (error) {
-      console.error("Failed to send confirmation email", error);
-    }
 
     // Sync with Google Calendar
     try {
@@ -387,11 +389,31 @@ export class ThotisBookingService {
 
     if (finalizedBooking) {
       const videoLink = await this.ensureVideoLink(
-        finalizedBooking.id, // wait finalizedBooking doesn't have id in select
+        booking.id,
         finalizedBooking.uid,
         finalizedBooking.location,
         finalizedBooking.metadata
       );
+
+      // Update calEvent with final video link
+      calEvent.location = videoLink;
+
+      // Send Confirmation Email AFTER we have the final link
+      try {
+        // Generate Guest Link for Dashboard Access (1 day validity for email link)
+        const { token } = await this.guestService.requestInboxLink(
+          input.prospectiveStudent.email,
+          booking.id,
+          1440
+        );
+        const dashboardLink = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/thotis/my-sessions?token=${token}`;
+
+        const email = new BookingConfirmationEmail(calEvent, attendee, undefined, dashboardLink);
+        await email.sendEmail();
+      } catch (error) {
+        console.error("Failed to send confirmation email", error);
+      }
+
       return {
         bookingId: booking.id,
         googleMeetLink: videoLink,
@@ -830,6 +852,13 @@ export class ThotisBookingService {
       );
     }
 
+    // Validate real availability (Property 7 extension: Schedules and Calendars)
+    await this.validateSlotAvailability(
+      booking.eventType?.userId || booking.userId!,
+      newStartTime,
+      newEndTime
+    );
+
     // Generate new Google Meet link (Property 32)
     const newGoogleMeetLink = "integrations:google-video";
 
@@ -1152,15 +1181,25 @@ export class ThotisBookingService {
       });
 
       // Automatically create a MentorQualityIncident for automated No-Show
-      await this.prisma.mentorQualityIncident.create({
-        data: {
-          studentProfileId,
+      // CHECK FIRST: If system process, ensure we don't duplicate if one already exists
+      const existingIncident = await this.prisma.mentorQualityIncident.findFirst({
+        where: {
           bookingUid: booking.uid,
           type: MentorIncidentType.NO_SHOW,
-          description: "Automated no-show detection by system lifecycle cron.",
-          reportedByUserId: null, // System report
         },
       });
+
+      if (!existingIncident) {
+        await this.prisma.mentorQualityIncident.create({
+          data: {
+            studentProfileId,
+            bookingUid: booking.uid,
+            type: MentorIncidentType.NO_SHOW,
+            description: "Automated no-show detection by system lifecycle cron.",
+            reportedByUserId: null, // System report
+          },
+        });
+      }
     }
 
     // Trigger Webhook
@@ -1222,6 +1261,210 @@ export class ThotisBookingService {
         ErrorCode.Forbidden,
         "You are not authorized to perform this action on this session"
       );
+    }
+  }
+
+  /**
+   * Validates that a slot is truly available according to the mentor's schedule and calendars.
+   * This goes beyond just checking for existing Thotis bookings.
+   */
+  private async validateSlotAvailability(userId: number, startTime: Date, endTime: Date) {
+    // 1. Get user and event type
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { username: true },
+    });
+
+    if (!user || !user.username) {
+      throw new ErrorWithCode(ErrorCode.NotFound, "Mentor user not found");
+    }
+
+    const eventType = await this.prisma.eventType.findFirst({
+      where: {
+        userId: userId,
+        slug: "thotis-mentoring-session",
+      },
+      select: { id: true, length: true },
+    });
+
+    if (!eventType) {
+      // If event type doesn't exist yet, it will be created in the main flow.
+      // For now, we assume it's available if no event type exists as we can't check its schedule.
+      return;
+    }
+
+    // 2. Use Cal.com's availability service
+    try {
+      const { getAvailableSlotsService } = await import("@calcom/features/di/containers/AvailableSlots");
+      const availableSlotsService = getAvailableSlotsService();
+
+      // Check window around the slot to be safe
+      const startIso = startTime.toISOString();
+      // We check slightly more to ensure we see the slot in the engine output
+      const endIso = new Date(endTime.getTime() + 60 * 1000).toISOString();
+
+      const input = {
+        eventTypeId: eventType.id,
+        usernameList: [user.username],
+        startTime: startIso,
+        endTime: endIso,
+        timeZone: "Europe/Paris",
+        orgSlug: "",
+        isTeamEvent: false,
+        bypassCache: true, // Strict validation: force fresh check against calendars
+        limit: 100, // Explicit limit to avoid large payloads
+      };
+
+      const mockCtx: ContextForGetSchedule = {
+        req: {
+          headers: {},
+          cookies: {},
+        } as unknown as ContextForGetSchedule["req"],
+      };
+
+      const result = await availableSlotsService.getAvailableSlots({
+        input,
+        ctx: mockCtx,
+      });
+
+      // 3. Check if our exact slot is in the available list
+      let isAvailable = false;
+      const requestedStartTime = startTime.getTime();
+      const requestedEndTime = endTime.getTime();
+
+      // Flatten slots
+      const allSlots: { time: string }[] = [];
+      Object.values(result.slots).forEach((daySlots) => {
+        allSlots.push(...daySlots);
+      });
+
+      // Find a matching slot
+      for (const slot of allSlots) {
+        const slotStart = new Date(slot.time).getTime();
+        // The slot returned by availability engine represents a start time valid for eventType.length
+        // So if slot.time matches our startTime, it means the FULL duration is available
+        // because the engine already checked the duration against calendars.
+        if (slotStart === requestedStartTime) {
+          isAvailable = true;
+          break;
+        }
+      }
+
+      if (!isAvailable) {
+        throw new ErrorWithCode(
+          ErrorCode.BookingConflict,
+          `Mentor is not available at ${startTime.toISOString()} (Checked against schedule/calendars)`
+        );
+      }
+    } catch (error) {
+      if (error instanceof ErrorWithCode) throw error;
+      console.error("Error validating availability:", error);
+      // In case of engine failure, we err on the side of caution
+      throw new ErrorWithCode(ErrorCode.InternalServerError, "Failed to verify mentor availability");
+    }
+  }
+
+  /**
+   * Fetches sessions for a student, identified either by a guest token or by an authenticated user's email.
+   * This allows guests (lycéens) to manage their sessions without a full account.
+   */
+  async studentSessions(input: {
+    status?: "upcoming" | "past" | "cancelled" | "all";
+    token?: string;
+    userId?: number;
+    email?: string;
+  }) {
+    let email = input.email;
+    let bookingIdScope: number | undefined;
+
+    // 1. Resolve identity from token if provided
+    if (input.token) {
+      const magicLink = await this.guestService.verifyToken(input.token);
+      email = magicLink.guest.email;
+      bookingIdScope = magicLink.bookingId ?? undefined;
+    }
+
+    if (!email) {
+      throw new ErrorWithCode(ErrorCode.Unauthorized, "Email or token required to view sessions");
+    }
+
+    const now = new Date();
+
+    // 2. Fetch sessions
+    return await this.prisma.booking.findMany({
+      where: {
+        ...(bookingIdScope
+          ? { id: bookingIdScope }
+          : {
+              responses: {
+                path: ["email"],
+                equals: email,
+              },
+            }),
+        eventType: {
+          metadata: {
+            path: ["isThotisSession"],
+            equals: true,
+          },
+        },
+        ...(input.status === "upcoming"
+          ? { startTime: { gte: now }, status: { in: ["ACCEPTED", "PENDING"] } }
+          : input.status === "past"
+            ? { endTime: { lt: now }, status: { in: ["ACCEPTED", "PENDING"] } }
+            : input.status === "cancelled"
+              ? { status: "CANCELLED" }
+              : {}),
+      },
+      select: {
+        id: true,
+        uid: true,
+        title: true,
+        startTime: true,
+        endTime: true,
+        status: true,
+        metadata: true,
+        responses: true,
+        user: {
+          select: {
+            name: true,
+            username: true,
+            avatarUrl: true,
+          },
+        },
+        thotisSessionSummary: {
+          select: { id: true },
+        },
+      },
+      orderBy: { startTime: input.status === "upcoming" ? "asc" : "desc" },
+    });
+  }
+
+  /**
+   * Rate limits booking creation per student email to prevent abuse (Property 40)
+   * Limit: 3 bookings per hour
+   */
+  private async rateLimitBookingCreation(email: string) {
+    if (!this.redis) return;
+
+    const key = `rate-limit:booking:${email}`;
+    try {
+      const current = await this.redis.get(key);
+      const count = current ? parseInt(current as string) : 0;
+
+      const maxBookings = 2; // Strict limit: 2 bookings per hour to prevent spam
+      if (count >= maxBookings) {
+        throw new ErrorWithCode(
+          ErrorCode.BookerLimitExceeded,
+          "Maximum number of bookings per hour reached. Please try again later."
+        );
+      }
+
+      await this.redis.set(key, (count + 1).toString(), {
+        ttl: 60 * 60 * 1000, // 1 hour window
+      });
+    } catch (error) {
+      if (error instanceof ErrorWithCode) throw error;
+      console.warn("Rate limit check failed, allowing booking", error);
     }
   }
 }

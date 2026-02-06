@@ -20,7 +20,7 @@ import { ProfileService } from "./ProfileService";
 export interface ProvisionAmbassadorInput {
   name: string;
   email: string;
-  fieldOfStudy: string;
+  fieldOfStudy: AcademicField;
   university: string;
   degree: string;
   yearOfStudy: number;

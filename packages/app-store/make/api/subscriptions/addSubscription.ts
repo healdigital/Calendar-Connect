@@ -1,4 +1,4 @@
-import findValidApiKey from "@calcom/features/ee/api-keys/lib/findValidApiKey";
+import { findValidApiKey } from "@calcom/features/api-keys/lib/findValidApiKey";
 import { addSubscription } from "@calcom/features/webhooks/lib/scheduleTrigger";
 import { defaultHandler } from "@calcom/lib/server/defaultHandler";
 import { defaultResponder } from "@calcom/lib/server/defaultResponder";

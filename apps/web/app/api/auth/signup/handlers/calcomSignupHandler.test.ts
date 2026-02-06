@@ -66,7 +66,7 @@ vi.mock("@calcom/features/auth/signup/utils/prefillAvatar", () => ({ prefillAvat
 vi.mock("@calcom/features/auth/signup/utils/validateUsername", () => ({
   validateAndGetCorrectedUsernameAndEmail: vi.fn().mockResolvedValue({ isValid: true, username: "testuser" }),
 }));
-vi.mock("@calcom/features/ee/billing/di/containers/Billing", () => ({
+vi.mock("@calcom/features/billing/di/containers/Billing", () => ({
   getBillingProviderService: vi.fn().mockReturnValue({
     createCustomer: vi.fn().mockResolvedValue({ stripeCustomerId: "cus_123" }),
   }),

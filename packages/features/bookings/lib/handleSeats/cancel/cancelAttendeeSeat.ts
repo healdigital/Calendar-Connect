@@ -1,11 +1,10 @@
 import { getCalendar } from "@calcom/app-store/_utils/getCalendar";
-import {
-  getAllDelegationCredentialsForUserIncludeServiceAccountKey,
-  getDelegationCredentialOrFindRegularCredential,
-} from "@calcom/app-store/delegationCredential";
+// import {
+//   getAllDelegationCredentialsForUserIncludeServiceAccountKey,
+//   getDelegationCredentialOrFindRegularCredential,
+// } from "@calcom/app-store/delegationCredential";
 import { sendCancelledSeatEmailsAndSMS } from "@calcom/emails/email-manager";
 import { updateMeeting } from "@calcom/features/conferencing/lib/videoClient";
-import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
 import type { WebhookVersion } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
 import type { EventPayloadType, EventTypeInfo } from "@calcom/features/webhooks/lib/sendPayload";
@@ -19,6 +18,7 @@ import { WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type { EventTypeMetadata } from "@calcom/prisma/zod-utils";
 import { bookingCancelAttendeeSeatSchema } from "@calcom/prisma/zod-utils";
 import type { CalendarEvent } from "@calcom/types/Calendar";
+import { CredentialRepository } from "../../../../credentials/repositories/CredentialRepository";
 import type { BookingToDelete } from "../../handleCancelBooking";
 
 async function cancelAttendeeSeat(
@@ -73,13 +73,8 @@ async function cancelAttendeeSeat(
   ]);
 
   const attendee = bookingToDelete?.attendees.find((attendee) => attendee.id === seatReference.attendeeId);
-  const bookingToDeleteUser = bookingToDelete.user ?? null;
-  const delegationCredentials = bookingToDeleteUser
-    ? // We fetch delegation credentials with ServiceAccount key as CalendarService instance created later in the flow needs it
-      await getAllDelegationCredentialsForUserIncludeServiceAccountKey({
-        user: { email: bookingToDeleteUser.email, id: bookingToDeleteUser.id },
-      })
-    : [];
+  // const bookingToDeleteUser = bookingToDelete.user ?? null;
+  // const delegationCredentials = ...
 
   if (attendee) {
     /* If there are references then we should update them as well */
@@ -87,14 +82,13 @@ async function cancelAttendeeSeat(
     const integrationsToUpdate = [];
 
     for (const reference of bookingToDelete.references) {
-      if (reference.credentialId || reference.delegationCredentialId) {
-        const credential = await getDelegationCredentialOrFindRegularCredential({
-          id: {
-            credentialId: reference.credentialId,
-            delegationCredentialId: reference.delegationCredentialId,
-          },
-          delegationCredentials,
-        });
+      if (reference.credentialId) {
+        let credential = null;
+        if (reference.credentialId) {
+          credential = await CredentialRepository.findCredentialForCalendarServiceById({
+            id: reference.credentialId,
+          });
+        }
 
         if (credential) {
           const videoCallReference = bookingToDelete.references.find((reference) =>
@@ -183,12 +177,6 @@ async function cancelAttendeeSeat(
     })
   );
   await Promise.all(promises);
-
-  const workflowRemindersForAttendee =
-    bookingToDelete?.workflowReminders.filter((reminder) => reminder.seatReferenceId === seatReferenceUid) ??
-    null;
-
-  await WorkflowRepository.deleteAllWorkflowReminders(workflowRemindersForAttendee);
 
   return { success: true };
 }

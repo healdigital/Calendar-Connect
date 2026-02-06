@@ -1,3 +1,4 @@
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { AnalyticsService } from "@calcom/features/thotis/services/AnalyticsService";
 import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmailService";
@@ -105,7 +106,7 @@ export async function GET(req: NextRequest) {
       });
 
       // Trigger Webhook
-      const { thotisWebhooks } = await import("../../../lib/webhooks/thotis");
+      const { thotisWebhooks } = await import("../../../../lib/webhooks/thotis");
       await thotisWebhooks.onReminder(booking as unknown as any, "24h");
 
       // 4. Mark as sent

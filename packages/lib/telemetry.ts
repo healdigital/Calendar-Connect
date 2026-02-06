@@ -2,7 +2,6 @@ import process from "node:process";
 import type { NextApiRequest, NextApiResponse } from "next";
 // Importing types so we're not directly importing next/server
 import type { NextRequest, NextResponse } from "next/server";
-import { CONSOLE_URL } from "./constants";
 
 export const telemetryEventTypes = {
   pageView: "page_view",
@@ -20,7 +19,6 @@ export const telemetryEventTypes = {
   team_created: "team_created",
   slugReplacementAction: "slug_replacement_action",
   org_created: "org_created",
-  license_key_created: "license_key_created",
 };
 
 export function collectPageParameters(
@@ -37,25 +35,9 @@ export function collectPageParameters(
   };
 }
 
-const reportUsage: EventHandler = async (event, { fetch }) => {
-  const ets = telemetryEventTypes;
-  if ([ets.bookingConfirmed, ets.embedBookingConfirmed].includes(event.eventType)) {
-    const key = process.env.CALCOM_LICENSE_KEY;
-    const url = `${CONSOLE_URL}/api/deployments/usage?key=${key}&quantity=1`;
-    try {
-      return fetch(url, { method: "POST", mode: "cors" });
-    } catch (e) {
-      console.error(`Error reporting booking for key: '${key}'`, e);
-      return Promise.resolve();
-    }
-  } else {
-    return Promise.resolve();
-  }
-};
-
-export const nextCollectBasicSettings: CollectOpts = {
+export const nextCollectBasicSettings: any = {
   drivers: [
-    process.env.CALCOM_LICENSE_KEY && process.env.NEXT_PUBLIC_IS_E2E !== "1" ? reportUsage : undefined,
+    undefined,
     process.env.CALCOM_TELEMETRY_DISABLED === "1" || process.env.NEXT_PUBLIC_IS_E2E === "1"
       ? undefined
       : {
@@ -99,7 +81,7 @@ export const extendEventData = (
     ipAddress: "",
     queryString: "",
     page_url: pageUrl,
-    licensekey: process.env.CALCOM_LICENSE_KEY,
+
     isTeamBooking:
       original?.isTeamBooking === undefined
         ? pageUrl?.includes("team/") || undefined

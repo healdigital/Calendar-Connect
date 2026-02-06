@@ -64,12 +64,27 @@ export async function GET(req: NextRequest) {
 
   for (const booking of pendingBookings) {
     try {
-      // If a session is still PENDING 15 minutes after end time, it's a No-Show
-      await bookingService.markSessionAsNoShow(booking.id, { isSystem: true });
+      // Check if a No-Show incident was reported by the student for this booking
+      const noShowIncident = await prisma.mentorQualityIncident.findFirst({
+        where: {
+          bookingUid: booking.uid,
+          type: "NO_SHOW", // MentorIncidentType.NO_SHOW
+        },
+      });
+
+      if (noShowIncident) {
+        // If a no-show was reported, mark it as such to trigger correct statistics/incident flow.
+        // The service is idempotent and won't duplicate the incident.
+        await bookingService.markSessionAsNoShow(booking.id, { isSystem: true });
+      } else {
+        // If no no-show was reported, it's considered completed by default
+        await bookingService.markSessionComplete(booking.id, { isSystem: true });
+      }
+
       results.processed++;
       results.ids.push(booking.id);
     } catch (error) {
-      console.error(`Failed to record no-show for session ${booking.id}`, error);
+      console.error(`Failed to record completion for session ${booking.id}`, error);
       results.errors++;
     }
   }

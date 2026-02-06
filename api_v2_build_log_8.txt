@@ -1,0 +1,351 @@
+[96msrc/api-v2-ee-removal.property.test.ts[0m:[93m75[0m:[93m6[0m - [91merror[0m[90m TS2554: [0mExpected 1-3 arguments, but got 4.
+
+[7m75[0m   }, { timeout: 30000 });
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m9[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m9[0m     // @ts-expect-error
+[7m [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/debug_main.ts[0m:[93m16[0m:[93m15[0m - [91merror[0m[90m TS2345: [0mArgument of type 'INestApplication<any>' is not assignable to parameter of type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>'.
+  Type 'INestApplication<any>' is missing the following properties from type 'NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>': set, engine, enable, disable, and 5 more.
+
+[7m16[0m     bootstrap(app);
+[7m  [0m [91m              ~~~[0m
+[96msrc/modules/api-keys/controllers/api-keys.controller.ts[0m:[93m39[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m39[0m         apiKey: newApiKey,
+[7m  [0m [91m        ~~~~~~[0m
+
+  [96msrc/modules/api-keys/outputs/api-key.output.ts[0m:[93m9[0m:[93m12[0m
+    [7m9[0m   readonly apiKey!: string;
+    [7m [0m [96m           ~~~~~~[0m
+    The expected type comes from property 'apiKey' which is declared here on type 'ApiKeyOutput'
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m182[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m182[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.event-types.controller.ts[0m:[93m205[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ eventType: { title: string; description: string | null; locations: JsonValue; recurringEvent: JsonValue; seatsPerTimeSlot: number | null; isRRWeightsEnabled: boolean; ... 8 more ...; hostGroups: { ...; }[]; }; }'.
+
+[7m205[0m       data: eventType,
+[7m   [0m [91m      ~~~~[0m
+[96msrc/modules/atoms/controllers/atoms.verification.controller.ts[0m:[93m106[0m:[93m15[0m - [91merror[0m[90m TS2322: [0mType '{ ok: boolean; }' is not assignable to type 'boolean'.
+
+[7m106[0m       data: { verified },
+[7m   [0m [91m              ~~~~~~~~[0m
+
+  [96msrc/modules/atoms/outputs/verify-email-code.output.ts[0m:[93m10[0m:[93m12[0m
+    [7m10[0m   readonly verified!: boolean;
+    [7m  [0m [96m           ~~~~~~~~[0m
+    The expected type comes from property 'verified' which is declared here on type 'VerifyEmailCodeData'
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m18[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'teamMembersMatchingAttributeLogic' does not exist on type 'never[]'.
+
+[7m18[0m       teamMembersMatchingAttributeLogic: matchingTeamMembersWithResult,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m19[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'mainAttributeLogicBuildingWarnings' does not exist on type 'never[]'.
+
+[7m19[0m       mainAttributeLogicBuildingWarnings: mainWarnings,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m20[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'fallbackAttributeLogicBuildingWarnings' does not exist on type 'never[]'.
+
+[7m20[0m       fallbackAttributeLogicBuildingWarnings: fallbackWarnings,
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/atoms/services/attributes-atom.service.ts[0m:[93m21[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'troubleshooter' does not exist on type 'never[]'.
+
+[7m21[0m       troubleshooter,
+[7m  [0m [91m      ~~~~~~~~~~~~~~[0m
+[96msrc/modules/billing/services/billing.service.ts[0m:[93m457[0m:[93m64[0m - [91merror[0m[90m TS2554: [0mExpected 1 arguments, but got 2.
+
+[7m457[0m           idempotencyKey: getIncrementUsageIdempotencyKey(uid, userId),
+[7m   [0m [91m                                                               ~~~~~~[0m
+[96msrc/modules/destination-calendars/services/destination-calendars.service.ts[0m:[93m38[0m:[93m13[0m - [91merror[0m[90m TS2367: [0mThis comparison appears to be unintentional because the types 'null | undefined' and 'string' have no overlap.
+
+[7m38[0m             cal.delegationCredentialId === delegationCredentialId
+[7m  [0m [91m            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/email/email.service.ts[0m:[93m22[0m:[93m41[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 22[0m     await sendSignupToOrganizationEmail({
+[7m   [0m [91m                                        ~[0m
+[7m 23[0m       usernameOrEmail,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 28[0m       translation,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~[0m
+[7m 29[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/oauth-clients/services/oauth-clients-users.service.ts[0m:[93m40[0m:[93m27[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '0' can't be used to index type '{}'.
+  Property '0' does not exist on type '{}'.
+
+[7m 40[0m       const createdUser = (
+[7m   [0m [91m                          ~[0m
+[7m 41[0m         await createNewUsersConnectToOrgIfExists({
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 64[0m         })
+[7m   [0m [91m~~~~~~~~~~[0m
+[7m 65[0m       )[0];
+[7m   [0m [91m~~~~~~~~~~[0m
+[96msrc/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service.ts[0m:[93m3[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/app-store"' has no exported member 'addDelegationCredential'.
+
+[7m3[0m   addDelegationCredential,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/delegation-credentials/services/organizations-delegation-credential.service.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/app-store"' has no exported member 'toggleDelegationCredentialEnabled'.
+
+[7m5[0m   toggleDelegationCredentialEnabled,
+[7m [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/event-types/services/organizations-event-types.service.ts[0m:[93m46[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m46[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/index/organizations.repository.ts[0m:[93m19[0m:[93m9[0m - [91merror[0m[90m TS2416: [0mProperty 'findById' in type 'OrganizationsRepository' is not assignable to the same property in base type 'OrganizationRepository'.
+  Type '(orgId: { id: number; }) => Promise<{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; } | null>' is not assignable to type '(...args: any[]) => Promise<null>'.
+    Type 'Promise<{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; } | null>' is not assignable to type 'Promise<null>'.
+      Type '{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; } | null' is not assignable to type 'null'.
+        Type '{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; bio: string | null; ... 23 more ...; includeManagedEventsInLimits: boolean; }' is not assignable to type 'null'.
+
+[7m19[0m   async findById(orgId: { id: number }) {
+[7m  [0m [91m        ~~~~~~~~[0m
+[96msrc/modules/organizations/index/organizations.repository.ts[0m:[93m28[0m:[93m9[0m - [91merror[0m[90m TS2416: [0mProperty 'findByIds' in type 'OrganizationsRepository' is not assignable to the same property in base type 'OrganizationRepository'.
+  Type '(organizationIds: number[]) => Promise<{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; }[]>' is not assignable to type '(...args: any[]) => Promise<never[]>'.
+    Type 'Promise<{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; }[]>' is not assignable to type 'Promise<never[]>'.
+      Type '{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; bio: string | null; ... 23 more ...; includeManagedEventsInLimits: boolean; }[]' is not assignable to type 'never[]'.
+        Type '{ id: number; createdAt: Date; name: string; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; bio: string | null; ... 23 more ...; includeManagedEventsInLimits: boolean; }' is not assignable to type 'never'.
+
+[7m28[0m   async findByIds(organizationIds: number[]) {
+[7m  [0m [91m        ~~~~~~~~~[0m
+[96msrc/modules/organizations/memberships/services/organizations-membership-output.service.ts[0m:[93m24[0m:[93m11[0m - [91merror[0m[90m TS2740: [0mType 'Promise<{}>' is missing the following properties from type 'any[]': length, pop, push, concat, and 29 more.
+
+[7m24[0m     const groupedMembershipAttributes: GroupedAttribute[] = groupMembershipAttributes(AttributeToUser);
+[7m  [0m [91m          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/organizations/organizations-organizations.controller.ts[0m:[93m73[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{ apiKey: {}; id: number; name: string; slug?: string; metadata?: Metadata; }' is not assignable to type 'ManagedOrganizationWithApiKeyOutput'.
+  Types of property 'apiKey' are incompatible.
+    Type '{}' is not assignable to type 'string'.
+
+[7m73[0m       data: organization,
+[7m  [0m [91m      ~~~~[0m
+
+  [96msrc/modules/organizations/organizations/outputs/create-managed-organization.output.ts[0m:[93m16[0m:[93m3[0m
+    [7m16[0m   data!: ManagedOrganizationWithApiKeyOutput;
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreateManagedOrganizationOutput'
+[96msrc/modules/organizations/stripe/services/organizations-stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m50[0m       data["default_currency"] = account.default_currency;
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/teams/invite/organizations-teams-invite.controller.ts[0m:[93m39[0m:[93m38[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type 'InviteDataDto'.
+
+[7m39[0m     return { status: SUCCESS_STATUS, data: result };
+[7m  [0m [91m                                     ~~~~[0m
+
+  [96msrc/modules/organizations/teams/invite/outputs/invite.output.ts[0m:[93m25[0m:[93m3[0m
+    [7m25[0m   data!: InviteDataDto;
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreateInviteOutputDto'
+[96msrc/modules/organizations/teams/memberships/organizations-teams-memberships.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/organizations/users/index/services/organizations-users-service.ts[0m:[93m92[0m:[93m25[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '0' can't be used to index type '{}'.
+  Property '0' does not exist on type '{}'.
+
+[7m92[0m     const createdUser = createdUserCall[0];
+[7m  [0m [91m                        ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m87[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'email' does not exist on type 'String'.
+
+[7m87[0m       email: teamMemberEmail,
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m88[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'recordType' does not exist on type 'String'.
+
+[7m88[0m       recordType: crmOwnerRecordType,
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/router/controllers/router.controller.ts[0m:[93m89[0m:[93m7[0m - [91merror[0m[90m TS2339: [0mProperty 'crmAppSlug' does not exist on type 'String'.
+
+[7m89[0m       crmAppSlug,
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m16[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'getEventTypeWithSeats' does not exist on type 'EventTypesRepository_2024_04_15'.
+
+[7m16[0m     const eventType = await this.eventTypeRepo.getEventTypeWithSeats(input.eventTypeId);
+[7m  [0m [91m                                               ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/slots/slots-2024-04-15/services/slots.service.ts[0m:[93m37[0m:[93m30[0m - [91merror[0m[90m TS7006: [0mParameter 'user' implicitly has an 'any' type.
+
+[7m37[0m         eventType.users.map((user) =>
+[7m  [0m [91m                             ~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m60[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'teamId' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'teamId' does not exist on type '(...args: any[]) => Promise<{}>'.
+
+[7m60[0m     const isTeamEvent = !!eventType?.teamId;
+[7m  [0m [91m                                     ~~~~~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m65[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'id' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'id' does not exist on type '(...args: any[]) => Promise<{}>'.
+
+[7m65[0m     const eventTypeId = eventType.id;
+[7m  [0m [91m                                  ~~[0m
+[96msrc/modules/slots/slots-2024-09-04/services/slots-input.service.ts[0m:[93m66[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'slug' does not exist on type '{ id: number; length: number; userId: number | null; scheduleId: number | null; createdAt: Date | null; updatedAt: Date | null; title: string; slug: string; description: string | null; ... 75 more ...; enablePerHostLocations: boolean; } | ((...args: any[]) => Promise<...>) | { ...; }'.
+  Property 'slug' does not exist on type '(...args: any[]) => Promise<{}>'.
+
+[7m66[0m     const eventTypeSlug = eventType.slug;
+[7m  [0m [91m                                    ~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m50[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m50[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96msrc/modules/stripe/stripe.service.ts[0m:[93m111[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+[7m111[0m       data["default_currency"] = account.default_currency;
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/stripe/utils/newStripeInstance.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m5[0m   apiVersion: "2020-08-27",
+[7m [0m [91m  ~~~~~~~~~~[0m
+[96msrc/modules/students/students.controller.ts[0m:[93m43[0m:[93m69[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'AcademicField'.
+
+[7m43[0m       const profiles = await this.profileService.getProfilesByField(field);
+[7m  [0m [91m                                                                    ~~~~~[0m
+[96msrc/modules/teams/event-types/controllers/teams-event-types.controller.ts[0m:[93m132[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type '{ id: number; uid: string; title: string; startTime: string; endTime: string; }'.
+
+[7m132[0m       data,
+[7m   [0m [91m      ~~~~[0m
+
+  [96m../../../packages/features/event-types/outputs/CreatePhoneCallOutput.ts[0m:[93m19[0m:[93m3[0m
+    [7m19[0m   data!: {
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreatePhoneCallOutput'
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m45[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m45[0m         // @ts-expect-error
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m127[0m:[93m9[0m - [91merror[0m[90m TS2739: [0mType '{ id: number; role: UserPermissionRole; organizationId: null; organization: { id: null; isOrgAdmin: boolean; metadata: {}; requestedSlug: null; }; profile: { id: number | null; }; metadata: JsonValue; email: string; }' is missing the following properties from type 'User': username, userLevelSelectedCalendars, locale
+
+[7m127[0m         user: eventTypeUser,
+[7m   [0m [91m        ~~~~[0m
+
+  [96m../../../packages/trpc/server/routers/viewer/eventTypes/heavy/update.handler.ts[0m:[93m64[0m:[93m5[0m
+    [7m64[0m     user: User;
+    [7m  [0m [96m    ~~~~[0m
+    The expected type comes from property 'user' which is declared here on type '{ user: User; res?: NextApiResponse | ServerResponse<IncomingMessage> | undefined; prisma: PrismaClient; }'
+[96msrc/modules/teams/event-types/services/teams-event-types.service.ts[0m:[93m129[0m:[93m9[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m129[0m         // @ts-expect-error
+[7m   [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/invite/controllers/teams-invite.controller.ts[0m:[93m27[0m:[93m38[0m - [91merror[0m[90m TS2322: [0mType 'void' is not assignable to type 'InviteDataDto'.
+
+[7m27[0m     return { status: SUCCESS_STATUS, data: result };
+[7m  [0m [91m                                     ~~~~[0m
+
+  [96msrc/modules/teams/invite/outputs/invite.output.ts[0m:[93m37[0m:[93m3[0m
+    [7m37[0m   data!: InviteDataDto;
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'data' which is declared here on type 'CreateInviteOutputDto'
+[96msrc/modules/teams/memberships/controllers/teams-memberships.controller.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/teams/memberships/services/teams-memberships.service.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/event-types"' has no exported member 'updateNewTeamMemberEventTypes'.
+
+[7m2[0m import { updateNewTeamMemberEventTypes } from "@calcom/platform-libraries/event-types";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m18[0m:[93m51[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m 18[0m     const res = await sendEmailVerificationByCode({
+[7m   [0m [91m                                                  ~[0m
+[7m 19[0m       email: email,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 22[0m       isVerifyingEmail: true,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 23[0m     });
+[7m   [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m            ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m25[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m25[0m     if (res.ok && !res.skipped) {
+[7m  [0m [91m                       ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m29[0m:[93m14[0m - [91merror[0m[90m TS2339: [0mProperty 'ok' does not exist on type 'void'.
+
+[7m29[0m     if (!res.ok) {
+[7m  [0m [91m             ~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m33[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'skipped' does not exist on type 'void'.
+
+[7m33[0m     if (res.skipped) {
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m63[0m:[93m55[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+[7m63[0m     const isValidToken = await verifyEmailCodeHandler({
+[7m  [0m [91m                                                      ~[0m
+[7m64[0m       ctx: { user: { id: userId } },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m65[0m       input: { email, code, teamId },
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m66[0m     });
+[7m  [0m [91m~~~~~[0m
+[96msrc/modules/verified-resources/services/verified-resources.service.ts[0m:[93m67[0m:[93m9[0m - [91merror[0m[90m TS1345: [0mAn expression of type 'void' cannot be tested for truthiness.
+
+[7m67[0m     if (isValidToken) {
+[7m  [0m [91m        ~~~~~~~~~~~~[0m
+[96msrc/modules/webhooks/inputs/webhook.input.ts[0m:[93m55[0m:[93m29[0m - [91merror[0m[90m TS2339: [0mProperty 'V_2021_10_20' does not exist on type '{ readonly V1: "V1"; readonly V2: "V2"; }'.
+
+[7m55[0m     example: WebhookVersion.V_2021_10_20,
+[7m  [0m [91m                            ~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/services/workflows.input.service.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'TUpdateInputSchema'.
+
+[7m1[0m import { TUpdateInputSchema } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'TUpdateInputSchema'.
+
+[7m2[0m import { TUpdateInputSchema, updateWorkflow } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/modules/workflows/workflows.repository.ts[0m:[93m2[0m:[93m30[0m - [91merror[0m[90m TS2305: [0mModule '"@calcom/platform-libraries/workflows"' has no exported member 'updateWorkflow'.
+
+[7m2[0m import { TUpdateInputSchema, updateWorkflow } from "@calcom/platform-libraries/workflows";
+[7m [0m [91m                             ~~~~~~~~~~~~~~[0m
+[96m../../../packages/app-store/googlecalendar/lib/CalendarService.ts[0m:[93m72[0m:[93m50[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m72[0m   typeof error === "object" && !!error && Object.hasOwn(error, "config");
+[7m  [0m [91m                                                 ~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/PaymentService.ts[0m:[93m42[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m42[0m       apiVersion: "2020-08-27",
+[7m  [0m [91m      ~~~~~~~~~~[0m
+[96m../../../packages/app-store/stripepayment/lib/server.ts[0m:[93m34[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '"2020-08-27"' is not assignable to type '"2024-04-10"'.
+
+[7m34[0m   apiVersion: "2020-08-27",
+[7m  [0m [91m  ~~~~~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/checkBookingAndDurationLimits.ts[0m:[93m29[0m:[93m16[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m29[0m     if (Object.hasOwn(eventType, "bookingLimits") || Object.hasOwn(eventType, "durationLimits")) {
+[7m  [0m [91m               ~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/checkBookingAndDurationLimits.ts[0m:[93m29[0m:[93m61[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m29[0m     if (Object.hasOwn(eventType, "bookingLimits") || Object.hasOwn(eventType, "durationLimits")) {
+[7m  [0m [91m                                                            ~~~~~~[0m
+[96m../../../packages/features/bookings/lib/handleNewBooking/getBookingData.ts[0m:[93m28[0m:[93m17[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m28[0m     if (!Object.hasOwn(body, "end")) {
+[7m  [0m [91m                ~~~~~~[0m
+[96m../../../packages/features/routing-forms/lib/getUrlSearchParamsToForward.ts[0m:[93m91[0m:[93m3[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m91[0m   // @ts-expect-error
+[7m  [0m [91m  ~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/lib/errors.ts[0m:[93m50[0m:[93m29[0m - [91merror[0m[90m TS2554: [0mExpected 0-1 arguments, but got 2.
+
+[7m50[0m     return new Error(cause, { cause });
+[7m  [0m [91m                            ~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m13[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m13[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/lib/slugify.ts[0m:[93m15[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m15[0m     // @ts-expect-error - Unicode property escapes require ES6+ target in some TS configs
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96m../../../packages/prisma/extensions/disallow-undefined-delete-update-many.ts[0m:[93m19[0m:[93m18[0m - [91merror[0m[90m TS2550: [0mProperty 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+
+[7m19[0m       if (Object.hasOwn(whereInput, "in") && typeof whereInput.in === "undefined") {
+[7m  [0m [91m                 ~~~~~~[0m
+
+Found 67 error(s).
+

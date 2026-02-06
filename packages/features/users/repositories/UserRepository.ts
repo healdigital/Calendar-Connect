@@ -1,6 +1,3 @@
-// import { whereClauseForOrgWithSlugOrRequestedSlug } from "@calcom/features/organizations/lib/orgDomains";
-// import { getParsedTeam } from "@calcom/features/ee/teams/lib/getParsedTeam";
-
 const getParsedTeam = (team: any) => team;
 const whereClauseForOrgWithSlugOrRequestedSlug = (slug: string) => ({});
 

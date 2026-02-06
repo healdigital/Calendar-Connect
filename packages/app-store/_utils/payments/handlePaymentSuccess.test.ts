@@ -10,8 +10,8 @@ import { handlePaymentSuccess } from "./handlePaymentSuccess";
 vi.mock("@calcom/features/bookings/lib/payment/getBooking");
 vi.mock("@calcom/features/webhooks/lib/getWebhooks");
 vi.mock("@calcom/features/webhooks/lib/sendOrSchedulePayload");
-vi.mock("@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType");
-vi.mock("@calcom/features/ee/workflows/lib/service/WorkflowService");
+vi.mock("@calcom/features/workflows/lib/getAllWorkflowsFromEventType");
+vi.mock("@calcom/features/workflows/lib/service/WorkflowService");
 vi.mock("@calcom/features/tasker");
 vi.mock("@calcom/features/bookings/lib/getAllCredentialsForUsersOnEvent/getAllCredentials", () => ({
   getAllCredentialsIncludeServiceAccountKey: vi.fn().mockResolvedValue([]),
@@ -41,10 +41,10 @@ vi.mock("@calcom/prisma", async (importOriginal) => {
   };
 });
 vi.mock("@calcom/lib/getOrgIdFromMemberOrTeamId");
-vi.mock("@calcom/features/ee/organizations/lib/getBookerUrlServer");
+vi.mock("@calcom/features/organizations/lib/getBookerUrlServer");
 vi.mock("@calcom/lib/getTeamIdFromEventType");
 vi.mock("@calcom/lib/CalEventParser");
-vi.mock("@calcom/features/ee/billing/credit-service");
+vi.mock("@calcom/features/billing/credit-service");
 vi.mock("@calcom/features/platform-oauth-client/platform-oauth-client.repository", () => ({
   PlatformOAuthClientRepository: class {
     constructor() {}
@@ -72,14 +72,14 @@ vi.mock("@calcom/app-store/routing-forms/lib/findFieldValueByIdentifier", () => 
   findFieldValueByIdentifier: vi.fn(),
 }));
 
+import { CreditService } from "@calcom/features/billing/credit-service";
 import { getBooking } from "@calcom/features/bookings/lib/payment/getBooking";
-import { CreditService } from "@calcom/features/ee/billing/credit-service";
-import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
-import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
+import { getBookerBaseUrl } from "@calcom/features/organizations/lib/getBookerUrlServer";
 import getWebhooks from "@calcom/features/webhooks/lib/getWebhooks";
 import { WebhookVersion } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import sendPayload from "@calcom/features/webhooks/lib/sendOrSchedulePayload";
+import { getAllWorkflowsFromEventType } from "@calcom/features/workflows/lib/getAllWorkflowsFromEventType";
+import { WorkflowService } from "@calcom/features/workflows/lib/service/WorkflowService";
 import { getVideoCallUrlFromCalEvent } from "@calcom/lib/CalEventParser";
 import getOrgIdFromMemberOrTeamId from "@calcom/lib/getOrgIdFromMemberOrTeamId";
 import { getTeamIdFromEventType } from "@calcom/lib/getTeamIdFromEventType";

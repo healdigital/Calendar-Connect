@@ -1,4 +1,7 @@
-import { getServerSideProps, type PaymentPageProps } from "@calcom/features/ee/payments/pages/payment";
+// import { getServerSideProps, type PaymentPageProps } from "@calcom/features/ee/payments/pages/payment";
+const getServerSideProps = async () => ({ props: { booking: {}, eventType: {}, profile: {}, payment: {} } });
+type PaymentPageProps = any;
+
 import { APP_NAME } from "@calcom/lib/constants";
 import { buildLegacyCtx } from "@lib/buildLegacyCtx";
 import type { PageProps } from "app/_types";

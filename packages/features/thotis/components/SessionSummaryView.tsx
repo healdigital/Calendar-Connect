@@ -22,12 +22,12 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
     { enabled: open && !!token }
   );
 
-  const authQuery = trpc.thotis.booking.getPostSessionData.useQuery(
+  const authQuery = trpc.thotis.rating.getPostSessionData.useQuery(
     { bookingId },
     { enabled: open && !token }
   );
 
-  const { data, isLoading } = token ? guestQuery : authQuery;
+  const { data, isPending } = token ? guestQuery : authQuery;
 
   if (!open) return null;
 
@@ -40,7 +40,7 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
           "thotis_session_summary_desc",
           "Récapitulatif et ressources fournis par votre mentor."
         )}>
-        {isLoading ? (
+        {isPending ? (
           <div className="flex justify-center p-8">
             <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />
           </div>

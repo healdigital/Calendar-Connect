@@ -108,7 +108,7 @@ async function handler(req: NextApiRequest) {
   // ^ Workaround for the select in `create` not working
 
   if (createCalendarResources) {
-    const calendar = await getCalendar({ ...credential, delegatedTo: null }, "slots");
+    const calendar = await getCalendar({ ...credential, delegatedToId: null }, "slots");
     if (!calendar) throw new HttpError({ message: "Calendar missing for credential", statusCode: 500 });
     const calendars = await calendar.listCalendars();
     const calendarToCreate = calendars.find((calendar) => calendar.primary) || calendars[0];

@@ -1,5 +1,5 @@
-import { TeamRepository } from "@calcom/features/ee/teams/repositories/TeamRepository";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
+import { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { MembershipRole } from "@calcom/prisma/enums";
 import type { NextApiRequest } from "next";
@@ -16,7 +16,7 @@ import { buildReturnUrl, validateAuthentication } from "../portal";
 
 // Mock dependencies
 vi.mock("@calcom/features/pbac/services/permission-check.service");
-vi.mock("@calcom/features/ee/teams/repositories/TeamRepository");
+vi.mock("@calcom/features/teams/repositories/TeamRepository");
 vi.mock("../../lib/customer");
 vi.mock("../../lib/server");
 vi.mock("../../lib/subscriptions");

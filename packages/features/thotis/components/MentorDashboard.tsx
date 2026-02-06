@@ -13,9 +13,8 @@ interface MentorDashboardProps {
 export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
   const { t } = useLocale();
   const [sessionTab, setSessionTab] = useState<"upcoming" | "past" | "cancelled">("upcoming");
-
   // Fetch mentor stats
-  const { data: stats, isLoading: isLoadingStats } = trpc.thotis.statistics.studentStats.useQuery(
+  const { data: stats, isPending: isPendingStats } = trpc.thotis.statistics.studentStats.useQuery(
     { studentId: userId },
     { enabled: !!userId }
   );
@@ -24,12 +23,12 @@ export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
   const { data: profile } = trpc.thotis.profile.get.useQuery();
 
   // Fetch sessions with pagination
-  const { data: sessionsData, isLoading: isLoadingSessions } = trpc.thotis.booking.mentorSessions.useQuery(
+  const { data: sessionsData, isPending: isPendingSessions } = trpc.thotis.booking.mentorSessions.useQuery(
     { status: sessionTab, page: 1, pageSize: 20 },
     { enabled: !!userId }
   );
 
-  if (isLoadingStats) {
+  if (isPendingStats) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="border-emphasis h-10 w-10 animate-spin rounded-full border-b-2 border-t-2" />
@@ -81,6 +80,12 @@ export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
             </p>
           )}
         </div>
+        <div className="flex gap-2">
+          <Button color="secondary" href="/thotis/mentor/settings" className="gap-2">
+            <Icon name="settings" className="h-4 w-4" />
+            {t("settings")}
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -89,7 +94,10 @@ export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
           <div key={card.label} className="bg-default border-subtle rounded-lg border p-4">
             <div className="flex items-center gap-3">
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${card.bgColor}`}>
-                <Icon name={card.icon} className={`h-5 w-5 ${card.color}`} />
+                <Icon
+                  name={card.icon === "check-circle" ? "check" : card.icon === "x-circle" ? "x" : card.icon}
+                  className={`h-5 w-5 ${card.color}`}
+                />
               </div>
               <div>
                 <p className="text-subtle text-xs font-medium">{card.label}</p>
@@ -131,7 +139,7 @@ export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
         </div>
 
         {/* Sessions List */}
-        {isLoadingSessions ? (
+        {isPendingSessions ? (
           <div className="flex items-center justify-center py-8">
             <div className="border-emphasis h-8 w-8 animate-spin rounded-full border-b-2 border-t-2" />
           </div>
@@ -142,7 +150,7 @@ export const MentorDashboard = ({ userId }: MentorDashboardProps) => {
           </div>
         ) : (
           <div className="space-y-3">
-            {sessionsData.bookings.map((booking) => (
+            {sessionsData.bookings.map((booking: any) => (
               <SessionManagementUI key={booking.id} booking={booking} isMentor />
             ))}
           </div>

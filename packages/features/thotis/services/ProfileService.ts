@@ -306,7 +306,18 @@ export class ProfileService {
     const cacheKey = `search:${JSON.stringify(filters)}`;
     if (this.redis) {
       const cached = await this.redis.get(cacheKey);
-      if (cached) return (cached as StudentProfileWithUser[]).map((p) => this.mapProfile(p));
+      if (cached) {
+        const cachedResult = cached as {
+          profiles: StudentProfileWithUser[];
+          total: number;
+          page: number;
+          pageSize: number;
+        };
+        return {
+          ...cachedResult,
+          profiles: cachedResult.profiles.map((p) => this.mapProfile(p)),
+        };
+      }
     }
 
     const result = await this.repository.searchProfiles({

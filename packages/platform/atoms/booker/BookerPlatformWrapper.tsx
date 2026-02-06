@@ -581,7 +581,6 @@ const BookerPlatformWrapperComponent = (
         }}
         verifyCode={verifyCode}
         isPlatform
-        hasValidLicense={true}
         isBookingDryRun={isBookingDryRun ?? routingParams?.isBookingDryRun}
         eventMetaChildren={props.eventMetaChildren}
         roundRobinHideOrgAndTeam={props.roundRobinHideOrgAndTeam}

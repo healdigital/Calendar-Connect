@@ -91,11 +91,7 @@ This project is tested with browserstack
 - [Prisma.io](https://prisma.io/?ref=cal.com)
 - [Daily.co](https://go.cal.com/daily)
 
-## Contact us
 
-Meet our sales team for any commercial inquiries.
-
-<a href="https://cal.com/sales"><img src="https://cal.com/book-with-cal-dark.svg" alt="Book us with Cal.com"></a>
 
 ## Stay Up-to-Date
 
@@ -123,7 +119,7 @@ Here is what you need to be able to run Cal.com.
 
 ### Setup
 
-1. Clone the repo (or fork https://github.com/calcom/cal.com/fork). The code is licensed under [AGPLv3](https://github.com/calcom/cal.com/blob/main/LICENSE), which requires you to provide source code to users who interact with the software over a network. For commercial use without these requirements, [acquire a commercial license](https://cal.com/sales)
+1. Clone the repo (or fork https://github.com/calcom/cal.com/fork). The code is licensed under [AGPLv3](https://github.com/calcom/cal.com/blob/main/LICENSE), which requires you to provide source code to users who interact with the software over a network.
 
    ```sh
    git clone https://github.com/calcom/cal.com.git
@@ -632,7 +628,7 @@ These variables must also be provided at runtime
 | Variable                | Description                                                                                                                                                                      | Required | Default                                                             |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------- |
 | DATABASE_URL            | database url with credentials - if using a connection pooler, this setting should point there                                                                                    | required | `postgresql://unicorn_user:magical_password@database:5432/calendso` |
-| CALCOM_LICENSE_KEY      | Enterprise License Key                                                                                                                                                           | optional |                                                                     |
+
 | NEXT_PUBLIC_WEBAPP_URL  | Base URL of the site. NOTE: if this value differs from the value used at build-time, there will be a slight delay during container start (to update the statically built files). | optional | `http://localhost:3000`                                             |
 | NEXTAUTH_URL            | Location of the auth server. By default, this is the Cal.com docker instance itself.                                                                                             | optional | `{NEXT_PUBLIC_WEBAPP_URL}/api/auth`                                 |
 | NEXTAUTH_SECRET         | must match build variable                                                                                                                                                        | required | `secret`                                                            |
@@ -735,33 +731,33 @@ See the [roadmap project](https://cal.com/roadmap) for a list of proposed featur
 
 ## License
 
-Cal.com, Inc. is a commercial open source company, which means some parts of this open source repository require a commercial license. The concept is called "Open Core" where the core technology (99%) is fully open source, licensed under [AGPLv3](https://opensource.org/license/agpl-v3) and the last 1% is covered under a commercial license (["/ee" Enterprise Edition](https://github.com/calcom/cal.com/tree/main/packages/features/ee)) which we believe is entirely relevant for larger organisations that require enterprise features. Enterprise features are built by the core engineering team of Cal.com, Inc. which is hired in full-time. Find their compensation on https://cal.com/open.
+Cal.com is open source software licensed under [AGPLv3](https://opensource.org/license/agpl-v3). This means you are free to use, modify, and distribute the software, provided that any modifications or derivative works are also made available under the same license terms.
 
 > [!NOTE]
-> Our philosophy is simple, all "Singleplayer APIs" are open-source under AGPLv3. All commercial "Multiplayer APIs" are under a commercial license.
+> Cal.com is fully open source under AGPLv3. All features are available to self-host and use freely.
 
-|                                   | AGPLv3 | EE  |
-| --------------------------------- | ------ | --- |
-| Self-host for commercial purposes | ✅     | ✅  |
-| Clone privately                   | ✅     | ✅  |
-| Fork publicly                     | ✅     | ✅  |
-| Requires CLA                      | ✅     | ✅  |
-|  Official Support                 | ❌     | ✅  |
-| Derivative work privately         | ❌     | ✅  |
-|  SSO                              | ❌     | ✅  |
-| Admin Panel                       | ❌     | ✅  |
-| Impersonation                     | ❌     | ✅  |
-| Managed Event Types               | ❌     | ✅  |
-| Organizations                     | ❌     | ✅  |
-| Payments                          | ❌     | ✅  |
-| Platform                          | ❌     | ✅  |
-| Teams                             | ❌     | ✅  |
-| Users                             | ❌     | ✅  |
-| Video                             | ❌     | ✅  |
-| Workflows                         | ❌     | ✅  |
+|                                   | AGPLv3 |
+| --------------------------------- | ------ |
+| Self-host for commercial purposes | ✅     |
+| Clone privately                   | ✅     |
+| Fork publicly                     | ✅     |
+| Requires CLA                      | ✅     |
+| Official Support                  | ❌     |
+| Derivative work privately         | ✅     |
+| SSO                               | ✅     |
+| Admin Panel                       | ✅     |
+| Impersonation                     | ✅     |
+| Managed Event Types               | ✅     |
+| Organizations                     | ✅     |
+| Payments                          | ✅     |
+| Platform                          | ✅     |
+| Teams                             | ✅     |
+| Users                             | ✅     |
+| Video                             | ✅     |
+| Workflows                         | ✅     |
 
 > [!TIP]
-> We work closely with the community and always invite feedback about what should be open and what is fine to be commercial. This list is not set and stone and we have moved things from commercial to open in the past. Please open a [discussion](https://github.com/calcom/cal.com/discussions) if you feel like something is wrong.
+> We work closely with the community and always invite feedback. Please open a [discussion](https://github.com/calcom/cal.com/discussions) if you have questions or suggestions.
 
 ## Repo Activity
 

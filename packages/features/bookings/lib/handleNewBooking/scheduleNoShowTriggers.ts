@@ -61,7 +61,15 @@ const _scheduleNoShowTriggers = async (args: ScheduleNoShowTriggersArgs) => {
             triggerEvent: WebhookTriggerEvents.AFTER_HOSTS_CAL_VIDEO_NO_SHOW,
             bookingId: booking.id,
             // Prevents null values from being serialized
-            webhook: { ...webhook, time: webhook.time, timeUnit: webhook.timeUnit },
+            webhook: {
+              ...webhook,
+              time: webhook.time,
+              timeUnit: webhook.timeUnit
+                .toLowerCase()
+                .replace("minute", "m")
+                .replace("hour", "h")
+                .replace("day", "d") as any,
+            },
           },
           { scheduledAt, referenceUid: booking.uid }
         );
@@ -92,7 +100,15 @@ const _scheduleNoShowTriggers = async (args: ScheduleNoShowTriggersArgs) => {
             triggerEvent: WebhookTriggerEvents.AFTER_GUESTS_CAL_VIDEO_NO_SHOW,
             bookingId: booking.id,
             // Prevents null values from being serialized
-            webhook: { ...webhook, time: webhook.time, timeUnit: webhook.timeUnit },
+            webhook: {
+              ...webhook,
+              time: webhook.time,
+              timeUnit: webhook.timeUnit
+                .toLowerCase()
+                .replace("minute", "m")
+                .replace("hour", "h")
+                .replace("day", "d") as any,
+            },
           },
           { scheduledAt, referenceUid: booking.uid }
         );

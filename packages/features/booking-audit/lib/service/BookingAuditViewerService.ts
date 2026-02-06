@@ -330,7 +330,7 @@ export class BookingAuditViewerService {
     switch (actor.type) {
       case "SYSTEM":
         return {
-          displayName: "Cal.com",
+          displayName: "Thotis",
           displayEmail: null,
           displayAvatar: null,
         };

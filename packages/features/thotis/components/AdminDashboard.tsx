@@ -27,7 +27,7 @@ import { generateCSV } from "./AdminDashboardUtils";
 
 // --- Sub-Components ---
 
-const StatsOverview = ({ stats }: { stats: Record<string, any> }) => {
+const StatsOverview = ({ stats }: { stats: any }) => {
   const { t } = useLocale();
 
   const completionRate = stats?._sum?.totalSessions
@@ -80,7 +80,7 @@ const StatsOverview = ({ stats }: { stats: Record<string, any> }) => {
   );
 };
 
-const SessionTrendsChart = ({ trends }: { trends: Record<string, any> }) => {
+const SessionTrendsChart = ({ trends }: { trends: any }) => {
   const { t } = useLocale();
   const [period, setPeriod] = useState<"daily" | "weekly" | "monthly">("daily");
 
@@ -138,7 +138,7 @@ const SessionTrendsChart = ({ trends }: { trends: Record<string, any> }) => {
   );
 };
 
-const FunnelChart = ({ funnel }: { funnel: Record<string, any> }) => {
+const FunnelChart = ({ funnel }: { funnel: any }) => {
   const { t } = useLocale();
   const data = [
     { name: t("thotis_funnel_viewed"), count: funnel?.counts?.profile_viewed || 0 },
@@ -179,7 +179,7 @@ const FunnelChart = ({ funnel }: { funnel: Record<string, any> }) => {
   );
 };
 
-const FieldDistributionChart = ({ distribution }: { distribution: Record<string, any> }) => {
+const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
   const { t } = useLocale();
   const data =
     distribution?.fieldDistribution?.map((d: any) => ({
@@ -271,13 +271,13 @@ const MentorList = ({ profiles }: { profiles: any[] }) => {
 
 const RecentIncidents = () => {
   const { t } = useLocale();
-  const { data: incidentsData, isLoading } = trpc.thotis.admin.listIncidents.useQuery({
+  const { data: incidentsData, isPending } = trpc.thotis.admin.listIncidents.useQuery({
     page: 1,
     pageSize: 5,
     resolved: false,
   });
 
-  if (isLoading) return <Card className="p-4">Loading incidents...</Card>;
+  if (isPending) return <Card className="p-4">Loading incidents...</Card>;
 
   const incidents = incidentsData?.incidents || [];
 
@@ -330,8 +330,8 @@ import { AmbassadorManagement } from "./AmbassadorManagement";
 export const AdminDashboard = () => {
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState<"insights" | "ambassadors">("insights");
-  const { data: stats, isLoading: isLoadingStats } = trpc.thotis.statistics.platformStats.useQuery();
-  const { data: searchData, isLoading: isLoadingProfiles } = trpc.thotis.profile.search.useQuery({
+  const { data: stats, isPending: isPendingStats } = trpc.thotis.statistics.platformStats.useQuery();
+  const { data: searchData, isPending: isPendingProfiles } = trpc.thotis.profile.search.useQuery({
     page: 1,
     pageSize: 50,
   });
@@ -349,7 +349,7 @@ export const AdminDashboard = () => {
     document.body.removeChild(link);
   };
 
-  if (isLoadingStats || isLoadingProfiles) {
+  if (isPendingStats || isPendingProfiles) {
     return <div className="p-8 text-center">Loading dashboard...</div>;
   }
 

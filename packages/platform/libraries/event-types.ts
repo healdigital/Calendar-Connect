@@ -18,9 +18,9 @@ export type { TUpdateInputSchema as TUpdateEventTypeInputSchema } from "@calcom/
 export { EventManager };
 export { bulkUpdateEventsToDefaultLocation } from "@calcom/app-store/_utils/bulkUpdateEventsToDefaultLocation";
 export { bulkUpdateTeamEventsToDefaultLocation } from "@calcom/app-store/_utils/bulkUpdateTeamEventsToDefaultLocation";
-export { updateNewTeamMemberEventTypes } from "@calcom/features/ee/teams/lib/queries";
 export type { EventType } from "@calcom/features/eventtypes/lib/getEventTypeById";
 export { getEventTypeById } from "@calcom/features/eventtypes/lib/getEventTypeById";
 export type { EventTypesByViewer } from "@calcom/features/eventtypes/lib/getEventTypesByViewer";
 export { getEventTypesByViewer } from "@calcom/features/eventtypes/lib/getEventTypesByViewer";
 export type { UpdateEventTypeReturn } from "@calcom/trpc/server/routers/viewer/eventTypes/heavy/update.handler";
+export const updateNewTeamMemberEventTypes = async (...args: any[]) => {};

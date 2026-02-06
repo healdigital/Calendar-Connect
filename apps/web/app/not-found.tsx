@@ -23,7 +23,7 @@ const ServerPage = async () => {
   const host = h.get("x-forwarded-host") ?? "";
 
   return (
-    <PageWrapper requiresLicense={false} nonce={nonce}>
+    <PageWrapper nonce={nonce}>
       <NotFound host={host} />
     </PageWrapper>
   );

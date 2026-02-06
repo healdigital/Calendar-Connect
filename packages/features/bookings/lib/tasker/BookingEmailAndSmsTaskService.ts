@@ -4,7 +4,6 @@ import type { BookingEmailSmsHandler } from "@calcom/features/bookings/lib/Booki
 import { getOriginalRescheduledBooking } from "@calcom/features/bookings/lib/handleNewBooking/originalRescheduledBookingUtils";
 import type { BookingRepository } from "@calcom/features/bookings/repositories/BookingRepository";
 import { CalendarEventBuilder } from "@calcom/features/CalendarEventBuilder";
-import { getAllWorkflowsFromEventType } from "@calcom/features/ee/workflows/lib/getAllWorkflowsFromEventType";
 import type { EventNameObjectType } from "@calcom/features/eventtypes/lib/eventNaming";
 import type { ITaskerDependencies } from "@calcom/lib/tasker/types";
 import { SchedulingType } from "@calcom/prisma/enums";
@@ -87,13 +86,7 @@ export class BookingEmailAndSmsTaskService implements BookingTasks {
       t: calendarEvent.organizer.language.translate,
     } satisfies EventNameObjectType;
 
-    const workflows = await getAllWorkflowsFromEventType(
-      {
-        ...eventType,
-        metadata: eventTypeMetaDataSchemaWithTypedApps.parse(eventType.metadata),
-      },
-      calendarEvent.organizer.id
-    );
+    const workflows: any[] = [];
 
     await this.dependencies.emailsAndSmsHandler.send({
       action: "BOOKING_CONFIRMED",

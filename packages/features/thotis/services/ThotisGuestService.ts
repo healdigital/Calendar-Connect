@@ -30,17 +30,32 @@ export class ThotisGuestService {
       throw new TRPCError({ code: "FORBIDDEN", message: "Access denied" });
     }
 
-    // 2. Rate limiting (simple check based on lastRequestAt)
-    // For a more robust solution, we'd check count in last hour, but this is a start as per requirements
+    // 2. Rate limiting (anti-abuse)
     const now = new Date();
-    // Use lastRequestAt to prevent spamming every second.
-    // If last request was < 1 minute ago, block.
-    if (now.getTime() - guest.lastRequestAt.getTime() < 60 * 1000) {
-      // Silent failure or error? Let's throw for now to inform UI, or silent to prevent enumeration.
-      // Requirement says "Protection rate-limit".
+    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+
+    // Check count in last hour
+    const recentRequests = await prisma.thotisMagicLinkToken.count({
+      where: {
+        guestId: guest.id,
+        createdAt: { gte: oneHourAgo },
+      },
+    });
+
+    // Limit to 3 magic links per hour (Strict anti-abuse)
+    if (recentRequests >= 3) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
-        message: "Please wait before requesting another link",
+        message:
+          "Maximum number of magic links per hour reached. Please check your inbox or try again later.",
+      });
+    }
+
+    // Secondary check: prevent spamming every few seconds
+    if (now.getTime() - guest.lastRequestAt.getTime() < 30 * 1000) {
+      throw new TRPCError({
+        code: "TOO_MANY_REQUESTS",
+        message: "Please wait 30 seconds before requesting another link",
       });
     }
 

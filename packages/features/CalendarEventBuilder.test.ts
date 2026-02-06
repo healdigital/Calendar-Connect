@@ -5,9 +5,11 @@ import type { Person } from "@calcom/types/Calendar";
 import type { TFunction } from "i18next";
 import { describe, expect, it, vi } from "vitest";
 
+/*
 vi.mock("@calcom/features/ee/organizations/lib/getBookerUrlServer", () => ({
   getBookerBaseUrl: vi.fn(async () => "https://cal.com"),
 }));
+*/
 
 vi.mock("@calcom/lib/server/i18n", () => ({
   getTranslation: vi.fn(async () => vi.fn(() => "translated")),

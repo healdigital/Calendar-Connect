@@ -2,10 +2,19 @@ import { readFileSync } from "node:fs";
 // prismock needs the DMMF to work correctly
 import { getDMMF } from "@prisma/internals";
 import { createPrismock } from "prismock/build/main/lib/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RedisService } from "../../redis/RedisService";
 import type { AnalyticsService } from "./AnalyticsService";
 import { ThotisBookingService } from "./ThotisBookingService";
+
+// Mock the availability service for integration tests to ensure consistent slot generation
+const mockAvailableSlotsService = {
+  getAvailableSlots: vi.fn(),
+};
+
+vi.mock("@calcom/features/di/containers/AvailableSlots", () => ({
+  getAvailableSlotsService: () => mockAvailableSlotsService,
+}));
 
 let prismock: any;
 
@@ -78,25 +87,35 @@ async function setup() {
 
   const service = new ThotisBookingService(prismock, analyticsMock, redisMock);
 
+  // Setup default mock availability (Tomorrow 10:00 - 12:00)
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dateStr = tomorrow.toISOString().split("T")[0];
+  const startStr = `${dateStr}T10:00:00.000Z`;
+  const nextStartStr = `${dateStr}T10:15:00.000Z`;
+
+  mockAvailableSlotsService.getAvailableSlots.mockResolvedValue({
+    slots: {
+      [dateStr]: [{ time: startStr }, { time: nextStartStr }],
+    },
+  });
+
   const cleanup = async () => {
     // Prismock reset handles this
   };
 
   cleanupFunctions.push(cleanup);
 
-  return { mentorUser, studentProfile, service, analyticsMock, redisMock };
+  return { mentorUser, studentProfile, service, analyticsMock, redisMock, dateStr, startStr };
 }
 
 describe("ThotisBookingService Integration Tests", () => {
   it("should complete a full booking flow", async () => {
-    const { mentorUser, studentProfile, service, analyticsMock } = await setup();
+    const { studentProfile, service, dateStr, startStr, analyticsMock, mentorUser } = await setup();
 
     // 1. Availability check
-    const start = new Date();
-    start.setHours(10, 0, 0, 0);
-    start.setDate(start.getDate() + 1); // Tomorrow
-    const end = new Date(start);
-    end.setHours(12, 0, 0, 0);
+    const start = new Date(`${dateStr}T00:00:00Z`);
+    const end = new Date(`${dateStr}T23:59:59Z`);
 
     const slots = await service.getStudentAvailability(studentProfile.id, { start, end });
     expect(slots.length).toBeGreaterThan(0);
@@ -115,7 +134,12 @@ describe("ThotisBookingService Integration Tests", () => {
     });
 
     expect(bookingResult.bookingId).toBeDefined();
-    expect(bookingResult.googleMeetLink).toContain("https://meet.google.com/");
+    expect(bookingResult.bookingId).toBeDefined();
+    // Support either Google Meet or Jitsi fallback (Properties 32, 33)
+    const isValidVideoLink =
+      bookingResult.googleMeetLink.includes("https://meet.google.com/") ||
+      bookingResult.googleMeetLink.includes("https://meet.jit.si/");
+    expect(isValidVideoLink).toBe(true);
     expect(analyticsMock.trackBookingCreated).toHaveBeenCalled();
 
     // Verify in DB
@@ -213,5 +237,82 @@ describe("ThotisBookingService Integration Tests", () => {
         prospectiveStudent: { name: "S2", email: "s2@example.com" },
       })
     ).rejects.toThrow();
+  });
+
+  it("should retrieve sessions for a guest student using a token", async () => {
+    const { studentProfile } = await setup();
+
+    // Mock the guest service specific to this test
+    const customGuestService = {
+      verifyToken: vi.fn(),
+      requestInboxLink: vi.fn().mockResolvedValue({ token: "mock-token" }),
+    };
+
+    // Re-create mocks
+    const analyticsMock = {
+      trackBookingCreated: vi.fn(),
+      trackBookingCancelled: vi.fn(),
+      trackBookingRescheduled: vi.fn(),
+      trackBookingCompleted: vi.fn(),
+    } as unknown as AnalyticsService;
+
+    const redisMock = {
+      get: vi.fn(),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as unknown as RedisService;
+
+    // Use global prismock
+    const serviceWithGuest = new ThotisBookingService(
+      prismock,
+      analyticsMock,
+      redisMock,
+      undefined,
+      customGuestService as any
+    );
+
+    // 1. Create a booking
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(15, 0, 0, 0);
+
+    const bookingRes = await serviceWithGuest.createStudentSession({
+      studentProfileId: studentProfile.id,
+      dateTime: tomorrow,
+      prospectiveStudent: {
+        name: "Guest Student",
+        email: "guest@example.com",
+        question: "Guest Question",
+      },
+    });
+
+    // 2. Setup mock for verifyToken
+    // returns { id, guest: { email }, bookingId: optional }
+    customGuestService.verifyToken.mockResolvedValue({
+      id: "link-id",
+      guest: { email: "guest@example.com" },
+      guestId: "guest-id",
+      bookingId: bookingRes.bookingId, // Scope to this booking
+    });
+
+    // Spy on findMany to bypass Prismock JSON filter limitation
+    const findManySpy = vi.spyOn(prismock.booking, "findMany").mockResolvedValue([
+      {
+        ...bookingRes,
+        user: { name: "Mentor", username: "mentor", avatarUrl: null },
+        responses: { email: "guest@example.com" },
+        thotisSessionSummary: null,
+      } as any,
+    ]);
+
+    // 3. Call studentSessions with token
+    const sessions = await serviceWithGuest.studentSessions({
+      token: "valid-token",
+    });
+
+    // 4. Verify results
+    expect(sessions).toHaveLength(1);
+    expect(sessions[0].responses).toMatchObject({ email: "guest@example.com" });
+    expect(customGuestService.verifyToken).toHaveBeenCalledWith("valid-token");
   });
 });

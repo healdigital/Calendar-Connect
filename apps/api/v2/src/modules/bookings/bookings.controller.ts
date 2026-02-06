@@ -37,7 +37,7 @@ export class BookingsController {
       // (1-5 rating, 10-500 char feedback)
       await this.sessionRatingService.createRating({
         bookingId,
-        studentProfileId: body.studentId,
+        studentProfileId: body.studentId.toString(),
         rating: body.rating,
         feedback: body.feedback,
       });

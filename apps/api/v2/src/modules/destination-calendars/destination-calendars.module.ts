@@ -1,7 +1,5 @@
+import { CalendarsCacheService, CalendarsRepository, CalendarsService } from "@calcom/platform-libraries";
 import { Module } from "@nestjs/common";
-import { CalendarsRepository } from "@/ee/calendars/calendars.repository";
-import { CalendarsService } from "@/ee/calendars/services/calendars.service";
-import { CalendarsCacheService } from "@/ee/calendars/services/calendars-cache.service";
 import { AppsRepository } from "@/modules/apps/apps.repository";
 import { CredentialsRepository } from "@/modules/credentials/credentials.repository";
 import { DestinationCalendarsController } from "@/modules/destination-calendars/controllers/destination-calendars.controller";

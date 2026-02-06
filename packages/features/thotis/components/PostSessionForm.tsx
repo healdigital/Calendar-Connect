@@ -25,7 +25,7 @@ interface PostSessionFormProps {
 export function PostSessionForm({ bookingId, open, onOpenChange }: PostSessionFormProps) {
   const { t } = useLocale();
   const utils = trpc.useUtils();
-  const { data: initialData, isLoading } = trpc.thotis.booking.getPostSessionData.useQuery(
+  const { data: initialData, isPending } = trpc.thotis.booking.getPostSessionData.useQuery(
     { bookingId },
     { enabled: open }
   );
@@ -81,7 +81,7 @@ export function PostSessionForm({ bookingId, open, onOpenChange }: PostSessionFo
         className="max-w-2xl"
         title={t("thotis_post_session_summary")}
         description={t("thotis_post_session_desc")}>
-        {isLoading ? (
+        {isPending ? (
           <div className="flex justify-center p-8">
             <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />
           </div>
@@ -162,7 +162,7 @@ export function PostSessionForm({ bookingId, open, onOpenChange }: PostSessionFo
               <Button type="button" color="secondary" onClick={() => onOpenChange(false)} className="mr-2">
                 {t("thotis_back")}
               </Button>
-              <Button type="submit" loading={mutation.isLoading}>
+              <Button type="submit" loading={mutation.isPending}>
                 {t("thotis_save_summary")}
               </Button>
             </div>

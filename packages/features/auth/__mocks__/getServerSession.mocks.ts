@@ -55,26 +55,6 @@ function createPrismaMock(): { default: DeepMockProxy<PrismaClient> } {
   return { default: prismaMock };
 }
 
-function createLicenseKeyMock(): {
-  LicenseKeySingleton: { getInstance: Mock };
-} {
-  return {
-    LicenseKeySingleton: {
-      getInstance: vi.fn().mockResolvedValue({
-        checkLicense: vi.fn().mockResolvedValue(false),
-      }),
-    },
-  };
-}
-
-function createDeploymentRepositoryMock(): {
-  DeploymentRepository: new (_prisma: PrismaClient) => object;
-} {
-  return {
-    DeploymentRepository: class MockDeploymentRepository {},
-  };
-}
-
 function createUserRepositoryMock(): {
   UserRepository: new (
     _prisma: PrismaClient
@@ -147,8 +127,6 @@ export {
   resetPrismaMock,
   createLoggerMock,
   createPrismaMock,
-  createLicenseKeyMock,
-  createDeploymentRepositoryMock,
   createUserRepositoryMock,
   createAvatarUrlMock,
   createSafeStringifyMock,

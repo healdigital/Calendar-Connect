@@ -15,7 +15,6 @@ describe("sanitizeAppForViewer", () => {
       teamId: null,
       appId: "daily-video",
       invalid: false,
-      delegatedTo: null,
       delegatedToId: null,
       delegationCredentialId: null,
       team: null,

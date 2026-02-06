@@ -19,11 +19,16 @@ export interface BillingPortalResult {
   portalUrl?: string;
 }
 
+import { TeamRepository } from "@calcom/features/teams/repositories/TeamRepository";
+import prisma from "@calcom/prisma";
+
 export abstract class BillingPortalService {
   protected permissionService: PermissionCheckService;
+  protected teamRepository: TeamRepository;
   protected contextName = "Team"; // Can be overridden by subclasses
   constructor() {
     this.permissionService = new PermissionCheckService();
+    this.teamRepository = new TeamRepository(prisma);
   }
 
   /**

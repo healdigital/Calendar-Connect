@@ -6,7 +6,6 @@ import getCalendarsEvents, {
   getCalendarsEventsWithTimezones,
 } from "@calcom/features/calendars/lib/getCalendarsEvents";
 import { getRichDescription, getUid } from "@calcom/lib/CalEventParser";
-import { CalendarAppDelegationCredentialError } from "@calcom/lib/CalendarAppError";
 import { ORGANIZER_EMAIL_EXEMPT_DOMAINS } from "@calcom/lib/constants";
 import { buildNonDelegationCredentials } from "@calcom/lib/delegationCredential";
 import { formatCalEvent } from "@calcom/lib/formatCalendarEvent";
@@ -102,7 +101,6 @@ export type ConnectedCalendar = Omit<IntegrationCalendar, "primary"> & {
   isSelected: boolean;
   readOnly: boolean;
   credentialId: number;
-  delegationCredentialId: string | null;
 };
 
 export const getConnectedCalendars = async (
@@ -114,7 +112,6 @@ export const getConnectedCalendars = async (
     integration: CleanIntegration;
     calendars?: ConnectedCalendar[];
     credentialId: number;
-    delegationCredentialId?: string | null;
     error?: {
       message: string;
     };
@@ -130,12 +127,10 @@ export const getConnectedCalendars = async (
         const calendar = await item.calendar;
         // Don't leak credentials to the client
         const credentialId = credential.id;
-        const delegationCredentialId = credential.delegatedToId ?? null;
         if (!calendar) {
           return {
             integration: safeToSendIntegration,
             credentialId,
-            delegationCredentialId,
           };
         }
         const calendarInstance = await calendar();
@@ -143,7 +138,6 @@ export const getConnectedCalendars = async (
           return {
             integration: safeToSendIntegration,
             credentialId,
-            delegationCredentialId,
             error: {
               message: "Could not get calendar instance",
             },
@@ -158,7 +152,6 @@ export const getConnectedCalendars = async (
               primary: cal.primary || null,
               isSelected: selectedCalendars.some((selected) => selected.externalId === cal.externalId),
               credentialId,
-              delegationCredentialId,
             };
           }),
           ["primary"]
@@ -177,7 +170,6 @@ export const getConnectedCalendars = async (
         return {
           integration: safeToSendIntegration,
           credentialId,
-          delegationCredentialId,
           primary,
           calendars,
         };
@@ -191,16 +183,13 @@ export const getConnectedCalendars = async (
           }
         }
 
-        if (error instanceof CalendarAppDelegationCredentialError) {
-          errorMessage = error.message;
-        }
+        // Delegation error check removed as feature is gone
 
         log.error("getConnectedCalendars failed", error, safeStringify({ credentialId: item.credential.id }));
 
         return {
           integration: cleanIntegrationKeys(item.integration),
           credentialId: item.credential.id,
-          delegationCredentialId: item.credential.delegatedToId,
           error: {
             message: errorMessage,
           },

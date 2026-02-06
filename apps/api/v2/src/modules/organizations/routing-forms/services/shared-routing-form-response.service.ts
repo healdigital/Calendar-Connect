@@ -7,7 +7,6 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { EventTypesRepository_2024_06_14 } from "@/ee/event-types/event-types_2024_06_14/event-types.repository";
 import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
 import { CreateRoutingFormResponseInput } from "@/modules/organizations/routing-forms/inputs/create-routing-form-response.input";
 import { CreateRoutingFormResponseOutputData } from "@/modules/organizations/routing-forms/outputs/create-routing-form-response.output";
@@ -18,8 +17,7 @@ import { TeamsEventTypesRepository } from "@/modules/teams/event-types/teams-eve
 export class SharedRoutingFormResponseService {
   constructor(
     private readonly slotsService: SlotsService_2024_09_04,
-    private readonly teamsEventTypesRepository: TeamsEventTypesRepository,
-    private readonly eventTypesRepository: EventTypesRepository_2024_06_14
+    private readonly teamsEventTypesRepository: TeamsEventTypesRepository
   ) {}
 
   async createRoutingFormResponseWithSlots(
@@ -152,12 +150,18 @@ export class SharedRoutingFormResponseService {
   }
 
   private async extractEventTypeAndCrmParams(userId: number, routingUrl: URL) {
-    // Extract team and event type information
-    // TODO: Route action also has eventTypeId directly now and instead of using this brittle approach for getting event type by slug, we should get by eventTypeId
+    // Stubbed due to EE dependency removal (EventTypesRepository_2024_06_14)
     const { teamId, eventTypeSlug } = this.extractTeamIdAndEventTypeSlugFromRedirectUrl(routingUrl);
-    const eventType = teamId
-      ? await this.teamsEventTypesRepository.getEventTypeByTeamIdAndSlug(teamId, eventTypeSlug)
-      : await this.eventTypesRepository.getUserEventTypeBySlug(userId, eventTypeSlug);
+
+    // In OSS we might not support user event types via routing forms easily without the EE repo or logic
+    // But we check teamId first.
+    if (!teamId) {
+      throw new InternalServerErrorException(
+        "User event types routing not supported in strict OSS mode without EE repo"
+      );
+    }
+
+    const eventType = await this.teamsEventTypesRepository.getEventTypeByTeamIdAndSlug(teamId, eventTypeSlug);
 
     if (!eventType?.id) {
       // This could only happen if the event-type earlier selected as route action was deleted
@@ -212,7 +216,7 @@ export class SharedRoutingFormResponseService {
   private extractTeamIdFromRoutedUrl(routingUrl: URL) {
     const routingSearchParams = routingUrl.searchParams;
     const teamId = Number(routingSearchParams.get("cal.teamId"));
-    if (isNaN(teamId)) {
+    if (Number.isNaN(teamId)) {
       return null;
     }
     return teamId;

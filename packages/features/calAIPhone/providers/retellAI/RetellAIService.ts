@@ -267,7 +267,7 @@ export class RetellAIService {
     agentId?: string | null;
     workflowId?: string;
     tracking?: TrackingData;
-  }) {
+  }): Promise<{ url: string; message: string }> {
     return this.billingService.generatePhoneNumberCheckoutSession(params);
   }
 

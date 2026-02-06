@@ -1,8 +1,5 @@
-// import { getBookerBaseUrlSync } from "@calcom/features/ee/organizations/lib/getBookerBaseUrlSync";
-const getBookerBaseUrlSync = (slug: string | null) => (slug ? `/${slug}` : "");
-// import { getBookerBaseUrl } from "@calcom/features/ee/organizations/lib/getBookerUrlServer";
-const getBookerBaseUrl = async (orgId: number | null) => "";
-
+import { getBookerBaseUrlSync } from "@calcom/features/organizations/lib/getBookerBaseUrlSync";
+import { getBookerBaseUrl } from "@calcom/features/organizations/lib/getBookerUrlServer";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
 import { getUserAvatarUrl } from "@calcom/lib/getAvatarUrl";
 import type { MembershipRole } from "@calcom/prisma/enums";

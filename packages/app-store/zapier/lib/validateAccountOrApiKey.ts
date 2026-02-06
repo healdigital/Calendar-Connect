@@ -1,5 +1,5 @@
+import { findValidApiKey } from "@calcom/features/api-keys/lib/findValidApiKey";
 import isAuthorized from "@calcom/features/auth/lib/oAuthAuthorization";
-import findValidApiKey from "@calcom/features/ee/api-keys/lib/findValidApiKey";
 import { HttpError } from "@calcom/lib/http-error";
 import type { NextApiRequest } from "next";
 

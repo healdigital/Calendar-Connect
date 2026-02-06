@@ -1,17 +1,11 @@
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { AcademicField, MentorStatus } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
-import { Button } from "@calcom/ui/components/button/Button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@calcom/ui/components/dialog/Dialog";
-import { Label, Select, TextField } from "@calcom/ui/components/form/inputs";
-import { Table } from "@calcom/ui/components/table/Table";
-import { showToast } from "@calcom/ui/components/toast/Toast";
+import { Button } from "@calcom/ui/components/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@calcom/ui/components/dialog";
+import { Label, Select, TextField } from "@calcom/ui/components/form";
+import { Table } from "@calcom/ui/components/table";
+import { showToast } from "@calcom/ui/components/toast";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import type { ProvisionAmbassadorInput } from "../services/ThotisAdminService";
@@ -22,7 +16,7 @@ const ProvisionAmbassadorModal: React.FC<{ isOpen: boolean; onClose: () => void 
 }) => {
   const { t } = useLocale();
   const { register, handleSubmit, control, reset } = useForm<ProvisionAmbassadorInput>();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const mutation = trpc.thotis.admin.createAmbassador.useMutation({
     onSuccess: () => {
@@ -43,9 +37,7 @@ const ProvisionAmbassadorModal: React.FC<{ isOpen: boolean; onClose: () => void 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("thotis_admin_provision_new_ambassador")}</DialogTitle>
-        </DialogHeader>
+        <DialogHeader title={t("thotis_admin_provision_new_ambassador")} />
         <form className="space-y-4 py-4" onSubmit={handleSubmit(onSubmit)}>
           <TextField label={t("thotis_admin_full_name")} {...register("name", { required: true })} />
           <TextField
@@ -89,10 +81,10 @@ const ProvisionAmbassadorModal: React.FC<{ isOpen: boolean; onClose: () => void 
           </div>
 
           <DialogFooter>
-            <Button onClick={onClose} variant="outlined">
+            <Button onClick={onClose} color="secondary">
               {t("cancel")}
             </Button>
-            <Button type="submit" loading={mutation.isLoading}>
+            <Button type="submit" loading={mutation.isPending}>
               {t("thotis_admin_create_account")}
             </Button>
           </DialogFooter>
@@ -109,7 +101,7 @@ const IncidentsModal: React.FC<{
   name: string | null;
 }> = ({ isOpen, onClose, profileId, name }) => {
   const { t } = useLocale();
-  const { data, isLoading } = trpc.thotis.admin.listIncidents.useQuery(
+  const { data, isPending } = trpc.thotis.admin.listIncidents.useQuery(
     {
       studentProfileId: profileId || undefined,
       resolved: undefined, // Show all
@@ -120,13 +112,9 @@ const IncidentsModal: React.FC<{
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            {t("thotis_admin_incidents_for")} {name}
-          </DialogTitle>
-        </DialogHeader>
+        <DialogHeader title={`${t("thotis_admin_incidents_for")} ${name}`} />
         <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
-          {isLoading ? (
+          {isPending ? (
             <p className="text-center py-4">{t("loading")}</p>
           ) : !data?.incidents || data.incidents.length === 0 ? (
             <p className="text-center text-subtle py-4">{t("thotis_admin_no_incidents_found")}</p>
@@ -160,7 +148,7 @@ const IncidentsModal: React.FC<{
           )}
         </div>
         <DialogFooter>
-          <Button onClick={onClose} variant="outlined">
+          <Button onClick={onClose} color="secondary">
             {t("close")}
           </Button>
         </DialogFooter>
@@ -175,7 +163,7 @@ export const AmbassadorManagement: React.FC = () => {
   const [isProvisionModalOpen, setIsProvisionModalOpen] = useState(false);
   const [selectedAmbassador, setSelectedAmbassador] = useState<{ id: string; name: string } | null>(null);
 
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const { data } = trpc.thotis.admin.listAmbassadors.useQuery({
     page: 1,
@@ -257,13 +245,12 @@ export const AmbassadorManagement: React.FC = () => {
                 <div className="flex space-x-2">
                   <Button
                     size="sm"
-                    variant="outlined"
+                    color="secondary"
                     onClick={() => resetPasswordMutation.mutate({ userId: profile.userId })}>
                     {t("thotis_admin_reset_password")}
                   </Button>
                   <Button
                     size="sm"
-                    variant="outlined"
                     color="secondary"
                     onClick={() => setSelectedAmbassador({ id: profile.id, name: profile.user.name || "" })}>
                     {t("thotis_admin_view_incidents")}

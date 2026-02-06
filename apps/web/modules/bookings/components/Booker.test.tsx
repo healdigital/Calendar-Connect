@@ -168,7 +168,6 @@ const defaultProps = {
   customClassNames: {},
   areInstantMeetingParametersSet: false,
   userLocale: "en",
-  hasValidLicense: true,
   isBookingDryRun: false,
   renderCaptcha: false,
   onConnectNowInstantMeeting: vi.fn(),

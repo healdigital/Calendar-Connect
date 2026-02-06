@@ -3,10 +3,6 @@ import { sendScheduledSeatsEmailsAndSMS } from "@calcom/emails/email-manager";
 import EventManager from "@calcom/features/bookings/lib/EventManager";
 import { refreshCredentials } from "@calcom/features/bookings/lib/getAllCredentialsForUsersOnEvent/refreshCredentials";
 import { handlePayment } from "@calcom/features/bookings/lib/handlePayment";
-import {
-  allowDisablingAttendeeConfirmationEmails,
-  allowDisablingHostConfirmationEmails,
-} from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { HttpError } from "@calcom/lib/http-error";
 import prisma from "@calcom/prisma";
@@ -209,13 +205,6 @@ const createNewSeat = async (
     isAttendeeConfirmationEmailDisabled =
       eventType.metadata?.disableStandardEmails?.confirmation?.attendee || false;
 
-    if (isHostConfirmationEmailsDisabled) {
-      isHostConfirmationEmailsDisabled = allowDisablingHostConfirmationEmails(workflows);
-    }
-
-    if (isAttendeeConfirmationEmailDisabled) {
-      isAttendeeConfirmationEmailDisabled = allowDisablingAttendeeConfirmationEmails(workflows);
-    }
     await sendScheduledSeatsEmailsAndSMS(
       copyEvent,
       inviteeToAdd,

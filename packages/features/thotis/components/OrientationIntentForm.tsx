@@ -1,14 +1,8 @@
 "use client";
 
 import { Button } from "@calcom/ui/components/button";
+import { Select } from "@calcom/ui/components/form";
 import { Label } from "@calcom/ui/components/form/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@calcom/ui/components/form/select";
 import { Icon } from "@calcom/ui/components/icon";
 import { useState } from "react";
 
@@ -16,24 +10,24 @@ import { useState } from "react";
 // usually imported from client-side types or manually defined if not exposed.
 // For now, hardcoding common fields based on known fields.
 const fields = [
-  "MEDICINE",
-  "LAW",
-  "ENGINEERING",
-  "COMPUTER_SCIENCE",
-  "BUSINESS",
-  "PSYCHOLOGY",
-  "POLITICAL_SCIENCE",
-  "ECONOMICS",
-  "ARTS",
-  "LANGUAGES",
-  "EDUCATION",
-  "SCIENCES",
-  "OTHER",
-] as const;
+  { value: "MEDICINE", label: "Medicine" },
+  { value: "LAW", label: "Law" },
+  { value: "ENGINEERING", label: "Engineering" },
+  { value: "COMPUTER_SCIENCE", label: "Computer Science" },
+  { value: "BUSINESS", label: "Business" },
+  { value: "PSYCHOLOGY", label: "Psychology" },
+  { value: "POLITICAL_SCIENCE", label: "Political Science" },
+  { value: "ECONOMICS", label: "Economics" },
+  { value: "ARTS", label: "Arts" },
+  { value: "LANGUAGES", label: "Languages" },
+  { value: "EDUCATION", label: "Education" },
+  { value: "SCIENCES", label: "Sciences" },
+  { value: "OTHER", label: "Other" },
+];
 
 interface OrientationIntentFormProps {
   onSubmit: (data: any) => void;
-  isLoading?: boolean;
+  isPending?: boolean;
 }
 
 const goalsOptions = [
@@ -51,9 +45,9 @@ const scheduleOptions = [
   { id: "evenings", label: "Evenings" },
 ] as const;
 
-export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntentFormProps) {
-  const [field, setField] = useState<string>("");
-  const [level, setLevel] = useState<string>("");
+export function OrientationIntentForm({ onSubmit, isPending }: OrientationIntentFormProps) {
+  const [field, setField] = useState<{ value: string; label: string } | null>(null);
+  const [level, setLevel] = useState<{ value: string; label: string } | null>(null);
   const [zone, setZone] = useState<string>("");
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [selectedSchedules, setSelectedSchedules] = useState<string[]>([]);
@@ -69,8 +63,8 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
-      targetFields: field ? [field] : [],
-      academicLevel: level,
+      targetFields: field ? [field.value] : [],
+      academicLevel: level?.value || "",
       zone: zone,
       goals: selectedGoals,
       scheduleConstraints: {
@@ -83,7 +77,7 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8 mx-auto max-w-4xl">
       <div className="flex items-center gap-2 mb-4">
         <div className="bg-blue-100 p-2 rounded-lg">
-          <Icon name="compass" className="h-5 w-5 text-blue-600" />
+          <Icon name="search" className="h-5 w-5 text-blue-600" />
         </div>
         <div>
           <h3 className="font-semibold text-lg text-gray-900">Find your perfect match</h3>
@@ -95,32 +89,26 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
           <div className="space-y-2">
             <Label>Target Field</Label>
-            <Select onValueChange={setField} value={field}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select field..." />
-              </SelectTrigger>
-              <SelectContent>
-                {fields.map((f) => (
-                  <SelectItem key={f} value={f}>
-                    {f.charAt(0) + f.slice(1).toLowerCase().replace("_", " ")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Select
+              options={fields}
+              value={field}
+              onChange={(val) => setField(val)}
+              placeholder="Select field..."
+            />
           </div>
 
           <div className="space-y-2">
             <Label>Academic Level</Label>
-            <Select onValueChange={setLevel} value={level}>
-              <SelectTrigger>
-                <SelectValue placeholder="Your level..." />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="TERMINALE">High School (Terminale)</SelectItem>
-                <SelectItem value="PREPA">Preparatory Class</SelectItem>
-                <SelectItem value="BACHELOR">Bachelor</SelectItem>
-              </SelectContent>
-            </Select>
+            <Select
+              options={[
+                { value: "TERMINALE", label: "High School (Terminale)" },
+                { value: "PREPA", label: "Preparatory Class" },
+                { value: "BACHELOR", label: "Bachelor" },
+              ]}
+              value={level}
+              onChange={(val) => setLevel(val)}
+              placeholder="Your level..."
+            />
           </div>
 
           <div className="space-y-2">
@@ -173,7 +161,7 @@ export function OrientationIntentForm({ onSubmit, isLoading }: OrientationIntent
           </div>
         </div>
 
-        <Button type="submit" loading={isLoading} className="w-full" variant="default" size="lg">
+        <Button type="submit" loading={isPending} className="w-full" variant="default" size="lg">
           Find Mentors
         </Button>
       </form>

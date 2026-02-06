@@ -4,8 +4,11 @@ import { GuestMagicLinkForm } from "@calcom/features/thotis/components/GuestMagi
 import { StudentDashboard } from "@calcom/features/thotis/components/StudentDashboard";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Suspense } from "react";
 
-export default function MySessionsPage() {
+function MySessionsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
@@ -51,5 +54,18 @@ export default function MySessionsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MySessionsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-blue-600" />
+        </div>
+      }>
+      <MySessionsContent />
+    </Suspense>
   );
 }

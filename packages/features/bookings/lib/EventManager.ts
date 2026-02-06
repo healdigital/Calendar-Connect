@@ -52,14 +52,6 @@ const latestCredentialFirst = <T extends HasId>(a: T, b: T) => {
   return b.id - a.id;
 };
 
-const delegatedCredentialFirst = <T extends { delegatedToId?: string | null }>(a: T, b: T) => {
-  return (b.delegatedToId ? 1 : 0) - (a.delegatedToId ? 1 : 0);
-};
-
-const delegatedCredentialLast = <T extends { delegatedToId?: string | null }>(a: T, b: T) => {
-  return (a.delegatedToId ? 1 : 0) - (b.delegatedToId ? 1 : 0);
-};
-
 export const getLocationRequestFromIntegration = (location: string) => {
   const eventLocationType = getLocationFromApp(location);
   if (eventLocationType) {
@@ -83,14 +75,11 @@ const getCredential = ({
   allCredentials,
 }: {
   id: {
-    delegationCredentialId: string | null;
     credentialId: number | null;
   };
   allCredentials: CredentialForCalendarService[];
 }) => {
-  return id.delegationCredentialId
-    ? allCredentials.find((c) => c.delegatedToId === id.delegationCredentialId)
-    : allCredentials.find((c) => c.id === id.credentialId);
+  return allCredentials.find((c) => c.id === id.credentialId);
 };
 
 export const processLocation = (event: CalendarEvent): CalendarEvent => {
@@ -114,7 +103,6 @@ export const processLocation = (event: CalendarEvent): CalendarEvent => {
 function getCredentialPayload(result: EventResult<Exclude<Event, AdditionalInformation>>) {
   return {
     credentialId: result?.credentialId && result.credentialId > 0 ? result.credentialId : undefined,
-    delegationCredentialId: result?.delegatedToId || undefined,
   };
 }
 
@@ -154,10 +142,7 @@ export default class EventManager {
       // see https://github.com/calcom/cal.com/issues/11671#issue-1923600672
       // This sorting is mostly applicable for fallback which happens when there is no explicit destinationCalendar set.
       // That could be true for really old accounts but not for new
-      .sort(latestCredentialFirst)
-      // Keep Delegation Credentials first so because those credentials never expire and are preferred.
-      // Also, those credentials have consistent permission for all the members avoiding the scenario where user doesn't give all permissions
-      .sort(delegatedCredentialFirst);
+      .sort(latestCredentialFirst);
 
     this.videoCredentials = appCredentials
       .filter((cred) => cred.type.endsWith("_video") || cred.type.endsWith("_conferencing"))
@@ -518,11 +503,7 @@ export default class EventManager {
         ? reference.thirdPartyRecurringEventId
         : reference.uid;
 
-    const calendarCredential = await this.getCalendarCredential(
-      credentialId,
-      credentialType,
-      reference.delegationCredentialId
-    );
+    const calendarCredential = await this.getCalendarCredential(credentialId, credentialType);
 
     if (calendarCredential) {
       await deleteEvent({
@@ -576,12 +557,8 @@ export default class EventManager {
 
   private async getCalendarCredential(
     credentialId: number | null | undefined,
-    type: string,
-    delegationCredentialId?: string | null
+    type: string
   ): Promise<CredentialForCalendarService | null | undefined> {
-    if (delegationCredentialId) {
-      return this.calendarCredentials.find((cred) => cred.delegatedToId === delegationCredentialId);
-    }
     const credential = this.calendarCredentials.find((cred) => cred.id === credentialId);
     if (credential) {
       return credential;
@@ -871,7 +848,7 @@ export default class EventManager {
    * @private
    */
   private async createAllCalendarEvents(event: CalendarEvent) {
-    let createdEvents: EventResult<NewCalendarEventType>[] = [];
+    const createdEvents: EventResult<NewCalendarEventType>[] = [];
 
     const fallbackToFirstCalendarInTheList = async () => {
       const [credential] = this.calendarCredentials.filter((cred) => !cred.type.endsWith("other_calendar"));
@@ -912,11 +889,10 @@ export default class EventManager {
       for (const destination of destinationCalendars) {
         if (eventCreated) break;
         log.silly("Creating Calendar event", JSON.stringify({ destination }));
-        if (destination.credentialId || destination.delegationCredentialId) {
+        if (destination.credentialId) {
           let credential = getCredential({
             id: {
               credentialId: destination.credentialId,
-              delegationCredentialId: destination.delegationCredentialId,
             },
             allCredentials: this.calendarCredentials,
           });
@@ -939,21 +915,11 @@ export default class EventManager {
                   user: credentialFromDB.user,
                   encryptedKey: credentialFromDB.encryptedKey,
                   delegatedToId: credentialFromDB.delegatedToId,
-                  delegatedTo: credentialFromDB.delegatedTo,
                   delegationCredentialId: credentialFromDB.delegationCredentialId,
                 };
               }
-            } else if (destination.delegationCredentialId) {
-              log.warn(
-                "DelegationCredential: DelegationCredential seems to be disabled, falling back to first non-delegationCredential"
-              );
-              // In case DelegationCredential is disabled, we land here where the destination calendar is connected to a Delegation credential, but the credential isn't available(because DelegationCredential is disabled)
-              // In this case, we fallback to the first non-delegationCredential. That would be there for all existing users before DelegationCredential was enabled
-              const firstNonDelegatedCalendarCredential = this.calendarCredentials.find(
-                (cred) => !cred.type.endsWith("other_calendar") && !cred.delegatedToId
-              );
-              credential = firstNonDelegatedCalendarCredential;
             }
+            // Delegation fallback logic removed
           }
           if (credential) {
             const createdEvent = await createEvent(credential, event, destination.externalId);
@@ -1015,12 +981,12 @@ export default class EventManager {
     }
 
     // Taking care of non-traditional calendar integrations
-    createdEvents = createdEvents.concat(
-      await Promise.all(
+    createdEvents.push(
+      ...(await Promise.all(
         this.calendarCredentials
           .filter((cred) => cred.type.includes("other_calendar"))
           .map(async (cred) => await createEvent(cred, event))
-      )
+      ))
     );
 
     return createdEvents;
@@ -1155,7 +1121,6 @@ export default class EventManager {
                 user: credentialFromDB.user,
                 encryptedKey: credentialFromDB.encryptedKey,
                 delegatedToId: credentialFromDB.delegatedToId,
-                delegatedTo: credentialFromDB.delegatedTo,
                 delegationCredentialId: credentialFromDB.delegationCredentialId,
               };
             }

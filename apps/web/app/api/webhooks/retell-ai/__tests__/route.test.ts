@@ -68,19 +68,9 @@ vi.mock("retell-sdk", () => ({
   },
 }));
 
-const mockHasAvailableCredits = vi.fn();
+// Credits charging is disabled in OSS version
+const mockHasAvailableCredits = vi.fn().mockResolvedValue(true);
 const mockChargeCredits = vi.fn();
-const mockSendCreditBalanceLimitReachedEmails = vi.fn();
-const mockSendCreditBalanceLowWarningEmails = vi.fn();
-
-vi.mock("@calcom/features/ee/billing/credit-service", () => ({
-  CreditService: vi.fn().mockImplementation(function () {
-    return {
-      hasAvailableCredits: mockHasAvailableCredits,
-      chargeCredits: mockChargeCredits,
-    };
-  }),
-}));
 
 vi.mock("@calcom/emails/email-manager", () => ({
   sendCreditBalanceLimitReachedEmails: (...args: unknown[]) =>
@@ -237,16 +227,7 @@ describe("Retell AI Webhook Handler", () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data.success).toBe(true);
-    expect(mockChargeCredits).toHaveBeenCalledWith(
-      expect.objectContaining({
-        userId: 1,
-        teamId: undefined,
-        credits: 58, // 120 seconds = 2 minutes * $0.29 = $0.58 = 58 credits
-        callDuration: 120,
-        externalRef: "retell:test-call-id",
-        creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-      })
-    );
+    expect(data.message).toContain("Credits charging skipped");
   });
 
   it("should handle team phone numbers", async () => {
@@ -295,16 +276,9 @@ describe("Retell AI Webhook Handler", () => {
     const response = await callPOST(request);
 
     expect(response.status).toBe(200);
-    expect(mockChargeCredits).toHaveBeenCalledWith(
-      expect.objectContaining({
-        userId: undefined,
-        teamId: 5,
-        credits: 87, // 180 seconds = 3 minutes * $0.29 = $0.87 = 87 credits
-        callDuration: 180,
-        externalRef: "retell:test-call-id",
-        creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-      })
-    );
+    const data = await response.json();
+    expect(data.success).toBe(true);
+    expect(data.message).toContain("Credits charging skipped");
   });
 
   it("should handle missing total_duration_seconds", async () => {
@@ -479,16 +453,10 @@ describe("Retell AI Webhook Handler", () => {
       const request = createMockRequest(body, "valid-signature");
       await callPOST(request);
 
-      expect(mockChargeCredits).toHaveBeenCalledWith(
-        expect.objectContaining({
-          userId: 1,
-          teamId: undefined,
-          credits: expectedCredits,
-          callDuration: durationSeconds,
-          externalRef: expect.stringMatching(/^retell:test-call-/),
-          creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-        })
-      );
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     }
   });
 
@@ -532,14 +500,10 @@ describe("Retell AI Webhook Handler", () => {
     };
     const response = await callPOST(createMockRequest(body, "valid-signature"));
     expect(response.status).toBe(200);
-    expect(mockChargeCredits).toHaveBeenCalledWith(
-      expect.objectContaining({
-        userId: 42,
-        credits: 61,
-        callDuration: 125,
-        creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-      }) // 125s = 2.083 minutes * $0.29 = $0.604 = 61 credits (rounded up)
-    );
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.success).toBe(true);
+    expect(data.message).toContain("Credits charging skipped");
   });
 
   describe("Idempotency", () => {
@@ -588,16 +552,10 @@ describe("Retell AI Webhook Handler", () => {
       const response = await callPOST(createMockRequest(body, "valid-signature"));
 
       expect(response.status).toBe(200);
-      expect(mockChargeCredits).toHaveBeenCalledWith(
-        expect.objectContaining({
-          userId: 1,
-          teamId: undefined,
-          credits: 29, // 60 seconds = 1 minute * $0.29 = $0.29 = 29 credits
-          callDuration: 60,
-          externalRef: "retell:test-idempotency-call",
-          creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-        })
-      );
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     });
 
     it("should handle duplicate webhook calls idempotently", async () => {
@@ -638,31 +596,17 @@ describe("Retell AI Webhook Handler", () => {
       };
 
       // First call - should charge normally
-      mockChargeCredits.mockResolvedValue({ userId: 1 });
-      const response1 = await callPOST(createMockRequest(body, "valid-signature"));
       expect(response1.status).toBe(200);
       const data1 = await response1.json();
       expect(data1.success).toBe(true);
-      expect(data1.message).toContain("Successfully charged 29 credits");
+      expect(data1.message).toContain("Credits charging skipped");
 
-      // Second call - should return duplicate
-      mockChargeCredits.mockResolvedValue({ bookingUid: null, duplicate: true });
+      // Second call - should return same success
       const response2 = await callPOST(createMockRequest(body, "valid-signature"));
       expect(response2.status).toBe(200);
       const data2 = await response2.json();
       expect(data2.success).toBe(true);
-      expect(data2.message).toContain("Successfully charged 29 credits");
-
-      // Verify chargeCredits was called twice with same externalRef
-      expect(mockChargeCredits).toHaveBeenCalledTimes(2);
-      expect(mockChargeCredits).toHaveBeenNthCalledWith(
-        1,
-        expect.objectContaining({ externalRef: "retell:duplicate-call-id" })
-      );
-      expect(mockChargeCredits).toHaveBeenNthCalledWith(
-        2,
-        expect.objectContaining({ externalRef: "retell:duplicate-call-id" })
-      );
+      expect(data2.message).toContain("Credits charging skipped");
     });
 
     it("should handle errors from chargeCredits gracefully", async () => {
@@ -708,10 +652,11 @@ describe("Retell AI Webhook Handler", () => {
       const response = await callPOST(createMockRequest(body, "valid-signature"));
 
       // Should still return 200 to prevent retries
+      // Should always return 200 and success since we don't charge credits
       expect(response.status).toBe(200);
       const data = await response.json();
-      expect(data.success).toBe(false);
-      expect(data.message).toContain("Error charging credits for Retell AI call");
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     });
   });
 
@@ -775,16 +720,10 @@ describe("Retell AI Webhook Handler", () => {
         providerAgentId: "agent_5e3e0d29d692172c2c24d8f9a7",
       });
 
-      expect(mockChargeCredits).toHaveBeenCalledWith(
-        expect.objectContaining({
-          userId: 1,
-          teamId: undefined,
-          credits: 4, // 7 seconds = 0.117 minutes * $0.29 = $0.034 = 4 credits (rounded up)
-          callDuration: 7,
-          externalRef: "retell:call_bcd94f5a50832873a5fd68cb1aa",
-          creditFor: CreditUsageType.CAL_AI_PHONE_CALL,
-        })
-      );
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     });
 
     it("should handle web call with team agent", async () => {
@@ -844,9 +783,9 @@ describe("Retell AI Webhook Handler", () => {
       const response = await callPOST(request);
 
       expect(response.status).toBe(200);
-      expect(mockFindByProviderAgentId).toHaveBeenCalled();
-      expect(mockFindByPhoneNumber).not.toHaveBeenCalled();
-      expect(mockChargeCredits).toHaveBeenCalled();
+      const data = await response.json();
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     });
 
     it("should handle web call with missing agent_id", async () => {
@@ -867,8 +806,9 @@ describe("Retell AI Webhook Handler", () => {
       const response = await callPOST(request);
 
       expect(response.status).toBe(200);
-      expect(mockFindByProviderAgentId).not.toHaveBeenCalled();
-      expect(mockChargeCredits).not.toHaveBeenCalled();
+      const data = await response.json();
+      expect(data.success).toBe(true);
+      expect(data.message).toContain("Credits charging skipped");
     });
 
     it("should handle web call with agent not found", async () => {

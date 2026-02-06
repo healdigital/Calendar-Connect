@@ -1,7 +1,6 @@
 import { SlotFormat } from "@calcom/platform-enums";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { DateTime } from "luxon";
-import { EventTypesRepository_2024_04_15 } from "@/ee/event-types/event-types_2024_04_15/event-types.repository";
 
 export type TimeSlots = {
   slots: Record<string, { time: string; attendees?: number; bookingUid?: string }[]>;
@@ -12,7 +11,7 @@ export type RangeSlots = {
 
 @Injectable()
 export class SlotsOutputService_2024_04_15 {
-  constructor(private readonly eventTypesRepository: EventTypesRepository_2024_04_15) {}
+  constructor() {}
 
   async getOutputSlots(
     availableSlots: TimeSlots,
@@ -97,15 +96,7 @@ export class SlotsOutputService_2024_04_15 {
     if (duration) {
       return duration;
     }
-
-    if (eventTypeId) {
-      const eventType = await this.eventTypesRepository.getEventTypeWithDuration(eventTypeId);
-      if (!eventType) {
-        throw new Error("Event type not found");
-      }
-      return eventType.length;
-    }
-
-    throw new Error("duration or eventTypeId is required");
+    // Stubbed logic for OSS - cannot fetch event type duration without EE repo or extra plumbing
+    throw new Error("Duration is required in OSS when calculating range slots");
   }
 }

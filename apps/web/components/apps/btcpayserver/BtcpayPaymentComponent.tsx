@@ -1,7 +1,7 @@
 "use client";
 
 import { useBookingSuccessRedirect } from "@calcom/features/bookings/lib/bookingSuccessRedirect";
-import type { PaymentPageProps } from "@calcom/features/ee/payments/pages/payment";
+// import type { PaymentPageProps } from "@calcom/features/ee/payments/pages/payment";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useCopy } from "@calcom/lib/hooks/useCopy";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -11,6 +11,22 @@ import { Spinner } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
 import { useEffect, useState } from "react";
 import z from "zod";
+
+interface PaymentPageProps {
+  booking: {
+    uid: string;
+    id: number;
+    status: string;
+  };
+  eventType: {
+    id: number;
+    successRedirectUrl: string | null;
+    forwardParamsSuccessRedirect: boolean | null;
+  };
+  payment: {
+    success: boolean;
+  };
+}
 
 interface IPaymentComponentProps {
   payment: {
