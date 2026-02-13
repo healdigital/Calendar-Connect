@@ -1,0 +1,23 @@
+[phases.setup]
+nixPkgs = ["nodejs_22", "yarn-1_x", "openssl"]
+nixLibs = ["gcc-unwrapped", "libuuid", "libGL"]
+aptPkgs = ["curl", "wget"]
+
+[phases.install]
+cmds = [
+  "npm install -g corepack@0.24.1 && corepack enable",
+  "yarn install --check-cache --network-timeout 600000"
+]
+
+[phases.build]
+cmds = [
+  "yarn prisma generate",
+  "yarn turbo run build --filter=@calcom/web"
+]
+
+[start]
+cmd = "yarn workspace @calcom/web start"
+
+[variables]
+NODE_OPTIONS = "--max-old-space-size=4096"
+YARN_ENABLE_GLOBAL_CACHE = "false"

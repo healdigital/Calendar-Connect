@@ -1,0 +1,66 @@
+# Dockerfile optimisé pour Cal.com sur Coolify
+FROM node:22-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat openssl python3 make g++
+WORKDIR /app
+
+# Install Corepack and enable Yarn
+RUN npm install -g corepack@0.24.1 && corepack enable
+
+# Copy package files
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+COPY packages ./packages
+COPY apps ./apps
+COPY turbo.json ./
+
+# Install dependencies with increased timeout
+RUN yarn install --immutable --network-timeout 600000
+
+# Build the application
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Set environment variables for build
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Generate Prisma Client
+RUN npx prisma generate --schema=packages/prisma/schema.prisma
+
+# Build only the web app
+RUN yarn turbo run build --filter=@calcom/web
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy necessary files
+COPY --from=builder /app/apps/web/next.config.js ./apps/web/
+COPY --from=builder /app/apps/web/package.json ./apps/web/
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./apps/web/.next
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/turbo.json ./
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["yarn", "workspace", "@calcom/web", "start"]
