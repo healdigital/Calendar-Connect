@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 async function postHandler(req: NextRequest) {
-  const apiKey = request.headers.get("authorization") || req.nextUrl.searchParams.get("apiKey");
+  const apiKey = req.headers.get("authorization") || req.nextUrl.searchParams.get("apiKey");
 
   if (process.env.CRON_API_KEY !== apiKey) {
     return NextResponse.json({ message: "Not authenticated" }, { status: 401 });

@@ -6,7 +6,7 @@ import { trpc } from "@calcom/trpc/react";
 import { DatePicker } from "@calcom/ui";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { PostSessionForm } from "./PostSessionForm";
 import { RatingForm } from "./RatingForm";
 import { SessionSummaryView } from "./SessionSummaryView";
@@ -54,16 +54,35 @@ export const SessionManagementUI = ({
   const [incidentDescription, setIncidentDescription] = useState("");
   const utils = trpc.useUtils();
 
+  const { data: monthAvailability, isPending: isMonthLoading } = trpc.thotis.booking.getAvailability.useQuery(
+    {
+      studentProfileId: (booking.metadata?.studentProfileId as string) || "",
+      start: dayjs().startOf("day").toDate(),
+      end: dayjs().add(30, "day").endOf("day").toDate(),
+    },
+    {
+      enabled: !!booking.metadata?.studentProfileId && modalState === "reschedule",
+    }
+  );
+
+  // Derive which days have slots
+  const availableDays = useMemo(() => {
+    if (!monthAvailability) return new Set<string>();
+    return new Set(
+      monthAvailability.map((slot: { start: string | number | Date | dayjs.Dayjs }) =>
+        dayjs(slot.start).format("YYYY-MM-DD")
+      )
+    );
+  }, [monthAvailability]);
+
   const { data: availability, isPending: isAvailabilityLoading } =
     trpc.thotis.booking.getAvailability.useQuery(
       {
-        // @ts-expect-error
-        studentProfileId: booking.metadata?.studentProfileId,
+        studentProfileId: (booking.metadata?.studentProfileId as string) || "",
         start: selectedDate ? dayjs(selectedDate).startOf("day").toDate() : new Date(),
         end: selectedDate ? dayjs(selectedDate).endOf("day").toDate() : new Date(),
       },
       {
-        // @ts-expect-error
         enabled: !!selectedDate && !!booking.metadata?.studentProfileId && modalState === "reschedule",
       }
     );
@@ -466,9 +485,10 @@ export const SessionManagementUI = ({
                 {t("thotis_select_date")}
               </label>
               <DatePicker
-                date={selectedDate}
-                onDateChange={setSelectedDate}
+                date={selectedDate || new Date()}
+                onDatesChange={setSelectedDate}
                 minDate={new Date()}
+                disabled={(date: Date) => !availableDays.has(dayjs(date).format("YYYY-MM-DD"))}
                 className="w-full rounded-md border border-blue-200 bg-white p-2 text-sm"
               />
             </div>
@@ -487,13 +507,13 @@ export const SessionManagementUI = ({
                 ) : (
                   <div className="grid grid-cols-3 gap-2">
                     {availability.map((slot: any) => {
-                      const slotDate = new Date(slot.time);
-                      const isSelected = selectedSlot === slot.time;
+                      const slotDate = new Date(slot.start);
+                      const isSelected = selectedSlot === slot.start;
                       return (
                         <button
-                          key={slot.time}
+                          key={slot.start}
                           type="button"
-                          onClick={() => setSelectedSlot(slot.time)}
+                          onClick={() => setSelectedSlot(slot.start)}
                           className={`rounded-md border px-2 py-1 text-xs transition-colors ${
                             isSelected
                               ? "border-blue-600 bg-blue-600 text-white"

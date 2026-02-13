@@ -301,7 +301,7 @@ export const useBookings = ({ event, hashedLink, bookingForm, metadata, isBookin
       const fullName = getFullName(bookingForm.getValues("responses.name"));
 
       const users = event.data?.subsetOfHosts?.length
-        ? event.data?.subsetOfHosts.map((host) => host.user)
+        ? event.data?.subsetOfHosts.map((host: { user: { name?: string | null } }) => host.user)
         : event.data?.subsetOfUsers;
 
       const validDuration = event.data?.isDynamic
@@ -384,7 +384,7 @@ export const useBookings = ({ event, hashedLink, bookingForm, metadata, isBookin
       bookingSuccessRedirect({
         successRedirectUrl: event?.data?.successRedirectUrl || "",
         query,
-        booking: booking,
+        booking: { ...booking, uid },
         forwardParamsSuccessRedirect:
           event?.data?.forwardParamsSuccessRedirect === undefined
             ? true
@@ -513,7 +513,7 @@ export const useBookings = ({ event, hashedLink, bookingForm, metadata, isBookin
       bookingSuccessRedirect({
         successRedirectUrl: event?.data?.successRedirectUrl || "",
         query,
-        booking,
+        booking: { ...booking, uid },
         forwardParamsSuccessRedirect:
           event?.data?.forwardParamsSuccessRedirect === undefined
             ? true

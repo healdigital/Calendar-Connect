@@ -9,7 +9,7 @@ import { fieldTypesConfigMap } from "@calcom/features/form-builder/fieldTypes";
 import { SystemField } from "@calcom/lib/bookings/SystemField";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { markdownToSafeHTML } from "@calcom/lib/markdownToSafeHTML";
-import type { RouterOutputs } from "@calcom/trpc/react";
+import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import { useMemo, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -18,11 +18,16 @@ type TouchedFields = {
   responses?: Record<string, boolean>;
 };
 
-type Fields = NonNullable<RouterOutputs["viewer"]["public"]["event"]>["bookingFields"];
+type Fields = z.infer<typeof eventTypeBookingFields>;
+type BookingField = Fields[number];
+type BookingFieldType = keyof typeof fieldTypesConfigMap;
 const PhoneLocationSchema = z.object({
   value: z.literal(DefaultEventLocationTypeEnum.Phone),
   optionValue: z.string().optional(),
 });
+
+const isBookingFieldType = (value: string): value is BookingFieldType => value in fieldTypesConfigMap;
+
 export const BookingFields = ({
   fields,
   locations,
@@ -86,8 +91,11 @@ export const BookingFields = ({
       currency: paymentCurrency,
     }).format(price)})`;
 
-  const getFieldWithDirectPricing = (field: Fields[number]) => {
-    if (!fieldTypesConfigMap[field.type]?.supportsPricing || !field.label || !field.price) {
+  const getFieldWithDirectPricing = (field: BookingField) => {
+    if (!isBookingFieldType(field.type) || !fieldTypesConfigMap[field.type].supportsPricing) {
+      return field;
+    }
+    if (!field.label || !field.price) {
       return field;
     }
 
@@ -103,12 +111,15 @@ export const BookingFields = ({
     };
   };
 
-  const getFieldWithOptionLevelPrices = (field: Fields[number]) => {
-    if (!fieldTypesConfigMap[field.type]?.optionsSupportPricing || !field.options) return field;
+  const getFieldWithOptionLevelPrices = (field: BookingField) => {
+    if (!isBookingFieldType(field.type) || !fieldTypesConfigMap[field.type].optionsSupportPricing) {
+      return field;
+    }
+    if (!field.options) return field;
 
     return {
       ...field,
-      options: field.options.map((opt) => {
+      options: field.options.map((opt: { value: string; label: string; price?: number }) => {
         const option = opt as { value: string; label: string; price?: number };
         const optionPrice = option.price;
 
@@ -127,7 +138,7 @@ export const BookingFields = ({
     // TODO: It might make sense to extract this logic into BookingFields config, that would allow to quickly configure system fields and their editability in fresh booking and reschedule booking view
     // The logic here intends to make modifications to booking fields based on the way we want to specifically show Booking Form
     <div>
-      {fields.map((field, index) => {
+      {fields.map((field: BookingField, index: number) => {
         // Don't Display Location field in case of instant meeting as only Cal Video is supported
         if (isInstantMeeting && field.name === "location") return null;
 
@@ -145,7 +156,7 @@ export const BookingFields = ({
         let hidden = !!field.hidden;
         const fieldViews = field.views;
 
-        if (fieldViews && !fieldViews.find((view) => view.id === currentView)) {
+        if (fieldViews && !fieldViews.find((view: { id?: string | null }) => view.id === currentView)) {
           return null;
         }
 
@@ -208,7 +219,7 @@ export const BookingFields = ({
           const organizerInputTypes = getOrganizerInputLocationTypes();
           const organizerInputObj: Record<string, number> = {};
 
-          field.options.forEach((f) => {
+          field.options.forEach((f: { value: string }) => {
             if (f.value in organizerInputObj) {
               organizerInputObj[f.value]++;
             } else {
@@ -216,7 +227,7 @@ export const BookingFields = ({
             }
           });
 
-          field.options = field.options.map((field) => {
+          field.options = field.options.map((field: { value: string; label: string }) => {
             return {
               ...field,
               value:
@@ -232,12 +243,12 @@ export const BookingFields = ({
 
         if (isPaidEvent) {
           // Handle number fields and boolean (single checkbox) fields
-          if (fieldTypesConfigMap[field.type]?.supportsPricing) {
+          if (isBookingFieldType(field.type) && fieldTypesConfigMap[field.type].supportsPricing) {
             fieldWithPrice = getFieldWithDirectPricing(field);
           }
 
           // Handle fields with option-level prices (select, multiselect, and checkbox group)
-          if (fieldTypesConfigMap[field.type]?.optionsSupportPricing) {
+          if (isBookingFieldType(field.type) && fieldTypesConfigMap[field.type].optionsSupportPricing) {
             fieldWithPrice = getFieldWithOptionLevelPrices(fieldWithPrice);
           }
         }

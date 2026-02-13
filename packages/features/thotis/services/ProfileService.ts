@@ -1,7 +1,7 @@
 import process from "node:process";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { ErrorWithCode } from "@calcom/lib/errors";
-import { type AcademicField, MentorStatus } from "@calcom/prisma/enums";
+import { AcademicField, MentorStatus } from "@calcom/prisma/enums";
 import sharp from "sharp";
 import { RedisService } from "../../redis/RedisService";
 import { ProfileRepository, type StudentProfileWithUser } from "../repositories/ProfileRepository";
@@ -9,7 +9,7 @@ import { AnalyticsService } from "./AnalyticsService";
 
 export interface CreateProfileInput {
   userId: number;
-  fieldOfStudy: string;
+  fieldOfStudy: AcademicField;
   yearOfStudy: number;
   bio: string;
   university: string;
@@ -19,7 +19,7 @@ export interface CreateProfileInput {
 }
 
 export interface UpdateProfileInput {
-  fieldOfStudy?: string;
+  fieldOfStudy?: AcademicField;
   yearOfStudy?: number;
   bio?: string;
   university?: string;
@@ -32,7 +32,7 @@ export interface UpdateProfileInput {
 
 export interface ProfileSearchFilters {
   query?: string;
-  fieldOfStudy?: string;
+  fieldOfStudy?: AcademicField;
   university?: string;
   minRating?: number;
   isActive?: boolean;
@@ -40,6 +40,22 @@ export interface ProfileSearchFilters {
   pageSize?: number;
   expertise?: string[];
   sort?: "rating" | "popularity" | "newest";
+}
+
+const VALID_ACADEMIC_FIELDS = new Set<string>(Object.values(AcademicField));
+
+function toAcademicField(value: string): AcademicField {
+  const normalized = value
+    .trim()
+    .toUpperCase()
+    .replace(/[\s-]+/g, "_");
+  if (VALID_ACADEMIC_FIELDS.has(normalized)) {
+    return normalized as AcademicField;
+  }
+  throw new ErrorWithCode(
+    ErrorCode.BadRequest,
+    `Invalid field of study "${value}". Must be one of: ${Object.values(AcademicField).join(", ")}`
+  );
 }
 
 export class ProfileService {
@@ -101,7 +117,7 @@ export class ProfileService {
       throw new ErrorWithCode(ErrorCode.BadRequest, "Invalid userId");
     }
 
-    if (!input.fieldOfStudy || input.fieldOfStudy.trim().length === 0) {
+    if (!input.fieldOfStudy) {
       throw new ErrorWithCode(ErrorCode.BadRequest, "Field of study is required");
     }
 
@@ -134,10 +150,6 @@ export class ProfileService {
   }
 
   private validateUpdateInput(input: UpdateProfileInput): void {
-    if (input.fieldOfStudy !== undefined && input.fieldOfStudy.trim().length === 0) {
-      throw new ErrorWithCode(ErrorCode.BadRequest, "Field of study cannot be empty");
-    }
-
     if (
       input.yearOfStudy !== undefined &&
       (input.yearOfStudy < this.MIN_YEAR_OF_STUDY || input.yearOfStudy > this.MAX_YEAR_OF_STUDY)
@@ -184,7 +196,7 @@ export class ProfileService {
       const profile = await this.repository.createProfile(input.userId, {
         university: input.university.trim(),
         degree: input.degree.trim(),
-        field: input.fieldOfStudy as AcademicField,
+        field: input.fieldOfStudy,
         expertise: input.expertise,
         currentYear: input.yearOfStudy,
         bio: input.bio.trim(),
@@ -232,7 +244,7 @@ export class ProfileService {
       status?: MentorStatus;
     } = {};
 
-    if (input.fieldOfStudy !== undefined) updateData.field = input.fieldOfStudy as AcademicField;
+    if (input.fieldOfStudy !== undefined) updateData.field = toAcademicField(input.fieldOfStudy);
     if (input.expertise !== undefined) updateData.expertise = input.expertise;
     if (input.yearOfStudy !== undefined) updateData.currentYear = input.yearOfStudy;
     if (input.bio !== undefined) updateData.bio = input.bio.trim();
@@ -322,7 +334,7 @@ export class ProfileService {
 
     const result = await this.repository.searchProfiles({
       query: filters.query,
-      field: filters.fieldOfStudy as AcademicField,
+      field: filters.fieldOfStudy ? toAcademicField(filters.fieldOfStudy) : undefined,
       expertise: filters.expertise,
       university: filters.university,
       minRating: filters.minRating,
@@ -342,7 +354,7 @@ export class ProfileService {
   }
 
   async getRecommendedProfiles(field?: string) {
-    const profiles = await this.repository.getRecommendedProfiles(field as AcademicField);
+    const profiles = await this.repository.getRecommendedProfiles(field ? toAcademicField(field) : undefined);
     return profiles.map((p) => this.mapProfile(p));
   }
 
@@ -391,8 +403,8 @@ export class ProfileService {
     return this.updateProfile(userId, { isActive: false });
   }
 
-  async getProfilesByField(field: AcademicField) {
-    const result = (await this.repository.getProfilesByField(field)) as any;
+  async getProfilesByField(field: string) {
+    const result = (await this.repository.getProfilesByField(toAcademicField(field))) as any;
     return result.profiles.map((p: any) => this.mapProfile(p));
   }
 

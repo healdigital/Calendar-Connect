@@ -5,7 +5,6 @@ import { fetchUsername } from "@calcom/lib/fetchUsername";
 import hasKeyInMetadata from "@calcom/lib/hasKeyInMetadata";
 import { useDebounce } from "@calcom/lib/hooks/useDebounce";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import type { AppRouter } from "@calcom/trpc/types/server/routers/_app";
 import { Button } from "@calcom/ui/components/button";
@@ -42,11 +41,15 @@ const obtainNewUsernameChangeCondition = ({
 }: {
   userIsPremium: boolean;
   isNewUsernamePremium: boolean;
-  stripeCustomer: RouterOutputs["viewer"]["loggedInViewerRouter"]["stripeCustomer"] | undefined;
 }) => {
   if (!userIsPremium && isNewUsernamePremium) {
     return UsernameChangeStatusEnum.UPGRADE;
   }
+};
+
+type StripeCustomer = {
+  username?: string | null;
+  isPremium?: boolean | null;
 };
 
 const PremiumTextfield = (props: ICustomUsernameProps) => {
@@ -70,7 +73,8 @@ const PremiumTextfield = (props: ICustomUsernameProps) => {
   const [markAsError, setMarkAsError] = useState(false);
   const recentAttemptPaymentStatus = searchParams?.get("recentAttemptPaymentStatus");
   const [openDialogSaveUsername, setOpenDialogSaveUsername] = useState(false);
-  const { data: stripeCustomer } = trpc.viewer.loggedInViewerRouter.stripeCustomer.useQuery();
+  const stripeCustomerQuery = trpc.viewer.loggedInViewerRouter.stripeCustomer.useQuery();
+  const stripeCustomer = (stripeCustomerQuery.data ?? undefined) as StripeCustomer | undefined;
   const isCurrentUsernamePremium =
     user && user.metadata && hasKeyInMetadata(user, "isPremium") ? !!user.metadata.isPremium : false;
   const [isInputUsernamePremium, setIsInputUsernamePremium] = useState(false);
@@ -117,7 +121,6 @@ const PremiumTextfield = (props: ICustomUsernameProps) => {
   const usernameChangeCondition = obtainNewUsernameChangeCondition({
     userIsPremium: isCurrentUsernamePremium,
     isNewUsernamePremium: isInputUsernamePremium,
-    stripeCustomer,
   });
 
   const usernameFromStripe = stripeCustomer?.username;

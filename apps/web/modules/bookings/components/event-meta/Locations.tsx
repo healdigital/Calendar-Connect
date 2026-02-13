@@ -39,7 +39,7 @@ export const EventLocations = ({ event }: { event: BookerEvent }) => {
               <>
                 <p className="mb-2">{t("select_on_next_step")}</p>
                 <ul className="pl-1">
-                  {locations.map((location, index) => (
+                  {locations.map((location: BookerEvent["locations"][number], index: number) => (
                     <li key={`${location.type}-${index}`} className="mt-1">
                       <div className="flex flex-row items-center">
                         <img

@@ -5,10 +5,12 @@ import { trpc } from "@calcom/trpc/react";
 import { ZUpdateStudentProfileInputSchema } from "@calcom/trpc/server/routers/viewer/me/updateStudentProfile.schema";
 import { Button } from "@calcom/ui/components/button";
 import { Form, SelectField, TextAreaField, TextField } from "@calcom/ui/components/form";
-import { Steps } from "@calcom/ui/components/steps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
+
+type StudentProfileFormValues = z.infer<typeof ZUpdateStudentProfileInputSchema>;
 
 export const StudentProfileView = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ export const StudentProfileView = () => {
     },
   });
 
-  const formMethods = useForm({
+  const formMethods = useForm<StudentProfileFormValues>({
     resolver: zodResolver(ZUpdateStudentProfileInputSchema),
     defaultValues: {
       university: "",
@@ -81,7 +83,7 @@ export const StudentProfileView = () => {
               options={academicFieldOptions}
               value={academicFieldOptions.find((opt) => opt.value === formMethods.watch("field"))}
               onChange={(option) => {
-                if (option) formMethods.setValue("field", option.value as any);
+                if (option) formMethods.setValue("field", option.value as StudentProfileFormValues["field"]);
               }}
             />
             <TextField
@@ -101,7 +103,7 @@ export const StudentProfileView = () => {
           />
 
           <div className="flex justify-end pt-4">
-            <Button type="submit" loading={mutation.isLoading}>
+            <Button type="submit" loading={mutation.isPending}>
               Continuer
             </Button>
           </div>

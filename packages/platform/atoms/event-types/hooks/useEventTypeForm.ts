@@ -283,20 +283,14 @@ export const useEventTypeForm = ({
       return false;
     };
 
-    const updatedFields: Partial<FormValues> = {};
-    Object.keys(dirtyFields).forEach((key) => {
-      const typedKey = key as keyof typeof dirtyFields;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      updatedFields[typedKey] = undefined;
-      const isDirty = isFieldDirty(typedKey);
-      if (isDirty) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        updatedFields[typedKey] = values[typedKey];
+    const updatedFields: Record<string, unknown> = {};
+    for (const key of Object.keys(dirtyFields) as Array<keyof FormValues>) {
+      updatedFields[key] = undefined;
+      if (isFieldDirty(key)) {
+        updatedFields[key] = values[key];
       }
-    });
-    return updatedFields;
+    }
+    return updatedFields as Partial<FormValues>;
   };
 
   const handleSubmit = async (values: FormValues) => {

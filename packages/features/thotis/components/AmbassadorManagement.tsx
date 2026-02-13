@@ -159,7 +159,7 @@ const IncidentsModal: React.FC<{
 
 export const AmbassadorManagement: React.FC = () => {
   const { t } = useLocale();
-  const [fieldOfStudy, setFieldOfStudy] = useState<string | undefined>(undefined);
+  const [fieldOfStudy, setFieldOfStudy] = useState<AcademicField | undefined>(undefined);
   const [isProvisionModalOpen, setIsProvisionModalOpen] = useState(false);
   const [selectedAmbassador, setSelectedAmbassador] = useState<{ id: string; name: string } | null>(null);
 

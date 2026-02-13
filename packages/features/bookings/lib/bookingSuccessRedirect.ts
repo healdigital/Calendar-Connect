@@ -1,4 +1,5 @@
 import dayjs from "@calcom/dayjs";
+import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import type { BookingResponse } from "@calcom/features/bookings/types";
 import { getSafe } from "@calcom/lib/getSafe";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
@@ -53,10 +54,17 @@ export function getNewSearchParams(args: {
   return newSearchParams;
 }
 
-type SuccessRedirectBookingType = Pick<
-  BookingResponse,
-  "uid" | "title" | "description" | "startTime" | "endTime" | "location" | "attendees" | "user" | "responses"
->;
+type SuccessRedirectBookingType = {
+  uid: BookingResponse["uid"];
+  title?: BookingResponse["title"] | null;
+  description?: BookingResponse["description"] | null;
+  startTime?: Date | string | null;
+  endTime?: Date | string | null;
+  location?: BookingResponse["location"] | null;
+  attendees?: BookingResponse["attendees"];
+  user?: BookingResponse["user"] | null;
+  responses?: BookingResponse["responses"] | null;
+};
 
 type BookingResponseKey = keyof SuccessRedirectBookingType;
 
@@ -103,7 +111,7 @@ export const getBookingRedirectExtraParams = (booking: SuccessRedirectBookingTyp
 
   // Helper function to extract user details (e.g., host name and time zone)
   function extractUserDetails(booking: SuccessRedirectBookingType, obj: ResultType): ResultType {
-    if (booking.user?.name) {
+    if (booking.user?.name && booking.startTime) {
       const hostStartTime = dayjs(booking.startTime).tz(booking.user.timeZone).format();
       return {
         ...obj,
@@ -120,7 +128,9 @@ export const getBookingRedirectExtraParams = (booking: SuccessRedirectBookingTyp
 
     const attendeeName = booking.attendees[0]?.name || null;
     const attendeeTimeZone = booking.attendees[0]?.timeZone || "UTC";
-    const attendeeStartTime = dayjs(booking.startTime).tz(attendeeTimeZone).format();
+    const attendeeStartTime = booking.startTime
+      ? dayjs(booking.startTime).tz(attendeeTimeZone).format()
+      : null;
 
     const { hostNames, guestEmails } = booking.attendees.slice(1).reduce(
       (acc, attendee) => {

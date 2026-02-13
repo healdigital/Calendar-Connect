@@ -1,4 +1,7 @@
-export const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
+import { WizardLayout } from "@calcom/ui/components/layout/WizardLayout";
+import type { ReactNode } from "react";
+
+export const LayoutWrapper = ({ children }: { children: ReactNode }) => (
   <WizardLayout currentStep={2} maxSteps={3}>
     {children}
   </WizardLayout>

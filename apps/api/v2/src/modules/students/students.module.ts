@@ -20,7 +20,7 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     {
       provide: ThotisProfileRepository,
       useFactory: (prisma: PrismaWriteService) =>
-        new ThotisProfileRepository({ prismaClient: prisma as any }),
+        new ThotisProfileRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {
@@ -30,7 +30,7 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     },
     {
       provide: AnalyticsRepository,
-      useFactory: (prisma: PrismaWriteService) => new AnalyticsRepository({ prismaClient: prisma as any }),
+      useFactory: (prisma: PrismaWriteService) => new AnalyticsRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {
@@ -41,13 +41,13 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     {
       provide: ThotisBookingService,
       useFactory: (prisma: PrismaWriteService, analytics: ThotisAnalyticsService) =>
-        new ThotisBookingService(prisma as any, undefined, undefined, analytics),
+        new ThotisBookingService(prisma.prisma, undefined, undefined, analytics),
       inject: [PrismaWriteService, ThotisAnalyticsService],
     },
     {
       provide: SessionRatingRepository,
       useFactory: (prisma: PrismaWriteService) =>
-        new SessionRatingRepository({ prismaClient: prisma as any }),
+        new SessionRatingRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {

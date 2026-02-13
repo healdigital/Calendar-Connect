@@ -28,7 +28,7 @@ export const generateMetadata = async ({ params, searchParams }: PageProps) => {
     () => profile.name,
     () => markdownStrippedBio,
     false,
-    getOrgFullOrigin(entity.orgSlug ?? null),
+    getOrgFullOrigin(entity.orgSlug ?? ""),
     `/${decodeParams(await params).user}`
   );
 

@@ -10,8 +10,13 @@ import {
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
+import { API_VERSIONS_VALUES } from "@/lib/api-versions";
+
 @ApiTags("Bookings")
-@Controller("bookings")
+@Controller({
+  path: "/v2/bookings",
+  version: API_VERSIONS_VALUES,
+})
 export class BookingsController {
   constructor(
     private readonly statisticsService: StatisticsService,

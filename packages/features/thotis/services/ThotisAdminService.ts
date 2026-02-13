@@ -164,7 +164,7 @@ export class ThotisAdminService {
   async listAllAmbassadors(filters: {
     page?: number;
     pageSize?: number;
-    fieldOfStudy?: string;
+    fieldOfStudy?: AcademicField;
     isActive?: boolean;
   }) {
     // We can reuse searchProfiles but we might want to include INACTIVE ones here by default if admin
@@ -175,7 +175,7 @@ export class ThotisAdminService {
     const skip = (page - 1) * pageSize;
 
     const where: Prisma.StudentProfileWhereInput = {};
-    if (filters.fieldOfStudy) where.field = filters.fieldOfStudy as AcademicField;
+    if (filters.fieldOfStudy) where.field = filters.fieldOfStudy;
     if (filters.isActive !== undefined) where.isActive = filters.isActive;
 
     const [profiles, total] = await Promise.all([

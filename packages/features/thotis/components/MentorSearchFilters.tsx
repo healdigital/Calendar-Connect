@@ -1,21 +1,14 @@
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { AcademicField } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { useCallback, useState } from "react";
 
-const ACADEMIC_FIELDS = [
-  { value: "LAW", label: "thotis_field_law" },
-  { value: "MEDICINE", label: "thotis_field_medicine" },
-  { value: "ENGINEERING", label: "thotis_field_engineering" },
-  { value: "BUSINESS", label: "thotis_field_business" },
-  { value: "COMPUTER_SCIENCE", label: "thotis_field_computer_science" },
-  { value: "PSYCHOLOGY", label: "thotis_field_psychology" },
-  { value: "EDUCATION", label: "thotis_field_education" },
-  { value: "ARTS", label: "thotis_field_arts" },
-  { value: "SCIENCES", label: "thotis_field_sciences" },
-  { value: "OTHER", label: "thotis_field_other" },
-] as const;
+const ACADEMIC_FIELDS = Object.values(AcademicField).map((field) => ({
+  value: field,
+  label: `thotis_field_${field.toLowerCase()}`,
+}));
 
 const RATING_OPTIONS = [
   { value: 0, label: "thotis_any_rating" },
@@ -69,17 +62,17 @@ export const MentorSearchFilters = ({ filters, onFiltersChange }: MentorSearchFi
   const hasActiveFilters = filters.fieldOfStudy || filters.university || filters.minRating > 0;
 
   return (
-    <div className="bg-default border-subtle rounded-lg border p-4">
+    <div className="rounded-lg border border-subtle bg-default p-4">
       {/* Mobile toggle */}
       <button
         type="button"
         className="flex w-full items-center justify-between md:hidden"
         onClick={() => setIsExpanded(!isExpanded)}>
-        <span className="text-emphasis text-sm font-medium">
+        <span className="font-medium text-emphasis text-sm">
           <Icon name="filter" className="mr-2 inline h-4 w-4" />
           {t("thotis_filter_by_field")}
           {hasActiveFilters && (
-            <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-xs text-blue-700">
+            <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-xs">
               !
             </span>
           )}
@@ -92,14 +85,14 @@ export const MentorSearchFilters = ({ filters, onFiltersChange }: MentorSearchFi
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {/* Field of Study */}
           <div>
-            <label htmlFor="filter-field" className="text-subtle mb-1 block text-xs font-medium">
+            <label htmlFor="filter-field" className="mb-1 block font-medium text-subtle text-xs">
               {t("thotis_filter_by_field")}
             </label>
             <select
               id="filter-field"
               value={filters.fieldOfStudy}
               onChange={handleFieldChange}
-              className="border-subtle bg-default text-emphasis block w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500">
+              className="block w-full rounded-md border border-subtle bg-default px-3 py-2 text-emphasis text-sm focus:border-blue-500 focus:ring-blue-500">
               <option value="">{t("thotis_all_fields")}</option>
               {ACADEMIC_FIELDS.map((f) => (
                 <option key={f.value} value={f.value}>
@@ -111,14 +104,14 @@ export const MentorSearchFilters = ({ filters, onFiltersChange }: MentorSearchFi
 
           {/* University */}
           <div>
-            <label htmlFor="filter-university" className="text-subtle mb-1 block text-xs font-medium">
+            <label htmlFor="filter-university" className="mb-1 block font-medium text-subtle text-xs">
               {t("thotis_filter_by_university")}
             </label>
             <select
               id="filter-university"
               value={filters.university}
               onChange={handleUniversityChange}
-              className="border-subtle bg-default text-emphasis block w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500">
+              className="block w-full rounded-md border border-subtle bg-default px-3 py-2 text-emphasis text-sm focus:border-blue-500 focus:ring-blue-500">
               <option value="">{t("thotis_all_universities")}</option>
               {universities?.map((uni) => (
                 <option key={uni} value={uni}>
@@ -130,14 +123,14 @@ export const MentorSearchFilters = ({ filters, onFiltersChange }: MentorSearchFi
 
           {/* Minimum Rating */}
           <div>
-            <label htmlFor="filter-rating" className="text-subtle mb-1 block text-xs font-medium">
+            <label htmlFor="filter-rating" className="mb-1 block font-medium text-subtle text-xs">
               {t("thotis_min_rating")}
             </label>
             <select
               id="filter-rating"
               value={filters.minRating}
               onChange={handleRatingChange}
-              className="border-subtle bg-default text-emphasis block w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500">
+              className="block w-full rounded-md border border-subtle bg-default px-3 py-2 text-emphasis text-sm focus:border-blue-500 focus:ring-blue-500">
               {RATING_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {typeof opt.label === "string"

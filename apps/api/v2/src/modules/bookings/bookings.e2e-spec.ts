@@ -6,9 +6,14 @@ import { getDMMF } from "@prisma/internals";
 import { createPrismock } from "prismock/build/main/lib/client";
 import request from "supertest";
 import { randomString } from "../../../test/utils/randomString";
-import { AppModule } from "@/app.module";
+import { ConfigModule } from "@nestjs/config";
+import { ExecutionContext } from "@nestjs/common";
+import { BookingsModule } from "./bookings.module";
 import { PrismaModule } from "@/modules/prisma/prisma.module";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
+import appConfig from "@/config/app";
 
 let prismockInstance: any;
 
@@ -30,13 +35,34 @@ describe("BookingsController (e2e)", () => {
     prismockInstance = await getPrismock();
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, PrismaModule],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [appConfig],
+        }),
+        BookingsModule,
+        PrismaModule,
+      ],
     })
       .overrideProvider(PrismaWriteService)
       .useValue({
         prisma: prismockInstance,
         onModuleInit: async () => {},
         onModuleDestroy: async () => {},
+      })
+      .overrideProvider(PrismaReadService)
+      .useValue({
+        prisma: prismockInstance,
+        onModuleInit: async () => {},
+        onModuleDestroy: async () => {},
+      })
+      .overrideGuard(ApiAuthGuard)
+      .useValue({
+        canActivate: (context: ExecutionContext) => {
+          const req = context.switchToHttp().getRequest();
+          req.user = studentUser;
+          return true;
+        },
       })
       .compile();
 
@@ -56,6 +82,7 @@ describe("BookingsController (e2e)", () => {
         year: 1,
         bio: "E2E Bio",
         isActive: true,
+        status: "VERIFIED",
       },
     });
   }, 30000);
@@ -120,7 +147,7 @@ describe("BookingsController (e2e)", () => {
       });
 
       const response = await request(app.getHttpServer())
-        .post(`/bookings/${b.id}/rating`)
+        .post(`/v2/bookings/${b.id}/rating`)
         .send({
           rating: 5,
           feedback: "Great session! Highly recommend.",

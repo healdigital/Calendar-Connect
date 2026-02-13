@@ -1,19 +1,29 @@
 "use client";
 
-import React, { createContext, type ReactNode, useContext } from "react";
+import type { ReactNode } from "react";
+import React, { createContext, useContext } from "react";
 
-const OrgBrandingContext = createContext({
-  brandColor: null,
-  bannerUrl: null,
-  logoUrl: null,
-});
+type OrganizationBrandingData = {
+  id: number;
+  slug: string;
+  fullDomain: string;
+  brandColor: string | null;
+  bannerUrl: string | null;
+  logoUrl: string | null;
+};
 
-export const OrgBrandingProvider = ({ children }: { children: ReactNode }) => {
-  return (
-    <OrgBrandingContext.Provider value={{ brandColor: null, bannerUrl: null, logoUrl: null }}>
-      {children}
-    </OrgBrandingContext.Provider>
-  );
+export type OrganizationBranding = OrganizationBrandingData | null;
+
+const OrgBrandingContext = createContext<OrganizationBranding>(null);
+
+export const OrgBrandingProvider = ({
+  children,
+  value = null,
+}: {
+  children: ReactNode;
+  value?: OrganizationBranding;
+}) => {
+  return <OrgBrandingContext.Provider value={value}>{children}</OrgBrandingContext.Provider>;
 };
 
 export const useOrgBranding = () => useContext(OrgBrandingContext);

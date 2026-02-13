@@ -27,6 +27,7 @@ export type {
 } from "@calcom/features/bookings/outputs/CreateSeatedBookingOutput_2024_08_13";
 export type { CreateRecurringSeatedBookingOutput_2024_08_13 } from "@calcom/features/bookings/outputs/CreateRecurringSeatedBookingOutput_2024_08_13";
 export type { CreateBookingOutput_2024_08_13 } from "@calcom/features/bookings/outputs/CreateBookingOutput_2024_08_13";
+export type { BookingResponse } from "@calcom/features/bookings/types";
 export type { Calendar, ConnectedCalendar } from "@calcom/features/calendars/outputs/ConnectedCalendar";
 export { CALENDARS_QUEUE, DEFAULT_CALENDARS_JOB } from "@calcom/features/calendars/lib/constants";
 export { CalendarsRepository } from "@calcom/features/calendars/repositories/CalendarsRepository";
@@ -56,8 +57,12 @@ export class TeamService {
   static async fetchTeamOrThrow() {
     throw new Error("EE service 'TeamService.fetchTeamOrThrow' removed for AGPL compliance");
   }
-  static async removeMembers(...args: any[]) {}
-  static async createInvite(...args: any[]) {}
+  static async removeMembers(..._args: unknown[]) {
+    return;
+  }
+  static async createInvite(..._args: unknown[]) {
+    return {};
+  }
 }
 export class PermissionCheckService {
   constructor() {
@@ -75,15 +80,23 @@ export { getTasker } from "@calcom/features/tasker/tasker-factory";
 export { AnalyticsRepository } from "@calcom/features/thotis/repositories/AnalyticsRepository";
 export { ProfileRepository as ThotisProfileRepository } from "@calcom/features/thotis/repositories/ProfileRepository";
 export { SessionRatingRepository } from "@calcom/features/thotis/repositories/SessionRatingRepository";
-export { ProfileService } from "@calcom/features/thotis/services/ProfileService";
+export { ProfileService, type CreateProfileInput, type UpdateProfileInput } from "@calcom/features/thotis/services/ProfileService";
 export { SessionRatingService } from "@calcom/features/thotis/services/SessionRatingService";
 export { StatisticsService } from "@calcom/features/thotis/services/StatisticsService";
 export { ThotisAnalyticsService } from "@calcom/features/thotis/services/ThotisAnalyticsService";
 export { ThotisBookingService } from "@calcom/features/thotis/services/ThotisBookingService";
+export { handleCreatePhoneCall } from "@calcom/features/handleCreatePhoneCall";
+export { dynamicEvent } from "@calcom/features/eventtypes/lib/defaultEvents";
+export { findTeamMembersMatchingAttributeLogic } from "@calcom/features/routing-forms/lib/findTeamMembersMatchingAttributeLogic";
 export { verifyCodeChallenge } from "@calcom/lib/pkce";
 export { validateUrlForSSRFSync } from "@calcom/lib/ssrfProtection";
 export { checkEmailVerificationRequired } from "@calcom/trpc/server/routers/publicViewer/checkIfUserEmailVerificationRequired.handler";
 export type { OrgMembershipLookup } from "@calcom/trpc/server/routers/viewer/slots/util";
+export {
+  groupMembershipAttributes,
+  type GroupedAttribute,
+} from "@calcom/trpc/server/routers/viewer/attributes/getByUserId.handler";
+export type { TFindTeamMembersMatchingAttributeLogicInputSchema } from "@calcom/trpc/server/routers/viewer/attributes/findTeamMembersMatchingAttributeLogic.schema";
 
 export { TRPCError } from "@trpc/server";
 
@@ -96,17 +109,11 @@ export { WebhookTriggerEvents, WorkflowActions, WorkflowTemplates, TimeUnit, Wor
 export const WebhookVersion = { V1: "V1", V2: "V2", V_2021_10_20: "V_2021_10_20" } as const;
 export type WebhookVersion = (typeof WebhookVersion)[keyof typeof WebhookVersion];
 export const getTeamMemberEmailForResponseOrContactUsingUrlQuery = async (...args: any[]): Promise<string> => "";
-export const findTeamMembersMatchingAttributeLogic = async (...args: any[]): Promise<any[]> => [];
-export type TFindTeamMembersMatchingAttributeLogicInputSchema = any;
 export type TeamQuery = any;
-export const verifyCodeAuthenticated = async (...args: any[]): Promise<{ ok: boolean }> => ({ ok: true });
-export const handleCreatePhoneCall = async (...args: any[]): Promise<void> => {};
-export const groupMembershipAttributes = async (...args: any[]): Promise<any[]> => ([]);
-export type GroupedAttribute = any;
+export const verifyCodeAuthenticated = async (..._args: unknown[]): Promise<boolean> => true;
 export const createApiKeyHandler = async (...args: any[]): Promise<string> => "";
 export type CityTimezones = any;
 export const sendVerificationCode = async (...args: any[]): Promise<any> => ({});
 export const verifyPhoneNumber = async (...args: any[]): Promise<any> => ({});
-export const dynamicEvent = async (...args: any[]): Promise<any> => ({});
-export const sendSignupToOrganizationEmail = async (...args: any[]): Promise<void> => {};
-export const verifyEmailCodeHandler = async (...args: any[]): Promise<any> => ({});
+export const sendSignupToOrganizationEmail = async (..._args: unknown[]) => ({ ok: true });
+export const verifyEmailCodeHandler = async (..._args: unknown[]) => true;

@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "@calcom/ui/components/button";
-import { Select } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form/label";
+import { Label, Select } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { useState } from "react";
 
@@ -161,7 +160,7 @@ export function OrientationIntentForm({ onSubmit, isPending }: OrientationIntent
           </div>
         </div>
 
-        <Button type="submit" loading={isPending} className="w-full" variant="default" size="lg">
+        <Button type="submit" loading={isPending} className="w-full" size="lg">
           Find Mentors
         </Button>
       </form>

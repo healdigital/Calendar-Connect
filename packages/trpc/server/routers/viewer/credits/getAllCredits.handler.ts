@@ -44,9 +44,6 @@ export const getAllCreditsHandler = async ({ ctx, input }: GetAllCreditsOptions)
     }
   }
 
-  // const { CreditService } = await import("@calcom/features/ee/billing/credit-service");
-  // const creditService = new CreditService();
-  // const credits = await creditService.getAllCredits({ userId: ctx.user.id, teamId });
   const credits: any[] = [];
   return { credits };
 };

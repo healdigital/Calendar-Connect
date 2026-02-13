@@ -321,7 +321,7 @@ export const getOptions = ({
   getTrackingData: () => TrackingData;
 }): AuthOptions => ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
+  // @ts-ignore
   adapter: calcomAdapter,
   session: {
     strategy: "jwt",
@@ -551,7 +551,7 @@ export const getOptions = ({
           const gCalService = createGoogleCalendarServiceWithGoogleType({
             ...gcalCredential,
             user: null,
-            delegatedTo: null,
+            // delegatedTo: null,
           });
 
           if (
@@ -826,7 +826,7 @@ export const getOptions = ({
         if (existingUserWithEmail) {
           // if self-hosted then we can allow auto-merge of identity providers if email is verified
           if (
-            !hostedCal &&
+            !IS_CALCOM &&
             existingUserWithEmail.emailVerified &&
             existingUserWithEmail.identityProvider !== IdentityProvider.CAL
           ) {
@@ -870,7 +870,7 @@ export const getOptions = ({
           // User signs up with email/password and then tries to login with Google/SAML using the same email
           if (
             existingUserWithEmail.identityProvider === IdentityProvider.CAL &&
-            (idP === IdentityProvider.GOOGLE || idP === IdentityProvider.SAML)
+            (idP === IdentityProvider.GOOGLE /* || idP === IdentityProvider.SAML */)
           ) {
             // Prevent account pre-hijacking: block OAuth linking for unverified accounts
             if (!existingUserWithEmail.emailVerified) {
@@ -894,6 +894,7 @@ export const getOptions = ({
           } else if (existingUserWithEmail.identityProvider === IdentityProvider.CAL) {
             log.error(`Userid ${user.id} already exists with CAL identity provider`);
             return `/auth/error?error=wrong-provider&provider=${existingUserWithEmail.identityProvider}`;
+/*
           } else if (
             existingUserWithEmail.identityProvider === IdentityProvider.GOOGLE &&
             idP === IdentityProvider.SAML
@@ -912,7 +913,8 @@ export const getOptions = ({
               return loginWithTotp(existingUserWithEmail.email);
             } else {
               return true;
-            }
+            } 
+*/
           }
           log.error(`Userid ${user.id} trying to login with the wrong provider`, {
             userId: user.id,

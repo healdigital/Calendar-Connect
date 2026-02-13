@@ -1,0 +1,976 @@
+• turbo 2.7.1
+• Packages in scope: @calcom/alby, @calcom/amie, @calcom/api, @calcom/api-proxy, @calcom/api-v2, @calcom/app-store, @calcom/app-store-cli, @calcom/applecalendar, @calcom/atoms, @calcom/attio, @calcom/autocheckin, @calcom/baa-for-hipaa, @calcom/base, @calcom/basecamp3, @calcom/bolna, @calcom/btcpayserver, @calcom/caldavcalendar, @calcom/campfire, @calcom/chatbase, @calcom/clic, @calcom/closecom, @calcom/config, @calcom/cron, @calcom/dailyvideo, @calcom/databuddy, @calcom/dayjs, @calcom/debugging, @calcom/deel, @calcom/demodesk, @calcom/dialpad, @calcom/discord, @calcom/dub, @calcom/eightxeight, @calcom/element-call, @calcom/elevenlabs, @calcom/emails, @calcom/embed-core, @calcom/embed-react, @calcom/embed-snippet, @calcom/example-app-credential-sync, @calcom/exchange2013calendar, @calcom/exchange2016calendar, @calcom/exchangecalendar, @calcom/facetime, @calcom/fathom, @calcom/feature-auth, @calcom/features, @calcom/feishucalendar, @calcom/fonio-ai, @calcom/framer, @calcom/ga4, @calcom/giphy, @calcom/googlecalendar, @calcom/googlevideo, @calcom/granola, @calcom/greetmate-ai, @calcom/gtm, @calcom/hitpay, @calcom/horizon-workrooms, @calcom/hubspot, @calcom/huddle01video, @calcom/ics-feed, @calcom/insihts, @calcom/intercom, @calcom/jelly, @calcom/jitsivideo, @calcom/kysely, @calcom/larkcalendar, @calcom/lib, @calcom/lindy, @calcom/linear, @calcom/make, @calcom/matomo, @calcom/metapixel, @calcom/millis-ai, @calcom/mirotalk, @calcom/mock-payment-app, @calcom/monobot, @calcom/n8n, @calcom/nextcloudtalk, @calcom/office365calendar, @calcom/office365video, @calcom/paypal, @calcom/ping, @calcom/pipedream, @calcom/pipedrive-crm, @calcom/platform-constants, @calcom/platform-enums, @calcom/platform-libraries, @calcom/platform-types, @calcom/platform-utils, @calcom/plausible, @calcom/posthog, @calcom/prisma, @calcom/qr_code, @calcom/raycast, @calcom/retell-ai, @calcom/riverside, @calcom/roam, @calcom/routing-forms, @calcom/salesforce, @calcom/salesroom, @calcom/sendgrid, @calcom/shimmer-video, @calcom/signal, @calcom/sirius_video, @calcom/skype, @calcom/stripepayment, @calcom/sylapsvideo, @calcom/synthflow, @calcom/tandemvideo, @calcom/telegram, @calcom/telli, @calcom/testing, @calcom/trpc, @calcom/tsconfig, @calcom/twipla, @calcom/types, @calcom/ui, @calcom/umami, @calcom/vimcal, @calcom/vital, @calcom/weather_in_your_calendar, @calcom/web, @calcom/webex, @calcom/whatsapp, @calcom/whereby, @calcom/wordpress, @calcom/zapier, @calcom/zoho-bigin, @calcom/zohocalendar, @calcom/zohocrm, @calcom/zoomvideo, @coss/ui, WipeMyCal
+• Running type-check:ci in 135 packages
+• Remote caching disabled
+cache bypass, force executing 059a6c297c747b1f
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: https://pris.ly/prisma-config
+
+Environment variables loaded from .env
+Prisma schema loaded from schema.prisma
+
+✔ Generated Prisma Client (6.16.1) to ./generated/prisma in 371ms
+
+✔ Generated Zod Prisma Types to ./zod in 1.31s
+
+✔ Generated Kysely types (2.2.0) to ./../kysely in 280ms
+
+✔ Generated Prisma Enum Generator to ./enums/index.ts in 229ms
+
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: https://pris.ly/prisma-config
+
+Prisma schema loaded from schema.prisma
+Formatted schema.prisma in 43ms 🚀
+cache bypass, force executing 753bb9a1d05c8756
+cache bypass, force executing 65ad53b42f5c148f
+cache bypass, force executing 7442ed03a2e7d4f5
+cache bypass, force executing f59745119103b008
+cache bypass, force executing bce9991c5267bb94
+cache bypass, force executing 06db2824208c67f9
+cache bypass, force executing b603eb5d0241d35f
+cache bypass, force executing f2f5d4d44e021a58
+cache bypass, force executing 8e53f0160a9c62ee
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/app/api/webhooks/retell-ai/__tests__/route.test.ts[0m:[93m129[0m:[93m58[0m - [91merror[0m[90m TS2554: [0mExpected 1 arguments, but got 2.
+
+[7m129[0m const callPOST = (request: NextRequest) => POST(request, { params: Promise.resolve({}) });
+[7m   [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/app/students/[field]/page.tsx[0m:[93m19[0m:[93m7[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 2, '(input: { sort?: "rating" | "popularity" | "newest" | undefined; query?: string | undefined; university?: string | undefined; expertise?: string[] | undefined; isActive?: boolean | undefined; page?: number | undefined; fieldOfStudy?: "OTHER" | ... 12 more ... | undefined; minRating?: number | undefined; pageSize?: number | undefined; }, opts: DefinedUseTRPCQueryOptions<...>): DefinedUseTRPCQueryResult<...>', gave the following error.
+    Type 'boolean | ""' is not assignable to type 'boolean | undefined'.
+      Type '""' is not assignable to type 'boolean | undefined'.
+  Overload 2 of 2, '(input: { sort?: "rating" | "popularity" | "newest" | undefined; query?: string | undefined; university?: string | undefined; expertise?: string[] | undefined; isActive?: boolean | undefined; page?: number | undefined; fieldOfStudy?: "OTHER" | ... 12 more ... | undefined; minRating?: number | undefined; pageSize?: number | undefined; }, opts?: UseTRPCQueryOptions<...> | undefined): UseTRPCQueryResult<...>', gave the following error.
+    Type 'boolean | ""' is not assignable to type 'boolean | undefined'.
+      Type '""' is not assignable to type 'boolean | undefined'.
+
+[7m19[0m     { enabled: isValidField }
+[7m  [0m [91m      ~~~~~~~[0m
+
+  [96m../../node_modules/@tanstack/query-core/build/legacy/queryClient-aPcvMwE9.d.ts[0m:[93m345[0m:[93m5[0m
+    [7m345[0m     enabled?: boolean;
+    [7m   [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'enabled' which is declared here on type 'DefinedUseTRPCQueryOptions<{ profiles: { user: { name: string | null; username: string | null; avatarUrl: string | null; profiles: { organization: { id: number; slug: string | null; logoUrl: string | null; }; }[]; }; status: MentorStatus; ... 17 more ...; totalRatings: number; }[]; total: number; page: number; pageS...'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/app/thotis/admin/incidents/page.tsx[0m:[93m161[0m:[93m27[0m - [91merror[0m[90m TS17001: [0mJSX elements cannot have multiple attributes with the same name.
+
+[7m161[0m                           size="sm"
+[7m   [0m [91m                          ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/app/thotis/mentor/[username]/page.tsx[0m:[93m100[0m:[93m29[0m - [91merror[0m[90m TS2322: [0mType '"academic-cap"' is not assignable to type '"code" | "map" | "filter" | "info" | "user" | "search" | "split" | "repeat" | "bold" | "link" | "webhook" | "users" | "binary" | "calendar" | "video" | "phone" | "activity" | "arrow-down" | ... 137 more ... | "zap"'.
+
+[7m100[0m                       <Icon name="academic-cap" className="h-4 w-4 text-gray-400" />
+[7m   [0m [91m                            ~~~~[0m
+
+  [96m../../node_modules/@types/react/index.d.ts[0m:[93m2526[0m:[93m9[0m
+    [7m2526[0m         name?: string | undefined;
+    [7m    [0m [96m        ~~~~[0m
+    The expected type comes from property 'name' which is declared here on type 'IntrinsicAttributes & SVGProps<SVGSVGElement> & { name: IconName; size?: string | number | undefined; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/app/thotis/mentors/page.tsx[0m:[93m62[0m:[93m7[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 2, '(input: { sort?: "rating" | "popularity" | "newest" | undefined; query?: string | undefined; university?: string | undefined; expertise?: string[] | undefined; isActive?: boolean | undefined; page?: number | undefined; fieldOfStudy?: "OTHER" | ... 12 more ... | undefined; minRating?: number | undefined; pageSize?: number | undefined; }, opts: DefinedUseTRPCQueryOptions<...>): DefinedUseTRPCQueryResult<...>', gave the following error.
+    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'DefinedUseTRPCQueryOptions<{ profiles: { user: { name: string | null; username: string | null; avatarUrl: string | null; profiles: { organization: { id: number; slug: string | null; logoUrl: string | null; }; }[]; }; status: MentorStatus; ... 17 more ...; totalRatings: number; }[]; total: number; page: number; pageS...'.
+  Overload 2 of 2, '(input: { sort?: "rating" | "popularity" | "newest" | undefined; query?: string | undefined; university?: string | undefined; expertise?: string[] | undefined; isActive?: boolean | undefined; page?: number | undefined; fieldOfStudy?: "OTHER" | ... 12 more ... | undefined; minRating?: number | undefined; pageSize?: number | undefined; }, opts?: UseTRPCQueryOptions<...> | undefined): UseTRPCQueryResult<...>', gave the following error.
+    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'UseTRPCQueryOptions<{ profiles: { user: { name: string | null; username: string | null; avatarUrl: string | null; profiles: { organization: { id: number; slug: string | null; logoUrl: string | null; }; }[]; }; status: MentorStatus; ... 17 more ...; totalRatings: number; }[]; total: number; page: number; pageSize: nu...'.
+
+[7m62[0m     { keepPreviousData: true }
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~[0m
+
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/apps/alby/AlbyPaymentComponent.tsx[0m:[93m186[0m:[93m13[0m - [91merror[0m[90m TS2741: [0mProperty 'user' is missing in type '{ uid: string; id: number; status: string; }' but required in type 'SuccessRedirectBookingType'.
+
+[7m186[0m             booking: props.booking,
+[7m   [0m [91m            ~~~~~~~[0m
+
+  [96m../../packages/features/bookings/lib/service/RegularBookingService.ts[0m:[93m1660[0m:[93m7[0m
+    [7m1660[0m       user: {
+    [7m    [0m [96m      ~~~~~~~[0m
+    [7m1661[0m         name: randomOrganizerName,
+    [7m    [0m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [7m ...[0m 
+    [7m1663[0m         email: null,
+    [7m    [0m [96m~~~~~~~~~~~~~~~~~~~~[0m
+    [7m1664[0m       },
+    [7m    [0m [96m~~~~~~~[0m
+    'user' is declared here.
+  [96m../../packages/features/bookings/lib/bookingSuccessRedirect.ts[0m:[93m196[0m:[93m5[0m
+    [7m196[0m     booking: SuccessRedirectBookingType;
+    [7m   [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/apps/btcpayserver/BtcpayPaymentComponent.tsx[0m:[93m141[0m:[93m15[0m - [91merror[0m[90m TS2741: [0mProperty 'user' is missing in type '{ uid: string; id: number; status: string; }' but required in type 'SuccessRedirectBookingType'.
+
+[7m141[0m               booking: props.booking,
+[7m   [0m [91m              ~~~~~~~[0m
+
+  [96m../../packages/features/bookings/lib/service/RegularBookingService.ts[0m:[93m1660[0m:[93m7[0m
+    [7m1660[0m       user: {
+    [7m    [0m [96m      ~~~~~~~[0m
+    [7m1661[0m         name: randomOrganizerName,
+    [7m    [0m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [7m ...[0m 
+    [7m1663[0m         email: null,
+    [7m    [0m [96m~~~~~~~~~~~~~~~~~~~~[0m
+    [7m1664[0m       },
+    [7m    [0m [96m~~~~~~~[0m
+    'user' is declared here.
+  [96m../../packages/features/bookings/lib/bookingSuccessRedirect.ts[0m:[93m196[0m:[93m5[0m
+    [7m196[0m     booking: SuccessRedirectBookingType;
+    [7m   [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/ChargeCardDialog.tsx[0m:[93m25[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'payments' does not exist on type 'DecoratedProcedureRecord<RootConfig<{ ctx: InnerContext; meta: object; errorShape: { message: string; code: number; data: { [key: string]: unknown; code: string; httpStatus: number; path?: string | undefined; }; }; transformer: { ...; }; }>, { ...; }, null>'.
+
+[7m25[0m   const chargeCardMutation = trpc.viewer.payments.chargeCard.useMutation({
+[7m  [0m [91m                                         ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/ChargeCardDialog.tsx[0m:[93m32[0m:[93m15[0m - [91merror[0m[90m TS7006: [0mParameter 'error' implicitly has an 'any' type.
+
+[7m32[0m     onError: (error) => {
+[7m  [0m [91m              ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/ReassignDialog.tsx[0m:[93m88[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m88[0m       getNextPageParam: (lastPage) => lastPage.nextCursor,
+[7m  [0m [91m                                               ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/ReassignDialog.tsx[0m:[93m101[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m101[0m       getNextPageParam: (lastPage) => lastPage.nextCursor,
+[7m   [0m [91m                                               ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/ReassignDialog.tsx[0m:[93m110[0m:[93m47[0m - [91merror[0m[90m TS2339: [0mProperty 'items' does not exist on type 'any[]'.
+
+[7m110[0m     return data?.pages.flatMap((page) => page.items) ?? [];
+[7m   [0m [91m                                              ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/WrongAssignmentDialog.tsx[0m:[93m244[0m:[93m22[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m244[0m     teamMembersData?.members.map((member) => ({
+[7m   [0m [91m                     ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/dialog/WrongAssignmentDialog.tsx[0m:[93m244[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'member' implicitly has an 'any' type.
+
+[7m244[0m     teamMembersData?.members.map((member) => ({
+[7m   [0m [91m                                  ~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/getting-started/steps-views/ConnectCalendars.tsx[0m:[93m53[0m:[93m17[0m - [91merror[0m[90m TS2322: [0mType 'ConnectedCalendar[] | undefined' is not assignable to type '{ primary: boolean | null; isSelected: boolean; credentialId: number; name?: string | undefined; readOnly?: boolean | undefined; userId?: number | undefined; integration?: string | undefined; externalId: string; delegationCredentialId: string | null; }[] | undefined'.
+  Type 'ConnectedCalendar[]' is not assignable to type '{ primary: boolean | null; isSelected: boolean; credentialId: number; name?: string | undefined; readOnly?: boolean | undefined; userId?: number | undefined; integration?: string | undefined; externalId: string; delegationCredentialId: string | null; }[]'.
+    Type 'ConnectedCalendar' is not assignable to type '{ primary: boolean | null; isSelected: boolean; credentialId: number; name?: string | undefined; readOnly?: boolean | undefined; userId?: number | undefined; integration?: string | undefined; externalId: string; delegationCredentialId: string | null; }'.
+      Types of property 'delegationCredentialId' are incompatible.
+        Type 'string | null | undefined' is not assignable to type 'string | null'.
+          Type 'undefined' is not assignable to type 'string | null'.
+
+[7m53[0m                 calendars={firstCalendar.calendars}
+[7m  [0m [91m                ~~~~~~~~~[0m
+
+  [96mcomponents/getting-started/components/ConnectedCalendarItem.tsx[0m:[93m8[0m:[93m3[0m
+    [7m8[0m   calendars?: {
+    [7m [0m [96m  ~~~~~~~~~[0m
+    The expected type comes from property 'calendars' which is declared here on type 'IntrinsicAttributes & IConnectedCalendarItem'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/ui/UsernameAvailability/PremiumTextfield.tsx[0m:[93m82[0m:[93m62[0m - [91merror[0m[90m TS2339: [0mProperty 'username' does not exist on type 'never'.
+
+[7m82[0m     setInputUsernameValue(currentUsername || stripeCustomer?.username || "");
+[7m  [0m [91m                                                             ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/ui/UsernameAvailability/PremiumTextfield.tsx[0m:[93m83[0m:[93m63[0m - [91merror[0m[90m TS2339: [0mProperty 'username' does not exist on type 'never'.
+
+[7m83[0m   }, [setInputUsernameValue, currentUsername, stripeCustomer?.username]);
+[7m  [0m [91m                                                              ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/ui/UsernameAvailability/PremiumTextfield.tsx[0m:[93m115[0m:[93m63[0m - [91merror[0m[90m TS2339: [0mProperty 'isPremium' does not exist on type 'never'.
+
+[7m115[0m   const paymentRequired = !currentUsername && stripeCustomer?.isPremium;
+[7m   [0m [91m                                                              ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/ui/UsernameAvailability/PremiumTextfield.tsx[0m:[93m123[0m:[93m46[0m - [91merror[0m[90m TS2339: [0mProperty 'username' does not exist on type 'never'.
+
+[7m123[0m   const usernameFromStripe = stripeCustomer?.username;
+[7m   [0m [91m                                             ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/auth/verify-email.test.ts[0m:[93m2[0m:[93m59[0m - [91merror[0m[90m TS2307: [0mCannot find module '@calcom/trpc/server/routers/viewer/teams/inviteMember/inviteMember.handler' or its corresponding type declarations.
+
+[7m2[0m import { inviteMembersWithNoInviterPermissionCheck } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/inviteMember.handler";
+[7m [0m [91m                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/auth/verify-email.ts[0m:[93m7[0m:[93m59[0m - [91merror[0m[90m TS2307: [0mCannot find module '@calcom/trpc/server/routers/viewer/teams/inviteMember/inviteMember.handler' or its corresponding type declarations.
+
+[7m7[0m import { inviteMembersWithNoInviterPermissionCheck } from "@calcom/trpc/server/routers/viewer/teams/inviteMember/inviteMember.handler";
+[7m [0m [91m                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts[0m:[93m26[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m26[0m     // @ts-expect-error
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts[0m:[93m38[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m38[0m     // @ts-expect-error
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts[0m:[93m53[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m53[0m     // @ts-expect-error
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts[0m:[93m96[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m96[0m     // @ts-expect-error
+[7m  [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts[0m:[93m120[0m:[93m5[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m120[0m     // @ts-expect-error
+[7m   [0m [91m    ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m18[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'provider' does not exist on type '{}'.
+
+[7m18[0m     if (props.provider === "saml") {
+[7m  [0m [91m              ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m24[0m:[93m18[0m - [91merror[0m[90m TS2339: [0mProperty 'isSAMLLoginEnabled' does not exist on type '{}'.
+
+[7m24[0m       if (!props.isSAMLLoginEnabled) {
+[7m  [0m [91m                 ~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m29[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type '{}'.
+
+[7m29[0m       signIn("saml", {}, { tenant: props.tenant, product: props.product });
+[7m  [0m [91m                                         ~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m29[0m:[93m65[0m - [91merror[0m[90m TS2339: [0mProperty 'product' does not exist on type '{}'.
+
+[7m29[0m       signIn("saml", {}, { tenant: props.tenant, product: props.product });
+[7m  [0m [91m                                                                ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m30[0m:[93m22[0m - [91merror[0m[90m TS2339: [0mProperty 'provider' does not exist on type '{}'.
+
+[7m30[0m     } else if (props.provider === "google" && email) {
+[7m  [0m [91m                     ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx[0m:[93m33[0m:[93m20[0m - [91merror[0m[90m TS2339: [0mProperty 'provider' does not exist on type '{}'.
+
+[7m33[0m       signIn(props.provider);
+[7m  [0m [91m                   ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/Booker.tsx[0m:[93m86[0m:[93m3[0m - [91merror[0m[90m TS2339: [0mProperty 'hasValidLicense' does not exist on type 'BookerProps & WrappedBookerProps'.
+
+[7m86[0m   hasValidLicense,
+[7m  [0m [91m  ~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookerWebWrapper.tsx[0m:[93m201[0m:[93m53[0m - [91merror[0m[90m TS7006: [0mParameter 'param' implicitly has an 'any' type.
+
+[7m201[0m       event.data.instantMeetingParameters?.every?.((param) =>
+[7m   [0m [91m                                                    ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m51[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'f' implicitly has an 'any' type.
+
+[7m51[0m     () => fields.filter((f) => f.type === "phone" && f.name !== SystemField.Enum.location).map((f) => f.name),
+[7m  [0m [91m                         ~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m51[0m:[93m97[0m - [91merror[0m[90m TS7006: [0mParameter 'f' implicitly has an 'any' type.
+
+[7m51[0m     () => fields.filter((f) => f.type === "phone" && f.name !== SystemField.Enum.location).map((f) => f.name),
+[7m  [0m [91m                                                                                                ~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m69[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'name' implicitly has an 'any' type.
+
+[7m69[0m     otherPhoneFieldNames.forEach((name) => {
+[7m  [0m [91m                                  ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m90[0m:[93m10[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'Record<"number" | "boolean" | "name" | "email" | "url" | "select" | "address" | "text" | "textarea" | "phone" | "multiemail" | "multiselect" | "checkbox" | "radio" | "radioInput", { ...; }>'.
+
+[7m90[0m     if (!fieldTypesConfigMap[field.type]?.supportsPricing || !field.label || !field.price) {
+[7m  [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m107[0m:[93m10[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'Record<"number" | "boolean" | "name" | "email" | "url" | "select" | "address" | "text" | "textarea" | "phone" | "multiemail" | "multiselect" | "checkbox" | "radio" | "radioInput", { ...; }>'.
+
+[7m107[0m     if (!fieldTypesConfigMap[field.type]?.optionsSupportPricing || !field.options) return field;
+[7m   [0m [91m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m111[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'opt' implicitly has an 'any' type.
+
+[7m111[0m       options: field.options.map((opt) => {
+[7m   [0m [91m                                  ~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m130[0m:[93m20[0m - [91merror[0m[90m TS7006: [0mParameter 'field' implicitly has an 'any' type.
+
+[7m130[0m       {fields.map((field, index) => {
+[7m   [0m [91m                   ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m130[0m:[93m27[0m - [91merror[0m[90m TS7006: [0mParameter 'index' implicitly has an 'any' type.
+
+[7m130[0m       {fields.map((field, index) => {
+[7m   [0m [91m                          ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m148[0m:[93m45[0m - [91merror[0m[90m TS7006: [0mParameter 'view' implicitly has an 'any' type.
+
+[7m148[0m         if (fieldViews && !fieldViews.find((view) => view.id === currentView)) {
+[7m   [0m [91m                                            ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m211[0m:[93m34[0m - [91merror[0m[90m TS7006: [0mParameter 'f' implicitly has an 'any' type.
+
+[7m211[0m           field.options.forEach((f) => {
+[7m   [0m [91m                                 ~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m219[0m:[93m46[0m - [91merror[0m[90m TS7006: [0mParameter 'field' implicitly has an 'any' type.
+
+[7m219[0m           field.options = field.options.map((field) => {
+[7m   [0m [91m                                             ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m235[0m:[93m15[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'Record<"number" | "boolean" | "name" | "email" | "url" | "select" | "address" | "text" | "textarea" | "phone" | "multiemail" | "multiselect" | "checkbox" | "radio" | "radioInput", { ...; }>'.
+
+[7m235[0m           if (fieldTypesConfigMap[field.type]?.supportsPricing) {
+[7m   [0m [91m              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/BookEventForm/BookingFields.tsx[0m:[93m240[0m:[93m15[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'Record<"number" | "boolean" | "name" | "email" | "url" | "select" | "address" | "text" | "textarea" | "phone" | "multiemail" | "multiselect" | "checkbox" | "radio" | "radioInput", { ...; }>'.
+
+[7m240[0m           if (fieldTypesConfigMap[field.type]?.optionsSupportPricing) {
+[7m   [0m [91m              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/event-meta/Duration.tsx[0m:[93m118[0m:[93m20[0m - [91merror[0m[90m TS7006: [0mParameter 'dur' implicitly has an 'any' type.
+
+[7m118[0m           .filter((dur) => state !== "booking" || dur === selectedDuration)
+[7m   [0m [91m                   ~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/event-meta/Duration.tsx[0m:[93m119[0m:[93m17[0m - [91merror[0m[90m TS7006: [0mParameter 'duration' implicitly has an 'any' type.
+
+[7m119[0m           .map((duration, index) => (
+[7m   [0m [91m                ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/event-meta/Duration.tsx[0m:[93m119[0m:[93m27[0m - [91merror[0m[90m TS7006: [0mParameter 'index' implicitly has an 'any' type.
+
+[7m119[0m           .map((duration, index) => (
+[7m   [0m [91m                          ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/event-meta/Locations.tsx[0m:[93m42[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'location' implicitly has an 'any' type.
+
+[7m42[0m                   {locations.map((location, index) => (
+[7m  [0m [91m                                  ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/components/event-meta/Locations.tsx[0m:[93m42[0m:[93m45[0m - [91merror[0m[90m TS7006: [0mParameter 'index' implicitly has an 'any' type.
+
+[7m42[0m                   {locations.map((location, index) => (
+[7m  [0m [91m                                            ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useBookings.ts[0m:[93m304[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'host' implicitly has an 'any' type.
+
+[7m304[0m         ? event.data?.subsetOfHosts.map((host) => host.user)
+[7m   [0m [91m                                         ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useBookings.ts[0m:[93m387[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' is not assignable to type 'SuccessRedirectBookingType'.
+  Types of property 'startTime' are incompatible.
+    Type 'string' is not assignable to type 'Date'.
+
+[7m387[0m         booking: booking,
+[7m   [0m [91m        ~~~~~~~[0m
+
+  [96m../../packages/features/bookings/lib/bookingSuccessRedirect.ts[0m:[93m196[0m:[93m5[0m
+    [7m196[0m     booking: SuccessRedirectBookingType;
+    [7m   [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useBookings.ts[0m:[93m516[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' is not assignable to type 'SuccessRedirectBookingType'.
+  Types of property 'startTime' are incompatible.
+    Type 'string' is not assignable to type 'Date'.
+
+[7m516[0m         booking,
+[7m   [0m [91m        ~~~~~~~[0m
+
+  [96m../../packages/features/bookings/lib/bookingSuccessRedirect.ts[0m:[93m196[0m:[93m5[0m
+    [7m196[0m     booking: SuccessRedirectBookingType;
+    [7m   [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useVerifyCode.ts[0m:[93m22[0m:[93m17[0m - [91merror[0m[90m TS2345: [0mArgument of type 'Record<string, unknown>' is not assignable to parameter of type 'boolean'.
+
+[7m22[0m       onSuccess(data);
+[7m  [0m [91m                ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx[0m:[93m73[0m:[93m63[0m - [91merror[0m[90m TS2339: [0mProperty 'delegationCredentialId' does not exist on type '{ integration: { key?: JsonValue | undefined; name: string; type: `${string}_other` | `${string}_calendar` | `${string}_messaging` | `${string}_payment` | `${string}_video` | `${string}_automation` | `${string}_analytics` | `${string}_crm` | `${string}_other_calendar`; delegationCredential?: { ...; } | undefined; .....'.
+
+[7m73[0m                     delegationCredentialId={connectedCalendar.delegationCredentialId}
+[7m  [0m [91m                                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx[0m:[93m100[0m:[93m69[0m - [91merror[0m[90m TS2339: [0mProperty 'delegationCredentialId' does not exist on type '{ integration: { key?: JsonValue | undefined; name: string; type: `${string}_other` | `${string}_calendar` | `${string}_messaging` | `${string}_payment` | `${string}_video` | `${string}_automation` | `${string}_analytics` | `${string}_crm` | `${string}_other_calendar`; delegationCredential?: { ...; } | undefined; .....'.
+
+[7m100[0m                           delegationCredentialId={connectedCalendar.delegationCredentialId || null}
+[7m   [0m [91m                                                                    ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx[0m:[93m129[0m:[93m61[0m - [91merror[0m[90m TS2339: [0mProperty 'delegationCredentialId' does not exist on type '{ integration: { key?: JsonValue | undefined; name: string; type: `${string}_other` | `${string}_calendar` | `${string}_messaging` | `${string}_payment` | `${string}_video` | `${string}_automation` | `${string}_analytics` | `${string}_crm` | `${string}_other_calendar`; delegationCredential?: { ...; } | undefined; .....'.
+
+[7m129[0m                   delegationCredentialId={connectedCalendar.delegationCredentialId}
+[7m   [0m [91m                                                            ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/CreateEventTypeDialog.tsx[0m:[93m124[0m:[93m13[0m - [91merror[0m[90m TS2322: [0mType '{ teamSlug: any; teamId: number; permissions: { canCreateEventType: boolean; }; urlPrefix: string; isPending: boolean; form: UseFormReturn<TCreateEventTypeInput, any>; isManagedEventType: boolean; handleSubmit: (values: any) => void; SubmitButton: (isPending: boolean) => Element; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'teamSlug' does not exist on type 'IntrinsicAttributes'.
+
+[7m124[0m             teamSlug={team?.slug}
+[7m   [0m [91m            ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/CreateEventTypeDialog.tsx[0m:[93m131[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'values' implicitly has an 'any' type.
+
+[7m131[0m             handleSubmit={(values) => {
+[7m   [0m [91m                           ~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/EventTypeWebWrapper.tsx[0m:[93m208[0m:[93m52[0m - [91merror[0m[90m TS2339: [0mProperty 'workflows' does not exist on type 'DecoratedProcedureRecord<RootConfig<{ ctx: InnerContext; meta: object; errorShape: { message: string; code: number; data: { [key: string]: unknown; code: string; httpStatus: number; path?: string | undefined; }; }; transformer: { ...; }; }>, { ...; }, null>'.
+
+[7m208[0m   const { data: allActiveWorkflows } = trpc.viewer.workflows.getAllActiveWorkflows.useQuery({
+[7m   [0m [91m                                                   ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/locations/Locations.tsx[0m:[93m121[0m:[93m36[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  Overload 1 of 3, '(name: "id" | "locations" | "bookingFields" | `locations.${number}` | `locations.${number}.type` | `locations.${number}.link` | `locations.${number}.credentialId` | `locations.${number}.address` | `locations.${number}.displayLocationPublicly` | `locations.${number}.hostPhoneNumber` | `locations.${number}.teamName` | `locations.${number}.customLabel` | `locations.${number}.phone` | `locations.${number}.hostDefault` | `locations.${number}.attendeeAddress` | `locations.${number}.somewhereElse` | ... 41 more ... | `bookingFields.${number}.sources.${number}.fieldRequired`): string | ... 17 more ... | undefined', gave the following error.
+    Argument of type '"seatsPerTimeSlot"' is not assignable to parameter of type '"id" | "locations" | "bookingFields" | `locations.${number}` | `locations.${number}.type` | `locations.${number}.link` | `locations.${number}.credentialId` | `locations.${number}.address` | `locations.${number}.displayLocationPublicly` | `locations.${number}.hostPhoneNumber` | `locations.${number}.teamName` | `locat...'.
+  Overload 2 of 3, '(names: readonly ("id" | "locations" | "bookingFields" | `locations.${number}` | `locations.${number}.type` | `locations.${number}.link` | `locations.${number}.credentialId` | `locations.${number}.address` | `locations.${number}.displayLocationPublicly` | `locations.${number}.hostPhoneNumber` | `locations.${number}.teamName` | `locations.${number}.customLabel` | `locations.${number}.phone` | `locations.${number}.hostDefault` | `locations.${number}.attendeeAddress` | `locations.${number}.somewhereElse` | ... 41 more ... | `bookingFields.${number}.sources.${number}.fieldRequired`)[]): (string | ... 17 more ... | undefined)[]', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'readonly ("id" | "locations" | "bookingFields" | `locations.${number}` | `locations.${number}.type` | `locations.${number}.link` | `locations.${number}.credentialId` | `locations.${number}.address` | `locations.${number}.displayLocationPublicly` | `locations.${number}.hostPhoneNumber` | `locations.${number}.teamName...'.
+
+[7m121[0m   const seatsEnabled = !!getValues("seatsPerTimeSlot");
+[7m   [0m [91m                                   ~~~~~~~~~~~~~~~~~~[0m
+
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/tabs/advanced/EventAdvancedWebWrapper.tsx[0m:[93m8[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'workflows' does not exist on type 'DecoratedProcedureRecord<RootConfig<{ ctx: InnerContext; meta: object; errorShape: { message: string; code: number; data: { [key: string]: unknown; code: string; httpStatus: number; path?: string | undefined; }; }; transformer: { ...; }; }>, { ...; }, null>'.
+
+[7m8[0m   const { data: verifiedEmails } = trpc.viewer.workflows.getVerifiedEmails.useQuery({
+[7m [0m [91m                                               ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/views/event-types-listing-view.tsx[0m:[93m941[0m:[93m8[0m - [91merror[0m[90m TS2304: [0mCannot find name 'CreateButton'.
+
+[7m941[0m       <CreateButton
+[7m   [0m [91m       ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/views/event-types-listing-view.tsx[0m:[93m987[0m:[93m23[0m - [91merror[0m[90m TS2304: [0mCannot find name 'useOrgBranding'.
+
+[7m987[0m   const orgBranding = useOrgBranding();
+[7m   [0m [91m                      ~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/views/event-types-listing-view.tsx[0m:[93m1077[0m:[93m23[0m - [91merror[0m[90m TS2304: [0mCannot find name 'useOrgBranding'.
+
+[7m1077[0m   const orgBranding = useOrgBranding();
+[7m    [0m [91m                      ~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/members/members-view.tsx[0m:[93m14[0m:[93m60[0m - [91merror[0m[90m TS18047: [0m'props.org.user' is possibly 'null'.
+
+[7m14[0m   const isOrgAdminOrOwner = props.org && checkAdminOrOwner(props.org.user.role);
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/members/members-view.tsx[0m:[93m14[0m:[93m60[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'MembershipRole | null | undefined'.
+
+[7m14[0m   const isOrgAdminOrOwner = props.org && checkAdminOrOwner(props.org.user.role);
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/hooks/useSubmitOnboarding.ts[0m:[93m101[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m101[0m         window.location.href = result.checkoutUrl;
+[7m   [0m [91m        ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/organization/migrate-members/organization-migrate-members-view.tsx[0m:[93m18[0m:[93m67[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m18[0m type TeamMember = RouterOutputs["viewer"]["teams"]["listMembers"]["members"][number];
+[7m  [0m [91m                                                                  ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/organization/migrate-members/organization-migrate-members-view.tsx[0m:[93m40[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m40[0m       if (result.data?.members) {
+[7m  [0m [91m                       ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/organization/migrate-members/organization-migrate-members-view.tsx[0m:[93m41[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m41[0m         return [...acc, ...result.data.members];
+[7m  [0m [91m                                       ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/student-profile/student-profile-view.tsx[0m:[93m8[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@calcom/ui/components/steps' or its corresponding type declarations.
+
+[7m8[0m import { Steps } from "@calcom/ui/components/steps";
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/student-profile/student-profile-view.tsx[0m:[93m104[0m:[93m53[0m - [91merror[0m[90m TS2339: [0mProperty 'isLoading' does not exist on type 'UseTRPCMutationResult<{ status: MentorStatus; userId: number; id: string; createdAt: Date; updatedAt: Date; bio: string; university: string; degree: string; field: AcademicField; ... 9 more ...; totalRatings: number; }, TRPCClientErrorLike<...>, { ...; }, unknown>'.
+  Property 'isLoading' does not exist on type 'TRPCHookResult & Override<MutationObserverIdleResult<{ status: MentorStatus; userId: number; id: string; createdAt: Date; updatedAt: Date; bio: string; university: string; degree: string; ... 10 more ...; totalRatings: number; }, TRPCClientErrorLike<...>, { ...; }, unknown>, { ...; }> & { ...; }'.
+
+[7m104[0m             <Button type="submit" loading={mutation.isLoading}>
+[7m   [0m [91m                                                    ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/org/[orgSlug]/instant-meeting/team/[slug]/[type]/instant-meeting-view.tsx[0m:[93m6[0m:[93m41[0m - [91merror[0m[90m TS2307: [0mCannot find module '@lib/org/[orgSlug]/instant-meeting/team/[slug]/[type]/getServerSideProps' or its corresponding type declarations.
+
+[7m6[0m import type { getServerSideProps } from "@lib/org/[orgSlug]/instant-meeting/team/[slug]/[type]/getServerSideProps";
+[7m [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/admin/oauth-clients-admin-view.tsx[0m:[93m36[0m:[93m44[0m - [91merror[0m[90m TS2339: [0mProperty 'createClient' does not exist on type 'DecoratedProcedureRecord<RootConfig<{ ctx: InnerContext; meta: object; errorShape: { message: string; code: number; data: { [key: string]: unknown; code: string; httpStatus: number; path?: string | undefined; }; }; transformer: { ...; }; }>, { ...; }, null>'.
+
+[7m36[0m   const createMutation = trpc.viewer.oAuth.createClient.useMutation({
+[7m  [0m [91m                                           ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/admin/oauth-clients-admin-view.tsx[0m:[93m37[0m:[93m23[0m - [91merror[0m[90m TS7006: [0mParameter 'data' implicitly has an 'any' type.
+
+[7m37[0m     onSuccess: async (data) => {
+[7m  [0m [91m                      ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/admin/oauth-clients-admin-view.tsx[0m:[93m50[0m:[93m15[0m - [91merror[0m[90m TS7006: [0mParameter 'error' implicitly has an 'any' type.
+
+[7m50[0m     onError: (error) => {
+[7m  [0m [91m              ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m130[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m130[0m     if (data?.nextCursor) {
+[7m   [0m [91m              ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m131[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m131[0m       setCursors((prev) => [...prev, data.nextCursor]);
+[7m   [0m [91m                                          ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m147[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'invoices' does not exist on type 'any[]'.
+
+[7m147[0m       {!data?.invoices.length && currentPage === 0 ? (
+[7m   [0m [91m              ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m164[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'invoices' does not exist on type 'any[]'.
+
+[7m164[0m                 {data?.invoices.map((invoice) => (
+[7m   [0m [91m                       ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m164[0m:[93m38[0m - [91merror[0m[90m TS7006: [0mParameter 'invoice' implicitly has an 'any' type.
+
+[7m164[0m                 {data?.invoices.map((invoice) => (
+[7m   [0m [91m                                     ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m212[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'hasMore' does not exist on type 'any[]'.
+
+[7m212[0m           {(currentPage > 0 || data?.hasMore) && (
+[7m   [0m [91m                                     ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/components/InvoicesTable.tsx[0m:[93m226[0m:[93m34[0m - [91merror[0m[90m TS2339: [0mProperty 'hasMore' does not exist on type 'any[]'.
+
+[7m226[0m                 disabled={!data?.hasMore || isFetching}
+[7m   [0m [91m                                 ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateNewOutOfOfficeEntryButton.tsx[0m:[93m24[0m:[93m58[0m - [91merror[0m[90m TS18047: [0m'orgData.user' is possibly 'null'.
+
+[7m24[0m   const isOrgAdminOrOwner = orgData && checkAdminOrOwner(orgData.user.role);
+[7m  [0m [91m                                                         ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateNewOutOfOfficeEntryButton.tsx[0m:[93m24[0m:[93m58[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'MembershipRole | null | undefined'.
+
+[7m24[0m   const isOrgAdminOrOwner = orgData && checkAdminOrOwner(orgData.user.role);
+[7m  [0m [91m                                                         ~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateOrEditOutOfOfficeModal.tsx[0m:[93m56[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m56[0m       getNextPageParam: (lastPage) => lastPage.nextCursor,
+[7m  [0m [91m                                               ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateOrEditOutOfOfficeModal.tsx[0m:[93m72[0m:[93m33[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m72[0m         .flatMap((page) => page.members)
+[7m  [0m [91m                                ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateOrEditOutOfOfficeModal.tsx[0m:[93m89[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'nextCursor' does not exist on type 'any[]'.
+
+[7m89[0m       getNextPageParam: (lastPage) => lastPage.nextCursor,
+[7m  [0m [91m                                               ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/outOfOffice/CreateOrEditOutOfOfficeModal.tsx[0m:[93m98[0m:[93m31[0m - [91merror[0m[90m TS2339: [0mProperty 'members' does not exist on type 'any[]'.
+
+[7m98[0m       .flatMap((page) => page.members)
+[7m  [0m [91m                              ~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/teams/[id]/event-types-view.tsx[0m:[93m57[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{ teamSlug: any; teamId: number; permissions: { canCreateEventType: boolean; }; urlPrefix: string; isPending: boolean; form: UseFormReturn<TCreateEventTypeInput, any>; isManagedEventType: boolean; handleSubmit: (values: any) => void; SubmitButton: (isPending: boolean) => Element; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'teamSlug' does not exist on type 'IntrinsicAttributes'.
+
+[7m57[0m       teamSlug={team?.slug}
+[7m  [0m [91m      ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/teams/[id]/event-types-view.tsx[0m:[93m64[0m:[93m22[0m - [91merror[0m[90m TS7006: [0mParameter 'values' implicitly has an 'any' type.
+
+[7m64[0m       handleSubmit={(values) => {
+[7m  [0m [91m                     ~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/teams/[id]/onboard-members-view.tsx[0m:[93m2[0m:[93m4[0m - [91merror[0m[90m TS2304: [0mCannot find name 'WizardLayout'.
+
+[7m2[0m   <WizardLayout currentStep={2} maxSteps={3}>
+[7m [0m [91m   ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/teams/[id]/onboard-members-view.tsx[0m:[93m4[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'WizardLayout'.
+
+[7m4[0m   </WizardLayout>
+[7m [0m [91m    ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m76[0m:[93m32[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"teamUpgradeBanner"' can't be used to index type 'AllBannerProps'.
+  Property 'teamUpgradeBanner' does not exist on type 'AllBannerProps'.
+
+[7m76[0m           return <Banner data={banners[key]} key={key} />;
+[7m  [0m [91m                               ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m78[0m:[93m26[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"orgUpgradeBanner"' can't be used to index type 'BannerComponent'.
+  Property 'orgUpgradeBanner' does not exist on type 'BannerComponent'.
+
+[7m78[0m           const Banner = BannerComponent[key];
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m79[0m:[93m32[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"orgUpgradeBanner"' can't be used to index type 'AllBannerProps'.
+  Property 'orgUpgradeBanner' does not exist on type 'AllBannerProps'.
+
+[7m79[0m           return <Banner data={banners[key]} key={key} />;
+[7m  [0m [91m                               ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m87[0m:[93m26[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"impersonationBanner"' can't be used to index type 'BannerComponent'.
+  Property 'impersonationBanner' does not exist on type 'BannerComponent'.
+
+[7m87[0m           const Banner = BannerComponent[key];
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m88[0m:[93m32[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"impersonationBanner"' can't be used to index type 'AllBannerProps'.
+  Property 'impersonationBanner' does not exist on type 'AllBannerProps'.
+
+[7m88[0m           return <Banner data={banners[key]} key={key} />;
+[7m  [0m [91m                               ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m96[0m:[93m26[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"dueInvoiceBanner"' can't be used to index type 'BannerComponent'.
+  Property 'dueInvoiceBanner' does not exist on type 'BannerComponent'.
+
+[7m96[0m           const Banner = BannerComponent[key];
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx[0m:[93m97[0m:[93m32[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type '"dueInvoiceBanner"' can't be used to index type 'AllBannerProps'.
+  Property 'dueInvoiceBanner' does not exist on type 'AllBannerProps'.
+
+[7m97[0m           return <Banner data={banners[key]} key={key} />;
+[7m  [0m [91m                               ~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/team/team-view.tsx[0m:[93m85[0m:[93m59[0m - [91merror[0m[90m TS2322: [0mType '{ slug: string; title: string; description: string | null; users: { name: string | null; username: string | null; avatarUrl: string | null; }[]; }' is not assignable to type 'Pick<{ length: number; description: string | null; id: number; timeZone: string | null; requiresBookerEmailVerification: boolean; metadata: JsonValue; userId: number | null; ... 77 more ...; enablePerHostLocations: boolean; }, "length" | ... 13 more ... | "currency"> & { ...; }'.
+  Type '{ slug: string; title: string; description: string | null; users: { name: string | null; username: string | null; avatarUrl: string | null; }[]; }' is missing the following properties from type 'Pick<{ length: number; description: string | null; id: number; timeZone: string | null; requiresBookerEmailVerification: boolean; metadata: JsonValue; userId: number | null; ... 77 more ...; enablePerHostLocations: boolean; }, "length" | ... 13 more ... | "currency">': length, id, requiresBookerEmailVerification, metadata, and 9 more.
+
+[7m85[0m                 <EventTypeDescription className="text-sm" eventType={type} />
+[7m  [0m [91m                                                          ~~~~~~~~~[0m
+
+  [96mmodules/event-types/components/EventTypeDescription.tsx[0m:[93m16[0m:[93m3[0m
+    [7m16[0m   eventType: Pick<
+    [7m  [0m [96m  ~~~~~~~~~[0m
+    The expected type comes from property 'eventType' which is declared here on type 'IntrinsicAttributes & EventTypeDescriptionProps'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/team/team-view.tsx[0m:[93m88[0m:[93m88[0m - [91merror[0m[90m TS2322: [0mType '{ name: string | null; username: string | null; avatarUrl: string | null; }[]' is not assignable to type '(Pick<{ locale: string | null; name: string | null; id: number; uuid: string; username: string | null; email: string; emailVerified: Date | null; bio: string | null; avatarUrl: string | null; ... 37 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; })[]'.
+  Type '{ name: string | null; username: string | null; avatarUrl: string | null; }' is not assignable to type 'Pick<{ locale: string | null; name: string | null; id: number; uuid: string; username: string | null; email: string; emailVerified: Date | null; bio: string | null; avatarUrl: string | null; ... 37 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; }'.
+    Property 'profile' is missing in type '{ name: string | null; username: string | null; avatarUrl: string | null; }' but required in type '{ profile: Omit<UserProfile, "upId">; }'.
+
+[7m88[0m                 <UserAvatarGroup truncateAfter={4} className="flex shrink-0" size="sm" users={type.users} />
+[7m  [0m [91m                                                                                       ~~~~~[0m
+
+  [96m../../packages/ui/components/avatar/UserAvatarGroup.tsx[0m:[93m10[0m:[93m5[0m
+    [7m10[0m     profile: Omit<UserProfile, "upId">;
+    [7m  [0m [96m    ~~~~~~~[0m
+    'profile' is declared here.
+  [96m../../packages/ui/components/avatar/UserAvatarGroup.tsx[0m:[93m9[0m:[93m3[0m
+    [7m9[0m   users: (Pick<User, "name" | "username" | "avatarUrl"> & {
+    [7m [0m [96m  ~~~~~[0m
+    The expected type comes from property 'users' which is declared here on type 'IntrinsicAttributes & Omit<AvatarGroupProps, "items"> & { users: (Pick<{ locale: string | null; name: string | null; id: number; uuid: string; ... 42 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; })[]; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/team/team-view.tsx[0m:[93m121[0m:[93m19[0m - [91merror[0m[90m TS2322: [0mType '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }[]' is not assignable to type '(Pick<{ locale: string | null; name: string | null; id: number; uuid: string; username: string | null; email: string; emailVerified: Date | null; bio: string | null; avatarUrl: string | null; ... 37 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; })[]'.
+  Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is not assignable to type 'Pick<{ locale: string | null; name: string | null; id: number; uuid: string; username: string | null; email: string; emailVerified: Date | null; bio: string | null; avatarUrl: string | null; ... 37 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; }'.
+    Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is not assignable to type '{ profile: Omit<UserProfile, "upId">; }'.
+      Types of property 'profile' are incompatible.
+        Type 'unknown' is not assignable to type 'Omit<UserProfile, "upId">'.
+
+[7m121[0m                   users={team.members.filter((mem) => mem.subteams?.includes(ch.slug) && mem.accepted)}
+[7m   [0m [91m                  ~~~~~[0m
+
+  [96m../../packages/ui/components/avatar/UserAvatarGroup.tsx[0m:[93m9[0m:[93m3[0m
+    [7m9[0m   users: (Pick<User, "name" | "username" | "avatarUrl"> & {
+    [7m [0m [96m  ~~~~~[0m
+    The expected type comes from property 'users' which is declared here on type 'IntrinsicAttributes & Omit<AvatarGroupProps, "items"> & { users: (Pick<{ locale: string | null; name: string | null; id: number; uuid: string; ... 42 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; })[]; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/team/team-view.tsx[0m:[93m180[0m:[93m23[0m - [91merror[0m[90m TS2322: [0mType '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }[]' is not assignable to type 'MemberType[]'.
+  Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is not assignable to type 'MemberType'.
+    Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is missing the following properties from type '{ profile: Omit<UserProfile, "upId">; safeBio: string | null; bookerUrl: string; }': safeBio, bookerUrl
+
+[7m180[0m                 <Team members={team.members} teamName={team.name} />
+[7m   [0m [91m                      ~~~~~~~[0m
+
+  [96mcomponents/team/screens/Team.tsx[0m:[93m73[0m:[93m40[0m
+    [7m73[0m const Team = ({ members, teamName }: { members: MemberType[]; teamName: string | null }) => {
+    [7m  [0m [96m                                       ~~~~~~~[0m
+    The expected type comes from property 'members' which is declared here on type 'IntrinsicAttributes & { members: MemberType[]; teamName: string | null; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/upgrade/upgrade-view.tsx[0m:[93m22[0m:[93m19[0m - [91merror[0m[90m TS2345: [0mArgument of type 'unknown' is not assignable to parameter of type 'string'.
+
+[7m22[0m       router.push(data.url);
+[7m  [0m [91m                  ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m89[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m89[0m       name: selectedUser?.name ?? "",
+[7m  [0m [91m      ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m90[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m90[0m       username: selectedUser?.username ?? "",
+[7m  [0m [91m      ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m91[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m91[0m       email: selectedUser?.email ?? "",
+[7m  [0m [91m      ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m93[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m93[0m       bio: selectedUser?.bio ?? "",
+[7m  [0m [91m      ~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m94[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m94[0m       role: selectedUser?.role ?? "",
+[7m  [0m [91m      ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m95[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m95[0m       timeZone: selectedUser?.timeZone ?? "",
+[7m  [0m [91m      ~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m183[0m:[93m13[0m - [91merror[0m[90m TS2578: [0mUnused '@ts-expect-error' directive.
+
+[7m183[0m             // @ts-expect-error they're there in local types but for some reason it errors?
+[7m   [0m [91m            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m239[0m:[93m17[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m239[0m                 defaultValue={selectedUser?.role ?? "MEMBER"}
+[7m   [0m [91m                ~~~~~~~~~~~~[0m
+
+  [96m../../node_modules/@radix-ui/react-toggle-group/dist/index.d.ts[0m:[93m24[0m:[93m5[0m
+    [7m24[0m     defaultValue?: string;
+    [7m  [0m [96m    ~~~~~~~~~~~~[0m
+    The expected type comes from property 'defaultValue' which is declared here on type 'IntrinsicAttributes & ToggleGroupProps & { customClassNames?: string | undefined; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m255[0m:[93m31[0m - [91merror[0m[90m TS2322: [0mType 'unknown' is not assignable to type 'number'.
+
+[7m255[0m               <AttributesList selectedUserId={selectedUser?.id} />
+[7m   [0m [91m                              ~~~~~~~~~~~~~~[0m
+
+  [96mmodules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m285[0m:[93m34[0m
+    [7m285[0m function AttributesList(props: { selectedUserId: number }) {
+    [7m   [0m [96m                                 ~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'selectedUserId' which is declared here on type 'IntrinsicAttributes & { selectedUserId: number; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m60[0m:[93m73[0m - [91merror[0m[90m TS2339: [0mProperty 'map' does not exist on type '{}'.
+
+[7m60[0m   const schedulesNames = loadedUser?.schedules && loadedUser?.schedules.map((s) => s.name);
+[7m  [0m [91m                                                                        ~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m60[0m:[93m78[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+
+[7m60[0m   const schedulesNames = loadedUser?.schedules && loadedUser?.schedules.map((s) => s.name);
+[7m  [0m [91m                                                                             ~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m62[0m:[93m44[0m - [91merror[0m[90m TS2339: [0mProperty 'map' does not exist on type '{}'.
+
+[7m62[0m     loadedUser?.teams && loadedUser?.teams.map((t) => `${t.name} ${!t.accepted ? "(pending)" : ""}`);
+[7m  [0m [91m                                           ~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m62[0m:[93m49[0m - [91merror[0m[90m TS7006: [0mParameter 't' implicitly has an 'any' type.
+
+[7m62[0m     loadedUser?.teams && loadedUser?.teams.map((t) => `${t.name} ${!t.accepted ? "(pending)" : ""}`);
+[7m  [0m [91m                                                ~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m83[0m:[93m23[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'ReactI18NextChildren'.
+
+[7m83[0m                       {loadedUser?.name || "Nameless User"}
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96m../../node_modules/react-i18next/index.d.ts[0m:[93m47[0m:[93m5[0m
+    [7m47[0m     children?: ReactI18NextChildren;
+    [7m  [0m [96m    ~~~~~~~~[0m
+    The expected type comes from property 'children' which is declared here on type 'DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m86[0m:[93m23[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'ReactI18NextChildren'.
+
+[7m86[0m                       {loadedUser?.bio || "This user does not have a bio..."}
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96m../../node_modules/react-i18next/index.d.ts[0m:[93m47[0m:[93m5[0m
+    [7m47[0m     children?: ReactI18NextChildren;
+    [7m  [0m [96m    ~~~~~~~~[0m
+    The expected type comes from property 'children' which is declared here on type 'DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m100[0m:[93m53[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string | string[]'.
+
+[7m100[0m                     <DisplayInfo label={t("email")} value={loadedUser?.email ?? ""} icon="at-sign" />
+[7m   [0m [91m                                                    ~~~~~[0m
+
+  [96mmodules/users/components/UserTable/EditSheet/DisplayInfo.tsx[0m:[93m10[0m:[93m3[0m
+    [7m10[0m   value: string | string[];
+    [7m  [0m [96m  ~~~~~[0m
+    The expected type comes from property 'value' which is declared here on type 'IntrinsicAttributes & DisplayInfoType'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m101[0m:[93m60[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m101[0m                     <DisplayInfo label={t("role")} value={[loadedUser?.role ?? ""]} icon="fingerprint" />
+[7m   [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m102[0m:[93m56[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string | string[]'.
+
+[7m102[0m                     <DisplayInfo label={t("timezone")} value={loadedUser?.timeZone ?? ""} icon="clock" />
+[7m   [0m [91m                                                       ~~~~~[0m
+
+  [96mmodules/users/components/UserTable/EditSheet/DisplayInfo.tsx[0m:[93m10[0m:[93m3[0m
+    [7m10[0m   value: string | string[];
+    [7m  [0m [96m  ~~~~~[0m
+    The expected type comes from property 'value' which is declared here on type 'IntrinsicAttributes & DisplayInfoType'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[0m:[93m147[0m:[93m19[0m - [91merror[0m[90m TS2322: [0mType '{}' is not assignable to type 'string'.
+
+[7m147[0m                   avatarUrl={loadedUser.avatarUrl ?? avatarURL}
+[7m   [0m [91m                  ~~~~~~~~~[0m
+
+  [96mmodules/users/components/UserTable/EditSheet/EditUserForm.tsx[0m:[93m75[0m:[93m3[0m
+    [7m75[0m   avatarUrl: string;
+    [7m  [0m [96m  ~~~~~~~~~[0m
+    The expected type comes from property 'avatarUrl' which is declared here on type 'IntrinsicAttributes & { selectedUser: Record<string, unknown>; avatarUrl: string; domainUrl: string; dispatch: Dispatch<UserTableAction>; canEditAttributesForUser?: boolean | undefined; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/components/UserTable/UserListTable.tsx[0m:[93m187[0m:[93m42[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string | undefined' is not assignable to parameter of type 'MembershipRole | null | undefined'.
+  Type 'string' is not assignable to type 'MembershipRole | null | undefined'.
+
+[7m187[0m   const adminOrOwner = checkAdminOrOwner(org?.user?.role);
+[7m   [0m [91m                                         ~~~~~~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m77[0m:[93m7[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'type' does not exist in type '{ name: string; }'.
+
+[7m77[0m       type: "SYSTEM",
+[7m  [0m [91m      ~~~~[0m
+
+  [96m../../packages/trpc/types/server/routers/_app.d.ts[0m:[93m8348[0m:[93m25[0m
+    [7m8348[0m                         customRole: {
+    [7m    [0m [96m                        ~~~~~~~~~~[0m
+    The expected type comes from property 'customRole' which is declared here on type '{ id: number; name: string | null; username: string | null; email: string; avatarUrl: string | null; role: string; customRole: { name: string; } | null; accepted: boolean; teams: { id: number; name: string; accepted: boolean; }[]; ... 7 more ...; disableImpersonation: boolean; }'
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m108[0m:[93m41[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'slug' does not exist in type '{ id: number; name: string; accepted: boolean; }'.
+
+[7m108[0m         teams: [{ id: 1, name: "Team1", slug: "team1" }],
+[7m   [0m [91m                                        ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m111[0m:[93m13[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'id' does not exist in type '{ attributeId: string; value: string; weight: number | null; contains: string[]; }'.
+
+[7m111[0m             id: "1",
+[7m   [0m [91m            ~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m141[0m:[93m41[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'slug' does not exist in type '{ id: number; name: string; accepted: boolean; }'.
+
+[7m141[0m         teams: [{ id: 1, name: "Team1", slug: "team1" }],
+[7m   [0m [91m                                        ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m144[0m:[93m13[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'id' does not exist in type '{ attributeId: string; value: string; weight: number | null; contains: string[]; }'.
+
+[7m144[0m             id: "1",
+[7m   [0m [91m            ~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m153[0m:[93m13[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'id' does not exist in type '{ attributeId: string; value: string; weight: number | null; contains: string[]; }'.
+
+[7m153[0m             id: "2",
+[7m   [0m [91m            ~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m184[0m:[93m35[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'slug' does not exist in type '{ id: number; name: string; accepted: boolean; }'.
+
+[7m184[0m           { id: 1, name: "Team1", slug: "team1" },
+[7m   [0m [91m                                  ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m185[0m:[93m35[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'slug' does not exist in type '{ id: number; name: string; accepted: boolean; }'.
+
+[7m185[0m           { id: 2, name: "Team2", slug: "team2" },
+[7m   [0m [91m                                  ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m209[0m:[93m42[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'slug' does not exist in type '{ id: number; name: string; accepted: boolean; }'.
+
+[7m209[0m         teams: [{ id: 1, name: "Team,1", slug: "team1" }],
+[7m   [0m [91m                                         ~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts[0m:[93m212[0m:[93m13[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'id' does not exist in type '{ attributeId: string; value: string; weight: number | null; contains: string[]; }'.
+
+[7m212[0m             id: "1",
+[7m   [0m [91m            ~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/packages/features/bookings/Booker/hooks/useBookerLayout.ts[0m:[93m61[0m:[93m62[0m - [91merror[0m[90m TS7006: [0mParameter 'userLayout' implicitly has an 'any' type.
+
+[7m61[0m       const validLayout = bookerLayouts.enabledLayouts.find((userLayout) => userLayout === layout);
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/packages/features/bookings/Booker/hooks/useInitialFormValues.ts[0m:[93m149[0m:[93m59[0m - [91merror[0m[90m TS7006: [0mParameter 'responses' implicitly has an 'any' type.
+
+[7m149[0m         const responses = eventType.bookingFields.reduce((responses, field) => {
+[7m   [0m [91m                                                          ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/packages/features/bookings/Booker/hooks/useInitialFormValues.ts[0m:[93m149[0m:[93m70[0m - [91merror[0m[90m TS7006: [0mParameter 'field' implicitly has an 'any' type.
+
+[7m149[0m         const responses = eventType.bookingFields.reduce((responses, field) => {
+[7m   [0m [91m                                                                     ~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/packages/features/bookings/Booker/hooks/useInitialFormValues.ts[0m:[93m179[0m:[93m57[0m - [91merror[0m[90m TS7006: [0mParameter 'responses' implicitly has an 'any' type.
+
+[7m179[0m       const responses = eventType.bookingFields.reduce((responses, field) => {
+[7m   [0m [91m                                                        ~~~~~~~~~[0m
+
+[96m/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/packages/features/bookings/Booker/hooks/useInitialFormValues.ts[0m:[93m179[0m:[93m68[0m - [91merror[0m[90m TS7006: [0mParameter 'field' implicitly has an 'any' type.
+
+[7m179[0m       const responses = eventType.bookingFields.reduce((responses, field) => {
+[7m   [0m [91m                                                                   ~~~~~[0m
+
+
+Found 143 errors in 49 files.
+
+Errors  Files
+     1  app/api/webhooks/retell-ai/__tests__/route.test.ts[90m:129[0m
+     1  app/students/[field]/page.tsx[90m:19[0m
+     1  app/thotis/admin/incidents/page.tsx[90m:161[0m
+     1  app/thotis/mentor/[username]/page.tsx[90m:100[0m
+     1  app/thotis/mentors/page.tsx[90m:62[0m
+     1  components/apps/alby/AlbyPaymentComponent.tsx[90m:186[0m
+     1  components/apps/btcpayserver/BtcpayPaymentComponent.tsx[90m:141[0m
+     2  components/dialog/ChargeCardDialog.tsx[90m:25[0m
+     3  components/dialog/ReassignDialog.tsx[90m:88[0m
+     2  components/dialog/WrongAssignmentDialog.tsx[90m:244[0m
+     1  components/getting-started/steps-views/ConnectCalendars.tsx[90m:53[0m
+     4  components/ui/UsernameAvailability/PremiumTextfield.tsx[90m:82[0m
+     1  lib/pages/auth/verify-email.test.ts[90m:2[0m
+     1  lib/pages/auth/verify-email.ts[90m:7[0m
+     5  lib/pages/document/_applyThemeForDocument.test.ts[90m:26[0m
+     6  modules/auth/sso/provider-view.tsx[90m:18[0m
+     1  modules/bookings/components/Booker.tsx[90m:86[0m
+     1  modules/bookings/components/BookerWebWrapper.tsx[90m:201[0m
+    13  modules/bookings/components/BookEventForm/BookingFields.tsx[90m:51[0m
+     3  modules/bookings/components/event-meta/Duration.tsx[90m:118[0m
+     2  modules/bookings/components/event-meta/Locations.tsx[90m:42[0m
+     3  modules/bookings/hooks/useBookings.ts[90m:304[0m
+     1  modules/bookings/hooks/useVerifyCode.ts[90m:22[0m
+     3  modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx[90m:73[0m
+     2  modules/event-types/components/CreateEventTypeDialog.tsx[90m:124[0m
+     1  modules/event-types/components/EventTypeWebWrapper.tsx[90m:208[0m
+     1  modules/event-types/components/locations/Locations.tsx[90m:121[0m
+     1  modules/event-types/components/tabs/advanced/EventAdvancedWebWrapper.tsx[90m:8[0m
+     3  modules/event-types/views/event-types-listing-view.tsx[90m:941[0m
+     2  modules/members/members-view.tsx[90m:14[0m
+     1  modules/onboarding/hooks/useSubmitOnboarding.ts[90m:101[0m
+     3  modules/onboarding/organization/migrate-members/organization-migrate-members-view.tsx[90m:18[0m
+     2  modules/onboarding/student-profile/student-profile-view.tsx[90m:8[0m
+     1  modules/org/[orgSlug]/instant-meeting/team/[slug]/[type]/instant-meeting-view.tsx[90m:6[0m
+     3  modules/settings/admin/oauth-clients-admin-view.tsx[90m:36[0m
+     7  modules/settings/billing/components/InvoicesTable.tsx[90m:130[0m
+     2  modules/settings/outOfOffice/CreateNewOutOfOfficeEntryButton.tsx[90m:24[0m
+     4  modules/settings/outOfOffice/CreateOrEditOutOfOfficeModal.tsx[90m:56[0m
+     2  modules/settings/teams/[id]/event-types-view.tsx[90m:57[0m
+     2  modules/settings/teams/[id]/onboard-members-view.tsx[90m:2[0m
+     7  modules/shell/banners/LayoutBanner.tsx[90m:76[0m
+     4  modules/team/team-view.tsx[90m:85[0m
+     1  modules/upgrade/upgrade-view.tsx[90m:22[0m
+     9  modules/users/components/UserTable/EditSheet/EditUserForm.tsx[90m:89[0m
+    10  modules/users/components/UserTable/EditSheet/EditUserSheet.tsx[90m:60[0m
+     1  modules/users/components/UserTable/UserListTable.tsx[90m:187[0m
+    10  modules/users/lib/UserListTableUtils.test.ts[90m:77[0m
+     1  ../../packages/features/bookings/Booker/hooks/useBookerLayout.ts[90m:61[0m
+     4  ../../packages/features/bookings/Booker/hooks/useInitialFormValues.ts[90m:149[0m
+ERROR: command finished with error: command (/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web) /private/var/folders/lf/_1ctg98j7pnd72hph771429h0000gn/T/xfs-35c40392/yarn run type-check:ci exited (2)
+@calcom/web#type-check:ci: command (/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web) /private/var/folders/lf/_1ctg98j7pnd72hph771429h0000gn/T/xfs-35c40392/yarn run type-check:ci exited (2)
+
+ Tasks:    9 successful, 10 total
+Cached:    0 cached, 10 total
+  Time:    1m12.098s 
+Failed:    @calcom/web#type-check:ci
+
+ ERROR  run failed: command  exited (2)

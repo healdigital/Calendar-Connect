@@ -1,27 +1,21 @@
 import { authedAdminProcedure } from "../../../procedures/authedProcedure";
 import { router } from "../../../trpc";
 import { ZAdminAssignFeatureToTeamSchema } from "./assignFeatureToTeam.schema";
-import { ZBillingPortalLinkSchema } from "./billingPortalLink.schema";
-import { ZCreateSelfHostedLicenseSchema } from "./createSelfHostedLicenseKey.schema";
 import { ZAdminGetTeamsForFeatureSchema } from "./getTeamsForFeature.schema";
 import { ZListMembersSchema } from "./listPaginated.schema";
 import { ZAdminLockUserAccountSchema } from "./lockUserAccount.schema";
 import { ZAdminRemoveTwoFactor } from "./removeTwoFactor.schema";
-import { ZResendPurchaseCompleteEmailSchema } from "./resendPurchaseCompleteEmail.schema";
 import { ZAdminPasswordResetSchema } from "./sendPasswordReset.schema";
 import { ZSetSMSLockState } from "./setSMSLockState.schema";
 import { toggleFeatureFlag } from "./toggleFeatureFlag.procedure";
 import { ZAdminUnassignFeatureFromTeamSchema } from "./unassignFeatureFromTeam.schema";
-import { ZAdminVerifyWorkflowsSchema } from "./verifyWorkflows.schema";
 import { watchlistRouter } from "./watchlist/_router";
-import { ZWhitelistUserWorkflows } from "./whitelistUserWorkflows.schema";
 import {
   workspacePlatformCreateSchema,
   workspacePlatformToggleEnabledSchema,
   workspacePlatformUpdateSchema,
   workspacePlatformUpdateServiceAccountSchema,
 } from "./workspacePlatform/schema";
-
 const NAMESPACE = "admin";
 
 const namespaced = (s: string) => `${NAMESPACE}.${s}`;
@@ -50,31 +44,6 @@ export const adminRouter = router({
   }),
   setSMSLockState: authedAdminProcedure.input(ZSetSMSLockState).mutation(async (opts) => {
     const { default: handler } = await import("./setSMSLockState.handler");
-    return handler(opts);
-  }),
-  /*
-  createSelfHostedLicense: authedAdminProcedure
-    .input(ZCreateSelfHostedLicenseSchema)
-    .mutation(async (opts) => {
-      const { default: handler } = await import("./createSelfHostedLicenseKey.handler");
-      return handler(opts);
-    }),
-  resendPurchaseCompleteEmail: authedAdminProcedure
-    .input(ZResendPurchaseCompleteEmailSchema)
-    .mutation(async (opts) => {
-      const { default: handler } = await import("./resendPurchaseCompleteEmail.handler");
-      return handler(opts);
-    }),
-  billingPortalLink: authedAdminProcedure.input(ZBillingPortalLinkSchema).mutation(async (opts) => {
-    const { default: handler } = await import("./billingPortalLink.handler");
-    return handler(opts);
-  }),
-  verifyWorkflows: authedAdminProcedure.input(ZAdminVerifyWorkflowsSchema).mutation(async (opts) => {
-    const { default: handler } = await import("./verifyWorkflows.handler");
-    return handler(opts);
-  }),
-  whitelistUserWorkflows: authedAdminProcedure.input(ZWhitelistUserWorkflows).mutation(async (opts) => {
-    const { default: handler } = await import("./whitelistUserWorkflows.handler");
     return handler(opts);
   }),
   getTeamsForFeature: authedAdminProcedure.input(ZAdminGetTeamsForFeatureSchema).query(async (opts) => {
@@ -116,5 +85,4 @@ export const adminRouter = router({
     }),
   }),
   watchlist: watchlistRouter,
-  */
 });

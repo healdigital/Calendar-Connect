@@ -245,7 +245,7 @@ This implementation plan breaks down the complete removal of the Enterprise Edit
   - **Property 5: Valid TypeScript Path Mappings**
   - **Validates: Requirements 4.5, 9.1, 9.2, 9.3, 9.5**
 
-- [ ] 28. Checkpoint - Verify Complete Build Success
+- [x] 28. Checkpoint - Verify Complete Build Success
   - Run `yarn type-check:ci --force` to verify zero errors across all workspaces
   - Run `yarn workspace @calcom/api-v2 build` to verify API v2 compiles
   - Run `yarn workspace @calcom/web type-check` to verify web compiles
@@ -275,7 +275,7 @@ This implementation plan breaks down the complete removal of the Enterprise Edit
   - Remove any other commercial-related translation strings
   - _Requirements: 5.3, 5.4_
 
-- [ ] 30.1 Write unit test for translation commercial reference removal
+- [x] 30.1 Write unit test for translation commercial reference removal
   - Test that common.json doesn't contain commercial references on line 314
   - _Requirements: 5.4_
 
@@ -284,7 +284,7 @@ This implementation plan breaks down the complete removal of the Enterprise Edit
   - Update any Docker environment variables to remove license-related vars
   - _Requirements: 5.5_
 
-- [ ] 31.1 Write unit test for Docker configuration cleanup
+- [x] 31.1 Write unit test for Docker configuration cleanup
   - Test that docker-compose.yml doesn't contain enterprise config on line 98
   - _Requirements: 5.5_
 
@@ -294,7 +294,7 @@ This implementation plan breaks down the complete removal of the Enterprise Edit
   - Update environment variable documentation to remove license-related vars
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 32.1 Write property test for license environment variable removal
+- [x] 32.1 Write property test for license environment variable removal
   - **Property 3: No License Environment Variables**
   - **Validates: Requirements 6.1, 6.2, 6.3, 6.4**
 
@@ -304,11 +304,11 @@ This implementation plan breaks down the complete removal of the Enterprise Edit
   - Update translation files to remove commercial strings
   - _Requirements: 10.1, 10.2_
 
-- [-] 33.1 Write property test for commercial text removal
+- [x] 33.1 Write property test for commercial text removal
   - **Property 4: No Commercial Text in User-Facing Files**
   - **Validates: Requirements 10.1, 10.2**
 
-- [ ] 34. Final Validation and Cleanup
+- [-] 34. Final Validation and Cleanup
   - Run all property-based tests to verify complete EE removal
   - Run `yarn type-check:ci --force` to verify zero errors
   - Run `TZ=UTC yarn test` to verify all unit tests pass

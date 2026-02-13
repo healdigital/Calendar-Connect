@@ -1,16 +1,21 @@
 import process from "node:process";
 import FeedbackRequestEmail from "@calcom/emails/templates/thotis/feedback-request";
 import prisma from "@calcom/prisma";
+import { Prisma } from "@calcom/prisma/client";
 import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type { TFunction } from "next-i18next";
 
-const CRON_SECRET = process.env.CRON_SECRET;
+const CRON_SECRET: string | undefined = process.env.CRON_SECRET;
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const authHeader = req.headers.get("authorization");
   const apiKey = req.nextUrl.searchParams.get("apiKey");
+
+  if (!CRON_SECRET) {
+    return NextResponse.json({ error: "Misconfigured" }, { status: 500 });
+  }
 
   if (authHeader !== `Bearer ${CRON_SECRET}` && apiKey !== CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,7 +41,7 @@ export async function GET(req: NextRequest) {
         {
           metadata: {
             path: ["completedAt"],
-            not: null,
+            not: Prisma.DbNull,
           },
         },
       ],
@@ -45,10 +50,35 @@ export async function GET(req: NextRequest) {
         equals: true,
       },
     },
-    include: {
-      eventType: true,
-      user: true, // Mentor
-      thotisSessionSummary: true,
+    select: {
+      id: true,
+      uid: true,
+      title: true,
+      startTime: true,
+      endTime: true,
+      status: true,
+      responses: true,
+      metadata: true,
+      eventType: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          timeZone: true,
+          locale: true,
+        },
+      },
+      thotisSessionSummary: {
+        select: {
+          id: true,
+        },
+      },
     },
     take: 50,
   });
@@ -97,7 +127,7 @@ export async function GET(req: NextRequest) {
         uid: booking.uid,
       };
 
-      const metadata = (booking.metadata as Record<string, any>) || {};
+      const metadata = (booking.metadata as Record<string, unknown>) || {};
 
       // 1. Nudge Mentor if no summary exists
       if (!booking.thotisSessionSummary && !metadata.mentorNudgeSent) {

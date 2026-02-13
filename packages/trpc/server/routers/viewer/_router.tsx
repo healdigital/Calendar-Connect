@@ -23,16 +23,21 @@ import { filterSegmentsRouter } from "./filterSegments/_router";
 import { googleWorkspaceRouter } from "./googleWorkspace/_router";
 import { holidaysRouter } from "./holidays/_router";
 import { i18nRouter } from "./i18n/_router";
+import { insightsRouter } from "./insights/_router";
 import { meRouter } from "./me/_router";
 import { oAuthRouter } from "./oAuth/_router";
 import { oooRouter } from "./ooo/_router";
+import { viewerOrganizationsRouter } from "./organizations/_router";
 import { permissionsRouter } from "./pbac/_router";
+import { paymentsRouter } from "./payments/_router";
 import { phoneNumberRouter } from "./phoneNumber/_router";
 import { routingFormsRouter } from "./routing-forms/_router";
 import { slotsRouter } from "./slots/_router";
+import { viewerTeamsRouter } from "./teams/_router";
 import { travelSchedulesRouter } from "./travelSchedules/_router";
 import { userAdminRouter } from "./users/_router";
 import { webhookRouter } from "./webhook/_router";
+import { workflowsRouter } from "./workflows/_router";
 
 export const viewerRouter = router({
   loggedInViewerRouter,
@@ -51,10 +56,11 @@ export const viewerRouter = router({
   timezones: timezonesRouter,
 
   webhook: webhookRouter,
-  // apiKeys: apiKeysRouter, // Commercial
+  apiKeys: apiKeysRouter,
   slots: slotsRouter,
 
   i18n: i18nRouter,
+  insights: insightsRouter,
 
   filterSegments: filterSegmentsRouter,
   pbac: permissionsRouter,
@@ -62,18 +68,22 @@ export const viewerRouter = router({
   // After that there would just one merge call here for all the apps.
   appRoutingForms: app_RoutingForms,
   features: featureFlagRouter,
-  // featureOptIn: featureOptInRouter, // Commercial
+  featureOptIn: featureOptInRouter,
   users: userAdminRouter,
   oAuth: oAuthRouter,
   googleWorkspace: googleWorkspaceRouter,
   admin: adminRouter,
   attributes: attributesRouter,
+  organizations: viewerOrganizationsRouter,
+  teams: viewerTeamsRouter,
 
   routingForms: routingFormsRouter,
-  // credits: creditsRouter, // Commercial
+  credits: creditsRouter,
+  payments: paymentsRouter,
   ooo: oooRouter,
   holidays: holidaysRouter,
   travelSchedules: travelSchedulesRouter,
   aiVoiceAgent: aiVoiceAgentRouter,
   phoneNumber: phoneNumberRouter,
+  workflows: workflowsRouter,
 });

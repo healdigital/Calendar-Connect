@@ -18,6 +18,10 @@ export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   const apiKey = req.nextUrl.searchParams.get("apiKey");
 
+  if (!CRON_SECRET) {
+    return NextResponse.json({ error: "Misconfigured" }, { status: 500 });
+  }
+
   if (authHeader !== `Bearer ${CRON_SECRET}` && apiKey !== CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -52,6 +56,7 @@ export async function GET(req: NextRequest) {
     },
     select: {
       id: true,
+      uid: true,
     },
     take: 50, // Process in batches
   });

@@ -7,11 +7,9 @@
   <a href="https://cal.com/enterprise">Get Started with Enterprise</a>
 </div>
 
-# Enterprise Edition
+# Stripe Payment Integration
 
-Welcome to the Enterprise Edition ("/ee") of Cal.com.
-
-The [/ee](https://github.com/calcom/cal.com/tree/main/apps/web/ee) subfolder is the place for all the **Pro** features from our [hosted](https://cal.com/pricing) plan and [enterprise-grade](https://cal.com/enterprise) features such as SSO, SAML, ADFS, OIDC, SCIM, SIEM, HRIS and much more.
+This package provides Stripe payment integration for Cal.com.
 
 > _❗ WARNING: This package is copyrighted (unlike our [main repo](https://github.com/calcom/cal.com)). You are not allowed to use this code to host your own version of app.cal.com without obtaining a proper [license](https://cal.com/enterprise) first❗_
 

@@ -17,7 +17,7 @@ import {
   eventTypeMetaDataSchemaWithTypedApps,
 } from "@calcom/app-store/zod-utils";
 import dayjs from "@calcom/dayjs";
-// import { scheduleMandatoryReminder } from "@calcom/ee/workflows/lib/reminders/scheduleMandatoryReminder";
+
 
 import getICalUID from "@calcom/emails/lib/getICalUID";
 import { verifyCodeUnAuthenticated } from "@calcom/features/auth/lib/verifyCodeUnAuthenticated";

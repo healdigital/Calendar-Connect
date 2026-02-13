@@ -428,21 +428,8 @@ const guestRouter = router({
       })
     )
     .query(async ({ input }) => {
-      // Verify token
-      const magicLink = await guestService.verifyToken(input.token);
-
-      // Enforce booking-specific scope (anti-abuse and data leakage prevention)
-      // Tokens created for specific bookings (e.g. from reminder emails) must match the requested bookingId.
-      if (magicLink.bookingId && magicLink.bookingId !== input.bookingId) {
-        throw new TRPCError({ code: "FORBIDDEN", message: "Token not valid for this booking" });
-      }
-
-      // STRICT SCOPE: For accessing post-session data, we REQUIRE that the token be scoped to this booking
-      // or at least we verify the guest strictly owns it.
-      // If the token is a generic "dashboard" token (bookingId is null), we must be extra careful.
-      // Requirement: "Endpoint tokenisé getPostSessionDataByToken sans check strict du bookingId scope comme les autres endpoints token."
-      // We enforce strict scope if the token was created with a bookingId.
-      // Even if generic, we enforce specific booking ownership via email match.
+      // centralized strict token verification
+      const magicLink = await guestService.verifyToken(input.token, input.bookingId);
 
       const email = magicLink.guest.email;
 
@@ -476,7 +463,7 @@ const profileRouter = router({
   create: authedProcedure
     .input(
       z.object({
-        fieldOfStudy: z.string(),
+        fieldOfStudy: z.nativeEnum(AcademicField),
         yearOfStudy: z.number(),
         bio: z.string(),
         university: z.string(),
@@ -500,7 +487,7 @@ const profileRouter = router({
   update: authedProcedure
     .input(
       z.object({
-        fieldOfStudy: z.string().optional(),
+        fieldOfStudy: z.nativeEnum(AcademicField).optional(),
         yearOfStudy: z.number().optional(),
         bio: z.string().optional(),
         university: z.string().optional(),
@@ -522,7 +509,7 @@ const profileRouter = router({
     .input(
       z.object({
         query: z.string().optional(),
-        fieldOfStudy: z.string().optional(),
+        fieldOfStudy: z.nativeEnum(AcademicField).optional(),
         university: z.string().optional(),
         minRating: z.number().optional(),
         isActive: z.boolean().optional(),
@@ -1004,7 +991,7 @@ const adminRouter = router({
       z.object({
         page: z.number().optional(),
         pageSize: z.number().optional(),
-        fieldOfStudy: z.string().optional(),
+        fieldOfStudy: z.nativeEnum(AcademicField).optional(),
         isActive: z.boolean().optional(),
       })
     )

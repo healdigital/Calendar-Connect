@@ -30,7 +30,6 @@
    <a href="https://news.ycombinator.com/item?id=34507672"><img src="https://img.shields.io/badge/Hacker%20News-%231-%23FF6600" alt="Hacker News"></a>
    <a href="https://github.com/calcom/cal.com/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
    <a href="https://github.com/calcom/cal.com/pulse"><img src="https://img.shields.io/github/commit-activity/m/calcom/cal.com" alt="Commits-per-month"></a>
-   <a href="https://cal.com/pricing"><img src="https://img.shields.io/badge/Pricing-Free-brightgreen" alt="Pricing"></a>
    <a href="https://jitsu.com?utm_source=github/calcom/cal.com"><img src="https://img.shields.io/badge/Metrics_tracked_by-JITSU-AA00FF?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACKSURBVHgBrZDRCYAwDEQv6gCOoKO4hOCXI9QVnEZwiY5iF5GaVClaBNtioCSUvCR3tMJaxIfZgW4AGUoEPVwgPZoS0Dmgg3NBVDFNbMIsmYCak3J1jDk9iCQvsKJvkzr71N81Gj6vDT/LU2P6RhY63jcafk3YJEbgeZpiFyc/5HJKv8Ef273NSfABGbQfUZhnOSAAAAAASUVORK5CYII=" alt="Jitsu Tracked"></a>
    <img src="https://api.checklyhq.com/v1/badges/checks/5e048048-1b51-47ba-9209-60607507622e?responseTime=true" alt="Checkly Availability" />
    <a href="https://hub.docker.com/r/calcom/cal.com"><img src="https://img.shields.io/docker/pulls/calcom/cal.com"></a>
@@ -54,7 +53,7 @@ of your own data, workflow, and appearance.
 
 Calendly and other scheduling tools are awesome. It made our lives massively easier. We're using it for business meetings, seminars, yoga classes, and even calls with our families. However, most tools are very limited in terms of control and customization.
 
-That's where Cal.com comes in. Self-hosted or hosted by us. White-label by design. API-driven and ready to be deployed on your own domain. Full control of your events and data.
+That's where Cal.com comes in. Self-hosted. White-label by design. API-driven and ready to be deployed on your own domain. Full control of your events and data.
 
 ## Recognition
 
@@ -644,7 +643,7 @@ Updating these variables is not required for evaluation, but is required for run
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------------------------------------- |
 | DATABASE_URL                           | database url with credentials - if using a connection pooler, this setting should point there                                              | required | `postgresql://unicorn_user:magical_password@database:5432/calendso` |
 | MAX_OLD_SPACE_SIZE                     | Needed for Nodejs/NPM build options                                                                                                        | required | 4096                                                                |
-| NEXT_PUBLIC_LICENSE_CONSENT            | license consent - true/false                                                                                                               | required |                                                                     |
+
 | NEXTAUTH_SECRET                        | Cookie encryption key                                                                                                                      | required | `secret`                                                            |
 | CALENDSO_ENCRYPTION_KEY                | Authentication encryption key                                                                                                              | required | `secret`                                                            |
 | NEXT_PUBLIC_WEBAPP_URL                 | Base URL injected into static files                                                                                                        | optional | `http://localhost:3000`                                             |

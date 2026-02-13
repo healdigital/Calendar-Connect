@@ -2,10 +2,12 @@ import { useBookerStore } from "@calcom/features/bookings/Booker/store";
 import type getBookingResponsesSchema from "@calcom/features/bookings/lib/getBookingResponsesSchema";
 import { getBookingResponsesPartialSchema } from "@calcom/features/bookings/lib/getBookingResponsesSchema";
 import type { BookerEvent } from "@calcom/features/bookings/types";
+import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import { useEffect, useState } from "react";
 import type { z } from "zod";
 
 export type useInitialFormValuesReturnType = ReturnType<typeof useInitialFormValues>;
+type BookingField = z.infer<typeof eventTypeBookingFields>[number];
 
 type UseInitialFormValuesProps = {
   eventType?: Pick<BookerEvent, "bookingFields" | "team" | "owner"> | null;
@@ -141,17 +143,22 @@ export function useInitialFormValues({
         defaultUserValues.email = defaultUserValues.email.replace(`+${clientId}`, "");
       }
 
+      const bookingFields = eventType.bookingFields as BookingField[];
+
       if (!isRescheduling) {
         const defaults = {
           responses: {} as Partial<z.infer<ReturnType<typeof getBookingResponsesSchema>>>,
         };
 
-        const responses = eventType.bookingFields.reduce((responses, field) => {
-          return {
-            ...responses,
-            [field.name]: parsedQuery[field.name] || undefined,
-          };
-        }, {});
+        const responses = bookingFields.reduce<Record<string, unknown>>(
+          (responses, field) => {
+            return {
+              ...responses,
+              [field.name]: parsedQuery[field.name] || undefined,
+            };
+          },
+          {}
+        );
 
         defaults.responses = {
           ...responses,
@@ -176,12 +183,15 @@ export function useInitialFormValues({
         bookingId: bookingData?.id,
       };
 
-      const responses = eventType.bookingFields.reduce((responses, field) => {
-        return {
-          ...responses,
-          [field.name]: bookingData?.responses[field.name],
-        };
-      }, {});
+      const responses = bookingFields.reduce<Record<string, unknown>>(
+        (responses, field) => {
+          return {
+            ...responses,
+            [field.name]: bookingData?.responses[field.name],
+          };
+        },
+        {}
+      );
       defaults.responses = {
         ...responses,
         name: defaultUserValues.name,

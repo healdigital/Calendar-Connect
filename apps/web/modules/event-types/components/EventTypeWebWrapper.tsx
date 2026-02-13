@@ -214,6 +214,7 @@ const EventTypeWeb = ({
       metadata: eventType.metadata,
     },
   });
+  const typedWorkflows = allActiveWorkflows as Parameters<typeof useTabsNavigations>[0]["allActiveWorkflows"];
 
   const orgBranding = useOrgBranding();
 
@@ -385,14 +386,14 @@ const EventTypeWeb = ({
     eventType,
     team,
     eventTypeApps,
-    allActiveWorkflows,
+    allActiveWorkflows: typedWorkflows,
     canReadWorkflows,
   });
 
   return (
     <EventTypeComponent
       {...rest}
-      allActiveWorkflows={allActiveWorkflows}
+      allActiveWorkflows={typedWorkflows}
       tabMap={tabMap}
       onDelete={(id) => {
         deleteMutation.mutate({ id });

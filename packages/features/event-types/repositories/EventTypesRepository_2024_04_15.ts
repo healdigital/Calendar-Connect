@@ -8,6 +8,25 @@ import type { PrismaClient } from "@calcom/prisma";
 export class EventTypesRepository_2024_04_15 {
   constructor(private readonly prisma: PrismaClient) {}
 
+  async getEventTypeWithSeats(eventTypeId: number) {
+    return await this.prisma.eventType.findUnique({
+      where: {
+        id: eventTypeId,
+      },
+      select: {
+        id: true,
+        slug: true,
+        teamId: true,
+        seatsPerTimeSlot: true,
+        users: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  }
+
   async getEventTypeById(eventTypeId: number) {
     return await this.prisma.eventType.findUnique({
       where: {

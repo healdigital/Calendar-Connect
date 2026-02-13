@@ -50,6 +50,7 @@ async function setup() {
           currentYear: 1,
           bio: "I am a test mentor for load testing purposes. I love performance.",
           isActive: true,
+          status: "VERIFIED",
         },
       });
       console.log("Profile created:", profile.id);

@@ -83,7 +83,6 @@ const BookerComponent = ({
   customClassNames,
   areInstantMeetingParametersSet = false,
   userLocale,
-  hasValidLicense,
   isBookingDryRun: isBookingDryRunProp,
   renderCaptcha,
   hashedLink,

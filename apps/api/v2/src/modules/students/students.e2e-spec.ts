@@ -6,9 +6,13 @@ import { getDMMF } from "@prisma/internals";
 import { createPrismock } from "prismock/build/main/lib/client";
 import request from "supertest";
 import { randomString } from "../../../test/utils/randomString";
-import { AppModule } from "@/app.module";
+import { ConfigModule } from "@nestjs/config";
+import { AuthGuard } from "@nestjs/passport";
+import { StudentsModule } from "./students.module";
 import { PrismaModule } from "@/modules/prisma/prisma.module";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import appConfig from "@/config/app";
 
 let prismockInstance: any;
 
@@ -29,7 +33,14 @@ describe("StudentsController (e2e)", () => {
     prismockInstance = await getPrismock();
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, PrismaModule],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [appConfig],
+        }),
+        StudentsModule,
+        PrismaModule,
+      ],
     })
       .overrideProvider(PrismaWriteService)
       .useValue({
@@ -37,6 +48,14 @@ describe("StudentsController (e2e)", () => {
         onModuleInit: async () => {},
         onModuleDestroy: async () => {},
       })
+      .overrideProvider(PrismaReadService)
+      .useValue({
+        prisma: prismockInstance,
+        onModuleInit: async () => {},
+        onModuleDestroy: async () => {},
+      })
+      .overrideGuard(AuthGuard("jwt"))
+      .useValue({ canActivate: () => true })
       .compile();
 
     app = moduleRef.createNestApplication();
@@ -57,7 +76,7 @@ describe("StudentsController (e2e)", () => {
 
   describe("GET /students/:id", () => {
     it("should return 404 for non-existent profile", async () => {
-      return request(app.getHttpServer()).get(`/students/${user.id}`).expect(404);
+      return request(app.getHttpServer()).get(`/v2/students/${user.id}`).expect(404);
     });
 
     it("should return student profile if exists", async () => {
@@ -70,10 +89,11 @@ describe("StudentsController (e2e)", () => {
           year: 1,
           bio: "E2E Bio",
           isActive: true,
+          status: "VERIFIED",
         },
       });
 
-      const response = await request(app.getHttpServer()).get(`/students/${user.id}`).expect(200);
+      const response = await request(app.getHttpServer()).get(`/v2/students/${user.id}`).expect(200);
 
       expect(response.body.status).toBe("success");
       expect(response.body.data.userId).toBe(user.id);
@@ -82,7 +102,7 @@ describe("StudentsController (e2e)", () => {
 
   describe("GET /students/by-field/:field", () => {
     it("should return students by field", async () => {
-      const response = await request(app.getHttpServer()).get("/students/by-field/ENGINEERING").expect(200);
+      const response = await request(app.getHttpServer()).get("/v2/students/by-field/ENGINEERING").expect(200);
 
       expect(response.body.status).toBe("success");
       expect(Array.isArray(response.body.data)).toBe(true);

@@ -5,15 +5,18 @@ import { ThotisEmailService } from "@calcom/features/thotis/services/ThotisEmail
 import { getTranslation } from "@calcom/lib/server/i18n";
 import prisma from "@calcom/prisma";
 import type { CalendarEvent } from "@calcom/types/Calendar";
-import type { Prisma } from "@prisma/client";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const CRON_SECRET = process.env.CRON_SECRET;
+const CRON_SECRET: string | undefined = process.env.CRON_SECRET;
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const authHeader = req.headers.get("authorization");
   const apiKey = req.nextUrl.searchParams.get("apiKey");
+
+  if (!CRON_SECRET) {
+    return NextResponse.json({ message: "Misconfigured" }, { status: 500 });
+  }
 
   if (authHeader !== `Bearer ${CRON_SECRET}` && apiKey !== CRON_SECRET) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -45,9 +48,32 @@ export async function GET(req: NextRequest) {
         },
       },
     },
-    include: {
-      user: true, // Mentor (host)
-      attendees: true, // Prospective student (booker)
+    select: {
+      id: true,
+      uid: true,
+      title: true,
+      startTime: true,
+      endTime: true,
+      status: true,
+      metadata: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          timeZone: true,
+          locale: true,
+        },
+      },
+      attendees: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          timeZone: true,
+          locale: true,
+        },
+      },
     },
   });
 
@@ -107,7 +133,7 @@ export async function GET(req: NextRequest) {
 
       // Trigger Webhook
       const { thotisWebhooks } = await import("../../../../lib/webhooks/thotis");
-      await thotisWebhooks.onReminder(booking as unknown as any, "24h");
+      await thotisWebhooks.onReminder(booking, "24h");
 
       // 4. Mark as sent
       await prisma.booking.update({
@@ -116,7 +142,7 @@ export async function GET(req: NextRequest) {
           metadata: {
             ...metadata,
             reminder24hSent: true,
-          } as Prisma.InputJsonValue,
+          },
         },
       });
 

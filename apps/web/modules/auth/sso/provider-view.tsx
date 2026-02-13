@@ -1,13 +1,16 @@
 "use client";
 
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
-import type { inferSSRProps } from "@lib/types/inferSSRProps";
-import type { getServerSideProps } from "@server/lib/auth/sso/[provider]/getServerSideProps";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useEffect } from "react";
 
-export type SSOProviderPageProps = inferSSRProps<typeof getServerSideProps>;
+export type SSOProviderPageProps = {
+  provider: string;
+  tenant?: string;
+  product?: string;
+  isSAMLLoginEnabled?: boolean;
+};
 
 export default function Provider(props: SSOProviderPageProps) {
   const searchParams = useCompatSearchParams();
@@ -26,7 +29,7 @@ export default function Provider(props: SSOProviderPageProps) {
         return;
       }
 
-      signIn("saml", {}, { tenant: props.tenant, product: props.product });
+      signIn("saml");
     } else if (props.provider === "google" && email) {
       signIn("google", {}, { login_hint: email });
     } else {

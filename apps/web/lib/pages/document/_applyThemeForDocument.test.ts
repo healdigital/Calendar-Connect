@@ -22,8 +22,6 @@ describe("applyTheme", () => {
       key: vi.fn(() => null),
       length: 0,
     };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     global.localStorage = mockLocalStorage;
 
     // Mock requestAnimationFrame
@@ -31,11 +29,7 @@ describe("applyTheme", () => {
       cb(0);
       return 0;
     });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    global.window = { location: { pathname: "/" } };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+    global.window = { location: { pathname: "/" } } as unknown as Window & typeof globalThis;
     global.requestAnimationFrame = mockRequestAnimationFrame;
 
     // Mock document
@@ -49,8 +43,6 @@ describe("applyTheme", () => {
         },
       },
     } as unknown as Document;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     global.document = mockDocument;
 
     // Mock console.error
@@ -92,8 +84,6 @@ describe("applyTheme", () => {
 
   it("should apply booking theme when app-theme exists and on booking page", () => {
     const username = "testuser";
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     global.window.location.pathname = `/${username}/meeting`;
 
     mockLocalStorage.key = vi.fn((index: number) => {
@@ -116,8 +106,6 @@ describe("applyTheme", () => {
   });
 
   it("should apply app theme when not on booking page", () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     global.window.location.pathname = "/some-other-page";
 
     mockLocalStorage.key = vi.fn((index: number) => {

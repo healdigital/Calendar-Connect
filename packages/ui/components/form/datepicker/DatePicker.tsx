@@ -8,7 +8,7 @@ type Props = {
   date: Date;
   onDatesChange?: ((date: Date) => void) | undefined;
   className?: string;
-  disabled?: boolean;
+  disabled?: boolean | ((date: Date) => boolean) | Date | Date[] | { from: Date; to: Date }[];
   minDate?: Date | null;
   label?: string;
 };

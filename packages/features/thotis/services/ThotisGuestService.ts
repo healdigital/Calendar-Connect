@@ -94,7 +94,7 @@ export class ThotisGuestService {
   /**
    * Verify a token and return the guest.
    */
-  async verifyToken(tokenRaw: string) {
+  async verifyToken(tokenRaw: string, bookingId?: number) {
     const tokenHash = createHash("sha256").update(tokenRaw).digest("hex");
 
     const magicLink = await prisma.thotisMagicLinkToken.findUnique({
@@ -108,6 +108,11 @@ export class ThotisGuestService {
 
     if (magicLink.invalidated || magicLink.usedAt || magicLink.expiresAt < new Date()) {
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Token expired or used" });
+    }
+
+    // Enforce booking scope if the token was restricted to a specific booking
+    if (magicLink.bookingId && bookingId && magicLink.bookingId !== bookingId) {
+      throw new TRPCError({ code: "FORBIDDEN", message: "This link is restricted to another session" });
     }
 
     return magicLink;

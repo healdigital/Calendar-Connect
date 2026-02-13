@@ -17,19 +17,19 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     {
       provide: ThotisProfileRepository,
       useFactory: (prisma: PrismaWriteService) =>
-        new ThotisProfileRepository({ prismaClient: prisma as any }),
+        new ThotisProfileRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {
       provide: SessionRatingRepository,
       useFactory: (prisma: PrismaWriteService) =>
-        new SessionRatingRepository({ prismaClient: prisma as any }),
+        new SessionRatingRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {
       provide: AnalyticsRepository,
       useFactory: (prisma: PrismaWriteService) =>
-        new AnalyticsRepository({ prismaClient: prisma as any }),
+        new AnalyticsRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {

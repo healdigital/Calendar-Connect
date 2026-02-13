@@ -31,7 +31,7 @@ function Type({
           hideBranding={isBrandingHidden}
           isTeamEvent
           isInstantMeeting
-          entity={{ ...entity, eventTypeId: eventTypeId }}
+          entity={{ ...entity, eventTypeId: eventTypeId, considerUnpublished: false }}
           duration={duration}
         />
       </main>

@@ -16,6 +16,10 @@ export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   const apiKey = req.nextUrl.searchParams.get("apiKey");
 
+  if (!CRON_SECRET) {
+    return NextResponse.json({ message: "Misconfigured" }, { status: 500 });
+  }
+
   if (authHeader !== `Bearer ${CRON_SECRET}` && apiKey !== CRON_SECRET) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

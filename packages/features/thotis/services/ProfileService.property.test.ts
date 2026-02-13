@@ -142,10 +142,10 @@ describe("ProfileService - Property Tests", () => {
           const profiles = await profileService.getProfilesByField(field);
 
           // Verify repo was called with correct field
-          expect(mockProfileRepository.getProfilesByField).toHaveBeenCalledWith(field, expect.anything());
+          expect(mockProfileRepository.getProfilesByField).toHaveBeenCalledWith(field);
 
           // Verify results
-          profiles.forEach((p) => {
+          profiles.forEach((p: any) => {
             expect(p.field).toBe(field);
           });
 
@@ -185,9 +185,9 @@ describe("ProfileService - Property Tests", () => {
               total: 1,
             });
 
-            const profiles = await profileService.searchProfiles(filters);
+            const result = await profileService.searchProfiles(filters);
 
-            profiles.forEach((profile) => {
+            result.profiles.forEach((profile: any) => {
               expect(profile).toHaveProperty("userId");
               expect(profile).toHaveProperty("university");
               expect(profile).toHaveProperty("degree");

@@ -52,6 +52,17 @@ const ConnectedCalendarList = ({
 }) => {
   const { t } = useLocale();
   const shouldUseEventTypeScope = scope === SelectedCalendarSettingsScope.EventType;
+  const getDelegationCredentialId = (
+    connectedCalendar: RouterOutputs["viewer"]["calendars"]["connectedCalendars"]["connectedCalendars"][number]
+  ) => {
+    const directDelegationCredentialId = (connectedCalendar as { delegationCredentialId?: string | null })
+      .delegationCredentialId;
+    return (
+      directDelegationCredentialId ??
+      connectedCalendar.integration.delegationCredential?.workspacePlatformSlug ??
+      null
+    );
+  };
   return (
     <List noBorderTreatment className="p-6 pt-2">
       {items.map((connectedCalendar) => {
@@ -70,7 +81,7 @@ const ConnectedCalendarList = ({
                   <CredentialActionsDropdown
                     credentialId={connectedCalendar.credentialId}
                     onSuccess={onChanged}
-                    delegationCredentialId={connectedCalendar.delegationCredentialId}
+                    delegationCredentialId={getDelegationCredentialId(connectedCalendar)}
                     disableConnectionModification={disableConnectionModification}
                   />
                 </div>
@@ -97,7 +108,7 @@ const ConnectedCalendarList = ({
                             }
                             return null;
                           })()}
-                          delegationCredentialId={connectedCalendar.delegationCredentialId || null}
+                          delegationCredentialId={getDelegationCredentialId(connectedCalendar)}
                         />
                       ))}
                     </ul>
@@ -126,7 +137,7 @@ const ConnectedCalendarList = ({
                 <CredentialActionsDropdown
                   credentialId={connectedCalendar.credentialId}
                   onSuccess={onChanged}
-                  delegationCredentialId={connectedCalendar.delegationCredentialId}
+                  delegationCredentialId={getDelegationCredentialId(connectedCalendar)}
                   disableConnectionModification={disableConnectionModification}
                 />
               </div>

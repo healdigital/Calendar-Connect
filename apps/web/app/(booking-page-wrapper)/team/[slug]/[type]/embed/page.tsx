@@ -16,11 +16,11 @@ export const generateMetadata = async () => {
   };
 };
 
-const getData = withEmbedSsrAppDir<ClientPageProps>(getServerSideProps);
+const getData = withEmbedSsrAppDir<Record<string, unknown>>(getServerSideProps);
 
 const ServerPage = async ({ params, searchParams }: ServerPageProps) => {
   const context = buildLegacyCtx(await headers(), await cookies(), await params, await searchParams);
-  const props = await getData(context);
+  const props = (await getData(context)) as ClientPageProps;
 
   const eventLocale = props.eventData?.interfaceLanguage;
   if (eventLocale) {

@@ -40,11 +40,11 @@ export const generateMetadata = async ({ params, searchParams }: PageProps) => {
   }
 
   const legacyCtx = buildLegacyCtx(await headers(), await cookies(), await params, await searchParams);
-  const props = await getData(legacyCtx);
+  const props = (await getData(legacyCtx)) as LegacyPageProps;
   const { booking, isSEOIndexable, eventData, isBrandingHidden } = props;
 
   const profileName = eventData?.profile?.name ?? "";
-  const profileImage = eventData?.profile.image;
+  const profileImage = eventData?.profile?.image;
   const title = eventData?.title ?? "";
   const meeting = {
     title,
@@ -75,16 +75,16 @@ export const generateMetadata = async ({ params, searchParams }: PageProps) => {
   };
 };
 
-const getData = withAppDirSsr<LegacyPageProps>(getServerSideProps);
+const getData = withAppDirSsr<Record<string, unknown>>(getServerSideProps);
 
 const ServerPage = async ({ params, searchParams }: PageProps) => {
   if (await isCachedTeamBookingEnabled(await params, await searchParams)) {
     return await CachedTeamBooker({ params, searchParams });
   }
 
-  const props = await getData(
+  const props = (await getData(
     buildLegacyCtx(await headers(), await cookies(), await params, await searchParams)
-  );
+  )) as LegacyPageProps;
 
   const eventLocale = props.eventData?.interfaceLanguage;
   if (eventLocale) {

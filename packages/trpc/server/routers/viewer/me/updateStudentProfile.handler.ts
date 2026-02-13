@@ -21,6 +21,7 @@ export const updateStudentProfileHandler = async ({ ctx, input }: UpdateStudentP
     create: {
       userId: user.id,
       ...data,
+      status: "VERIFIED",
     },
     update: data,
   });

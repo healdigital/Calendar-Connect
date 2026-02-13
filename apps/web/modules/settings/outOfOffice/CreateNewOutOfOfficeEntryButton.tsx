@@ -21,7 +21,7 @@ const CreateNewOutOfOfficeEntryButton = ({
   const { t } = useLocale();
   const me = useMeQuery();
   const { data: orgData } = trpc.viewer.organizations.listCurrent.useQuery();
-  const isOrgAdminOrOwner = orgData && checkAdminOrOwner(orgData.user.role);
+  const isOrgAdminOrOwner = !!(orgData?.user && checkAdminOrOwner(orgData.user.role));
   const hasTeamOOOAdminAccess = isOrgAdminOrOwner || me?.data?.canUpdateTeams;
 
   const params = useCompatSearchParams();

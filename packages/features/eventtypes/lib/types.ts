@@ -193,7 +193,16 @@ export type FormValues = {
   enablePerHostLocations: boolean;
 };
 
-export type LocationFormValues = Pick<FormValues, "id" | "locations" | "bookingFields" | "seatsPerTimeSlot">;
+export type LocationFormValues = Pick<
+  FormValues,
+  | "id"
+  | "locations"
+  | "bookingFields"
+  | "seatsPerTimeSlot"
+  | "seatsPerTimeSlotEnabled"
+  | "seatsShowAttendees"
+  | "seatsShowAvailabilityCount"
+>;
 
 export type EventTypeAssignedUsers = {
   owner: {

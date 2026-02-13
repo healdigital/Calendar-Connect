@@ -58,7 +58,9 @@ export const useBookerLayout = (
       bookerLayouts?.enabledLayouts?.length &&
       layout !== _layout
     ) {
-      const validLayout = bookerLayouts.enabledLayouts.find((userLayout) => userLayout === layout);
+      const validLayout = bookerLayouts.enabledLayouts.find(
+        (userLayout: BookerLayouts) => userLayout === layout
+      );
       if (validLayout) setLayout(validLayout);
     }
   }, [bookerLayouts, setLayout, _layout, isEmbed, isMobile]);

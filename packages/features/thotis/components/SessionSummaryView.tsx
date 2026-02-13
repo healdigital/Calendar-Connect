@@ -22,7 +22,7 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
     { enabled: open && !!token }
   );
 
-  const authQuery = trpc.thotis.rating.getPostSessionData.useQuery(
+  const authQuery = trpc.thotis.booking.getPostSessionData.useQuery(
     { bookingId },
     { enabled: open && !token }
   );
@@ -75,7 +75,7 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
                   {t("thotis_resources", "Ressources recommandées")}
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {data.resources.map((resource) => (
+                  {data.resources.map((resource: { id: string | number; url: string; type: string; title: string }) => (
                     <a
                       key={resource.id}
                       href={resource.url}

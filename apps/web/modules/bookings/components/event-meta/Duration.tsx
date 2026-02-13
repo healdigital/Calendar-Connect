@@ -91,7 +91,7 @@ export const EventDuration = ({
   if (!event?.metadata?.multipleDuration && !isDynamicEvent)
     return <>{getDurationFormatted(event.length, t)}</>;
 
-  const durations = event?.metadata?.multipleDuration || [15, 30, 60, 90];
+  const durations: number[] = event?.metadata?.multipleDuration || [15, 30, 60, 90];
   const hideDurationSelector = event?.metadata?.hideDurationSelectorInBookingPage;
 
   // When duration selector is hidden, show only the selected/default duration as text
@@ -115,8 +115,8 @@ export const EventDuration = ({
         onScroll={(e) => calculateScroll(e)}
         ref={ref}>
         {durations
-          .filter((dur) => state !== "booking" || dur === selectedDuration)
-          .map((duration, index) => (
+          .filter((dur: number) => state !== "booking" || dur === selectedDuration)
+          .map((duration: number, index: number) => (
             <li
               data-testId={`multiple-choice-${duration}mins`}
               data-active={selectedDuration === duration ? "true" : "false"}

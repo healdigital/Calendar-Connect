@@ -1,6 +1,8 @@
 # Étude d'Implémentation Cal.com pour Thotis
 ## Plateforme de Mise en Relation Étudiants
 
+> **⚠️ NOTE HISTORIQUE**: Ce document a été créé avant la suppression complète de la licence commerciale de Cal.com. Les sections mentionnant la "Commercial License" ou "Enterprise Edition" sont conservées à titre informatif uniquement. Cal.com est maintenant entièrement sous licence AGPLv3.
+
 ---
 
 ## 📋 Table des Matières

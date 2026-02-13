@@ -15,12 +15,12 @@ export default function MentorsPage() {
   const searchParams = useSearchParams();
 
   const [filters, setFilters] = useState<MentorSearchFiltersState>({
-    fieldOfStudy: searchParams.get("field") || "",
-    university: searchParams.get("university") || "",
-    minRating: searchParams.get("minRating") ? Number(searchParams.get("minRating")) : 0,
+    fieldOfStudy: searchParams?.get("field") || "",
+    university: searchParams?.get("university") || "",
+    minRating: searchParams?.get("minRating") ? Number(searchParams.get("minRating")) : 0,
   });
 
-  const [localIntent, setLocalIntent] = useState<any>(() => {
+  const [localIntent, _setLocalIntent] = useState<any>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("thotis_orientation_intent");
       if (saved) {
@@ -35,7 +35,7 @@ export default function MentorsPage() {
   });
 
   const { data: intentData } = trpc.thotis.intent.get.useQuery(undefined, {
-    enabled: !!searchParams.get("field") === false && typeof window !== "undefined", // Only fetch intent if not searching by field explicitly
+    enabled: !!searchParams?.get("field") === false && typeof window !== "undefined", // Only fetch intent if not searching by field explicitly
   });
 
   // Effective intent (DB or localStorage fallback)
@@ -55,11 +55,11 @@ export default function MentorsPage() {
 
   const { data, isLoading, error } = trpc.thotis.profile.search.useQuery(
     {
-      fieldOfStudy: filters.fieldOfStudy || undefined,
+      fieldOfStudy: (filters.fieldOfStudy as any) || undefined,
       university: filters.university || undefined,
       minRating: filters.minRating || undefined,
     },
-    { keepPreviousData: true }
+    undefined
   );
 
   const handleFiltersChange = useCallback(
@@ -88,7 +88,7 @@ export default function MentorsPage() {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-10 text-center">
-        <h2 className="text-xl font-semibold text-red-600">Error loading mentors</h2>
+        <h2 className="font-semibold text-red-600 text-xl">Error loading mentors</h2>
         <p className="text-gray-600">{error.message}</p>
       </div>
     );
@@ -98,7 +98,7 @@ export default function MentorsPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-10">
         <div className="mb-6">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">Our Mentors</h1>
+          <h1 className="mb-2 font-bold text-3xl text-gray-900">Our Mentors</h1>
           <p className="text-gray-600">Find the right mentor to help you in your academic journey.</p>
         </div>
 
@@ -107,7 +107,7 @@ export default function MentorsPage() {
           <div className="mb-10">
             <div className="mb-4 flex items-center gap-2">
               <Icon name="sparkles" className="h-5 w-5 text-blue-600" />
-              <h2 className="text-xl font-bold text-gray-900">Recommended for your orientation</h2>
+              <h2 className="font-bold text-gray-900 text-xl">Recommended for your orientation</h2>
             </div>
             <MentorListView
               profiles={(recommendations as any) || []}
@@ -115,7 +115,7 @@ export default function MentorsPage() {
               total={recommendations.length}
               onBookSession={handleBookSession}
             />
-            <hr className="border-subtle my-10" />
+            <hr className="my-10 border-subtle" />
           </div>
         )}
 
@@ -126,7 +126,7 @@ export default function MentorsPage() {
 
         {/* All Mentors List */}
         <div className="mb-4 flex items-center gap-2">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="font-bold text-gray-900 text-xl">
             {filters.fieldOfStudy ? `Mentors in ${filters.fieldOfStudy}` : "All Mentors"}
           </h2>
         </div>

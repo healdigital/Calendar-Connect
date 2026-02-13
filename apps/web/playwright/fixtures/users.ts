@@ -1,5 +1,3 @@
-import updateChildrenEventTypes from "@calcom/features/ee/managed-event-types/lib/handleChildrenEventTypes";
-import stripe from "@calcom/features/ee/payments/server/stripe";
 import type { AppFlags, FeatureId } from "@calcom/features/flags/config";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";
@@ -504,29 +502,6 @@ export const createUsersFixture = (
               );
               teamMates.push(teamUser);
               store.users.push(teammateFixture);
-            }
-            // If the teamEvent is a managed one, we add the team mates to it.
-            if (scenario.schedulingType === SchedulingType.MANAGED && scenario.addManagedEventToTeamMates) {
-              await updateChildrenEventTypes({
-                eventTypeId: teamEvent.id,
-                currentUserId: user.id,
-                oldEventType: {
-                  team: null,
-                },
-                updatedEventType: teamEvent,
-                children: teamMates.map((tm) => ({
-                  hidden: false,
-                  owner: {
-                    id: tm.id,
-                    name: tm.name || tm.username || "Nameless",
-                    email: tm.email,
-                    eventTypeSlugs: [],
-                  },
-                })),
-                profileId: null,
-                prisma,
-                updatedValues: {},
-              });
             }
             // Add Teammates to OrgUsers
             if (scenario.isOrg) {

@@ -22,10 +22,10 @@ export const StudentSettings = ({ user }: StudentSettingsProps) => {
     },
   });
 
-  const updateProfileMutation = trpc.viewer.updateProfile.useMutation({
+  const updateProfileMutation = trpc.viewer.me.updateProfile.useMutation({
     onSuccess: () => {
       showToast(t("thotis_profile_updated"), "success"); // "Profile updated"
-      utils.viewer.me.invalidate();
+      utils.viewer.me.get.invalidate();
     },
     onError: (err) => {
       showToast(err.message, "error");

@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
 import process from "node:process";
 import { PrismaAgentRepository } from "@calcom/features/calAIPhone/repositories/PrismaAgentRepository";
 import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/repositories/PrismaPhoneNumberRepository";
@@ -5,6 +6,15 @@ import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/reposit
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
+import Retell from "retell-sdk";
+import { z } from "zod";
+
+// Stubbing Retell types if missing
+export const RetellWebhookSchema = z.object({
+  event: z.string(),
+  call: z.any(),
+});
+type RetellCallData = any;
 
 async function chargeCreditsForCall({
   userId,
@@ -19,7 +29,7 @@ async function chargeCreditsForCall({
   callId: string;
   callDuration: number;
 }) {
-  log.info("Credits charging is disabled in this version.", {
+  logger.info("Credits charging is disabled in this version.", {
     userId,
     teamId,
     callCost,
@@ -41,7 +51,7 @@ async function handleCallAnalyzed(callData: RetellCallData) {
     !Number.isFinite(call_cost.total_duration_seconds) ||
     call_cost.total_duration_seconds <= 0
   ) {
-    log.info(
+    logger.info(
       `Invalid or missing call_cost.total_duration_seconds for call ${call_id}: ${safeStringify(call_cost)}`
     );
     return {
@@ -56,7 +66,7 @@ async function handleCallAnalyzed(callData: RetellCallData) {
   // Handle web calls vs phone calls
   if (call_type === "web_call" || !from_number) {
     if (!agent_id) {
-      log.error(`Web call ${call_id} missing agent_id, cannot charge credits`);
+      logger.error(`Web call ${call_id} missing agent_id, cannot charge credits`);
       return {
         success: false,
         message: `Web call ${call_id} missing agent_id, cannot charge credits`,
@@ -69,7 +79,7 @@ async function handleCallAnalyzed(callData: RetellCallData) {
     });
 
     if (!agent) {
-      log.error(`No agent found for providerAgentId ${agent_id}, call ${call_id}`);
+      logger.error(`No agent found for providerAgentId ${agent_id}, call ${call_id}`);
       return {
         success: false,
         message: `No agent found for providerAgentId ${agent_id}, call ${call_id}`,
@@ -79,7 +89,7 @@ async function handleCallAnalyzed(callData: RetellCallData) {
     userId = agent.userId ?? undefined;
     teamId = agent.team?.parentId ?? agent.teamId ?? undefined;
 
-    log.info(`Processing web call ${call_id} for agent ${agent_id}, user ${userId}, team ${teamId}`);
+    logger.info(`Processing web call ${call_id} for agent ${agent_id}, user ${userId}, team ${teamId}`);
   } else {
     const phoneNumberRepo = new PrismaPhoneNumberRepository(prisma);
     const phoneNumber = await phoneNumberRepo.findByPhoneNumber({
@@ -88,18 +98,18 @@ async function handleCallAnalyzed(callData: RetellCallData) {
 
     if (!phoneNumber) {
       const msg = `No phone number found for ${from_number}, call ${call_id}`;
-      log.error(msg);
+      logger.error(msg);
       return { success: false, message: msg };
     }
 
     userId = phoneNumber.userId ?? undefined;
     teamId = phoneNumber.team?.parentId ?? phoneNumber.teamId ?? undefined;
 
-    log.info(`Processing phone call ${call_id} from ${from_number}, user ${userId}, team ${teamId}`);
+    logger.info(`Processing phone call ${call_id} from ${from_number}, user ${userId}, team ${teamId}`);
   }
 
   if (!userId && !teamId) {
-    log.error(`Call ${call_id} has no associated user or team`);
+    logger.error(`Call ${call_id} has no associated user or team`);
     return {
       success: false,
       message: `Call ${call_id} has no associated user or team`,
@@ -129,7 +139,7 @@ async function handleCallAnalyzed(callData: RetellCallData) {
  * - Charge credits based on the call cost from the user's or team's credit balance
  * - Log all transactions for audit purposes
  */
-async function handler(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const rawBody = await request.text();
   const body = JSON.parse(rawBody);
 
@@ -138,7 +148,7 @@ async function handler(request: NextRequest) {
   const apiKey = process.env.RETELL_AI_KEY;
 
   if (!signature || !apiKey) {
-    log.error("Missing signature or API key for webhook verification");
+    logger.error("Missing signature or API key for webhook verification");
     return NextResponse.json(
       {
         error: "Unauthorized",
@@ -149,7 +159,7 @@ async function handler(request: NextRequest) {
   }
 
   if (!Retell.verify(rawBody, apiKey, signature)) {
-    log.error("Invalid webhook signature");
+    logger.error("Invalid webhook signature");
     return NextResponse.json(
       {
         error: "Unauthorized",
@@ -184,7 +194,7 @@ async function handler(request: NextRequest) {
       );
     }
 
-    log.info(`Received Retell AI webhook: ${payload.event} for call ${callData.call_id}`, {
+    logger.info(`Received Retell AI webhook: ${payload.event} for call ${callData.call_id}`, {
       call_id: callData.call_id,
     });
 
@@ -198,7 +208,7 @@ async function handler(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    log.error("Error processing Retell AI webhook:", safeStringify(error));
+    logger.error("Error processing Retell AI webhook:", safeStringify(error));
     return NextResponse.json(
       {
         error: "Internal server error",
@@ -209,5 +219,3 @@ async function handler(request: NextRequest) {
     );
   }
 }
-
-export const POST = defaultResponderForAppDir(handler);

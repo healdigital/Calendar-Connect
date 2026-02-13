@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function ThotisDashboardPage() {
   const router = useRouter();
-  const { data: me, isLoading: isLoadingMe } = trpc.viewer.me.useQuery();
+  const { data: me, isLoading: isLoadingMe } = trpc.viewer.me.get.useQuery();
   const { data: profile, isLoading: isLoadingProfile } = trpc.thotis.profile.get.useQuery();
 
   if (isLoadingMe || isLoadingProfile) {
@@ -36,7 +36,7 @@ export default function ThotisDashboardPage() {
 
   // Determine which dashboard to show
   // 1. Admin Dashboard
-  if (me.role === "ADMIN") {
+  if ((me as any).role === "ADMIN") {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto py-10 px-4">

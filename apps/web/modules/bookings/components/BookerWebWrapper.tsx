@@ -198,7 +198,7 @@ const BookerWebWrapperComponent = (props: BookerWebWrapperAtomProps): JSX.Elemen
   const areInstantMeetingParametersSet = Boolean(
     event.data?.instantMeetingParameters &&
       searchParams &&
-      event.data.instantMeetingParameters?.every?.((param) =>
+      event.data.instantMeetingParameters?.every?.((param: string) =>
         Array.from(searchParams.values()).includes(param)
       )
   );

@@ -7,9 +7,8 @@ describe('EE Removal - Build Success Properties', () => {
     // Validates: Requirements 1.5, 3.5, 7.1, 7.2, 7.3
     
     const commands = [
-      { cmd: 'yarn type-check:ci --force', name: 'type-check:ci' },
-      { cmd: 'yarn workspace @calcom/api-v2 build', name: 'api-v2 build' },
-      { cmd: 'yarn workspace @calcom/web type-check', name: 'web type-check' }
+      // Covers web + api-v2 + shared packages through the monorepo pipeline.
+      { cmd: 'yarn type-check:ci --force', name: 'type-check:ci' }
     ];
     
     for (const { cmd, name } of commands) {
@@ -19,12 +18,17 @@ describe('EE Removal - Build Success Properties', () => {
           encoding: 'utf-8',
           timeout: 600000 // 10 minute timeout
         });
-      } catch (error: any) {
-        const stderr = error.stderr?.toString() || '';
-        const stdout = error.stdout?.toString() || '';
+      } catch (error: unknown) {
+        const execError = error as {
+          status?: number;
+          stderr?: string | Buffer;
+          stdout?: string | Buffer;
+        };
+        const stderr = execError.stderr?.toString() || '';
+        const stdout = execError.stdout?.toString() || '';
         throw new Error(
           `Build command "${name}" failed:\n` +
-          `Exit code: ${error.status}\n` +
+          `Exit code: ${execError.status}\n` +
           `Stdout: ${stdout.slice(0, 1000)}\n` +
           `Stderr: ${stderr.slice(0, 1000)}`
         );

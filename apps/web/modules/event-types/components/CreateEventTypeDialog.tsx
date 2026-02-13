@@ -128,7 +128,7 @@ export function CreateEventTypeDialog({ profileOptions }: { profileOptions: Prof
             isPending={createMutation.isPending}
             form={form}
             isManagedEventType={isManagedEventType}
-            handleSubmit={(values) => {
+            handleSubmit={(values: any) => {
               createMutation.mutate(values);
             }}
             SubmitButton={SubmitButton}
@@ -139,7 +139,7 @@ export function CreateEventTypeDialog({ profileOptions }: { profileOptions: Prof
             isPending={createMutation.isPending}
             form={form}
             isManagedEventType={isManagedEventType}
-            handleSubmit={(values) => {
+            handleSubmit={(values: any) => {
               createMutation.mutate(values);
             }}
             SubmitButton={SubmitButton}

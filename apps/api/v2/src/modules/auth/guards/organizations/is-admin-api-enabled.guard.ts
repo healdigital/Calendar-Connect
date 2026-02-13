@@ -30,7 +30,7 @@ export class IsAdminAPIEnabledGuard implements CanActivate {
     }
     if (!canAccess) {
       throw new ForbiddenException(
-        `IsAdminAPIEnabledGuard - Organization with id=${organizationId} does not have Admin API access. Please contact https://cal.com/sales to upgrade.`
+        `IsAdminAPIEnabledGuard - Organization with id=${organizationId} does not have Admin API access.`
       );
     }
     return true;
@@ -60,9 +60,7 @@ export class IsAdminAPIEnabledGuard implements CanActivate {
         Number(organizationId)
       );
       if (!adminAPIAccessIsEnabledInOrg) {
-        throw new ForbiddenException(
-          `IsAdminAPIEnabledGuard - Organization does not have Admin API access, please contact https://cal.com/sales to upgrade`
-        );
+        throw new ForbiddenException(`IsAdminAPIEnabledGuard - Organization does not have Admin API access`);
       }
     }
     canAccess = true;

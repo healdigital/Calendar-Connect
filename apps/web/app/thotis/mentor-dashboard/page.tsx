@@ -11,7 +11,7 @@ export default function MentorDashboardPage() {
 
   // This page requires auth - the session user is the mentor
   // We use the session hook that Cal.com provides through tRPC context
-  const { data: session, isLoading: isLoadingSession } = trpc.viewer.me.useQuery();
+  const { data: session, isLoading: isLoadingSession } = trpc.viewer.me.get.useQuery();
 
   if (isLoadingSession) {
     return (

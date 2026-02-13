@@ -11,7 +11,7 @@ export const MembersView = (props: UserListTableProps & { permissions?: MemberPe
   const { permissions, ...tableProps } = props;
 
   // Use PBAC permissions if available, otherwise fall back to role-based check
-  const isOrgAdminOrOwner = props.org && checkAdminOrOwner(props.org.user.role);
+  const isOrgAdminOrOwner = !!(props.org?.user && checkAdminOrOwner(props.org.user.role));
   const canLoggedInUserSeeMembers =
     permissions?.canListMembers ??
     ((props.org?.isPrivate && isOrgAdminOrOwner) || isOrgAdminOrOwner || !props.org?.isPrivate);

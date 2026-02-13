@@ -1,6 +1,7 @@
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
-import { Button, Card, Table } from "@calcom/ui";
+import { Button } from "@calcom/ui/components/button";
+import { Table } from "@calcom/ui/components/table";
 import { useState } from "react";
 import {
   Bar,
@@ -70,10 +71,10 @@ const StatsOverview = ({ stats }: { stats: any }) => {
       )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, idx) => (
-          <Card key={idx} className="p-4">
+          <div key={idx} className="border-subtle bg-default rounded-md border p-4">
             <p className="text-subtle text-sm font-medium">{card.label}</p>
             <p className="text-emphasis mt-2 text-2xl font-bold">{card.value}</p>
-          </Card>
+          </div>
         ))}
       </div>
     </div>
@@ -94,7 +95,7 @@ const SessionTrendsChart = ({ trends }: { trends: any }) => {
   }));
 
   return (
-    <Card className="p-4">
+    <div className="border-subtle bg-default rounded-md border p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-emphasis text-lg font-semibold">{t(`thotis_session_trends_${period}`)}</h3>
         <div className="flex gap-1 bg-subtle p-1 rounded-md">
@@ -134,7 +135,7 @@ const SessionTrendsChart = ({ trends }: { trends: any }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -148,7 +149,7 @@ const FunnelChart = ({ funnel }: { funnel: any }) => {
   ];
 
   return (
-    <Card className="p-4">
+    <div className="border-subtle bg-default rounded-md border p-4">
       <h3 className="text-emphasis mb-4 text-lg font-semibold">{t("thotis_conversion_funnel")}</h3>
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -175,7 +176,7 @@ const FunnelChart = ({ funnel }: { funnel: any }) => {
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -190,7 +191,7 @@ const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
 
   return (
-    <Card className="p-4">
+    <div className="border-subtle bg-default rounded-md border p-4">
       <h3 className="text-emphasis mb-4 text-lg font-semibold">{t("thotis_field_distribution")}</h3>
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -204,7 +205,7 @@ const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value">
-              {data.map((entry, index) => (
+              {data.map((entry: any, index: number) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -213,7 +214,7 @@ const FieldDistributionChart = ({ distribution }: { distribution: any }) => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -235,7 +236,7 @@ const MentorList = ({ profiles }: { profiles: any[] }) => {
   ];
 
   return (
-    <Card className="p-4">
+    <div className="border-subtle bg-default rounded-md border p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-emphasis text-lg font-semibold">{t("thotis_mentor_performance")}</h3>
       </div>
@@ -244,7 +245,7 @@ const MentorList = ({ profiles }: { profiles: any[] }) => {
           <Table.Header>
             <Table.Row>
               {columns.map((col, idx) => (
-                <Table.Head key={idx}>{col.Header}</Table.Head>
+                <Table.ColumnTitle key={idx}>{col.Header}</Table.ColumnTitle>
               ))}
             </Table.Row>
           </Table.Header>
@@ -265,7 +266,7 @@ const MentorList = ({ profiles }: { profiles: any[] }) => {
           </Table.Body>
         </Table>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -277,18 +278,17 @@ const RecentIncidents = () => {
     resolved: false,
   });
 
-  if (isPending) return <Card className="p-4">Loading incidents...</Card>;
+  if (isPending) return <div className="border-subtle bg-default rounded-md border p-4">Loading incidents...</div>;
 
   const incidents = incidentsData?.incidents || [];
 
   return (
-    <Card className="p-4 h-full">
+    <div className="border-subtle bg-default rounded-md border p-4 h-full">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-emphasis text-lg font-semibold">{t("thotis_recent_incidents")}</h3>
         <Button
-          variant="minimal"
           size="sm"
-          color="secondary"
+          color="minimal"
           href="/thotis/admin/incidents"
           className="text-xs">
           {t("thotis_view_all")}
@@ -319,7 +319,7 @@ const RecentIncidents = () => {
           ))
         )}
       </div>
-    </Card>
+    </div>
   );
 };
 

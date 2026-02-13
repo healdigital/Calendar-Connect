@@ -90,6 +90,7 @@ export class ProfileRepository {
         bio: data.bio,
         profilePhotoUrl: data.profilePhotoUrl,
         linkedInUrl: data.linkedInUrl,
+        status: "VERIFIED",
       },
       select: studentProfileSelect,
     });

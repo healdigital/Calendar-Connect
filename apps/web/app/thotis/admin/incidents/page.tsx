@@ -147,7 +147,7 @@ export default function IncidentsPage() {
                         {!incident.resolved && (
                           <Button
                             size="sm"
-                            variant="secondary"
+                            color="secondary"
                             loading={
                               resolveMutation.isPending &&
                               resolveMutation.variables?.incidentId === incident.id
@@ -158,7 +158,6 @@ export default function IncidentsPage() {
                         )}
                         <Button
                           size="sm"
-                          variant="secondary"
                           color="secondary"
                           loading={
                             moderationMutation.isPending &&

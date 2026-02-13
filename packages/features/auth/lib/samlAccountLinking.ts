@@ -4,10 +4,12 @@ import { HOSTED_CAL_FEATURES } from "@calcom/lib/constants";
 import logger from "@calcom/lib/logger";
 import type { PrismaClient } from "@calcom/prisma";
 import { prisma } from "@calcom/prisma";
-import { tenantPrefix } from "../../ee/sso/lib/saml";
 
 const log: ReturnType<typeof logger.getSubLogger> = logger.getSubLogger({ prefix: ["samlAccountLinking"] });
 const SAML_NOT_AUTHORITATIVE_ERROR_URL = "/auth/error?error=saml-idp-not-authoritative";
+
+
+const tenantPrefix = "team-";
 
 export function getTeamIdFromSamlTenant(tenant: string): number | null {
   if (!tenant.startsWith(tenantPrefix)) {

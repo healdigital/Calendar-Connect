@@ -40,7 +40,7 @@ export default function ThotisLandingPage() {
               {session ? (
                 <>
                   <Button
-                    variant="ghost"
+                    color="minimal"
                     onClick={() => router.push("/thotis/my-sessions")}
                     className="gap-2">
                     <Icon name="calendar" className="h-4 w-4" />
@@ -53,7 +53,7 @@ export default function ThotisLandingPage() {
                 </>
               ) : (
                 <>
-                  <Button variant="ghost" onClick={() => router.push("/auth/signin")}>
+                  <Button color="minimal" onClick={() => router.push("/auth/signin")}>
                     Sign In
                   </Button>
                   <Button onClick={() => router.push("/auth/signup")}>Get Started</Button>
@@ -81,7 +81,7 @@ export default function ThotisLandingPage() {
           </div>
 
           <OrientationIntentForm
-            isLoading={upsertIntent.isPending}
+            isPending={upsertIntent.isPending}
             onSubmit={async (data) => {
               console.log("Intent data:", data);
 
@@ -155,7 +155,7 @@ export default function ThotisLandingPage() {
 
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Icon name="video-camera" className="h-8 w-8 text-green-600" />
+                <Icon name="video" className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">Join & Ask</h3>
               <p className="text-gray-600">Join via Google Meet. Get real advice.</p>
@@ -175,7 +175,7 @@ export default function ThotisLandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              variant="outline"
+              color="secondary"
               onClick={handleFindMentors}
               className="gap-2 border-white text-white">
               <Icon name="search" className="h-5 w-5" />

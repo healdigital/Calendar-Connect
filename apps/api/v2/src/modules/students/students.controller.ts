@@ -22,8 +22,14 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 
+import { API_VERSIONS_VALUES } from "@/lib/api-versions";
+import type { CreateProfileInput, UpdateProfileInput } from "@calcom/platform-libraries";
+
 @ApiTags("Students")
-@Controller("students")
+@Controller({
+  path: "/v2/students",
+  version: API_VERSIONS_VALUES,
+})
 export class StudentsController {
   constructor(
     private readonly profileService: ProfileService,
@@ -33,12 +39,7 @@ export class StudentsController {
   ) {}
 
   @Get("by-field/:field")
-  async getStudentsByField(
-    @Param("field") field: string,
-    @Query("limit") limit?: number,
-    @Query("offset") offset?: number
-  ) {
-    // Note: limit and offset are unused for now as the service hardcodes pageSize
+  async getStudentsByField(@Param("field") field: string) {
     try {
       const profiles = await this.profileService.getProfilesByField(field);
       return {
@@ -46,8 +47,13 @@ export class StudentsController {
         data: profiles,
       };
     } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      const message = error instanceof Error ? error.message : "Unknown error";
+      if (message.includes("Invalid field of study")) {
+        throw new BadRequestException(message);
+      }
       throw new HttpException(
-        { status: "error", message: error instanceof Error ? error.message : "Unknown error" },
+        { status: "error", message },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
@@ -149,7 +155,7 @@ export class StudentsController {
 
   @UseGuards(AuthGuard("jwt"))
   @Post(":id/profile")
-  async createProfile(@Param("id") id: string, @Body() body: any) {
+  async createProfile(@Param("id") id: string, @Body() body: CreateProfileInput) {
     const userId = parseInt(id, 10);
     if (Number.isNaN(userId))
       throw new BadRequestException("Profile creation requires a numeric userId as ID");
@@ -175,7 +181,7 @@ export class StudentsController {
 
   @UseGuards(AuthGuard("jwt"))
   @Put(":id/profile")
-  async updateProfile(@Param("id") id: string, @Body() body: any) {
+  async updateProfile(@Param("id") id: string, @Body() body: UpdateProfileInput) {
     const idAsNumber = parseInt(id, 10);
     const isNumeric = !Number.isNaN(idAsNumber) && String(idAsNumber) === id;
 

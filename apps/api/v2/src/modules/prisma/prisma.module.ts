@@ -1,8 +1,10 @@
-import { Module } from "@nestjs/common";
+import { PrismaClient } from "@calcom/prisma/client";
+import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
+@Global()
 @Module({
   imports: [ConfigModule],
   providers: [
@@ -34,7 +36,12 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
       },
       inject: [ConfigService],
     },
+    {
+      provide: PrismaClient,
+      useFactory: (prisma: PrismaWriteService) => prisma.prisma,
+      inject: [PrismaWriteService],
+    },
   ],
-  exports: [PrismaReadService, PrismaWriteService],
+  exports: [PrismaReadService, PrismaWriteService, PrismaClient],
 })
 export class PrismaModule {}

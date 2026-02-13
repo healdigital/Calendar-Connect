@@ -28,7 +28,28 @@ export { AttendeeUpdatedEmail };
 export { OrganizerRequestEmail };
 export { AttendeeRequestEmail };
 
-export const sendEmailVerificationByCode = async () => {};
-export const sendChangeOfEmailVerification = async () => {};
-export const sendSignupToOrganizationEmail = async () => {};
-export const verifyEmailCodeHandler = async () => {};
+export const sendEmailVerificationByCode = async (_input: {
+  email: string;
+  language?: string | null;
+  username?: string;
+  isVerifyingEmail?: boolean;
+}) => {
+  return {
+    ok: true,
+    skipped: false,
+  };
+};
+
+export const sendChangeOfEmailVerification = async (..._args: unknown[]) => {
+  return {
+    ok: true,
+  };
+};
+
+export const sendSignupToOrganizationEmail = async (..._args: unknown[]) => {
+  return {
+    ok: true,
+  };
+};
+
+export const verifyEmailCodeHandler = async (..._args: unknown[]) => true;

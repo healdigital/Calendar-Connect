@@ -2,6 +2,8 @@ import { WEBAPP_URL } from "@calcom/lib/constants";
 import { HttpError } from "@calcom/lib/http-error";
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
+import { CHECKOUT_SESSION_TYPES } from "@calcom/features/billing/constants";
+import { stripe } from "@calcom/app-store/_utils/stripe";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";

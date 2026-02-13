@@ -781,7 +781,7 @@ export const EventAdvancedTab = ({
               title={t("interface_language")}
               description={t("interface_language_description")}
               checked={interfaceLanguageVisible}
-              {...shouldLockIndicator("interfaceLanguage")}
+              disabled={shouldLockDisableProps("interfaceLanguage").disabled}
               onCheckedChange={(e) => {
                 setInterfaceLanguageVisible(e);
                 if (!e) {

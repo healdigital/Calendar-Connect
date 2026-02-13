@@ -1288,10 +1288,14 @@ export class ThotisBookingService {
     });
 
     if (!eventType) {
-      // If event type doesn't exist yet, it will be created in the main flow.
-      // For now, we assume it's available if no event type exists as we can't check its schedule.
-      return;
+      // If event type doesn't exist yet, we check against a virtual 15-min slot
+      // using the default availability of the user.
+      // This ensures we never skip validation.
+      console.log(`EventType not found for user ${userId}, using default 15m check`);
     }
+
+    const eventTypeId = eventType?.id;
+    const slotLength = eventType?.length || 15;
 
     // 2. Use Cal.com's availability service
     try {
@@ -1304,7 +1308,7 @@ export class ThotisBookingService {
       const endIso = new Date(endTime.getTime() + 60 * 1000).toISOString();
 
       const input = {
-        eventTypeId: eventType.id,
+        eventTypeId, // Can be undefined, engine will fallback to default slots if usernameList is provided
         usernameList: [user.username],
         startTime: startIso,
         endTime: endIso,

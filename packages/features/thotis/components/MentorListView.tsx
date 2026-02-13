@@ -12,12 +12,12 @@ type SortOption = "recommended" | "rating" | "sessions" | "recent";
 
 interface MentorListViewProps {
   profiles: StudentProfileWithUser[];
-  isPending: boolean;
+  isLoading: boolean;
   total: number;
   onBookSession: (username: string) => void;
 }
 
-export const MentorListView = ({ profiles, isPending, total, onBookSession }: MentorListViewProps) => {
+export const MentorListView = ({ profiles, isLoading, total, onBookSession }: MentorListViewProps) => {
   const { t } = useLocale();
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const hasRecommendations = profiles.some((p) => p.matchScore !== undefined);
@@ -46,7 +46,7 @@ export const MentorListView = ({ profiles, isPending, total, onBookSession }: Me
     return sorted;
   }, [profiles, sortBy]);
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="border-emphasis h-12 w-12 animate-spin rounded-full border-b-2 border-t-2" />

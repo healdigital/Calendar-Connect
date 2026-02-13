@@ -61,7 +61,7 @@ export const CreateTeamEventType = ({ permissions }: CreateTeamEventTypeProps) =
       isPending={createMutation.isPending}
       form={form}
       isManagedEventType={isManagedEventType}
-      handleSubmit={(values) => {
+      handleSubmit={(values: any) => {
         createMutation.mutate(values);
       }}
       SubmitButton={SubmitButton}

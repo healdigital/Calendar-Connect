@@ -1,0 +1,208 @@
+• turbo 2.7.1
+• Packages in scope: @calcom/alby, @calcom/amie, @calcom/api, @calcom/api-proxy, @calcom/api-v2, @calcom/app-store, @calcom/app-store-cli, @calcom/applecalendar, @calcom/atoms, @calcom/attio, @calcom/autocheckin, @calcom/baa-for-hipaa, @calcom/base, @calcom/basecamp3, @calcom/bolna, @calcom/btcpayserver, @calcom/caldavcalendar, @calcom/campfire, @calcom/chatbase, @calcom/clic, @calcom/closecom, @calcom/config, @calcom/cron, @calcom/dailyvideo, @calcom/databuddy, @calcom/dayjs, @calcom/debugging, @calcom/deel, @calcom/demodesk, @calcom/dialpad, @calcom/discord, @calcom/dub, @calcom/eightxeight, @calcom/element-call, @calcom/elevenlabs, @calcom/emails, @calcom/embed-core, @calcom/embed-react, @calcom/embed-snippet, @calcom/example-app-credential-sync, @calcom/exchange2013calendar, @calcom/exchange2016calendar, @calcom/exchangecalendar, @calcom/facetime, @calcom/fathom, @calcom/feature-auth, @calcom/features, @calcom/feishucalendar, @calcom/fonio-ai, @calcom/framer, @calcom/ga4, @calcom/giphy, @calcom/googlecalendar, @calcom/googlevideo, @calcom/granola, @calcom/greetmate-ai, @calcom/gtm, @calcom/hitpay, @calcom/horizon-workrooms, @calcom/hubspot, @calcom/huddle01video, @calcom/ics-feed, @calcom/insihts, @calcom/intercom, @calcom/jelly, @calcom/jitsivideo, @calcom/kysely, @calcom/larkcalendar, @calcom/lib, @calcom/lindy, @calcom/linear, @calcom/make, @calcom/matomo, @calcom/metapixel, @calcom/millis-ai, @calcom/mirotalk, @calcom/mock-payment-app, @calcom/monobot, @calcom/n8n, @calcom/nextcloudtalk, @calcom/office365calendar, @calcom/office365video, @calcom/paypal, @calcom/ping, @calcom/pipedream, @calcom/pipedrive-crm, @calcom/platform-constants, @calcom/platform-enums, @calcom/platform-libraries, @calcom/platform-types, @calcom/platform-utils, @calcom/plausible, @calcom/posthog, @calcom/prisma, @calcom/qr_code, @calcom/raycast, @calcom/retell-ai, @calcom/riverside, @calcom/roam, @calcom/routing-forms, @calcom/salesforce, @calcom/salesroom, @calcom/sendgrid, @calcom/shimmer-video, @calcom/signal, @calcom/sirius_video, @calcom/skype, @calcom/stripepayment, @calcom/sylapsvideo, @calcom/synthflow, @calcom/tandemvideo, @calcom/telegram, @calcom/telli, @calcom/testing, @calcom/trpc, @calcom/tsconfig, @calcom/twipla, @calcom/types, @calcom/ui, @calcom/umami, @calcom/vimcal, @calcom/vital, @calcom/weather_in_your_calendar, @calcom/web, @calcom/webex, @calcom/whatsapp, @calcom/whereby, @calcom/wordpress, @calcom/zapier, @calcom/zoho-bigin, @calcom/zohocalendar, @calcom/zohocrm, @calcom/zoomvideo, @coss/ui, WipeMyCal
+• Running type-check:ci in 135 packages
+• Remote caching disabled
+cache bypass, force executing 059a6c297c747b1f
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: https://pris.ly/prisma-config
+
+Environment variables loaded from .env
+Prisma schema loaded from schema.prisma
+
+✔ Generated Prisma Client (6.16.1) to ./generated/prisma in 371ms
+
+✔ Generated Zod Prisma Types to ./zod in 1.34s
+
+✔ Generated Kysely types (2.2.0) to ./../kysely in 277ms
+
+✔ Generated Prisma Enum Generator to ./enums/index.ts in 197ms
+
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: https://pris.ly/prisma-config
+
+Prisma schema loaded from schema.prisma
+Formatted schema.prisma in 42ms 🚀
+cache bypass, force executing 51756da426923212
+cache bypass, force executing 1e0b199d76f66af5
+cache bypass, force executing d49e22cff372d44c
+cache bypass, force executing cd92b6dd3525f6cc
+cache bypass, force executing 5cb58b27f9f9b200
+cache bypass, force executing 8476e13ecd97e4fd
+cache bypass, force executing b92752b00de9411f
+cache bypass, force executing 6f3a26f6171a6d8d
+cache bypass, force executing bc2832c57ce79e31
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/components/team/screens/Team.tsx:34:55 - error TS2322: Type 'MemberType' is not assignable to type 'Pick<{ id: number; locale: string | null; name: string | null; timeZone: string; requiresBookerEmailVerification: boolean | null; metadata: JsonValue; email: string; username: string | null; ... 38 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; }'.
+  Type 'MemberType' is not assignable to type '{ profile: Omit<UserProfile, "upId">; }'.
+    Types of property 'profile' are incompatible.
+      Type 'Omit<UserProfile, "upId"> | undefined' is not assignable to type 'Omit<UserProfile, "upId">'.
+        Type 'undefined' is not assignable to type 'Omit<UserProfile, "upId">'.
+
+34         <UserAvatar noOrganizationIndicator size="md" user={member} />
+                                                         ~~~~
+
+  ../../packages/ui/components/avatar/UserAvatar.tsx:16:3
+    16   user: Pick<User, "name" | "username" | "avatarUrl"> & {
+         ~~~~
+    The expected type comes from property 'user' which is declared here on type 'IntrinsicAttributes & Omit<AvatarProps, "alt" | "imageSrc"> & { user: Pick<{ id: number; locale: string | null; name: string | null; ... 43 more ...; autoOptInFeatures: boolean; }, "name" | ... 1 more ... | "avatarUrl"> & { ...; }; noOrganizationIndicator?: boolean | undefined; previewSrc?: string | ... 1 more ... |...'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/lib/pages/document/_applyThemeForDocument.test.ts:32:23 - error TS2740: Type '{ pathname: string; }' is missing the following properties from type 'Location': ancestorOrigins, hash, host, hostname, and 8 more.
+
+32     global.window = { location: { pathname: "/" } };
+                         ~~~~~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/auth/sso/provider-view.tsx:32:26 - error TS2345: Argument of type '{ tenant: string | undefined; product: string | undefined; }' is not assignable to parameter of type 'SignInAuthorizationParams | undefined'.
+  Type '{ tenant: string | undefined; product: string | undefined; }' is not assignable to type 'undefined'.
+
+32       signIn("saml", {}, { tenant: props.tenant, product: props.product });
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useBookings.ts:387:9 - error TS2322: Type 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' is not assignable to type 'SuccessRedirectBookingType'.
+  Property 'uid' is optional in type 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' but required in type 'SuccessRedirectBookingType'.
+
+387         booking: booking,
+            ~~~~~~~
+
+  ../../packages/features/bookings/lib/bookingSuccessRedirect.ts:205:5
+    205     booking: SuccessRedirectBookingType;
+            ~~~~~~~
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/bookings/hooks/useBookings.ts:516:9 - error TS2322: Type 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' is not assignable to type 'SuccessRedirectBookingType'.
+  Property 'uid' is optional in type 'Omit<{ id: number; uid: SUUID; iCalUID: string; status: "ACCEPTED"; eventTypeId: number; user: { name: string; timeZone: string; email: null; }; userId: null; userUuid: null; title: string; startTime: Date; ... 43 more ...; previousBooking: { ...; } | null; } | { ...; } | { ...; } | { ...; }, "startTime" | "endTime"...' but required in type 'SuccessRedirectBookingType'.
+
+516         booking,
+            ~~~~~~~
+
+  ../../packages/features/bookings/lib/bookingSuccessRedirect.ts:205:5
+    205     booking: SuccessRedirectBookingType;
+            ~~~~~~~
+    The expected type comes from property 'booking' which is declared here on type '{ successRedirectUrl: string | null; forwardParamsSuccessRedirect: boolean | null; redirectUrlOnNoRoutingFormResponse?: string | null | undefined; query: Record<string, string | boolean | null | undefined>; booking: SuccessRedirectBookingType; }'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx:60:96 - error TS2339: Property 'id' does not exist on type '{ workspacePlatformSlug: string; }'.
+
+60     return directDelegationCredentialId ?? connectedCalendar.integration.delegationCredential?.id ?? null;
+                                                                                                  ~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/event-types/components/EventTypeWebWrapper.tsx:388:5 - error TS2322: Type 'Record<string, unknown>[] | undefined' is not assignable to type '{ id: number; type: WorkflowType; name: string; position: number; userId: number | null; teamId: number | null; time: number | null; isActiveOnAll: boolean; trigger: WorkflowTriggerEvents; timeUnit: TimeUnit | null; }[] | undefined'.
+  Type 'Record<string, unknown>[]' is not assignable to type '{ id: number; type: WorkflowType; name: string; position: number; userId: number | null; teamId: number | null; time: number | null; isActiveOnAll: boolean; trigger: WorkflowTriggerEvents; timeUnit: TimeUnit | null; }[]'.
+    Type 'Record<string, unknown>' is missing the following properties from type '{ id: number; type: WorkflowType; name: string; position: number; userId: number | null; teamId: number | null; time: number | null; isActiveOnAll: boolean; trigger: WorkflowTriggerEvents; timeUnit: TimeUnit | null; }': id, type, name, position, and 6 more.
+
+388     allActiveWorkflows,
+        ~~~~~~~~~~~~~~~~~~
+
+  ../../packages/platform/atoms/event-types/hooks/useTabsNavigations.tsx:25:3
+    25   allActiveWorkflows?: Workflow[];
+         ~~~~~~~~~~~~~~~~~~
+    The expected type comes from property 'allActiveWorkflows' which is declared here on type 'Props'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/filters/components/TeamsFilter.tsx:106:39 - error TS2339: Property 'isOrganization' does not exist on type '{ id: number; name: string; slug: string | null; logoUrl?: string | null | undefined; }'.
+
+106             ?.filter((team) => !team?.isOrganization)
+                                          ~~~~~~~~~~~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/filters/components/TeamsFilter.tsx:121:77 - error TS2345: Argument of type '{ id: number; name: string; slug: string | null; logoUrl?: string | null | undefined; }' is not assignable to parameter of type 'Pick<{ id: number; name: string; createdAt: Date; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; }, "name" | "logoUrl"> & { ...; }'.
+  Type '{ id: number; name: string; slug: string | null; logoUrl?: string | null | undefined; }' is not assignable to type 'Pick<{ id: number; name: string; createdAt: Date; slug: string | null; parentId: number | null; timeZone: string; metadata: JsonValue; bookingLimits: JsonValue; ... 24 more ...; includeManagedEventsInLimits: boolean; }, "name" | "logoUrl">'.
+    Types of property 'logoUrl' are incompatible.
+      Type 'string | null | undefined' is not assignable to type 'string | null'.
+        Type 'undefined' is not assignable to type 'string | null'.
+
+121                 icon={<Avatar alt={team?.name} imageSrc={getOrgOrTeamAvatar(team)} size="xs" />}
+                                                                                ~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/hooks/useCreateTeam.ts:44:9 - error TS2322: Type '{}' is not assignable to type 'string'.
+
+44         window.location.href = result.url;
+           ~~~~~~~~~~~~~~~~~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/hooks/useCreateTeam.ts:50:31 - error TS2339: Property 'id' does not exist on type '{}'.
+
+50         setTeamId(result.team.id);
+                                 ~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/onboarding/hooks/useCreateTeam.ts:51:68 - error TS2339: Property 'id' does not exist on type '{}'.
+
+51         router.push(`/onboarding/teams/invite?teamId=${result.team.id}`);
+                                                                      ~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/org/[orgSlug]/instant-meeting/team/[slug]/[type]/instant-meeting-view.tsx:34:11 - error TS2741: Property 'considerUnpublished' is missing in type '{ eventTypeId: number; }' but required in type '{ fromRedirectOfNonOrgLink?: boolean | undefined; considerUnpublished: boolean; isUnpublished?: boolean | undefined; orgSlug?: string | null | undefined; teamSlug?: string | null | undefined; name?: string | ... 1 more ... | undefined; logoUrl?: string | ... 1 more ... | undefined; eventTypeId?: number | ... 1 more ...'.
+
+34           entity={{ ...entity, eventTypeId: eventTypeId }}
+             ~~~~~~
+
+  ../../packages/features/bookings/Booker/types.ts:31:5
+    31     considerUnpublished: boolean;
+           ~~~~~~~~~~~~~~~~~~~
+    'considerUnpublished' is declared here.
+  ../../packages/features/bookings/Booker/types.ts:29:3
+    29   entity: {
+         ~~~~~~
+    The expected type comes from property 'entity' which is declared here on type 'IntrinsicAttributes & BookerProps & { eventData?: any; }'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/settings/billing/billing-view.tsx:126:9 - error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+
+126         {isTrialing && (
+            ~~~~~~~~~~~~~~~~
+127           <div className="bg-default border-muted mt-1 flex rounded-[10px] border px-5 py-4">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+... 
+139           </div>
+    ~~~~~~~~~~~~~~~~
+140         )}
+    ~~~~~~~~~~
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/shell/banners/LayoutBanner.tsx:73:24 - error TS2322: Type 'boolean | Session | InvalidAppCredentialBannerProps[] | null' is not assignable to type 'boolean & Session & InvalidAppCredentialBannerProps[]'.
+  Type 'null' is not assignable to type 'boolean & Session & InvalidAppCredentialBannerProps[]'.
+
+73         return <Banner data={banners[key]} key={key} />;
+                          ~~~~
+
+  modules/users/components/VerifyEmailBanner.tsx:9:3
+    9   data: boolean;
+        ~~~~
+    The expected type comes from property 'data' which is declared here on type 'IntrinsicAttributes & VerifyEmailBannerProps & AdminPasswordBannerProps & CalendarCredentialBannerProps & InvalidAppCredentialBannersProps'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/team/team-view.tsx:189:23 - error TS2322: Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }[]' is not assignable to type 'MemberType[]'.
+  Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is not assignable to type 'MemberType'.
+    Type '{ id: number; name: string | null; username: string | null; bio: string | null; avatarUrl: string | null; organizationId: number | null; profile: unknown; subteams: string[] | null; accepted: boolean; }' is not assignable to type '{ profile?: Omit<UserProfile, "upId"> | undefined; safeBio?: string | null | undefined; bookerUrl?: string | undefined; }'.
+      Types of property 'profile' are incompatible.
+        Type 'unknown' is not assignable to type 'Omit<UserProfile, "upId"> | undefined'.
+
+189                 <Team members={team.members} teamName={team.name} />
+                          ~~~~~~~
+
+  components/team/screens/Team.tsx:73:40
+    73 const Team = ({ members, teamName }: { members: MemberType[]; teamName: string | null }) => {
+                                              ~~~~~~~
+    The expected type comes from property 'members' which is declared here on type 'IntrinsicAttributes & { members: MemberType[]; teamName: string | null; }'
+
+/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web/modules/users/lib/UserListTableUtils.test.ts:60:9 - error TS2739: Type '{ id: number; username: string; name: string; email: string; timeZone: string; role: "MEMBER"; avatarUrl: null; accepted: true; disableImpersonation: false; completedOnboarding: true; teams: never[]; ... 4 more ...; customRole: { ...; }; }' is missing the following properties from type '{ id: number; name: string | null; username: string | null; email: string; avatarUrl: string | null; role: MembershipRole; customRole: { id?: string | undefined; name: string; ... 5 more ...; color?: string | ... 1 more ... | undefined; } | null; ... 11 more ...; disableImpersonation: boolean; }': schedules, bio, twoFactorEnabled
+
+60   const mockUser: UserTableUser = {
+           ~~~~~~~~
+
+
+Found 17 errors in 13 files.
+
+Errors  Files
+     1  components/team/screens/Team.tsx:34
+     1  lib/pages/document/_applyThemeForDocument.test.ts:32
+     1  modules/auth/sso/provider-view.tsx:32
+     2  modules/bookings/hooks/useBookings.ts:387
+     1  modules/calendars/components/SelectedCalendarsSettingsWebWrapper.tsx:60
+     1  modules/event-types/components/EventTypeWebWrapper.tsx:388
+     2  modules/filters/components/TeamsFilter.tsx:106
+     3  modules/onboarding/hooks/useCreateTeam.ts:44
+     1  modules/org/[orgSlug]/instant-meeting/team/[slug]/[type]/instant-meeting-view.tsx:34
+     1  modules/settings/billing/billing-view.tsx:126
+     1  modules/shell/banners/LayoutBanner.tsx:73
+     1  modules/team/team-view.tsx:189
+     1  modules/users/lib/UserListTableUtils.test.ts:60
+ERROR: command finished with error: command (/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web) /private/var/folders/lf/_1ctg98j7pnd72hph771429h0000gn/T/xfs-be6ec2a7/yarn run type-check:ci exited (2)
+@calcom/web#type-check:ci: command (/Users/leoturbetdelof/Downloads/A trier/Thotis Final/cal.com-main/apps/web) /private/var/folders/lf/_1ctg98j7pnd72hph771429h0000gn/T/xfs-be6ec2a7/yarn run type-check:ci exited (2)
+
+ Tasks:    9 successful, 10 total
+Cached:    0 cached, 10 total
+  Time:    1m14.807s 
+Failed:    @calcom/web#type-check:ci
+
+ ERROR  run failed: command  exited (2)

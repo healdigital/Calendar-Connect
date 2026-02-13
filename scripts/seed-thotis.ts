@@ -1,5 +1,5 @@
 import { prisma } from "@calcom/prisma";
-import { AcademicField } from "@calcom/prisma/client";
+import { AcademicField, MentorStatus } from "@calcom/prisma/client";
 import { createUserAndEventType } from "./seed-utils";
 
 const MENTORS = [
@@ -135,7 +135,7 @@ const MENTORS = [
   },
 ];
 
-export async function seedThotis() {
+export async function seedThotis(): Promise<void> {
   console.log("🌱 Seeding Thotis data...");
 
   for (const mentorData of MENTORS) {
@@ -166,6 +166,7 @@ export async function seedThotis() {
       console.log(`👤 Upserted Mentor: ${mentorData.email}`);
 
       // 2. Create StudentProfile for Mentor
+      // IMPORTANT: All seeded mentors must have status: VERIFIED and isActive: true
       const profile = await prisma.studentProfile.upsert({
         where: { userId: mentorUser.id },
         update: {
@@ -178,6 +179,7 @@ export async function seedThotis() {
           averageRating: mentorData.averageRating,
           totalRatings: mentorData.totalRatings,
           isActive: true,
+          status: MentorStatus.VERIFIED, // Seeded mentors are pre-verified
         },
         create: {
           userId: mentorUser.id,
@@ -190,8 +192,16 @@ export async function seedThotis() {
           averageRating: mentorData.averageRating,
           totalRatings: mentorData.totalRatings,
           isActive: true,
+          status: MentorStatus.VERIFIED, // Seeded mentors are pre-verified
         },
       });
+
+      // Verify the mentor was created with correct status
+      if (profile.status !== MentorStatus.VERIFIED) {
+        console.warn(
+          `⚠️  WARNING: Mentor ${mentorData.email} was not set to VERIFIED status. Current status: ${profile.status}`
+        );
+      }
 
       // 3. Add a sample rating
       await prisma.sessionRating
@@ -200,7 +210,7 @@ export async function seedThotis() {
             bookingId: (await prisma.booking.findFirst({ where: { userId: mentorUser.id } }))?.id || 0,
             studentProfileId: profile.id,
             rating: 5,
-            feedback: "Super session avec " + mentorData.name + " ! Très à l'écoute et de bons conseils.",
+            feedback: `Super session avec ${mentorData.name} ! Très à l'écoute et de bons conseils.`,
             prospectiveEmail: "demo-student@gmail.com",
           },
         })
@@ -239,5 +249,26 @@ export async function seedThotis() {
   });
   console.log(`👤 Created Admin: ${adminEmail} (password: adminpassword)`);
 
-  console.log("✅ Thotis seeding completed.");
+  // 6. Verify all mentors have VERIFIED status
+  const verifiedMentorsCount = await prisma.studentProfile.count({
+    where: {
+      status: MentorStatus.VERIFIED,
+      user: {
+        email: {
+          in: MENTORS.map((m) => m.email),
+        },
+      },
+    },
+  });
+
+  console.log(
+    `✅ Thotis seeding completed. ${verifiedMentorsCount}/${MENTORS.length} mentors have VERIFIED status.`
+  );
+
+  if (verifiedMentorsCount !== MENTORS.length) {
+    console.warn(
+      `⚠️  WARNING: Not all mentors have VERIFIED status! Expected ${MENTORS.length}, got ${verifiedMentorsCount}`
+    );
+    console.warn(`⚠️  Run 'npx ts-node --transpile-only scripts/fix-mentor-status.ts' to fix this issue.`);
+  }
 }

@@ -182,8 +182,6 @@ DATABASE_URL=DATABASE_URL="postgresql://postgres:@localhost:5450/calendso"
 
 API*KEY_PREFIX=cal*# This can be changed per envirorment so cal*test* for staging for example.
 
-> If you're self-hosting under our commercial license, you can use any prefix you want for api keys. either leave the default cal\_ (not providing any envirorment variable) or modify it
-
 **Ensure that while testing swagger, API project should be run in production mode**
 We make sure of this by not using next in dev, but next build && next start, if you want hot module reloading and such when developing, please use yarn run next directly on apps/api.
 

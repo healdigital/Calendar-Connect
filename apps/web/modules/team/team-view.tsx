@@ -9,7 +9,6 @@ import { teamMetadataSchema } from "@calcom/prisma/zod-utils";
 import { Avatar, UserAvatarGroup } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";
 import { UnpublishedEntity } from "@calcom/ui/components/unpublished-entity";
-import EventTypeDescription from "@calcom/web/modules/event-types/components/EventTypeDescription";
 import Team from "@components/team/screens/Team";
 import { useToggleQuery } from "@lib/hooks/useToggleQuery";
 import type { getServerSideProps } from "@lib/team/[slug]/getServerSideProps";
@@ -22,8 +21,11 @@ import type { inferSSRProps } from "@lib/types/inferSSRProps";
 // 2. org/[orgSlug]/[user]/[type]
 import classNames from "classnames";
 import Link from "next/link";
+import type { ComponentProps } from "react";
 
 export type PageProps = inferSSRProps<typeof getServerSideProps>;
+type AvatarUsers = ComponentProps<typeof UserAvatarGroup>["users"];
+
 function TeamPage({ team, considerUnpublished, isValidOrgDomain }: PageProps) {
   useTheme(team.theme);
   const routerQuery = useRouterQuery();
@@ -82,10 +84,15 @@ function TeamPage({ team, considerUnpublished, isValidOrgDomain }: PageProps) {
                 <div className="flex flex-wrap items-center space-x-2 rtl:space-x-reverse">
                   <h2 className=" text-default text-sm font-semibold">{type.title}</h2>
                 </div>
-                <EventTypeDescription className="text-sm" eventType={type} />
+                <p className="text-subtle text-sm">{type.description}</p>
               </div>
               <div className="mt-1 self-center">
-                <UserAvatarGroup truncateAfter={4} className="flex shrink-0" size="sm" users={type.users} />
+                <UserAvatarGroup
+                  truncateAfter={4}
+                  className="flex shrink-0"
+                  size="sm"
+                  users={type.users as AvatarUsers}
+                />
               </div>
             </Link>
           </div>
@@ -118,7 +125,9 @@ function TeamPage({ team, considerUnpublished, isValidOrgDomain }: PageProps) {
                   className="mr-6"
                   size="sm"
                   truncateAfter={4}
-                  users={team.members.filter((mem) => mem.subteams?.includes(ch.slug) && mem.accepted)}
+                  users={
+                    team.members.filter((mem) => mem.subteams?.includes(ch.slug) && mem.accepted) as AvatarUsers
+                  }
                 />
               </Link>
             </li>
@@ -177,7 +186,7 @@ function TeamPage({ team, considerUnpublished, isValidOrgDomain }: PageProps) {
                   </h2>
                 </div>
               ) : (
-                <Team members={team.members} teamName={team.name} />
+                <Team members={team.members as Parameters<typeof Team>[0]["members"]} teamName={team.name} />
               ))}
             {!showMembers.isOn && team.eventTypes && team.eventTypes.length > 0 && (
               <div className="mx-auto max-w-3xl ">

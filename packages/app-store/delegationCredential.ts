@@ -10,7 +10,10 @@ import { credentialForCalendarServiceSelect } from "@calcom/prisma/selects/crede
 import type { CredentialForCalendarService, CredentialPayload } from "@calcom/types/Credential";
 
 // Type definitions to replace imported ones
-export type ServiceAccountKey = any;
+export type ServiceAccountKey = {
+  client_email?: string;
+  [key: string]: unknown;
+};
 
 interface DelegationCredential {
   id: string;
@@ -186,7 +189,24 @@ export async function findUniqueDelegationCalendarCredential({
 }: {
   userId: number;
   delegationCredentialId: string;
-}) {
+}): Promise<
+  | {
+      id: CredentialPayload["id"];
+      type: CredentialPayload["type"];
+      key: CredentialPayload["key"];
+      encryptedKey: CredentialPayload["encryptedKey"];
+      userId: CredentialPayload["userId"];
+      teamId: CredentialPayload["teamId"];
+      appId: CredentialPayload["appId"];
+      invalid: CredentialPayload["invalid"];
+      delegationCredentialId: CredentialPayload["delegationCredentialId"];
+      user: CredentialPayload["user"];
+      delegatedTo: {
+        serviceAccountKey: ServiceAccountKey | null;
+      } | null;
+    }
+  | null
+> {
   return null;
 }
 

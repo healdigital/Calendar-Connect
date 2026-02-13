@@ -97,7 +97,7 @@ export default function MentorProfilePage() {
                       <span className="text-sm">{profile.university}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Icon name="graduation-cap" className="h-4 w-4 text-gray-400" />
+                      <Icon name="book" className="h-4 w-4 text-gray-400" />
                       <span className="text-sm">{profile.degree}</span>
                     </div>
                     <div className="flex items-center gap-1.5">

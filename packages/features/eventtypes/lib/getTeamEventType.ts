@@ -6,8 +6,8 @@ export async function getTeamEventType(teamSlug: string, meetingSlug: string, or
   return await prisma.eventType.findFirst({
     where: {
       team: {
-        ...getSlugOrRequestedSlug(teamSlug),
-        parent: orgSlug ? getSlugOrRequestedSlug(orgSlug) : null,
+        slug: getSlugOrRequestedSlug(teamSlug),
+        parent: orgSlug ? { slug: getSlugOrRequestedSlug(orgSlug) } : undefined,
       },
       OR: [{ slug: meetingSlug }, { slug: { startsWith: `${meetingSlug}-team-id-` } }],
     },
