@@ -393,9 +393,13 @@ const calendarComponents = {
                         destinationCalendarId={destinationCalendar?.externalId}
                         setScope={(scope) => {
                           const chosenScopeIsEventLevel = scope === SelectedCalendarSettingsScope.EventType;
-                          formMethods.setValue("useEventLevelSelectedCalendars", chosenScopeIsEventLevel as any, {
-                            shouldDirty: true,
-                          });
+                          formMethods.setValue(
+                            "useEventLevelSelectedCalendars",
+                            chosenScopeIsEventLevel as any,
+                            {
+                              shouldDirty: true,
+                            }
+                          );
                         }}
                       />
                     )}
@@ -455,7 +459,9 @@ export const EventAdvancedTab = ({
     bookingFields[name] = `${name} input`;
   });
 
-  const nameBookingField = (formMethods.getValues() as any).bookingFields.find((field: any) => field.name === "name");
+  const nameBookingField = (formMethods.getValues() as any).bookingFields.find(
+    (field: any) => field.name === "name"
+  );
   const isSplit = (nameBookingField && (nameBookingField as any).variant === "firstAndLastName") ?? false;
 
   const eventNameObject: EventNameObjectType = {
@@ -540,7 +546,9 @@ export const EventAdvancedTab = ({
     multiplePrivateLinksLocked.disabled = true;
   }
 
-  const [disableRescheduling, setDisableRescheduling] = useState<boolean>(eventType.disableRescheduling || false);
+  const [disableRescheduling, setDisableRescheduling] = useState<boolean>(
+    eventType.disableRescheduling || false
+  );
 
   const [allowReschedulingCancelledBookings, setallowReschedulingCancelledBookings] = useState<boolean>(
     eventType.allowReschedulingCancelledBookings ?? false

@@ -1,3 +1,4 @@
+import process from "node:process";
 import { getAppWithMetadata } from "@calcom/app-store/_appRegistry";
 import { shouldEnableApp } from "@calcom/app-store/_utils/validateAppKeys";
 import logger from "@calcom/lib/logger";

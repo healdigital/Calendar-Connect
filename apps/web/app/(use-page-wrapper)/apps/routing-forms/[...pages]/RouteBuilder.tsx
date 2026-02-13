@@ -31,8 +31,8 @@ import type {
   SerializableRoute,
 } from "@calcom/app-store/routing-forms/types/types";
 import { RouteActionType } from "@calcom/app-store/routing-forms/zod";
-import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import type { EventTypesByViewer } from "@calcom/features/eventtypes/lib/getEventTypesByViewer";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { areTheySiblingEntities } from "@calcom/lib/entityPermissionUtils.shared";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { Prisma } from "@calcom/prisma/client";

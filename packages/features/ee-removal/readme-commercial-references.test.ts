@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest";
+import process from "node:process";
 import fs from "fs";
 import path from "path";
+import { describe, expect, it } from "vitest";
 
 describe("README.md commercial reference removal", () => {
   it("should not contain 'Enterprise Edition' on line 126", () => {

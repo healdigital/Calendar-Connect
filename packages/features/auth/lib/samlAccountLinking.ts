@@ -8,7 +8,6 @@ import { prisma } from "@calcom/prisma";
 const log: ReturnType<typeof logger.getSubLogger> = logger.getSubLogger({ prefix: ["samlAccountLinking"] });
 const SAML_NOT_AUTHORITATIVE_ERROR_URL = "/auth/error?error=saml-idp-not-authoritative";
 
-
 const tenantPrefix = "team-";
 
 export function getTeamIdFromSamlTenant(tenant: string): number | null {

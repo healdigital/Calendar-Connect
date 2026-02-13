@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { AppFlags, FeatureId } from "@calcom/features/flags/config";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { ProfileRepository } from "@calcom/features/profile/repositories/ProfileRepository";

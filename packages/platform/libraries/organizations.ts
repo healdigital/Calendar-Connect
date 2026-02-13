@@ -3,20 +3,32 @@ export const subdomainSuffix = () => "";
 
 export class OrganizationRepository {
   constructor(...args: any[]) {}
-  async findById(...args: any[]): Promise<any> { return null; }
-  async findByIds(...args: any[]): Promise<any[]> { return []; }
-  async findBySlug(...args: any[]) { return null; }
+  async findById(...args: any[]): Promise<any> {
+    return null;
+  }
+  async findByIds(...args: any[]): Promise<any[]> {
+    return [];
+  }
+  async findBySlug(...args: any[]) {
+    return null;
+  }
 }
 
 export class OrganizationMembershipService {
   constructor(...args: any[]) {}
-  async getMembership(...args: any[]) { return null; }
-  async shouldAutoAccept(...args: any[]) { return false; }
+  async getMembership(...args: any[]) {
+    return null;
+  }
+  async shouldAutoAccept(...args: any[]) {
+    return false;
+  }
 }
 
 export class PlatformBillingRepository {
   constructor(...args: any[]) {}
-  async findByTeamId(...args: any[]) { return null; }
+  async findByTeamId(...args: any[]) {
+    return null;
+  }
 }
 
 export interface IBillingProviderService {

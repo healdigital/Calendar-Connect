@@ -1,16 +1,13 @@
-import { describe, expect, it } from "vitest";
+import process from "node:process";
 import fs from "fs";
 import path from "path";
+import { describe, expect, it } from "vitest";
 
 describe("App Store Package Compilation", () => {
   it("should not contain any EE imports in source files", () => {
     const appStorePath = path.join(process.cwd(), "packages/app-store");
-    
-    const eeImportPatterns = [
-      /@\/ee[\/'"]/,
-      /@calcom\/features\/ee[\/'"]/,
-      /@calcom\/ee[\/'"]/,
-    ];
+
+    const eeImportPatterns = [/@\/ee[/'"]/, /@calcom\/features\/ee[/'"]/, /@calcom\/ee[/'"]/];
 
     const filesWithEEImports: string[] = [];
 
@@ -68,11 +65,11 @@ describe("App Store Package Compilation", () => {
 
   it("should have all app integrations properly structured", () => {
     const appStorePath = path.join(process.cwd(), "packages/app-store");
-    
+
     // Verify key files exist
     expect(fs.existsSync(path.join(appStorePath, "package.json"))).toBe(true);
     expect(fs.existsSync(path.join(appStorePath, "tsconfig.json"))).toBe(true);
-    
+
     // Verify no EE directory exists
     const eeDir = path.join(appStorePath, "ee");
     expect(fs.existsSync(eeDir)).toBe(false);
@@ -86,17 +83,13 @@ describe("App Store Package Compilation", () => {
       "apps.metadata.generated.ts",
     ];
 
-    const eeImportPatterns = [
-      /@\/ee[\/'"]/,
-      /@calcom\/features\/ee[\/'"]/,
-      /@calcom\/ee[\/'"]/,
-    ];
+    const eeImportPatterns = [/@\/ee[/'"]/, /@calcom\/features\/ee[/'"]/, /@calcom\/ee[/'"]/];
 
     for (const file of generatedFiles) {
       const filePath = path.join(appStorePath, file);
       if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, "utf-8");
-        
+
         for (const pattern of eeImportPatterns) {
           expect(content).not.toMatch(pattern);
         }

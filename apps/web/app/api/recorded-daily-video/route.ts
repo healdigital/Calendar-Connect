@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import process from "node:process";
 import { getBatchProcessorJobAccessLink, getRoomNameFromRecordingId } from "@calcom/app-store/dailyvideo/lib";
 import {
   sendDailyVideoRecordingEmails,

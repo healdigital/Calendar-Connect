@@ -1,3 +1,4 @@
+import process from "node:process";
 import { HttpError } from "@calcom/lib/http-error";
 import { getServerErrorFromUnknown } from "@calcom/lib/server/getServerErrorFromUnknown";
 import { performance } from "@calcom/lib/server/perfObserver";

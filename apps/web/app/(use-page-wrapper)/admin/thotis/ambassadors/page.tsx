@@ -2,10 +2,10 @@ import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { AmbassadorManagement } from "@calcom/features/thotis/components/AmbassadorManagement";
 import { getTranslation } from "@calcom/lib/server/i18n";
 import { UserPermissionRole } from "@calcom/prisma/enums";
-import Shell from "~/shell/Shell";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import Shell from "~/shell/Shell";
 
 export default async function AmbassadorsPage() {
   const session = await getServerSession({ req: buildLegacyRequest(await headers(), await cookies()) });

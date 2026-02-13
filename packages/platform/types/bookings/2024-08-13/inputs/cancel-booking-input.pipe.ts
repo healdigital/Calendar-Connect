@@ -76,6 +76,6 @@ export class CancelBookingInputPipe implements PipeTransform {
   private isCancelSeatedBookingInput(
     value: CancelBookingInput
   ): value is CancelSeatedBookingInput_2024_08_13 {
-    return Object.prototype.hasOwnProperty.call(value, "seatUid");
+    return Object.hasOwn(value, "seatUid");
   }
 }

@@ -1,4 +1,5 @@
 import { SUCCESS_STATUS } from "@calcom/platform-constants";
+import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import type { User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -12,7 +13,6 @@ import { SelectedSlotRepositoryFixture } from "test/fixtures/repository/selected
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { randomString } from "test/utils/randomString";
 import { withApiAuth } from "test/utils/withApiAuth";
-import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";

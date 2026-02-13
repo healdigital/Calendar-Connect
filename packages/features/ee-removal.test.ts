@@ -1,7 +1,8 @@
+import process from "node:process";
 import fs from "fs";
+import { glob } from "glob";
 import path from "path";
 import { describe, expect, it } from "vitest";
-import { glob } from "glob";
 
 /**
  * Unit Tests for EE Directory Deletion
@@ -32,7 +33,7 @@ describe("EE Directory Deletion", () => {
   it("Property 1: No ee/ subdirectories exist in the codebase", async () => {
     // Search for any directories named 'ee' in the repository
     const rootPath = process.cwd();
-    
+
     // Find all directories named 'ee' (excluding node_modules, .git, dist, etc.)
     const eeDirectories = await glob("**/ee/", {
       cwd: rootPath,
@@ -69,7 +70,7 @@ describe("EE Directory Deletion", () => {
    */
   it("should verify no active import statements reference packages/features/ee", async () => {
     const rootPath = process.cwd();
-    
+
     // Get all TypeScript and JavaScript files
     const files = await glob("**/*.{ts,tsx,js,jsx}", {
       cwd: rootPath,
@@ -90,7 +91,7 @@ describe("EE Directory Deletion", () => {
     // Pattern to match active (non-commented) imports from packages/features/ee
     const eePackagePattern = /from\s+['"]@calcom\/features\/ee/;
     const commentPattern = /^\s*(\/\/|\/\*|\*)/;
-    
+
     // Track violations
     const violations: Array<{ file: string; line: number; content: string }> = [];
 
@@ -103,7 +104,7 @@ describe("EE Directory Deletion", () => {
         if (commentPattern.test(line)) {
           return;
         }
-        
+
         if (eePackagePattern.test(line)) {
           violations.push({
             file: path.relative(rootPath, file),
@@ -116,9 +117,7 @@ describe("EE Directory Deletion", () => {
 
     // Assert no violations found
     if (violations.length > 0) {
-      const violationMessage = violations
-        .map((v) => `  ${v.file}:${v.line}\n    ${v.content}`)
-        .join("\n\n");
+      const violationMessage = violations.map((v) => `  ${v.file}:${v.line}\n    ${v.content}`).join("\n\n");
       throw new Error(
         `Found ${violations.length} active import(s) referencing @calcom/features/ee:\n\n${violationMessage}\n\nAll imports should be updated to use OSS implementations.`
       );

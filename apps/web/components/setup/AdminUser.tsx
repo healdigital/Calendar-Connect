@@ -1,3 +1,4 @@
+import process from "node:process";
 import { isPasswordValid } from "@calcom/lib/auth/isPasswordValid";
 import { WEBSITE_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";

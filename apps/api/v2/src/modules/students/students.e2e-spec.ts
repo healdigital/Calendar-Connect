@@ -1,18 +1,18 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { INestApplication } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { AuthGuard } from "@nestjs/passport";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDMMF } from "@prisma/internals";
 import { createPrismock } from "prismock/build/main/lib/client";
 import request from "supertest";
 import { randomString } from "../../../test/utils/randomString";
-import { ConfigModule } from "@nestjs/config";
-import { AuthGuard } from "@nestjs/passport";
 import { StudentsModule } from "./students.module";
-import { PrismaModule } from "@/modules/prisma/prisma.module";
-import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 import appConfig from "@/config/app";
+import { PrismaModule } from "@/modules/prisma/prisma.module";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
 let prismockInstance: any;
 
@@ -102,7 +102,9 @@ describe("StudentsController (e2e)", () => {
 
   describe("GET /students/by-field/:field", () => {
     it("should return students by field", async () => {
-      const response = await request(app.getHttpServer()).get("/v2/students/by-field/ENGINEERING").expect(200);
+      const response = await request(app.getHttpServer())
+        .get("/v2/students/by-field/ENGINEERING")
+        .expect(200);
 
       expect(response.body.status).toBe("success");
       expect(Array.isArray(response.body.data)).toBe(true);

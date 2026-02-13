@@ -1,19 +1,18 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { INestApplication } from "@nestjs/common";
+import { ExecutionContext, INestApplication } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDMMF } from "@prisma/internals";
 import { createPrismock } from "prismock/build/main/lib/client";
 import request from "supertest";
 import { randomString } from "../../../test/utils/randomString";
-import { ConfigModule } from "@nestjs/config";
-import { ExecutionContext } from "@nestjs/common";
 import { BookingsModule } from "./bookings.module";
-import { PrismaModule } from "@/modules/prisma/prisma.module";
-import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
-import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
-import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
 import appConfig from "@/config/app";
+import { ApiAuthGuard } from "@/modules/auth/guards/api-auth/api-auth.guard";
+import { PrismaModule } from "@/modules/prisma/prisma.module";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
 
 let prismockInstance: any;
 

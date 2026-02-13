@@ -10,7 +10,6 @@ import { AuthMethods } from "@/lib/enums/auth-methods";
 import { isOriginAllowed } from "@/lib/is-origin-allowed/is-origin-allowed";
 import { BaseStrategy } from "@/lib/passport/strategies/types";
 import { ApiKeysRepository } from "@/modules/api-keys/api-keys-repository";
-
 import { MembershipsRepository } from "@/modules/memberships/memberships.repository";
 import { OAuthClientRepository } from "@/modules/oauth-clients/oauth-client.repository";
 import { OAuthFlowService } from "@/modules/oauth-clients/services/oauth-flow.service";

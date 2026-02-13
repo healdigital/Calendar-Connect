@@ -50,7 +50,7 @@ describe("Team Creation Without Billing - Unit Tests", () => {
   });
 
   it("should create a team without payment requirements", async () => {
-    const { req, res} = createMocks<CustomNextApiRequest, CustomNextApiResponse>({
+    const { req, res } = createMocks<CustomNextApiRequest, CustomNextApiResponse>({
       method: "POST",
       body: {
         name: "Test Team",

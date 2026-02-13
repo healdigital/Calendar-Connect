@@ -1,3 +1,4 @@
+import process from "node:process";
 import { symmetricDecrypt } from "@calcom/lib/crypto";
 import { totpAuthenticatorCheck } from "@calcom/lib/totp";
 import { prisma } from "@calcom/prisma";

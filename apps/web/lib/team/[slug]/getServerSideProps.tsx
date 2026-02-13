@@ -12,16 +12,14 @@ type TeamPageSsrProps = {
     isPrivate: boolean;
     isOrganization: boolean;
     hideBookATeamMember: boolean;
-    parent?:
-      | {
-          logoUrl: string | null;
-          name: string | null;
-          slug: string | null;
-          requestedSlug?: string | null;
-          isOrganization: boolean;
-          isPrivate: boolean;
-        }
-      | null;
+    parent?: {
+      logoUrl: string | null;
+      name: string | null;
+      slug: string | null;
+      requestedSlug?: string | null;
+      isOrganization: boolean;
+      isPrivate: boolean;
+    } | null;
     members: Array<{
       id: number;
       name: string | null;
@@ -34,18 +32,16 @@ type TeamPageSsrProps = {
       accepted: boolean;
     }>;
     children: Array<{ slug: string; name: string | null }>;
-    eventTypes:
-      | Array<{
-          slug: string;
-          title: string;
-          description: string | null;
-          users: Array<{
-            name: string | null;
-            username: string | null;
-            avatarUrl: string | null;
-          }>;
-        }>
-      | null;
+    eventTypes: Array<{
+      slug: string;
+      title: string;
+      description: string | null;
+      users: Array<{
+        name: string | null;
+        username: string | null;
+        avatarUrl: string | null;
+      }>;
+    }> | null;
   };
   considerUnpublished?: boolean;
   isValidOrgDomain?: boolean;

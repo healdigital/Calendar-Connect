@@ -6,6 +6,7 @@ import {
   X_CAL_CLIENT_ID,
   X_CAL_SECRET_KEY,
 } from "@calcom/platform-constants";
+import type { CreateScheduleInput_2024_04_15, SchedulesService_2024_04_15 } from "@calcom/platform-libraries";
 import type {
   BookingOutput_2024_08_13,
   GetBookingsOutput_2024_08_13,
@@ -28,10 +29,6 @@ import { ProfileRepositoryFixture } from "test/fixtures/repository/profiles.repo
 import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { withApiAuth } from "test/utils/withApiAuth";
-import type {
-  CreateScheduleInput_2024_04_15,
-  SchedulesService_2024_04_15,
-} from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
 import { PlatformPlanGuard } from "@/modules/auth/guards/billing/platform-plan.guard";

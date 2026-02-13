@@ -75,26 +75,28 @@ export function SessionSummaryView({ bookingId, token, open, onOpenChange }: Ses
                   {t("thotis_resources", "Ressources recommandées")}
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {data.resources.map((resource: { id: string | number; url: string; type: string; title: string }) => (
-                    <a
-                      key={resource.id}
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors group">
-                      <div className="bg-gray-100 p-2 rounded-md group-hover:bg-white transition-colors">
-                        {resource.type === "LINK" ? (
-                          <ExternalLink className="w-4 h-4 text-blue-600" />
-                        ) : (
-                          <Download className="w-4 h-4 text-orange-600" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{resource.title}</p>
-                        <p className="text-xs text-gray-500 truncate">{resource.url}</p>
-                      </div>
-                    </a>
-                  ))}
+                  {data.resources.map(
+                    (resource: { id: string | number; url: string; type: string; title: string }) => (
+                      <a
+                        key={resource.id}
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors group">
+                        <div className="bg-gray-100 p-2 rounded-md group-hover:bg-white transition-colors">
+                          {resource.type === "LINK" ? (
+                            <ExternalLink className="w-4 h-4 text-blue-600" />
+                          ) : (
+                            <Download className="w-4 h-4 text-orange-600" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{resource.title}</p>
+                          <p className="text-xs text-gray-500 truncate">{resource.url}</p>
+                        </div>
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             )}

@@ -1,6 +1,6 @@
+import { z } from "zod";
 import authedProcedure from "../../../procedures/authedProcedure";
 import { router } from "../../../trpc";
-import { z } from "zod";
 
 const optionalObjectInput = z.object({}).passthrough().optional();
 
@@ -86,42 +86,44 @@ const querySubscriptionStatus = () =>
     .input(optionalObjectInput)
     .query(async (): Promise<{ isTrialing: boolean }> => ({ isTrialing: false }));
 const queryHasTeamPlan = () =>
-  authedProcedure
-    .input(optionalObjectInput)
-    .query(async (): Promise<{ hasTeamPlan: boolean; plan: string | null }> => ({
+  authedProcedure.input(optionalObjectInput).query(
+    async (): Promise<{ hasTeamPlan: boolean; plan: string | null }> => ({
       hasTeamPlan: false,
       plan: null,
-    }));
+    })
+  );
 const queryHasTeamMembership = () =>
   authedProcedure
     .input(optionalObjectInput)
     .query(async (): Promise<{ hasTeamMembership: boolean }> => ({ hasTeamMembership: false }));
 const queryHasActiveTeamPlan = () =>
-  authedProcedure
-    .input(optionalObjectInput)
-    .query(async (): Promise<{ isActive: boolean; isTrial: boolean }> => ({
+  authedProcedure.input(optionalObjectInput).query(
+    async (): Promise<{ isActive: boolean; isTrial: boolean }> => ({
       isActive: false,
       isTrial: false,
-    }));
+    })
+  );
 const queryHasEditPermissionForUser = () =>
   authedProcedure
     .input(optionalObjectInput)
     .query(async (): Promise<{ isAllowed: boolean }> => ({ isAllowed: false }));
 const mutationObject = () =>
-  authedProcedure.input(optionalObjectInput).mutation(async (): Promise<Record<string, unknown>> => emptyObject);
-const mutationCreateTeam = () =>
   authedProcedure
     .input(optionalObjectInput)
-    .mutation(async (): Promise<{ url: string | null; team: { id: number } | null }> => ({
+    .mutation(async (): Promise<Record<string, unknown>> => emptyObject);
+const mutationCreateTeam = () =>
+  authedProcedure.input(optionalObjectInput).mutation(
+    async (): Promise<{ url: string | null; team: { id: number } | null }> => ({
       url: null,
       team: { id: 0 },
-    }));
+    })
+  );
 const mutationRoundRobinReassign = () =>
-  authedProcedure
-    .input(optionalObjectInput)
-    .mutation(async (): Promise<{ reassignedTo: { name: string | null } }> => ({
+  authedProcedure.input(optionalObjectInput).mutation(
+    async (): Promise<{ reassignedTo: { name: string | null } }> => ({
       reassignedTo: { name: null },
-    }));
+    })
+  );
 
 export const viewerTeamsRouter = router({
   list: queryTeamArray(),

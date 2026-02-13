@@ -16,6 +16,7 @@ import {
   workspacePlatformUpdateSchema,
   workspacePlatformUpdateServiceAccountSchema,
 } from "./workspacePlatform/schema";
+
 const NAMESPACE = "admin";
 
 const namespaced = (s: string) => `${NAMESPACE}.${s}`;

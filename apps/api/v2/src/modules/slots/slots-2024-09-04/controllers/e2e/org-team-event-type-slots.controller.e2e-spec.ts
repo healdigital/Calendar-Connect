@@ -1,4 +1,5 @@
 import { CAL_API_VERSION_HEADER, SUCCESS_STATUS, VERSION_2024_09_04 } from "@calcom/platform-constants";
+import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import type { CreateScheduleInput_2024_06_11 } from "@calcom/platform-types";
 import type { Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
@@ -14,7 +15,6 @@ import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { randomString } from "test/utils/randomString";
 import { withApiAuth } from "test/utils/withApiAuth";
-import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";

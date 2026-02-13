@@ -1,4 +1,4 @@
-import type { BookingHost, EventType, BookingAttendee } from "./BookingOutput_2024_08_13";
+import type { BookingAttendee, BookingHost, EventType } from "./BookingOutput_2024_08_13";
 
 export type RecurringBookingOutput_2024_08_13 = {
   id: number;

@@ -1,3 +1,4 @@
+import process from "node:process";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
 import formbricks from "@formbricks/js/app";
 import { useSession } from "next-auth/react";

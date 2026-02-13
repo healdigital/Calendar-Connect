@@ -72,10 +72,8 @@ export const getOrgDomainConfigFromHostname = ({ hostname }: { hostname: string 
 export const getOrgDomainConfig = async (req: OrgDomainInput) =>
   getOrgDomainConfigFromHostname({ hostname: resolveHostname(req) });
 
-export const orgDomainConfig = (
-  req: OrgDomainInput,
-  _orgSlug?: string | string[]
-): OrgDomainConfig => getOrgDomainConfigFromHostname({ hostname: resolveHostname(req) });
+export const orgDomainConfig = (req: OrgDomainInput, _orgSlug?: string | string[]): OrgDomainConfig =>
+  getOrgDomainConfigFromHostname({ hostname: resolveHostname(req) });
 
 export const subdomainSuffix = () => {
   try {

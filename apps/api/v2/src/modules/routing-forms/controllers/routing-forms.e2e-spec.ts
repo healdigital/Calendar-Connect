@@ -1,4 +1,5 @@
 import { SUCCESS_STATUS } from "@calcom/platform-constants";
+import { SchedulesModule_2024_06_11 } from "@calcom/platform-libraries";
 import type { App_RoutingForms_Form, EventType, Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -10,7 +11,6 @@ import { RoutingFormsRepositoryFixture } from "test/fixtures/repository/routing-
 import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { randomString } from "test/utils/randomString";
-import { SchedulesModule_2024_06_11 } from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";

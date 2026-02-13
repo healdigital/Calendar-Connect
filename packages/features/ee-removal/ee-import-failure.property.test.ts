@@ -1,7 +1,8 @@
+import process from "node:process";
+import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { describe, expect, it, afterEach } from "vitest";
-import { execSync } from "child_process";
+import { afterEach, describe, expect, it } from "vitest";
 
 /**
  * Property-Based Tests for EE Removal - Import Failure Validation
@@ -33,9 +34,12 @@ describe("Property Tests: EE Import Attempts Fail", () => {
   it("Property 7: EE import attempts fail with clear error messages", { timeout: 60000 }, async () => {
     // Define EE import patterns that should fail
     const eeImportPatterns = [
-      { pattern: '@/ee/calendars/services/calendars.service', description: '@/ee path' },
-      { pattern: '@calcom/features/ee/schedules/services/schedules.service', description: '@calcom/features/ee path' },
-      { pattern: '@calcom/ee/api-keys/lib/apiKeys', description: '@calcom/ee path' },
+      { pattern: "@/ee/calendars/services/calendars.service", description: "@/ee path" },
+      {
+        pattern: "@calcom/features/ee/schedules/services/schedules.service",
+        description: "@calcom/features/ee path",
+      },
+      { pattern: "@calcom/ee/api-keys/lib/apiKeys", description: "@calcom/ee path" },
     ];
 
     const testResults: Array<{ pattern: string; description: string; failed: boolean; error: string }> = [];
@@ -44,7 +48,7 @@ describe("Property Tests: EE Import Attempts Fail", () => {
       // Create a temporary test file with the EE import
       const tempFileName = `temp-ee-import-test-${Date.now()}-${Math.random().toString(36).substring(7)}.ts`;
       const tempFilePath = path.join(process.cwd(), "packages/features/ee-removal", tempFileName);
-      
+
       const testFileContent = `
 // Temporary test file to verify EE imports fail
 import { SomeService } from "${pattern}";
@@ -89,7 +93,10 @@ export function testFunction() {
 
     if (successfulImports.length > 0) {
       const failureMessage = successfulImports
-        .map((result) => `  ${result.description}: ${result.pattern}\n    Expected type-check to fail, but it succeeded`)
+        .map(
+          (result) =>
+            `  ${result.description}: ${result.pattern}\n    Expected type-check to fail, but it succeeded`
+        )
         .join("\n\n");
       throw new Error(
         `Found ${successfulImports.length} EE import(s) that did NOT fail as expected:\n\n${failureMessage}\n\nAll EE imports should fail with "Cannot find module" errors.`
@@ -98,8 +105,8 @@ export function testFunction() {
 
     // Verify error messages contain appropriate "Cannot find module" text
     const inappropriateErrors = testResults.filter((result) => {
-      const hasCannotFindModule = 
-        result.error.includes("Cannot find module") || 
+      const hasCannotFindModule =
+        result.error.includes("Cannot find module") ||
         result.error.includes("cannot find module") ||
         result.error.includes("Module not found") ||
         result.error.includes("module not found");
@@ -108,7 +115,10 @@ export function testFunction() {
 
     if (inappropriateErrors.length > 0) {
       const warningMessage = inappropriateErrors
-        .map((result) => `  ${result.description}: ${result.pattern}\n    Error: ${result.error.substring(0, 200)}...`)
+        .map(
+          (result) =>
+            `  ${result.description}: ${result.pattern}\n    Error: ${result.error.substring(0, 200)}...`
+        )
         .join("\n\n");
       console.warn(
         `Warning: ${inappropriateErrors.length} EE import(s) failed but without clear "Cannot find module" messages:\n\n${warningMessage}`

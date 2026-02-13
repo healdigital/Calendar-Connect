@@ -1,0 +1,26 @@
+refactor: remove remaining commercial license references
+
+This commit completes the commercial license removal by:
+
+1. Environment Variables Cleanup:
+   - Remove CAL_SIGNATURE_TOKEN from turbo.json
+   - Remove CALCOM_PRIVATE_API_ROUTE from turbo.json
+   - Remove unused CALCOM_PRIVATE_API_ROUTE constant from packages/lib/constants.ts
+
+2. TypeScript Fixes:
+   - Remove unused @ts-expect-error directive in packages/features/auth/lib/next-auth-options.ts
+
+3. Verification:
+   - All active references to commercial license removed
+   - Build system functional
+   - Database schema validated
+   - TypeScript compilation successful
+
+The application is now 100% AGPLv3 compliant and fully functional.
+
+Related files:
+- turbo.json
+- packages/lib/constants.ts
+- packages/features/auth/lib/next-auth-options.ts
+- VERIFICATION_FONCTIONNELLE_POST_SUPPRESSION.md (new)
+- RESUME_VERIFICATION_FINALE.md (new)

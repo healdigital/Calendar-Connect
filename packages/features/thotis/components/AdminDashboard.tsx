@@ -278,7 +278,8 @@ const RecentIncidents = () => {
     resolved: false,
   });
 
-  if (isPending) return <div className="border-subtle bg-default rounded-md border p-4">Loading incidents...</div>;
+  if (isPending)
+    return <div className="border-subtle bg-default rounded-md border p-4">Loading incidents...</div>;
 
   const incidents = incidentsData?.incidents || [];
 
@@ -286,11 +287,7 @@ const RecentIncidents = () => {
     <div className="border-subtle bg-default rounded-md border p-4 h-full">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-emphasis text-lg font-semibold">{t("thotis_recent_incidents")}</h3>
-        <Button
-          size="sm"
-          color="minimal"
-          href="/thotis/admin/incidents"
-          className="text-xs">
+        <Button size="sm" color="minimal" href="/thotis/admin/incidents" className="text-xs">
           {t("thotis_view_all")}
         </Button>
       </div>

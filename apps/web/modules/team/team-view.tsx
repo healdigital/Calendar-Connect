@@ -126,7 +126,9 @@ function TeamPage({ team, considerUnpublished, isValidOrgDomain }: PageProps) {
                   size="sm"
                   truncateAfter={4}
                   users={
-                    team.members.filter((mem) => mem.subteams?.includes(ch.slug) && mem.accepted) as AvatarUsers
+                    team.members.filter(
+                      (mem) => mem.subteams?.includes(ch.slug) && mem.accepted
+                    ) as AvatarUsers
                   }
                 />
               </Link>

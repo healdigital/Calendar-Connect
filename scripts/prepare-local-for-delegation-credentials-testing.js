@@ -4,6 +4,7 @@
  * It prepares Acme organization and its owner user with email owner1-acme@example.com to test Delegation Credentials with Calendar Cache
  */
 import process from "node:process";
+
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 

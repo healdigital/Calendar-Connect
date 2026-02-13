@@ -1,5 +1,5 @@
-import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
+import { getOrgFullOrigin } from "@calcom/features/organizations/lib/orgDomains";
 import { loadTranslations } from "@calcom/lib/server/i18n";
 import { prisma } from "@calcom/prisma";
 import { buildLegacyCtx, decodeParams } from "@lib/buildLegacyCtx";

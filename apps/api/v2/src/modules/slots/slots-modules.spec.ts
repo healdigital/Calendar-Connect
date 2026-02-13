@@ -13,13 +13,13 @@ describe("Slots Modules Compilation", () => {
       // This test verifies that the module file compiles successfully.
       // If there were any TypeScript compilation errors (missing imports, type mismatches, etc.),
       // this test file itself would fail to compile during the build phase.
-      
+
       // The fact that this test runs means:
       // 1. All imports in slots.module.ts resolve correctly
       // 2. All types are properly defined
       // 3. The module decorator and providers are valid
       // 4. No EE dependencies remain that would cause compilation errors
-      
+
       expect(true).toBe(true);
     });
 
@@ -32,7 +32,7 @@ describe("Slots Modules Compilation", () => {
       //
       // All these services now use OSS implementations from @calcom/platform-libraries
       // instead of EE imports from @/ee paths.
-      
+
       expect(true).toBe(true);
     });
   });
@@ -42,13 +42,13 @@ describe("Slots Modules Compilation", () => {
       // This test verifies that the module file compiles successfully.
       // If there were any TypeScript compilation errors (missing imports, type mismatches, etc.),
       // this test file itself would fail to compile during the build phase.
-      
+
       // The fact that this test runs means:
       // 1. All imports in slots.module.ts resolve correctly
       // 2. All types are properly defined
       // 3. The module decorator and providers are valid
       // 4. No EE dependencies remain that would cause compilation errors
-      
+
       expect(true).toBe(true);
     });
 
@@ -65,7 +65,7 @@ describe("Slots Modules Compilation", () => {
       //
       // All these services now use OSS implementations from @calcom/platform-libraries
       // instead of EE imports from @/ee paths.
-      
+
       expect(true).toBe(true);
     });
   });
@@ -83,7 +83,7 @@ describe("Slots Modules Compilation", () => {
       // - teams-bookings.controller.e2e-spec.ts: Uses SchedulesService from platform-libraries
       //
       // If any EE imports remained, TypeScript compilation would fail with "Cannot find module" errors.
-      
+
       expect(true).toBe(true);
     });
 
@@ -95,7 +95,7 @@ describe("Slots Modules Compilation", () => {
       // - Use the same OSS implementations from @calcom/platform-libraries
       // - Have properly versioned service and repository names
       // - Export their respective services for use in other modules
-      
+
       expect(true).toBe(true);
     });
   });

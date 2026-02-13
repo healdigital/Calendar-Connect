@@ -1,3 +1,4 @@
+import process from "node:process";
 import { beforeAll, describe, expect, it } from "vitest";
 import { getRegExpThatMatchesAllOrgDomains } from "../../getNextjsOrgRewriteConfig";
 

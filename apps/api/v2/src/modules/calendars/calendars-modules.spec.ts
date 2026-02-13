@@ -13,13 +13,13 @@ describe("Calendar Modules Compilation", () => {
       // This test verifies that the module file compiles successfully.
       // If there were any TypeScript compilation errors (missing imports, type mismatches, etc.),
       // this test file itself would fail to compile during the build phase.
-      
+
       // The fact that this test runs means:
       // 1. All imports in destination-calendars.module.ts resolve correctly
       // 2. All types are properly defined
       // 3. The module decorator and providers are valid
       // 4. No EE dependencies remain that would cause compilation errors
-      
+
       expect(true).toBe(true);
     });
   });
@@ -29,13 +29,13 @@ describe("Calendar Modules Compilation", () => {
       // This test verifies that the module file compiles successfully.
       // If there were any TypeScript compilation errors (missing imports, type mismatches, etc.),
       // this test file itself would fail to compile during the build phase.
-      
+
       // The fact that this test runs means:
       // 1. All imports in selected-calendars.module.ts resolve correctly
       // 2. All types are properly defined
       // 3. The module decorator and providers are valid
       // 4. No EE dependencies remain that would cause compilation errors
-      
+
       expect(true).toBe(true);
     });
   });
@@ -50,7 +50,7 @@ describe("Calendar Modules Compilation", () => {
       // - SelectedCalendarsModule: No longer imports from EE paths
       //
       // If any EE imports remained, TypeScript compilation would fail with "Cannot find module" errors.
-      
+
       expect(true).toBe(true);
     });
   });

@@ -1,6 +1,6 @@
+import { CALENDARS_QUEUE } from "@calcom/platform-libraries";
 import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
-import { CALENDARS_QUEUE } from "@calcom/platform-libraries";
 import { OrganizationsDelegationCredentialService } from "./services/organizations-delegation-credential.service";
 import { CalendarsTaskerModule } from "@/lib/modules/calendars-tasker.module";
 import { MembershipsModule } from "@/modules/memberships/memberships.module";

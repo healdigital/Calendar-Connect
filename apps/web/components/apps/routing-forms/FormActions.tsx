@@ -2,8 +2,8 @@ import getFieldIdentifier from "@calcom/app-store/routing-forms/lib/getFieldIden
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import { dataTableQueryParamsSerializer } from "@calcom/features/data-table/lib/serializers";
 import { ColumnFilterType } from "@calcom/features/data-table/lib/types";
-import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { EmbedDialogProvider } from "@calcom/features/embed/lib/hooks/useEmbedDialogCtx";
+import { useOrgBranding } from "@calcom/features/organizations/context/provider";
 import { WEBSITE_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import slugify from "@calcom/lib/slugify";

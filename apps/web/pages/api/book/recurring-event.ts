@@ -1,3 +1,4 @@
+import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { getRecurringBookingService } from "@calcom/features/bookings/di/RecurringBookingService.container";
 import type { BookingResponse } from "@calcom/features/bookings/types";

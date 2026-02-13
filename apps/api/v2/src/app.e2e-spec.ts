@@ -1,4 +1,5 @@
 import { X_CAL_CLIENT_ID, X_CAL_SECRET_KEY } from "@calcom/platform-constants";
+import { SchedulesModule_2024_04_15 } from "@calcom/platform-libraries";
 import type { PlatformOAuthClient, RateLimit, Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -10,7 +11,6 @@ import { OrganizationRepositoryFixture } from "test/fixtures/repository/organiza
 import { ProfileRepositoryFixture } from "test/fixtures/repository/profiles.repository.fixture";
 import { RateLimitRepositoryFixture } from "test/fixtures/repository/rate-limit.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
-import { SchedulesModule_2024_04_15 } from "@calcom/platform-libraries";
 import { randomString } from "test/utils/randomString";
 import { AppModule } from "@/app.module";
 import { CustomThrottlerGuard } from "@/lib/throttler-guard";

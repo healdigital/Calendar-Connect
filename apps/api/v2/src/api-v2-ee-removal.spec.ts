@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import { glob } from "glob";
+import path from "path";
 
 /**
  * Property-Based Tests for EE Removal - API v2
@@ -33,11 +33,7 @@ describe("Property Tests: API v2 EE Removal", () => {
     });
 
     // Define EE import patterns to check for
-    const eeImportPatterns = [
-      /@\/ee[\/'"]/,
-      /@calcom\/features\/ee[\/'"]/,
-      /@calcom\/ee[\/'"]/,
-    ];
+    const eeImportPatterns = [/@\/ee[/'"]/, /@calcom\/features\/ee[/'"]/, /@calcom\/ee[/'"]/];
 
     // Track any violations found
     const violations: Array<{ file: string; line: number; content: string }> = [];
@@ -62,12 +58,8 @@ describe("Property Tests: API v2 EE Removal", () => {
 
     // Assert no violations found
     if (violations.length > 0) {
-      const violationMessage = violations
-        .map((v) => `  ${v.file}:${v.line}\n    ${v.content}`)
-        .join("\n\n");
-      throw new Error(
-        `Found ${violations.length} EE import(s) in API v2:\n\n${violationMessage}`
-      );
+      const violationMessage = violations.map((v) => `  ${v.file}:${v.line}\n    ${v.content}`).join("\n\n");
+      throw new Error(`Found ${violations.length} EE import(s) in API v2:\n\n${violationMessage}`);
     }
 
     expect(violations).toHaveLength(0);

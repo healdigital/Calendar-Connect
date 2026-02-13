@@ -1,5 +1,3 @@
-
-
 const Page = async () => {
   // const session = await getServerSession({ req: buildLegacyRequest(await headers(), await cookies()) });
   // const user = session?.user;

@@ -50,9 +50,9 @@ vi.mock("@calcom/lib/constants", async () => {
   };
 });
 
+import { Task } from "@calcom/features/tasker/repository";
 import compareReminderBodyToTemplate from "@calcom/features/workflows/lib/compareReminderBodyToTemplate";
 import { scheduleWorkflowNotifications } from "@calcom/features/workflows/lib/scheduleWorkflowNotifications";
-import { Task } from "@calcom/features/tasker/repository";
 // Import mocked modules for assertions
 import { submitWorkflowStepForUrlScanning } from "../scanWorkflowUrls";
 

@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { Booking } from "@calcom/prisma/client";
 
 interface ThotisBookingResponses {

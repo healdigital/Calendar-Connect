@@ -9,7 +9,6 @@ import {
   Post,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-
 import { API_VERSIONS_VALUES } from "@/lib/api-versions";
 
 @ApiTags("Bookings")

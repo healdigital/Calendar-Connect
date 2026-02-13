@@ -1,3 +1,4 @@
+import process from "node:process";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import { EventTypeDuplicateInput } from "@calcom/features/eventtypes/lib/types";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";

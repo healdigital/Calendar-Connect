@@ -1,7 +1,8 @@
+import process from "node:process";
 import fs from "fs";
+import { glob } from "glob";
 import path from "path";
 import { describe, expect, it } from "vitest";
-import { glob } from "glob";
 
 /**
  * Property-Based Tests for EE Removal - Features Package
@@ -28,11 +29,7 @@ describe("Property Tests: Features Package EE Removal", () => {
     });
 
     // Define EE import patterns to check for
-    const eeImportPatterns = [
-      /@\/ee[\/'"]/,
-      /@calcom\/features\/ee[\/'"]/,
-      /@calcom\/ee[\/'"]/,
-    ];
+    const eeImportPatterns = [/@\/ee[/'"]/, /@calcom\/features\/ee[/'"]/, /@calcom\/ee[/'"]/];
 
     // Track any violations found
     const violations: Array<{ file: string; line: number; content: string }> = [];
@@ -63,12 +60,8 @@ describe("Property Tests: Features Package EE Removal", () => {
 
     // Assert no violations found
     if (violations.length > 0) {
-      const violationMessage = violations
-        .map((v) => `  ${v.file}:${v.line}\n    ${v.content}`)
-        .join("\n\n");
-      throw new Error(
-        `Found ${violations.length} EE import(s) in features package:\n\n${violationMessage}`
-      );
+      const violationMessage = violations.map((v) => `  ${v.file}:${v.line}\n    ${v.content}`).join("\n\n");
+      throw new Error(`Found ${violations.length} EE import(s) in features package:\n\n${violationMessage}`);
     }
 
     expect(violations).toHaveLength(0);

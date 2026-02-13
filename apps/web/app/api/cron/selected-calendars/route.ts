@@ -4,6 +4,7 @@
  * It works in conjunction with `/api/cron/credentials` route(which creates the Credential records for all the members of an organization that has delegation credentials enabled)
  */
 
+import process from "node:process";
 import { findUniqueDelegationCalendarCredential } from "@calcom/app-store/delegationCredential";
 import {
   createGoogleCalendarServiceWithGoogleType,

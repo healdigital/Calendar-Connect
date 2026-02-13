@@ -1,4 +1,5 @@
 import type { IncomingMessage } from "node:http";
+import process from "node:process";
 import { IS_PRODUCTION } from "@calcom/lib/constants";
 import { platform } from "@todesktop/client-core";
 import { dir } from "i18next";

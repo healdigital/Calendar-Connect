@@ -189,24 +189,21 @@ export async function findUniqueDelegationCalendarCredential({
 }: {
   userId: number;
   delegationCredentialId: string;
-}): Promise<
-  | {
-      id: CredentialPayload["id"];
-      type: CredentialPayload["type"];
-      key: CredentialPayload["key"];
-      encryptedKey: CredentialPayload["encryptedKey"];
-      userId: CredentialPayload["userId"];
-      teamId: CredentialPayload["teamId"];
-      appId: CredentialPayload["appId"];
-      invalid: CredentialPayload["invalid"];
-      delegationCredentialId: CredentialPayload["delegationCredentialId"];
-      user: CredentialPayload["user"];
-      delegatedTo: {
-        serviceAccountKey: ServiceAccountKey | null;
-      } | null;
-    }
-  | null
-> {
+}): Promise<{
+  id: CredentialPayload["id"];
+  type: CredentialPayload["type"];
+  key: CredentialPayload["key"];
+  encryptedKey: CredentialPayload["encryptedKey"];
+  userId: CredentialPayload["userId"];
+  teamId: CredentialPayload["teamId"];
+  appId: CredentialPayload["appId"];
+  invalid: CredentialPayload["invalid"];
+  delegationCredentialId: CredentialPayload["delegationCredentialId"];
+  user: CredentialPayload["user"];
+  delegatedTo: {
+    serviceAccountKey: ServiceAccountKey | null;
+  } | null;
+} | null> {
   return null;
 }
 

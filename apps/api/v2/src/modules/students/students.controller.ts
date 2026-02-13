@@ -1,3 +1,4 @@
+import type { CreateProfileInput, UpdateProfileInput } from "@calcom/platform-libraries";
 import {
   ProfileService,
   SessionRatingService,
@@ -21,9 +22,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
-
 import { API_VERSIONS_VALUES } from "@/lib/api-versions";
-import type { CreateProfileInput, UpdateProfileInput } from "@calcom/platform-libraries";
 
 @ApiTags("Students")
 @Controller({
@@ -52,10 +51,7 @@ export class StudentsController {
       if (message.includes("Invalid field of study")) {
         throw new BadRequestException(message);
       }
-      throw new HttpException(
-        { status: "error", message },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      throw new HttpException({ status: "error", message }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

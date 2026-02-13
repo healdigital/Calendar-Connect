@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
 import process from "node:process";
 import { PrismaAgentRepository } from "@calcom/features/calAIPhone/repositories/PrismaAgentRepository";
 import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/repositories/PrismaPhoneNumberRepository";
@@ -6,6 +5,7 @@ import { PrismaPhoneNumberRepository } from "@calcom/features/calAIPhone/reposit
 import logger from "@calcom/lib/logger";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
+import { type NextRequest, NextResponse } from "next/server";
 import Retell from "retell-sdk";
 import { z } from "zod";
 

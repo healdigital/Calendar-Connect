@@ -1,7 +1,7 @@
 import type { ParsedUrlQuery } from "node:querystring";
 import { SINGLE_ORG_SLUG } from "@calcom/lib/constants";
 import prisma from "@calcom/prisma";
-import { RedirectType } from "@calcom/prisma/enums";
+import type { RedirectType } from "@calcom/prisma/enums";
 import type { GetServerSidePropsContext } from "next";
 
 const ORG_REDIRECTION_QUERY_PARAM = "orgRedirection";

@@ -1,3 +1,4 @@
+import process from "node:process";
 import { CLOUDFLARE_SITE_ID } from "@calcom/lib/constants";
 import type { TurnstileProps } from "react-turnstile";
 import Turnstile from "react-turnstile";

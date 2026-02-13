@@ -1,5 +1,10 @@
 import { CAL_API_VERSION_HEADER, SUCCESS_STATUS, VERSION_2024_08_13 } from "@calcom/platform-constants";
 import type {
+  CreateBookingOutput_2024_08_13,
+  CreateScheduleInput_2024_04_15,
+  SchedulesService_2024_04_15,
+} from "@calcom/platform-libraries";
+import type {
   BookingOutput_2024_08_13,
   CreateBookingInput_2024_08_13,
   GetBookingsOutput_2024_08_13,
@@ -19,11 +24,6 @@ import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { withApiAuth } from "test/utils/withApiAuth";
 import { AppModule } from "@/app.module";
-import type {
-  CreateBookingOutput_2024_08_13,
-  CreateScheduleInput_2024_04_15,
-  SchedulesService_2024_04_15,
-} from "@calcom/platform-libraries";
 import { bootstrap } from "@/bootstrap";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";
 import { TeamsBookingsModule } from "@/modules/teams/bookings/teams-bookings.module";

@@ -4,6 +4,7 @@ import {
   SUCCESS_STATUS,
   VERSION_2024_09_04,
 } from "@calcom/platform-constants";
+import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import type {
   CreateScheduleInput_2024_06_11,
   ReserveSlotOutput_2024_09_04 as ReserveSlotOutputData_2024_09_04,
@@ -23,7 +24,6 @@ import { SelectedSlotRepositoryFixture } from "test/fixtures/repository/selected
 import { TeamRepositoryFixture } from "test/fixtures/repository/team.repository.fixture";
 import { UserRepositoryFixture } from "test/fixtures/repository/users.repository.fixture";
 import { randomString } from "test/utils/randomString";
-import { SchedulesModule_2024_06_11, SchedulesService_2024_06_11 } from "@calcom/platform-libraries";
 import { AppModule } from "@/app.module";
 import { bootstrap } from "@/bootstrap";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions/permissions.guard";

@@ -1,7 +1,7 @@
-import authedProcedure from "../../../procedures/authedProcedure";
-import { router } from "../../../trpc";
 import { MembershipRole } from "@calcom/prisma/enums";
 import { z } from "zod";
+import authedProcedure from "../../../procedures/authedProcedure";
+import { router } from "../../../trpc";
 
 const optionalObjectInput = z.object({}).passthrough().optional();
 
@@ -43,18 +43,16 @@ type OrganizationMemberRow = {
   email: string;
   avatarUrl: string | null;
   role: MembershipRole;
-  customRole:
-    | {
-        id?: string;
-        name: string;
-        type?: string;
-        description?: string;
-        teamId?: number | null;
-        createdAt?: Date;
-        updatedAt?: Date;
-        color?: string | null;
-      }
-    | null;
+  customRole: {
+    id?: string;
+    name: string;
+    type?: string;
+    description?: string;
+    teamId?: number | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    color?: string | null;
+  } | null;
   accepted: boolean;
   teams: Array<{ id: number; name: string; slug?: string; accepted?: boolean }>;
   schedules?: Array<{ name: string }>;
@@ -122,30 +120,35 @@ const emptyIntentResult = { checkoutUrl: null as string | null };
 const emptyPublishResult = { url: "" };
 
 const queryObject = () =>
-  authedProcedure
-    .input(optionalObjectInput)
-    .query(async (): Promise<Record<string, unknown>> => emptyObject);
+  authedProcedure.input(optionalObjectInput).query(async (): Promise<Record<string, unknown>> => emptyObject);
 const queryArray = () =>
   authedProcedure.input(optionalObjectInput).query(async (): Promise<OrganizationTeam[]> => emptyTeams);
 const mutationObject = () =>
   authedProcedure
     .input(optionalObjectInput)
     .mutation(async (): Promise<Record<string, unknown>> => emptyObject);
-const queryBoolean = () => authedProcedure.input(optionalObjectInput).query(async (): Promise<boolean> => false);
+const queryBoolean = () =>
+  authedProcedure.input(optionalObjectInput).query(async (): Promise<boolean> => false);
 const mutationBoolean = () =>
   authedProcedure.input(optionalObjectInput).mutation(async (): Promise<boolean> => false);
 const publishMutation = () =>
-  authedProcedure.input(optionalObjectInput).mutation(async (): Promise<{ url: string }> => emptyPublishResult);
+  authedProcedure
+    .input(optionalObjectInput)
+    .mutation(async (): Promise<{ url: string }> => emptyPublishResult);
 const intentToCreateOrgMutation = () =>
   authedProcedure
     .input(optionalObjectInput)
     .mutation(async (): Promise<{ checkoutUrl: string | null }> => emptyIntentResult);
 
 const listMembersQuery = () =>
-  authedProcedure.input(optionalObjectInput).query(async (): Promise<OrganizationMembersList> => emptyMembersList);
+  authedProcedure
+    .input(optionalObjectInput)
+    .query(async (): Promise<OrganizationMembersList> => emptyMembersList);
 
 const listCurrentQuery = () =>
-  authedProcedure.input(optionalObjectInput).query(async (): Promise<OrganizationCurrent> => emptyOrganizationCurrent);
+  authedProcedure
+    .input(optionalObjectInput)
+    .query(async (): Promise<OrganizationCurrent> => emptyOrganizationCurrent);
 
 const getUserQuery = () =>
   authedProcedure.input(optionalObjectInput).query(async (): Promise<OrganizationUser> => emptyUser);

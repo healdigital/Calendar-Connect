@@ -553,7 +553,9 @@ export const Components: Record<FieldType, Component> = {
     propsType: propsTypes.url,
     factory: (props) => {
       const { setValue: _setValue, ...rest } = props;
-      return <Widgets.TextWidget type="url" autoComplete="url" noLabel={true} setValue={_setValue} {...rest} />;
+      return (
+        <Widgets.TextWidget type="url" autoComplete="url" noLabel={true} setValue={_setValue} {...rest} />
+      );
     },
   },
 } as const;

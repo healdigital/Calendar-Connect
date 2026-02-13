@@ -1,9 +1,9 @@
 import {
+  AnalyticsRepository,
   SessionRatingRepository,
   StatisticsService,
-  ThotisProfileRepository,
-  AnalyticsRepository,
   ThotisAnalyticsService,
+  ThotisProfileRepository,
 } from "@calcom/platform-libraries";
 import { Module } from "@nestjs/common";
 import { PlatformController } from "./platform.controller";
@@ -28,8 +28,7 @@ import { PrismaWriteService } from "@/modules/prisma/prisma-write.service";
     },
     {
       provide: AnalyticsRepository,
-      useFactory: (prisma: PrismaWriteService) =>
-        new AnalyticsRepository({ prismaClient: prisma.prisma }),
+      useFactory: (prisma: PrismaWriteService) => new AnalyticsRepository({ prismaClient: prisma.prisma }),
       inject: [PrismaWriteService],
     },
     {

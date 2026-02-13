@@ -1,5 +1,5 @@
 import { SUCCESS_STATUS } from "@calcom/platform-constants";
-import { slugify, DEFAULT_EVENT_TYPES } from "@calcom/platform-libraries";
+import { DEFAULT_EVENT_TYPES, slugify } from "@calcom/platform-libraries";
 import type { ApiSuccessResponse } from "@calcom/platform-types";
 import type { PlatformOAuthClient, Team, User } from "@calcom/prisma/client";
 import { INestApplication } from "@nestjs/common";
